@@ -1,6 +1,6 @@
 package it.unibo.model.entities.api;
 
-import it.unibo.model.entities.utilities.*;
+import it.unibo.utilities.*;
 
 /**
  * Represents an entity in the game, that is, something that has name, position and direction.
@@ -8,44 +8,38 @@ import it.unibo.model.entities.utilities.*;
 public interface Entity {
 
     /**
-     * Retrieves the entity's id.
+     * Returns the entity's id.
      * 
      * @return The entity's id.
      */
     String getId();
 
     /**
-     * Retrieves the entity's name.
+     * Returns the entity's name.
      * 
      * @return The entity's name.
      */
     String getName();
 
     /**
-     * Sets the entity's position.
-     * 
-     * @param coord The next position.
-     */
-    void setPosition(Position position);
-
-    /**
      * Returns the current entity position.
      * 
      * @return The entity's current position.
      */
-    Position getPosition();
+    Position2D getPosition();
 
     /**
-     * Retrieves the direction the entity is facing.
+     * Returns the direction the entity is facing.
      * 
      * @return The direction the entity is currently facing at.
      */
-    Direction getDirection();
+    Vector2D getDirection();
+
 
     /**
-     * Sets the position the entity is facing towards.
+     * Returns the path of the renderable entity.
      * 
-     * @param direction The next direction towards which the entity will face at.
+     * @return The path of the renderable entity.
      */
-    void setDirection(Direction direction);
+    String render();
 }
