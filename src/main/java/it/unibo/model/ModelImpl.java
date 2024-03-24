@@ -1,4 +1,4 @@
-public package main.java.it.unibo.model;
+public package it.unibo.model;
 
 class ModelImpl implements Model {
 

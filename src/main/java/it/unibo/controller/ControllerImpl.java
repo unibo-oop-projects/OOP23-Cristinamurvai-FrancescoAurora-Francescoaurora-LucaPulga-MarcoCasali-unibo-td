@@ -1,4 +1,4 @@
-package main.java.it.unibo.controller;
+package it.unibo.controller;
 
 /**
  * Controller Implementation

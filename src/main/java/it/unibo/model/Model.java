@@ -1,6 +1,6 @@
-package main.java.it.unibo.model;
+package it.unibo.model;
 
-import main.java.it.unibo.model.entities.utilities.Directions;
+import it.unibo.model.entities.utilities.Directions;
 
 /**
  * Model

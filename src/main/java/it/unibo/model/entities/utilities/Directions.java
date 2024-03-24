@@ -1,4 +1,4 @@
-package main.java.it.unibo.model.entities.utilities;
+package it.unibo.model.entities.utilities;
 
 /**
  * Enum representing direction an entity can be facing.
@@ -28,7 +28,7 @@ public enum Directions {
     private final int x;
     private final int y;
 
-    Direction(final int x, final int y) {
+    Directions(final int x, final int y) {
         this.x = x;
         this.y = y;
     }

@@ -22,11 +22,6 @@ repositories { // Where to search for dependencies
 dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.1")
-    // Maven dependencies are composed by a group name, a name and a version, separated by colons
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.apache.commons:commons-lang3:3.14.0")
-    // Mockito for mocking in tests
-    implementation("org.mockito:mockito-core:5.10.0")
     // JUnit API and testing engine
     val jUnitVersion = "5.10.1"
     // when dependencies share the same version, grouping in a val helps to keep them in sync

@@ -1,0 +1,38 @@
+classDiagram
+
+    class GameEngine {
+        +getGameMap() GameMap
+        +togglePause() boolean
+        +toggleSpeed() double
+        +getCurrentRound() int
+        +getPlayer() Player
+        +getGameState() GameState
+        +getEntityManager() EntityManager
+        +getStats()
+    }
+
+    class GameController{
+        togglePause()
+        start()
+        speed()
+        build()
+
+        +getGameMap() GameMap
+        +getEntities() List[Entity]
+        +getPlayer() Player
+    }
+
+    class GameView{
+        togglePause()
+        start()
+        speed()
+        render()
+        updateView()
+    }
+
+    <<Interface>> GameController
+    <<Interface>> GameEngine
+    <<Interface>> GameView
+
+    GameController <-- GameEngine
+    GameController <-- GameView

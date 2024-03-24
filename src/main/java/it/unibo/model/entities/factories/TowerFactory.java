@@ -1,4 +1,4 @@
-package main.java.it.unibo.model.entities.factories;
+package it.unibo.model.entities.factories;
 
 /**
  

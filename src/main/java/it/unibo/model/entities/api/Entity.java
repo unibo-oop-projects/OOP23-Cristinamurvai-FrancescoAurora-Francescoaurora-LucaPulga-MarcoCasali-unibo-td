@@ -1,6 +1,6 @@
-package main.java.it.unibo.model.entities.api;
+package it.unibo.model.entities.api;
 
-import main.java.it.unibo.model.entities.utilities.*;
+import it.unibo.model.entities.utilities.*;
 
 /**
  * Represents an entity in the game, that is, something that has name, position and direction.
