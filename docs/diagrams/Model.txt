@@ -103,6 +103,12 @@ classDiagram
         getNearestEnemy(Position2D, radius) Enemy 
     }
 
+    class EnemyState{
+        MOVING
+        DEAD
+        FINISHED
+    }
+
     <<Enumeration>> GameState
     <<Enumeration>> Vector2D
     <<Interface>> Player
@@ -119,7 +125,7 @@ classDiagram
     <<Interface>> EntityManager
     <<Interface>> Bullet
     <<Interface>> RoundHistory
-
+    <<Enumeration>> EnemyState
 
     GameEngine -- RoundHistory
     GameEngine <-- GameState
@@ -134,3 +140,4 @@ classDiagram
     Tile <|-- BuildableTile
     GameMap -- Tile
     Entity -- Bullet
+    Enemy <-- EnemyState
