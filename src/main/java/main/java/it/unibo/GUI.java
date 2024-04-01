@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 
 public class GUI extends JFrame {
     private JButton startButton;
+    private JPanel contentPane; // Dichiarato come campo della classe per renderlo accessibile da altri metodi
 
     public GUI (){
-
         // Imposta il titolo del frame
         super("Proggetto oop - Sostituire con nome gioco");
 
@@ -16,7 +16,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Crea un pannello vuoto
-        JPanel contentPane = new JPanel();
+        contentPane = new JPanel();
 
         // Imposta il layout del pannello vuoto con GridBagLayout
         contentPane.setLayout(new GridBagLayout());
@@ -28,13 +28,10 @@ public class GUI extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10); // Margine esterno
         
         ActionListener startGameListen = e -> {
-            //rimuovere bottone successivamente sarà tutto passatto all'oggetto che dovrà caricare le mappe
-            contentPane.remove(startButton);
-            // Richiedi al contenitore di aggiornare la GUI
-            contentPane.revalidate();
-            contentPane.repaint();
+            // Rimuovere il bottone "Start"
+            contentPane.removeAll();
             
-            new SelectMapGui();
+            new SelectMapGui(contentPane);
         };
         
         // Creo il bottone start gioco
