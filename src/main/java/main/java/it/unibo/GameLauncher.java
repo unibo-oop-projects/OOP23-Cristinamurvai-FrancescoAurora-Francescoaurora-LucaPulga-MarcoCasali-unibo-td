@@ -1,5 +1,7 @@
 package main.java.it.unibo;
 
+import it.unibo.view.GUI;
+
 public final class GameLauncher{
     private GameLauncher(){}
 
