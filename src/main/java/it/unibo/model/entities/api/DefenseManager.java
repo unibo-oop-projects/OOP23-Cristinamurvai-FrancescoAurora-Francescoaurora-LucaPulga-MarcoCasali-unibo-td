@@ -6,12 +6,12 @@ import it.unibo.utilities.*;
 /**
  * Represents the entity manager to manage all the entities.
  */
-public interface EntityManager {
+public interface DefenseManager {
     
     /**
      * Builds the entity thread.
      */
-    void buildEntity(Entity entity);
+    void buildTower(Tower entity);
 
     /**
      * Represents the enemies.

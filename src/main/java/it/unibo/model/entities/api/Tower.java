@@ -1,9 +1,11 @@
 package it.unibo.model.entities.api;
 
+import java.util.Set;
+
 /**
  * Represents the tower entity.
  */
-public interface Tower{
+public interface Tower extends DefenseEntity{
     
     /**
      * Represents the level of the tower.
@@ -20,8 +22,11 @@ public interface Tower{
     int getRange();
 
     /**
-     * Represents the method used by the tower to attack the target enemy.
+     * Represents the associated weapons.
+     * 
+     * @return the the associated weapons.
      */
-    void setTargetMethod();
+    Set<Weapon> getWeapons();
+
 
 }

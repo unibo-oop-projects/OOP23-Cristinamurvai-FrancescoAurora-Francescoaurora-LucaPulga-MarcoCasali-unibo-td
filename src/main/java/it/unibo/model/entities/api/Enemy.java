@@ -3,7 +3,7 @@ package it.unibo.model.entities.api;
 /**
  * Represents the enemy entity.
  */
-public interface Enemy {
+public interface Enemy extends Entity{
 
     /**
      * Represents the enemy's life points.

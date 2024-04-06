@@ -5,14 +5,14 @@ import it.unibo.utilities.*;
 /**
  * Represents an entity in the game, that is, something that has name, position and direction.
  */
-public interface Entity {
+public interface Entity{
 
     /**
      * Returns the entity's id.
      * 
      * @return The entity's id.
      */
-    String getId();
+    int getId();
 
     /**
      * Returns the entity's name.
@@ -20,6 +20,12 @@ public interface Entity {
      * @return The entity's name.
      */
     String getName();
+
+    /***
+     * 
+     * @return Entity type
+     */
+    String getType();
 
     /**
      * Returns the current entity position.

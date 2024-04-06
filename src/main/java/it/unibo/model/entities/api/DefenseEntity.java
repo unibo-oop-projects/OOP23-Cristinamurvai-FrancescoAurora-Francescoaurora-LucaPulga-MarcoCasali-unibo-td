@@ -3,7 +3,7 @@ package it.unibo.model.entities.api;
 /**
  * Represents a defense entity.
  */
-public interface DefenseEntity {
+public interface DefenseEntity extends Entity{
     
     /**
      * Represents the cost of the entity.
@@ -12,10 +12,4 @@ public interface DefenseEntity {
      */
     int getCost();
 
-    /**
-     * Represents the type of the entity.
-     * 
-     * @return the type of the entity.
-     */
-    Entity getType();
 }
