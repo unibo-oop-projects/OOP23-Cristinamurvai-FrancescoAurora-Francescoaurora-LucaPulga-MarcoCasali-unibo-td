@@ -1,9 +1,11 @@
-package it.unibo.model.entities.api;
+package it.unibo.model.entities.defense;
+
+import it.unibo.model.entities.Entity;
 
 /**
  * Represents the Weapon entity.
  */
-public interface Weapon extends DefenseEntity{
+public interface Weapon extends Entity{
     
     /**
      * Represents the frequency with which the weapon can fire.

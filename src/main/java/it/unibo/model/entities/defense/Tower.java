@@ -1,11 +1,13 @@
-package it.unibo.model.entities.api;
+package it.unibo.model.entities.defense;
 
 import java.util.Set;
+
+import it.unibo.model.entities.Entity;
 
 /**
  * Represents the tower entity.
  */
-public interface Tower extends DefenseEntity{
+public interface Tower extends Entity{
     
     /**
      * Represents the level of the tower.
@@ -28,5 +30,10 @@ public interface Tower extends DefenseEntity{
      */
     Set<Weapon> getWeapons();
 
+    /**
+     * 
+     * @return
+     */
+    int getCost();
 
 }

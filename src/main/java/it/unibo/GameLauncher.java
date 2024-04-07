@@ -1,4 +1,4 @@
-package main.java.it.unibo;
+package it.unibo;
 
 import it.unibo.view.GUI;
 

@@ -1,4 +1,4 @@
-package it.unibo.model.entities.api;
+package it.unibo.model.entities.defense;
 
 /**
  * Represents the bullet fired from the defensive tower's weapon.

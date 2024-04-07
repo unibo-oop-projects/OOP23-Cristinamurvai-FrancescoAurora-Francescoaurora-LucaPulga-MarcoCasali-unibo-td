@@ -1,6 +1,8 @@
-package it.unibo.model.entities.api;
+package it.unibo.model.entities.defense;
 
 import java.util.Set;
+
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.utilities.*;
 
 /**
@@ -11,7 +13,7 @@ public interface DefenseManager {
     /**
      * Builds the entity thread.
      */
-    void buildTower(Tower entity);
+    void buildTower(String filename);
 
     /**
      * Represents the enemies.
@@ -26,20 +28,6 @@ public interface DefenseManager {
      * @return a set of all the active towers.
      */
     Set<Tower> getTowers();
-
-    /**
-     * Represents the bullets.
-     * 
-     * @return a set of all the active bullets.
-     */
-    Set<Bullet> getBullets();
-
-    /**
-     * Represents the weapons.
-     * 
-     * @return a set of all the active weapons.
-     */
-    Set<Weapon> getWeapons();
 
     /**
      * Represents the nearest enemy to hit from a tower position.

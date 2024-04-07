@@ -1,4 +1,6 @@
-package it.unibo.model.entities.api;
+package it.unibo.model.entities.enemies;
+
+import it.unibo.model.entities.Entity;
 
 /**
  * Represents the enemy entity.
