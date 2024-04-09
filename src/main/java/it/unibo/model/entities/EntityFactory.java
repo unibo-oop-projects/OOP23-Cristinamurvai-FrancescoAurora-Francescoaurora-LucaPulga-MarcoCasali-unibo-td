@@ -1,15 +1,20 @@
 package it.unibo.model.entities;
 
+import it.unibo.model.entities.defense.Tower;
+import it.unibo.model.entities.defense.TowerImpl;
+import it.unibo.model.entities.defense.Weapon;
+import it.unibo.model.entities.defense.Bullet;
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.utilities.Position2D;
 import it.unibo.utilities.Vector2D;
 
 public interface EntityFactory {
 
-    Entity createTower(String name, Position2D position2d);
+    TowerImpl createTower(String name, Position2D position2d);
 
-    Entity createEnemy(String name);
+    Enemy createEnemy(String name);
 
-    Entity createWeapon(String name);
+    Weapon createWeapon(String name);
 
-    Entity createBullet(String name, Position2D position2d, Vector2D direction);
+    Bullet createBullet(String name, Position2D position2d, Vector2D direction);
 }
