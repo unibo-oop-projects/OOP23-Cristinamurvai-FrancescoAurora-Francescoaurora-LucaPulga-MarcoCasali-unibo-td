@@ -26,7 +26,7 @@ public interface Enemy extends Entity{
      * 
      * @return the damage dealt to the enemy.
      */
-    int inflictDamage();
+    int inflictDamage(int damage);
 
     /**
      * Check if the enemy is alive or not.
