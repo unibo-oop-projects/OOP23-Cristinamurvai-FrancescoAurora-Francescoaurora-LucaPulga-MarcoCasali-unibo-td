@@ -87,20 +87,13 @@ classDiagram
     class Enemy{
         getLP() int
         getReward() int
-        inflictDamage()
-        isAlive() boolean
+        inflictDamage(int)
+        move()
     }
     
     class Bullet{
         getDamage() int
         getSpeed() int
-    }
-
-    class EntityManager{
-        buildEntity(Entity) void
-        getEnemies() 
-        getTowers()
-        getNearestEnemy(Position2D, radius) Enemy 
     }
 
     class EnemyState{
@@ -109,8 +102,19 @@ classDiagram
         FINISHED
     }
 
+    class EnemyManager{
+        buildEnemy(Enemy) void
+        getEnemies() 
+        getNearestEnemy(Position2D, radius) Enemy 
+    }
+
+    class DefenseManager{
+        buildDefense(DefenseEntity) void
+        getTowers()
+    }
+
     <<Enumeration>> GameState
-    <<Enumeration>> Vector2D
+    <<interface>> Vector2D
     <<Interface>> Player
     <<Interface>> GameEngine
     <<Interface>> GameMap
@@ -119,25 +123,28 @@ classDiagram
     <<Interface>> Position2D
     <<Interface>> Tower
     <<Interface>> Weapon
-    <<Interface>> Entity
     <<Interface>> DefenseEntity
     <<Interface>> Enemy
-    <<Interface>> EntityManager
     <<Interface>> Bullet
     <<Interface>> RoundHistory
     <<Enumeration>> EnemyState
+    <<Interface>> EnemyManager
+    <<Interface>> Entity
+    <<Interface>> DefenseManager
 
     GameEngine -- RoundHistory
     GameEngine <-- GameState
-    GameEngine <-- EntityManager
     Entity -- Enemy
+    DefenseEntity -- Bullet
     Entity -- DefenseEntity
     DefenseEntity -- Weapon
     DefenseEntity -- Tower
-    EntityManager -- Entity
     GameEngine -- Player
     GameEngine -- GameMap
     Tile <|-- BuildableTile
     GameMap -- Tile
-    Entity -- Bullet
     Enemy <-- EnemyState
+    GameEngine <-- EnemyManager
+    EnemyManager -- Enemy
+    GameEngine <-- DefenseManager
+    DefenseManager -- DefenseEntity
