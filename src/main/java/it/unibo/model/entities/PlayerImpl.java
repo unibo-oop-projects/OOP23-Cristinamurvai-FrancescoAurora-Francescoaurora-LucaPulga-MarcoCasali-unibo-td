@@ -32,4 +32,9 @@ public class PlayerImpl implements Player{
     public int getMoney(){
         return money;
     }
+
+    public void setMoney(int reward){
+        money=money+reward;
+        return;
+    }
 }
