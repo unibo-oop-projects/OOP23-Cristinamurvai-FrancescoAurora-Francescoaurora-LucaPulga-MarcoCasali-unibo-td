@@ -8,6 +8,8 @@ public interface Player {
     int getRemainingLives();
 
     void loseLives(int damage);
+
+    void restoreLives(int numberLives);
     
     int getMoney();
 }
