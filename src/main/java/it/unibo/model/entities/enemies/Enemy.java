@@ -5,7 +5,7 @@ import it.unibo.model.entities.Entity;
 /**
  * Represents the enemy entity.
  */
-public interface Enemy extends Entity{
+public interface Enemy extends Entity {
 
     /**
      * Represents the enemy's life points.

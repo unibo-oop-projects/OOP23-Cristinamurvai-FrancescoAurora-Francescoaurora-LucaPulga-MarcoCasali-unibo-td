@@ -1,9 +1,12 @@
-package it.unibo.model.entities.defense;
+package it.unibo.model.entities.defense.bullet;
+
+import it.unibo.model.entities.Entity;
+import it.unibo.model.entities.enemies.Enemy;
 
 /**
  * Represents the bullet fired from the defensive tower's weapon.
  */
-public interface Bullet {
+public interface Bullet extends Entity {
 
     /**
      * Represents the damage dealt to the target enemy.
@@ -19,4 +22,14 @@ public interface Bullet {
      */
     int getSpeed();
 
+    /**
+     * Bullet movement;
+     */
+    void move();
+    
+    /**
+     * Hit the targetted enemy.
+     * @param enemy
+     */
+    void hitEnemy(Enemy enemy);
 }

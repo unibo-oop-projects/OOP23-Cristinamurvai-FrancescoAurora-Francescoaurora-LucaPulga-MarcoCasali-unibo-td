@@ -1,8 +1,15 @@
 {
-  "name": "Tower1",
   "id": 1,
-  "position2d": {"x": 10, "y": 20},
-  "direction2d": {"x": 1, "y": 0},
+  "name": "Tower1",
+  "type": "Base",
+  "position2d": {
+    "x": 10,
+    "y": 20
+  },
+  "direction2d": {
+    "x": 1,
+    "y": 0
+  },
   "cost": 100,
   "level": 1,
   "range": 50,

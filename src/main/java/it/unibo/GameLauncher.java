@@ -1,11 +1,10 @@
 package it.unibo;
 
 import it.unibo.model.entities.EntityFactoryImpl;
-
-import java.io.File;
-
+import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.EntityFactory;
-import it.unibo.utilities.Position2D;
+import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GUI;
 
 public final class GameLauncher{
@@ -13,8 +12,8 @@ public final class GameLauncher{
 
     public static void main(final String ... args){
         EntityFactory entity = new EntityFactoryImpl();
-        File file = new File("src/main/resoures/towers/tower1.json");
-        entity.createTower(file.getName(), new Position2D(0, 0));
+        String file = "src/main/resources/towers/tower1.json";
+        Tower tower = entity.createTower(file, new Position2D(0, 0));
         new GUI();
     }
 }
