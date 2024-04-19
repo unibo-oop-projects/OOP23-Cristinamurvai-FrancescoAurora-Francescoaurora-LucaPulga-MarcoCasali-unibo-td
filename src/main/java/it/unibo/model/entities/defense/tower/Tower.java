@@ -1,15 +1,16 @@
 package it.unibo.model.entities.defense.tower;
 
 import java.util.Set;
+import java.util.Optional;
 
-import it.unibo.model.entities.Entity;
+import it.unibo.model.entities.MovableEntity;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.enemies.Enemy;
 
 /**
  * Represents the tower entity.
 */
-public interface Tower extends Entity {    
+public interface Tower extends MovableEntity {    
     /**
      * Represents the level of the tower.
      * @return the level of the tower.
@@ -29,6 +30,12 @@ public interface Tower extends Entity {
     Set<Weapon> getWeapons();
 
     /**
+     * Current weapon.
+     * @return Current weapon.
+     */
+    Weapon getCurrentWeapon();
+
+    /**
      * Tower's cost.
      * @return tower's cost.
      */
@@ -37,13 +44,13 @@ public interface Tower extends Entity {
     /**
      * Shoot a shot.
      */
-    void attack();
+    void attack(Set<Enemy> enemies);
 
     /**
      * Enenmy to be targetted.
      * @param enemies
      * @return Targetted enemy.
      */
-    Enemy targetEnemy(Set<Enemy> enemies);
+    Optional<Enemy> targetEnemy(Set<Enemy> enemies);
 
 }

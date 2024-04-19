@@ -11,4 +11,8 @@ public interface Weapon extends Entity {
      * @return the frequency with which the weapon can fire.
      */
     int getFrequency();
+
+    public long getLastShotTime();
+
+    public void setLastShotTime(long lastShotTime);
 }

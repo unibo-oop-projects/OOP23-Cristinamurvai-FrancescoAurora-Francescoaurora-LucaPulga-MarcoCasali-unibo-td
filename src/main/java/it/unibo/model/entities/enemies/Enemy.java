@@ -1,11 +1,11 @@
 package it.unibo.model.entities.enemies;
 
-import it.unibo.model.entities.Entity;
+import it.unibo.model.entities.MovableEntity;
 
 /**
  * Represents the enemy entity.
  */
-public interface Enemy extends Entity {
+public interface Enemy extends MovableEntity {
 
     /**
      * Represents the enemy's life points.
@@ -26,7 +26,7 @@ public interface Enemy extends Entity {
      * 
      * @return the damage dealt to the enemy.
      */
-    int inflictDamage();
+    int getDamage(int damage);
 
     /**
      * Check if the enemy is alive or not.

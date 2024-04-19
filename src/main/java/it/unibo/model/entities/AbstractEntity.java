@@ -3,7 +3,7 @@ package it.unibo.model.entities;
 import java.util.Objects;
 
 /**
- * Abstract Entity.
+ * Abstract implementation of a general abstract entity such as an enemy, a tower, a weapon or a bullet.
  */
 public abstract class AbstractEntity implements Entity {
     protected final int id;
@@ -11,11 +11,10 @@ public abstract class AbstractEntity implements Entity {
     protected final String type;
 
     /**
+     * General abstact entity's constructor.
      * @param id
      * @param name
      * @param type
-     * @param position2d
-     * @param direction2d
      */
     public AbstractEntity(final int id, final String name, final String type) {
         this.id = Objects.requireNonNull(id);
@@ -24,7 +23,7 @@ public abstract class AbstractEntity implements Entity {
     }
             
     /**
-     * .Entity id.
+     * Entity id.
      * @return Entity id.
      */
     public int getId() {
@@ -32,7 +31,7 @@ public abstract class AbstractEntity implements Entity {
     }
 
     /**
-     * .Entity name.
+     * Entity name.
      * @return Entity name.
      */
     public String getName() {
@@ -40,7 +39,7 @@ public abstract class AbstractEntity implements Entity {
     }
 
     /**
-     * .Entity type.
+     * Entity type.
      * @return Entity type.
      */
     public String getType() {

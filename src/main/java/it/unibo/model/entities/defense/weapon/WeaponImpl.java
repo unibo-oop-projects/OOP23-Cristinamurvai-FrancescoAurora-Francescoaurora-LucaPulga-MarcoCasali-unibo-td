@@ -1,37 +1,36 @@
 package it.unibo.model.entities.defense.weapon;
 
 import it.unibo.model.entities.AbstractEntity;
-import it.unibo.model.utilities.Position2D;
-import it.unibo.model.utilities.Vector2D;
-
 /**
  * Weapon implementation.
  */
 public class WeaponImpl extends AbstractEntity implements Weapon{
 
-    public WeaponImpl(int id, String name, String type) {
+    private int frequnecy; // Tempo in millisecondi tra due bullet.
+    private long lastShotTime; // Tempo dell'ultimo sparo.
+
+    public WeaponImpl(int id, String name, String type, int frequnecy) {
         super(id, name, type);
+        this.frequnecy = frequnecy;
+        this.lastShotTime = 0;
     }
 
     /**
-     * weapoon hit frequnecy.
+     * Weapoon hit frequnecy.
      * @return weapoon hit frequnecy. 
     */
     @Override
     public int getFrequency() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFrequency'");
+        return this.frequnecy;
     }
 
     @Override
-    public Position2D getPosition() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+    public long getLastShotTime() {
+        return lastShotTime;
     }
 
     @Override
-    public Vector2D getDirection() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDirection'");
+    public void setLastShotTime(long lastShotTime) {
+        this.lastShotTime = lastShotTime;
     }
 }

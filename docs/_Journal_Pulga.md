@@ -14,3 +14,8 @@ Errore nella conversione da json a java object leggendo "tower1.json"
 
 ---------
 
+## 20/04/2024
+New defense model implementation with interfaces, abstract classes and concrete classes partly re-designed.
+Prima implementazione della fisica del gioco.
+
+---------
