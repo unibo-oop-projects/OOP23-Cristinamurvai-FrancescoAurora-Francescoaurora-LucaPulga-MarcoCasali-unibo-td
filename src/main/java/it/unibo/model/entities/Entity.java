@@ -1,39 +1,24 @@
 package it.unibo.model.entities;
 
-import it.unibo.utilities.*;
-
 /**
  * Represents an entity in the game, that is, something that has name, position and direction.
  */
-public interface Entity{
-
+public interface Entity {
     /**
-     * 
-     * @return
+     * Entity's id.
+     * @return Entity's id.
      */
     int getId();
 
     /**
-     * 
-     * @return
+     * Entity's name.
+     * @return Entity's name.
      */
     String getName();
 
     /**
-     * 
-     * @return
+     * Entity's type.
+     * @return Entity's type.
      */
     String getType();
-
-    /**
-     * 
-     * @return
-     */
-    Position2D getPosition();
-
-    /**
-     * 
-     * @return
-     */
-    Vector2D getDirection();
 }

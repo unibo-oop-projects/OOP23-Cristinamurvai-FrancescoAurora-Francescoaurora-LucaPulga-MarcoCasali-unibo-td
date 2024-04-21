@@ -1,9 +1,11 @@
-package it.unibo.model.entities.defense;
+package it.unibo.model.entities.defense.bullet;
+
+import it.unibo.model.entities.MovableEntity;
 
 /**
  * Represents the bullet fired from the defensive tower's weapon.
  */
-public interface Bullet {
+public interface Bullet extends MovableEntity {
 
     /**
      * Represents the damage dealt to the target enemy.
@@ -18,5 +20,4 @@ public interface Bullet {
      * @return the speed bullet.
      */
     int getSpeed();
-
 }
