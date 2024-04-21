@@ -1,10 +1,10 @@
 package it.unibo.model.entities.enemies;
 
-import it.unibo.model.entities.AbstractEntity;
-import it.unibo.utilities.Position2D;
-import it.unibo.utilities.Vector2D;
+import it.unibo.model.entities.AbstractMovableEntity;
+import it.unibo.model.utilities.Position2D;
+import it.unibo.model.utilities.Vector2D;
 
-public class EnemyImpl extends AbstractEntity implements Enemy {
+public class EnemyImpl extends AbstractMovableEntity implements Enemy {
 
     private int lp;
     private int reward;
@@ -28,7 +28,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
 	}
 
 	@Override
-	public int inflictDamage(int damage) {
+	public int getDamage(int damage) {
         if(this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;

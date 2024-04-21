@@ -1,9 +1,9 @@
 package it.unibo.model.entities.enemies;
 import java.util.Set;
 
-import it.unibo.utilities.Position2D;
+import it.unibo.model.utilities.Position2D;
 
-public interface EnemyManager {
+public interface EnemiesManager {
     /**
      * Build an enemy entity.
      */
