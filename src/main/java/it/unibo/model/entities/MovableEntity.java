@@ -15,4 +15,10 @@ public interface MovableEntity extends Entity {
      * @return Entity's direction.
      */
     Vector2D getDirection();
+
+    /**
+     * Modify Entity's direction.
+     * @param direction2d
+     */
+    void setDirection(Vector2D direction2d);
 }

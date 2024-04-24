@@ -1,4 +1,5 @@
 package it.unibo.model.entities.enemies;
+import java.util.Optional;
 import java.util.Set;
 
 import it.unibo.model.utilities.Position2D;
@@ -21,5 +22,5 @@ public interface EnemiesManager {
      * 
      * @return the nearest enemy.
      */
-    Enemy getNearestEnemy(Position2D position2d, int radius);
+    Optional<Enemy> getNearestEnemy(Position2D position2d, int radius);
 }

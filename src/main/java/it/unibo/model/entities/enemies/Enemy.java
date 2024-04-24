@@ -6,6 +6,12 @@ import it.unibo.model.entities.MovableEntity;
  * Represents the enemy entity.
  */
 public interface Enemy extends MovableEntity {
+    /**
+     * Represents the actual state of the enemy.
+     * 
+     * @return the state of the enemy.
+     */
+    EnemyState getState();
 
     /**
      * Represents the enemy's life points.
@@ -34,4 +40,9 @@ public interface Enemy extends MovableEntity {
      * @return true if alive, false otherwise.
      */
     boolean isAlive();
+
+    /**
+     * Move the enemy of vect2d from pos2d.
+     */
+    void move();
 }
