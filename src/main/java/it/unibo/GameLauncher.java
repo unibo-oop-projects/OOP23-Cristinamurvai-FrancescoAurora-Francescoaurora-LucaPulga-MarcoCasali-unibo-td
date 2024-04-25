@@ -11,9 +11,9 @@ public final class GameLauncher{
     private GameLauncher(){}
 
     public static void main(final String ... args){
-        EntityFactory entity = new EntityFactoryImpl();
-        String file = "src/main/resources/towers/tower1.json";
-        Tower tower = entity.createTower(file, new Position2D(0, 0));
+        //EntityFactory entity = new EntityFactoryImpl();
+        //String file = "src/main/resources/towers/tower1.json";
+        //Tower tower = entity.createTower(file, new Position2D(0, 0));
         new GUI();
     }
 }
