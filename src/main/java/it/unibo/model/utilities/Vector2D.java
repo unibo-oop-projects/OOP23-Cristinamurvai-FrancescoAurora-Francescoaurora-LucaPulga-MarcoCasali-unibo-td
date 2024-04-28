@@ -12,7 +12,7 @@ public class Vector2D {
      * @param x
      * @param y
      */
-    public Vector2D(double x, double y) {
+    public Vector2D(final double x, final double y) {
         this.x = x;
         this.y = y;
     }
@@ -54,7 +54,7 @@ public class Vector2D {
      * @param scalar
      * @return new multiplied vector.
      */
-    public Vector2D multiply(double scalar) {
+    public Vector2D multiply(final double scalar) {
         return new Vector2D(x * scalar, y * scalar);
     }
 }

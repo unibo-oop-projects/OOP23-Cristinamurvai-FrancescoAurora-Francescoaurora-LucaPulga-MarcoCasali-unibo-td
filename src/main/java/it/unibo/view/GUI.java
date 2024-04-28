@@ -1,15 +1,28 @@
 package it.unibo.view;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import java.awt.event.ActionListener;
 
+/**
+ * Load the game gui.
+ */
 public class GUI extends JFrame {
     private JButton startButton;
     private JPanel contentPane; // Declared as a class field to make it accessible from other methods
 
-    public GUI (){
+    /**
+     * Load the game gui.
+     */
+    public GUI() {
         // Set the title of the frame
         super("Proggetto oop - Sostituire con nome gioco");
 
@@ -27,14 +40,14 @@ public class GUI extends JFrame {
         gbc.gridx = 0; // Column position
         gbc.gridy = 0; // Row position
         gbc.insets = new Insets(10, 10, 10, 10); // External margin
-        
+
         ActionListener startGameListen = e -> {
             // Remove the "Start" button
             contentPane.removeAll();
-            
+
             new SelectMapGui(contentPane);
         };
-        
+
         // Create the start game button
         startButton = new JButton("Start");
  
@@ -42,7 +55,9 @@ public class GUI extends JFrame {
         startButton.addActionListener(startGameListen);
 
         // Set custom dimensions for the button
-        startButton.setPreferredSize(new Dimension(100, 50));
+        final int heightButton = 50, widthButton = 100;
+
+        startButton.setPreferredSize(new Dimension(widthButton, heightButton));
 
         // Set the alignment of the button to center
         gbc.anchor = GridBagConstraints.CENTER;
