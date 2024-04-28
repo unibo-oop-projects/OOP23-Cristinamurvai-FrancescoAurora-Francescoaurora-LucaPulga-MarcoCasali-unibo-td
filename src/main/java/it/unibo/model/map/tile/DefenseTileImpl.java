@@ -6,7 +6,7 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 
 /**
- * Implementation of {@link DefenseTile}
+ * Implementation of {@link DefenseTile}.
  */
 public class DefenseTileImpl extends TileImpl implements DefenseTile {
     private Optional<Tower> tower = Optional.empty();
