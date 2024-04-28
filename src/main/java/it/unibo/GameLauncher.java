@@ -7,10 +7,17 @@ import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GUI;
 
-public final class GameLauncher{
-    private GameLauncher(){}
+/**
+ * Running the game.
+ */
+public final class GameLauncher {
+    private GameLauncher() { }
 
-    public static void main(final String ... args){
+    /**
+     * Game Main.
+     * @param args Main topics
+     */
+    public static void main(final String... args) {
         EntityFactory entity = new EntityFactoryImpl();
         String file = "src/main/resources/towers/tower1.json";
         Tower tower = entity.createTower(file, new Position2D(0, 0));
