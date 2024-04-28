@@ -3,7 +3,7 @@ package it.unibo.model.map.tile;
 import it.unibo.model.entities.defense.tower.Tower;
 
 /**
- * Represents a {@link Tile} where it is allowed to build one {@link Tower}
+ * Represents a {@link Tile} where it is allowed to build one {@link Tower}.
  */
 public interface DefenseTile extends Tile {
     /**
