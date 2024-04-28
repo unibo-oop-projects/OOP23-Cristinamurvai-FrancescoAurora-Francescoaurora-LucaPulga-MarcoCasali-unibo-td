@@ -1,12 +1,9 @@
 package it.unibo.model.map.tile;
 
-import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 
 /**
  * Represents a square 2-dimensional tile that forms the {@link it.unibo.model.map.GameMap GameMap}.
- * If {@link #canBuild} returns {@code true} it is possible
- * to build a {@link Tower} through {@link #buildTower}.
  */
 public interface Tile {
     /**
@@ -27,23 +24,6 @@ public interface Tile {
      * {@link Tile}, {@code false} otherwise
      */
     boolean isInBounds(Position2D point);
-
-    /**
-     * @return {@code true} if the {@link Tile} is empty and allows
-     * buildings, {@code false} otherwise
-     */
-    boolean canBuild();
-
-    /**
-     * Occupies the current {@link Tile} with a {@link Tower}.
-     * @param tower The {@link Tower} to build
-     */
-    void buildTower(Tower tower);
-
-    /**
-     * Destroys the currently built {@link Tower} if present.
-     */
-    void destroyTower();
 
     /**
      * @return the path of the file representing the {@link Tile}
