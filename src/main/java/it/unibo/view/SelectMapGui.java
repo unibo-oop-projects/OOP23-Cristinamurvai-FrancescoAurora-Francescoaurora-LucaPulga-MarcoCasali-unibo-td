@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 public class SelectMapGui extends JFrame {
     private JLabel[] imageLabels;
     private int focusIndex;
-    private static final int numMap = 5;
+    private static final int NUM_MAP = 5;
     private JPanel guiMapSelected;
 
     /**
@@ -41,7 +41,7 @@ public class SelectMapGui extends JFrame {
 
         // Initialize the JLabels with the images
         for (int i = 0; i < 3; i++) {
-            int index = (focusIndex - 1 + i + numMap) % numMap; // Calculate the index of the image
+            int index = (focusIndex - 1 + i + NUM_MAP) % NUM_MAP; // Calculate the index of the image
             imageLabels[i] = new JLabel(new ImageIcon("src/main/resources/map_preview/MAP" + (index + 1) + ".png"));
             imageLabels[i].addMouseListener(new MouseAdapter() {
                 @Override
@@ -61,7 +61,7 @@ public class SelectMapGui extends JFrame {
         leftButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex - 1 + numMap) % numMap;
+                focusIndex = (focusIndex - 1 + NUM_MAP) % NUM_MAP;
                 updateImages();
             }
         });
@@ -74,7 +74,7 @@ public class SelectMapGui extends JFrame {
         rightButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex + 1) % numMap;
+                focusIndex = (focusIndex + 1) % NUM_MAP;
                 updateImages();
             }
         });
@@ -91,9 +91,9 @@ public class SelectMapGui extends JFrame {
     private void updateImages() {
         // Calculate the indices of the images
         int[] indices = {
-            (focusIndex - 1 + numMap) % numMap,
+            (focusIndex - 1 + NUM_MAP) % NUM_MAP,
             focusIndex,
-            (focusIndex + 1) % numMap
+            (focusIndex + 1) % NUM_MAP
         };
 
         // Update the JLabels with the new images
