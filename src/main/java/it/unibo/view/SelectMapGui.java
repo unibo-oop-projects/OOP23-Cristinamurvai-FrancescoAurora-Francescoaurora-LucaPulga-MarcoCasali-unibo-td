@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 public class SelectMapGui extends JFrame {
     private JLabel[] imageLabels;
     private int focusIndex;
-    private final int numMap = 5;
+    private static final int numMap = 5;
     private JPanel guiMapSelected;
 
     /**
