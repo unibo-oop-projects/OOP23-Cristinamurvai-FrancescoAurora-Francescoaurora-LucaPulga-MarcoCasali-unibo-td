@@ -6,7 +6,6 @@ import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GuiStart;
-import it.unibo.view.GuiStart;
 
 /**
  * Running the game.
