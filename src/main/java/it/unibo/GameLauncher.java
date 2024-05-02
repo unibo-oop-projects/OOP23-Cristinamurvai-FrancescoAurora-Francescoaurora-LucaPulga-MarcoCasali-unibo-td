@@ -5,7 +5,7 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.utilities.Position2D;
-import it.unibo.view.GUI;
+import it.unibo.view.Gui;
 
 /**
  * Running the game.
@@ -21,6 +21,6 @@ public final class GameLauncher {
         //EntityFactory entity = new EntityFactoryImpl();
         //String file = "src/main/resources/towers/tower1.json";
         //Tower tower = entity.createTower(file, new Position2D(0, 0));
-        new GUI();
+        new Gui();
     }
 }
