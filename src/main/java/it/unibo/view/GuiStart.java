@@ -15,14 +15,14 @@ import java.awt.event.ActionListener;
 /**
  * Load the game gui.
  */
-public class GUI extends JFrame {
+public class GuiStart extends JFrame {
     private JButton startButton;
     private JPanel contentPane; // Declared as a class field to make it accessible from other methods
 
     /**
      * Load the game gui.
      */
-    public GUI() {
+    public GuiStart() {
         // Set the title of the frame
         super("Proggetto oop - Sostituire con nome gioco");
 

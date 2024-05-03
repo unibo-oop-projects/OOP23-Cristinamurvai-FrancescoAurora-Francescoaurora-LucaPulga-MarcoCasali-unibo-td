@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 /**
@@ -18,13 +20,14 @@ import java.awt.event.ActionEvent;
 public class SelectMapGui extends JFrame {
     private JLabel[] imageLabels;
     private int focusIndex;
-    private final int numMap = 5;
+    private static final int NUM_MAP = 5;
+    private JPanel guiMapSelected;
 
     /**
      * @param oldGui switching the gui panel of the old window
      */
     public SelectMapGui(final JPanel oldGui) {
-
+        guiMapSelected = oldGui;
         // Set the layout of the contentPane to BorderLayout
         oldGui.setLayout(new BorderLayout());
 
@@ -38,8 +41,15 @@ public class SelectMapGui extends JFrame {
 
         // Initialize the JLabels with the images
         for (int i = 0; i < 3; i++) {
-            int index = (focusIndex - 1 + i + numMap) % numMap; // Calculate the index of the image
+            int index = (focusIndex - 1 + i + NUM_MAP) % NUM_MAP; // Calculate the index of the image
             imageLabels[i] = new JLabel(new ImageIcon("src/main/resources/map_preview/MAP" + (index + 1) + ".png"));
+            imageLabels[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    //change Gui for start Game
+                    changeGui(index + 1);
+
+                } });
             imagePanel.add(imageLabels[i]);
         }
 
@@ -51,7 +61,7 @@ public class SelectMapGui extends JFrame {
         leftButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex - 1 + numMap) % numMap;
+                focusIndex = (focusIndex - 1 + NUM_MAP) % NUM_MAP;
                 updateImages();
             }
         });
@@ -64,7 +74,7 @@ public class SelectMapGui extends JFrame {
         rightButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex + 1) % numMap;
+                focusIndex = (focusIndex + 1) % NUM_MAP;
                 updateImages();
             }
         });
@@ -81,14 +91,34 @@ public class SelectMapGui extends JFrame {
     private void updateImages() {
         // Calculate the indices of the images
         int[] indices = {
-            (focusIndex - 1 + numMap) % numMap,
+            (focusIndex - 1 + NUM_MAP) % NUM_MAP,
             focusIndex,
-            (focusIndex + 1) % numMap
+            (focusIndex + 1) % NUM_MAP
         };
 
         // Update the JLabels with the new images
         for (int i = 0; i < 3; i++) {
-            imageLabels[i].setIcon(new ImageIcon("src/main/resources/map_preview/MAP" + (indices[i] + 1) + ".png"));
+            final int tmp = indices[i] + 1;
+            //imageLabels[i] = new JLabel();
+            imageLabels[i].removeMouseListener(imageLabels[i].getMouseListeners()[0]);
+            imageLabels[i].setIcon(new ImageIcon("src/main/resources/map_preview/MAP" + (tmp) + ".png"));
+            imageLabels[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    //change Gui for start Game
+                    changeGui(tmp);
+                } });
         }
+    }
+
+    /**
+     * Change gui with map selected and start game.
+     * @param mapSelected Number of Map to Selected
+     */
+    public void changeGui(final int mapSelected) {
+        // Remove the "Map"
+        guiMapSelected.removeAll();
+        //Change Gui for start game
+        new GuiGameStart(guiMapSelected, mapSelected);
     }
 }
