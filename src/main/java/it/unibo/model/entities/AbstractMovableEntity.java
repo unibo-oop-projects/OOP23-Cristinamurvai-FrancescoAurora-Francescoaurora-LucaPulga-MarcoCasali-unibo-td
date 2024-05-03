@@ -1,5 +1,7 @@
 package it.unibo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
@@ -7,8 +9,10 @@ import it.unibo.model.utilities.Vector2D;
  * Abstract implementation of an abstract entity but movable such as an enemy, a tower or a bullet.
  */
 public abstract class AbstractMovableEntity extends AbstractEntity implements MovableEntity{
-
+    @JsonProperty("position2d")
     protected Position2D position2d;
+
+    @JsonProperty("direction2d")
     protected Vector2D direction2d; 
 
     /**

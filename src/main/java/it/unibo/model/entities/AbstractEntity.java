@@ -1,13 +1,19 @@
 package it.unibo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 /**
  * Abstract implementation of a general abstract entity such as an enemy, a tower, a weapon or a bullet.
  */
 public abstract class AbstractEntity implements Entity {
+    @JsonProperty("id")
     protected final int id;
+
+    @JsonProperty("name")
     protected final String name;
+
+    @JsonProperty("type")
     protected final String type;
 
     /**

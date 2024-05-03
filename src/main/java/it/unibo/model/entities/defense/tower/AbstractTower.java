@@ -6,15 +6,24 @@ import it.unibo.model.utilities.Vector2D;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Abstract Tower implementation.
  */
 public abstract class AbstractTower extends AbstractMovableEntity implements Tower {
-
+    @JsonProperty("cost")
     private int cost;
+    
+    @JsonProperty("level")
     private int level;
+    
+    @JsonProperty("range")
     private int range;
+
+    @JsonProperty("weapons")
     private Set<Weapon> weapons;
+
     private Weapon currentWeapon;
 
     /**
