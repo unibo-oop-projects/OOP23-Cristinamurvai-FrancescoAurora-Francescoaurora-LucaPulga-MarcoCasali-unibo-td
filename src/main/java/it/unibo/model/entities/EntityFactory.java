@@ -12,33 +12,35 @@ import it.unibo.model.utilities.Vector2D;
  */
 public interface EntityFactory {
     /**
-     * Create Tower's instance.
+     * load Tower's instance.
      * @param name
      * @param position2d
      * @return Tower's instance.
      */
-    Tower createTower(String name, Position2D position2d);
+    Tower loadTower(String name, Position2D position2d);
 
     /**
-     * Create Enemy's instance.
+     * load Enemy's instance.
      * @param name
      * @return Enemy's instance.
      */
-    Enemy createEnemy(String name);
+    Enemy loadEnemy(String name);
 
     /**
-     * Create Weapon's instance.
+     * load Weapon's instance.
      * @param name
      * @return Weapon's instance.
      */
-    Weapon createWeapon(String name);
+    Weapon loadWeapon(String name);
 
     /**
-     * Create Bullet's instance.
+     * load Bullet's instance.
      * @param name
      * @param position2d
      * @param direction
      * @return Bullet's instance.
      */
-    Bullet createBullet(String name, Position2D position2d, Vector2D direction);
+    Bullet loadBullet(String name, Position2D position2d, Vector2D direction);
+
+    <T> T loadEntity(final String name, final Position2D position2d, Class<T> entityTyp);
 }

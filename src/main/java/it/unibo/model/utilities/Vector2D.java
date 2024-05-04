@@ -1,5 +1,8 @@
 package it.unibo.model.utilities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 2D Vector class.
  */
@@ -12,7 +15,8 @@ public class Vector2D {
      * @param x
      * @param y
      */
-    public Vector2D(final double x, final double y) {
+    @JsonCreator
+    public Vector2D(@JsonProperty("x") double x, @JsonProperty("y") double y) {
         this.x = x;
         this.y = y;
     }

@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.unibo.model.entities.EntityFactory;
+import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.EnemiesManager;
 import java.util.ArrayList;
