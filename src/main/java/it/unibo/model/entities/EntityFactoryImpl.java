@@ -26,116 +26,122 @@ public class EntityFactoryImpl implements EntityFactory {
      */
     public EntityFactoryImpl() { }
 
-    @Override
-    /**
-     * Tower instance.
-     * @param name.
-     * @param position2d.
-     * @return Tower instance.
-     */
+    // @Override
+    // /**
+    //  * Tower instance.
+    //  * @param name.
+    //  * @param position2d.
+    //  * @return Tower instance.
+    //  */
 
      
-    public Tower loadTower(final String name, final Position2D position2d) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(name)));
+    // public Tower loadTower(final String name, final Position2D position2d) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     try {
+    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
             
-            if (jsonString != null) {
-                Tower jsonTower = objectMapper.readValue(jsonString, BasicTower.class);
-                System.out.println("Nome della torre: " + jsonTower.getName());
-                return jsonTower;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
+    //         if (jsonString != null) {
+    //             Tower jsonTower = objectMapper.readValue(jsonString, BasicTower.class);
+    //             System.out.println("Nome della torre: " + jsonTower.getName());
+    //             return jsonTower;
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return null; 
+    // }
     
-    @Override
-    /**
-     * load enemy.
-     * @param name.
-     * @return Enemy instance.
-    */
-    public Enemy loadEnemy(final String name) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(name)));
+    // @Override
+    // /**
+    //  * load enemy.
+    //  * @param name.
+    //  * @return Enemy instance.
+    // */
+    // public Enemy loadEnemy(final String name) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     try {
+    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
             
-            if (jsonString != null) {
-                Enemy jsonTower = objectMapper.readValue(jsonString, EnemyImpl.class);
-                System.out.println("Nome della torre: " + jsonTower.getName());
-                return jsonTower;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
+    //         if (jsonString != null) {
+    //             Enemy jsonTower = objectMapper.readValue(jsonString, EnemyImpl.class);
+    //             System.out.println("Nome della torre: " + jsonTower.getName());
+    //             return jsonTower;
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return null; 
+    // }
 
-    @Override
-    /**
-     * load weapon.
-     * @param name.
-     * @return Weapon instance.
-     */
-    public Weapon loadWeapon(final String name) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(name)));
+    // @Override
+    // /**
+    //  * load weapon.
+    //  * @param name.
+    //  * @return Weapon instance.
+    //  */
+    // public Weapon loadWeapon(final String name) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     try {
+    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
             
-            if (jsonString != null) {
-                Weapon jsonTower = objectMapper.readValue(jsonString, WeaponImpl.class);
-                System.out.println("Nome della torre: " + jsonTower.getName());
-                return jsonTower;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
+    //         if (jsonString != null) {
+    //             Weapon jsonTower = objectMapper.readValue(jsonString, WeaponImpl.class);
+    //             System.out.println("Nome della torre: " + jsonTower.getName());
+    //             return jsonTower;
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return null; 
+    // }
 
-    @Override
-    /**
-     * load bullet.
-     * @param name.
-     * @param position2d.
-     * @param direction.
-     * @return Bullet instance.
-     */
-    public Bullet loadBullet(final String name, final Position2D position2d, Vector2D direction) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(name)));
+    // @Override
+    // /**
+    //  * load bullet.
+    //  * @param name.
+    //  * @param position2d.
+    //  * @param direction.
+    //  * @return Bullet instance.
+    //  */
+    // public Bullet loadBullet(final String name, final Position2D position2d, Vector2D direction) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     try {
+    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
             
-            if (jsonString != null) {
-                Bullet jsonTower = objectMapper.readValue(jsonString, BulletImpl.class);
-                System.out.println("Nome della torre: " + jsonTower.getName());
-                return jsonTower;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
+    //         if (jsonString != null) {
+    //             Bullet jsonTower = objectMapper.readValue(jsonString, BulletImpl.class);
+    //             System.out.println("Nome della torre: " + jsonTower.getName());
+    //             return jsonTower;
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return null; 
+    // }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T loadEntity(final String name, final Position2D position2d, Class<T> entityType) {
+    public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
     
         try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(name)));
+            String jsonString = new String(Files.readAllBytes(Paths.get(filePath)));
     
             if (jsonString != null) {
-                if (entityType.equals(Bullet.class)) {
+                if (entityType.equals(BulletImpl.class)) {
                     return (T) objectMapper.readValue(jsonString, BulletImpl.class);
-                } else if (entityType.equals(Weapon.class)) {
+                } 
+                else if (entityType.equals(WeaponImpl.class)) {
                     return (T) objectMapper.readValue(jsonString, WeaponImpl.class);
-                } else if (entityType.equals(Tower.class)) {
+                } 
+                else if (entityType.equals(BasicTower.class)) {
                     return (T) objectMapper.readValue(jsonString, BasicTower.class);
-                } else {
-                    throw new IllegalArgumentException("Tipo di entità non supportato");
+                }
+                else if (entityType.equals(EnemyImpl.class)) {
+                    return (T) objectMapper.readValue(jsonString, EnemyImpl.class);
+                } 
+                else {
+                    throw new IllegalArgumentException("Entity type not supported.");
                 }
             }
         } catch (IOException e) {

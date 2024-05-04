@@ -19,3 +19,20 @@ New defense model implementation with interfaces, abstract classes and concrete 
 Prima implementazione della fisica del gioco.
 
 ---------
+
+## 04/05/2024
+
+EntityFactoryImpl e dunque EntityFactory:
+	gestisce il loading della torre, ma non l'inizializzazione del thread della torre;
+	metodo generico utile per tutti i tipi di entità;
+DefenseManagerImpl:
+	dopo il loading della torre da parte dell'EntityFactoryImpl, gestisce l'inizializzazione del thread della torre;
+	
+Main:
+	test per lettura file json, creazione obj voluto e gestione dei thread con il proprio manager;
+	
+ALTRO:
+	Aggiunta di @JsonProperty("id") nei parametri dei costruttori, altrimenti la libreria jackson non capisce cosa deve parsare;
+
+---------
+
