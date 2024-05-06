@@ -2,7 +2,6 @@ package it.unibo.model.map.tile;
 
 import java.util.Optional;
 import java.util.Set;
-
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 

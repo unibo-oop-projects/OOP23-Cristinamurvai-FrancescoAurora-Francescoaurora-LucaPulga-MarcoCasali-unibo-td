@@ -14,9 +14,21 @@ public enum TileFeature {
      */
     PATH_END,
     /**
-     * Part of the enemies' path
+     * Moves enemies left
      */
-    PATH,
+    MOVE_LEFT,
+    /**
+     * Moves enemies right
+     */
+    MOVE_RIGHT,
+    /**
+     * Moves enemies up
+     */
+    MOVE_UP,
+    /**
+     * Moves enemies down
+     */
+    MOVE_DOWN,
     /**
      * Allows building towers
      */
