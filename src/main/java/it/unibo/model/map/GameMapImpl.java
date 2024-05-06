@@ -1,6 +1,7 @@
 package it.unibo.model.map;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 import it.unibo.model.map.tile.Tile;
 import it.unibo.model.map.tile.TileFeature;
@@ -11,23 +12,16 @@ import it.unibo.model.utilities.Vector2D;
  * Implementation of {@link GameMap}.
  */
 public class GameMapImpl implements GameMap {
-    private static final String MAP_RESOURCES = "/maps/";
-    private final int rows;
-    private final int columns;
     private final double tileSize;
     private final Map<Position2D, Tile> tiles;
 
     /**
      * @param tiles The {@link Tile}s mapped to their position
      * @param tileSize The length of a single {@link Tile}
-     * @param rows The number of rows of the map
-     * @param columns The number of columns of the map
      */
-    public GameMapImpl(final Map<Position2D, Tile> tiles, final double tileSize, final int rows, final int columns) {
+    public GameMapImpl(final Map<Position2D, Tile> tiles, final double tileSize) {
         this.tiles = tiles;
         this.tileSize = tileSize;
-        this.rows = rows;
-        this.columns = columns;
     }
 
     /**
@@ -61,6 +55,21 @@ public class GameMapImpl implements GameMap {
      */
     @Override
     public Vector2D getPathDirection(final Position2D position) {
-        return new Vector2D(1, 0);
+        final Set<TileFeature> directions = this.tiles.get(edge(position)).getTileFeatures();
+        if (directions.contains(TileFeature.MOVE_DOWN)) {
+            return new Vector2D(0, -1);
+        } else if (directions.contains(TileFeature.MOVE_UP)) {
+            return new Vector2D(0, 1);
+        } else if (directions.contains(TileFeature.MOVE_RIGHT)) {
+            return new Vector2D(1, 0);
+        } else if (directions.contains(TileFeature.MOVE_LEFT)) {
+            return new Vector2D(-1, 0);
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    private Position2D edge(final Position2D position) {
+        return new Position2D((int) (position.x() / this.tileSize), (int) (position.y() / this.tileSize));
     }
 }

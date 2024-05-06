@@ -2,7 +2,7 @@ package it.unibo.model.map.tile;
 
 /**
  * Represents the possible features of a
- * {@link it.unibo.model.map.tile.Tile Tile}
+ * {@link it.unibo.model.map.tile.Tile Tile}.
  */
 public enum TileFeature {
     /**
