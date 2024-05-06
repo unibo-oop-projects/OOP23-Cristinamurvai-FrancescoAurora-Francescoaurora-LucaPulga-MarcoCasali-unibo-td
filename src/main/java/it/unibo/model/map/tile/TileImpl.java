@@ -18,8 +18,8 @@ public class TileImpl implements Tile {
 
     /**
      * @param spriteName Name of the sprite
-     * @param size Size of the sides
      * @param position Position of the bottom-left corner
+     * @param tileFeatures Set of the Tiles' features
      */
     public TileImpl(final String spriteName, final Position2D position, final Set<TileFeature> tileFeatures) {
         this.position = position;
@@ -42,7 +42,7 @@ public class TileImpl implements Tile {
     public String getSprite() {
         return this.spriteLocation;
     }
-    
+
     /**
      * {@inheritDoc}
      */
