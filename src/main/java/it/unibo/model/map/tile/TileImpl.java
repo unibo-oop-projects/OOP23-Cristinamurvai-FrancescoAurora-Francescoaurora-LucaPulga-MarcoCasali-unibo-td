@@ -1,6 +1,8 @@
 package it.unibo.model.map.tile;
 
-import it.unibo.model.utilities.Position2D;
+import java.util.Optional;
+import java.util.Set;
+import it.unibo.model.entities.defense.tower.Tower;
 
 /**
  * Implementation of {@link Tile}.
@@ -8,43 +10,16 @@ import it.unibo.model.utilities.Position2D;
 public class TileImpl implements Tile {
     private static final String TILE_RESOURCES = "tiles/";
     private final String spriteLocation;
-    private final double size;
-    private final Position2D position;
+    private Optional<Tower> tower = Optional.empty();
+    private final Set<TileFeature> tileFeatures;
 
     /**
      * @param spriteName Name of the sprite
-     * @param size Size of the sides
-     * @param position Position of the bottom-left corner
+     * @param tileFeatures Set of the Tiles' features
      */
-    public TileImpl(final String spriteName, final double size, final Position2D position) {
-        this.position = position;
-        this.size = size;
+    public TileImpl(final String spriteName, final Set<TileFeature> tileFeatures) {
         this.spriteLocation = TILE_RESOURCES + spriteName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Position2D getPosition2d() {
-        return this.position;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public double getSize() {
-        return this.size;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isInBounds(final Position2D point) {
-        return (point.x() <= this.position.x() + this.size) && (point.x() >= this.position.x())
-                && (point.y() <= this.position.y() + this.size) && (point.y() >= this.position.y());
+        this.tileFeatures = tileFeatures;
     }
 
     /**
@@ -53,5 +28,37 @@ public class TileImpl implements Tile {
     @Override
     public String getSprite() {
         return this.spriteLocation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canBuild() {
+        return this.tower.isEmpty() && this.tileFeatures.contains(TileFeature.DEFENSE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void buildTower(final Tower tower) {
+        this.tower = Optional.of(tower);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void destroyTower() {
+        this.tower = Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<TileFeature> getTileFeatures() {
+        return this.tileFeatures;
     }
 }

@@ -1,7 +1,6 @@
 package it.unibo.model.map;
 
 import java.util.stream.Stream;
-import it.unibo.model.map.tile.DefenseTile;
 import it.unibo.model.map.tile.Tile;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -11,9 +10,14 @@ import it.unibo.model.utilities.Vector2D;
  */
 public interface GameMap {
     /**
+     * @return A {@link Stream} of the map's {@link Tile}s
+     */
+    Stream<Tile> getTiles();
+
+    /**
      * @return A {@link Stream} of {@link Tile}s that allow buildings
      */
-    Stream<DefenseTile> getDefenseTiles();
+    Stream<Tile> getDefenseTiles();
 
     /**
      * @return The {@link Position2D} where the path starts
