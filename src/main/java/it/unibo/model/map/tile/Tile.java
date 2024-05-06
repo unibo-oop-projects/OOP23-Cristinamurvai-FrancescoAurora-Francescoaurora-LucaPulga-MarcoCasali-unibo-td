@@ -1,5 +1,8 @@
 package it.unibo.model.map.tile;
 
+import java.util.Set;
+
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 
 /**
@@ -12,21 +15,29 @@ public interface Tile {
     Position2D getPosition2d();
 
     /**
-     * @return the length of the {@link Tile}'s sides
+     * @return The set of {@link TileFeature}
      */
-    double getSize();
-
-    /**
-     * Checks whether the given {@link Position2D} is inside the bounds
-     * of the {@link Tile}.
-     * @param point The {@link Position2D} to check
-     * @return {@code true} if the point is within the bounds of the
-     * {@link Tile}, {@code false} otherwise
-     */
-    boolean isInBounds(Position2D point);
+    Set<TileFeature> getTileFeatures();
 
     /**
      * @return the path of the file representing the {@link Tile}
      */
     String getSprite();
+
+    /**
+     * @return {@code true} if the {@link Tile} is empty and allows
+     * buildings, {@code false} otherwise
+     */
+    boolean canBuild();
+
+    /**
+     * Occupies the current {@link Tile} with a {@link Tower}.
+     * @param tower The {@link Tower} to build
+     */
+    void buildTower(Tower tower);
+
+    /**
+     * Destroys the built {@link Tower} if present.
+     */
+    void destroyTower();
 }

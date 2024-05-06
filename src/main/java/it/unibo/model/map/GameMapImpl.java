@@ -3,7 +3,7 @@ package it.unibo.model.map;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import it.unibo.model.map.tile.DefenseTile;
+import it.unibo.model.map.tile.Tile;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
@@ -16,7 +16,7 @@ public class GameMapImpl implements GameMap {
     private final int rows = 5;
     private final int columns = 10;
     private final double tileSize = 20;
-    private Map<Integer, DefenseTile> defenseTiles = new HashMap<>();
+    private Map<Integer, Tile> defenseTiles = new HashMap<>();
 
     /**
      * @param mapName Filename of the map
@@ -29,7 +29,7 @@ public class GameMapImpl implements GameMap {
      * {@inheritDoc}
      */
     @Override
-    public Stream<DefenseTile> getDefenseTiles() {
+    public Stream<Tile> getDefenseTiles() {
         return this.defenseTiles.values().stream();
     }
 
