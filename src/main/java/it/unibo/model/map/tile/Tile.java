@@ -2,17 +2,11 @@ package it.unibo.model.map.tile;
 
 import java.util.Set;
 import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.utilities.Position2D;
 
 /**
  * Represents a square 2-dimensional tile that forms the {@link it.unibo.model.map.GameMap GameMap}.
  */
 public interface Tile {
-    /**
-     * @return {@link Position2D} of the bottom-left corner of the {@link Tile}
-     */
-    Position2D getPosition2d();
-
     /**
      * @return The set of {@link TileFeature}
      */
