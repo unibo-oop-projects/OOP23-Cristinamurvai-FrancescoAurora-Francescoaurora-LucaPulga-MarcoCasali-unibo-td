@@ -147,7 +147,6 @@ public class EntityFactoryImpl implements EntityFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
         return null;
     }
 }

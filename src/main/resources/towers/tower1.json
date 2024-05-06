@@ -13,5 +13,7 @@
   "cost": 100,
   "level": 1,
   "range": 50,
-  "weapons": null
+  "weapons": null,
+  "attackStrategy": "SingleTargetAttack",
+  "TargetSelectionStrategy": "DistanceBasedTargetSelection"
 }

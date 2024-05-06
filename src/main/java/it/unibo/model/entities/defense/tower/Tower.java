@@ -1,9 +1,11 @@
 package it.unibo.model.entities.defense.tower;
 
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 
 import it.unibo.model.entities.MovableEntity;
+import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
+import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.enemies.Enemy;
 
@@ -21,7 +23,7 @@ public interface Tower extends MovableEntity {
      * Represents the attackable range from the tower.
      * @return the attackable range from the tower.
      */
-    int getRange();
+    double getRange();
 
     /**
      * Represents the associated weapons.
@@ -41,16 +43,19 @@ public interface Tower extends MovableEntity {
      */
     int getCost();
 
-    /**
-     * Shoot a shot.
-     */
-    void attack(Set<Enemy> enemies);
+    public Optional<Set<Enemy>> target(Set<Enemy> enemies);
+
+    public void attack(Set<Enemy> enemies);
 
     /**
-     * Enenmy to be targetted.
-     * @param enemies
-     * @return Targetted enemy.
+     * The tower target selection strategy.
+     * @return the tower target selection strategy.
      */
-    Optional<Enemy> targetEnemy(Set<Enemy> enemies);
-
+    TargetSelectionStrategy getTargetSelectionStrategy();
+    
+    /**
+     * The tower attack strategy.
+     * @return the tower attack strategy.
+     */
+    AttackStrategy getAttackStrategy();
 }

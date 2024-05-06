@@ -4,6 +4,8 @@ import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 import it.unibo.model.entities.defense.weapon.Weapon;
+import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
+import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,10 +27,17 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     @JsonProperty("weapons")
     private Set<Weapon> weapons;
 
+    @JsonProperty("currentWeapon")
     private Weapon currentWeapon;
 
+    @JsonProperty("attackStrategy")
+    protected AttackStrategy attackStrategy;
+    
+    @JsonProperty("targetSelectionStrategy")
+    protected TargetSelectionStrategy targetSelectionStrategy;
+
     /**
-     * Abstract tower constructor.
+     * 
      * @param id
      * @param name
      * @param type
@@ -38,6 +47,9 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @param level
      * @param range
      * @param weapons
+     * @param currentWeapon
+     * @param attackStrategy
+     * @param targetSelectionStrategy
      */
     @JsonCreator
     public AbstractTower(@JsonProperty("id") int id, 
@@ -49,13 +61,17 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
                         @JsonProperty("level") int level, 
                         @JsonProperty("range") int range, 
                         @JsonProperty("weapons") Set<Weapon> weapons, 
-                        @JsonProperty("currentWeapon") Weapon currentWeapon)  {
+                        @JsonProperty("currentWeapon") Weapon currentWeapon,
+                        @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
+                        @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy)  {
         super(id, name, type, position2d, direction2d);
         this.cost = cost;
         this.level = level;
         this.range = range;
         this.weapons = weapons;
         this.currentWeapon = currentWeapon;
+        this.attackStrategy = attackStrategy;
+        this.targetSelectionStrategy = targetSelectionStrategy;
     }
 
     /**
@@ -86,7 +102,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * Get tower's position.
      */
     @Override
-    public int getRange() {
+    public double getRange() {
         return this.range;
     }
     
@@ -112,5 +128,15 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     @Override
     public int getCost() {
         return this.cost;
+    }
+    
+    @Override
+    public TargetSelectionStrategy getTargetSelectionStrategy() {
+        return this.targetSelectionStrategy;
+    }
+
+    @Override
+    public AttackStrategy getAttackStrategy() {
+        return this.attackStrategy;
     }
 }

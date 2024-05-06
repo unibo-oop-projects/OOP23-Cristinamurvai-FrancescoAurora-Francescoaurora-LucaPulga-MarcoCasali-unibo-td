@@ -4,8 +4,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unibo.model.entities.EntityFactory;
-import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.EnemiesManager;
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class DefenseManagerImpl implements DefenseManager {
     public void buildTower(Tower tower) {
         Runnable towerRunnable = () -> {
             while (!Thread.currentThread().isInterrupted()) {
-                tower.targetEnemy(enemiesManager.getCurrentEnemies());
+                tower.target(enemiesManager.getCurrentEnemies());
                 try {
                     Thread.sleep(1000); // Attendi un secondo prima di attaccare di nuovo
                 } catch (InterruptedException e) {
