@@ -5,19 +5,19 @@ package it.unibo.model.engine;
  */
 public enum GameState {
     /**
-     * Game instance created and ready to start
+     * Game instance created and ready to start.
      */
     INITIALIZED,
     /**
-     * Game is paused
+     * Game is paused.
      */
     PAUSED,
     /**
-     * Game is running
+     * Game is running.
      */
     RUNNING,
     /**
-     * Game is over
+     * Game is over.
      */
     GAME_OVER
 }

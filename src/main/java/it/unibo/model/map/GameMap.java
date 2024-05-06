@@ -10,6 +10,11 @@ import it.unibo.model.utilities.Vector2D;
  */
 public interface GameMap {
     /**
+     * @return A {@link Stream} of the map's {@link Tile}s
+     */
+    Stream<Tile> getTiles();
+
+    /**
      * @return A {@link Stream} of {@link Tile}s that allow buildings
      */
     Stream<Tile> getDefenseTiles();

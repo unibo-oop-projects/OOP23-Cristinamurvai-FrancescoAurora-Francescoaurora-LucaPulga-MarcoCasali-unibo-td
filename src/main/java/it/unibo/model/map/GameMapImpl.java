@@ -1,9 +1,9 @@
 package it.unibo.model.map;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import it.unibo.model.map.tile.Tile;
+import it.unibo.model.map.tile.TileFeature;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
@@ -12,17 +12,30 @@ import it.unibo.model.utilities.Vector2D;
  */
 public class GameMapImpl implements GameMap {
     private static final String MAP_RESOURCES = "/maps/";
-    private final String mapLocation;
-    private final int rows = 5;
-    private final int columns = 10;
-    private final double tileSize = 20;
-    private Map<Integer, Tile> defenseTiles = new HashMap<>();
+    private final int rows;
+    private final int columns;
+    private final double tileSize;
+    private final Map<Position2D, Tile> tiles;
 
     /**
-     * @param mapName Filename of the map
+     * @param tiles The {@link Tile}s mapped to their position
+     * @param tileSize The length of a single {@link Tile}
+     * @param rows The number of rows of the map
+     * @param columns The number of columns of the map
      */
-    public GameMapImpl(final String mapName) {
-        this.mapLocation = MAP_RESOURCES + mapName;
+    public GameMapImpl(final Map<Position2D, Tile> tiles, final double tileSize, final int rows, final int columns) {
+        this.tiles = tiles;
+        this.tileSize = tileSize;
+        this.rows = rows;
+        this.columns = columns;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Stream<Tile> getTiles() {
+        return this.tiles.values().stream();
     }
 
     /**
@@ -30,7 +43,7 @@ public class GameMapImpl implements GameMap {
      */
     @Override
     public Stream<Tile> getDefenseTiles() {
-        return this.defenseTiles.values().stream();
+        return getTiles().filter(tile -> tile.canBuild());
     }
 
     /**
@@ -38,7 +51,9 @@ public class GameMapImpl implements GameMap {
      */
     @Override
     public Position2D getSpawnPosition() {
-        return new Position2D(0, 50);
+        return this.tiles.entrySet().stream()
+            .filter(entry -> entry.getValue().getTileFeatures()
+            .contains(TileFeature.PATH_START)).findFirst().get().getKey();
     }
 
     /**
