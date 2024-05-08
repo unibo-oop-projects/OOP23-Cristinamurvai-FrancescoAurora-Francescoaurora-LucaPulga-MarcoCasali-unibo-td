@@ -5,7 +5,7 @@ package it.unibo.model.entities;
 public class PlayerImpl implements Player {
 
     private int money; //money of player
-    private final int maxLives = 3; //max life of player
+    private static final int maxLives = 3; //max life of player
     private int lives;
 
     /**

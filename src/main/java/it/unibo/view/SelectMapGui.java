@@ -27,7 +27,7 @@ public class SelectMapGui extends JFrame {
      * @param oldGui switching the gui panel of the old window
      */
     public SelectMapGui(final JPanel oldGui) {
-        guiMapSelected = oldGui;
+
         // Set the layout of the contentPane to BorderLayout
         oldGui.setLayout(new BorderLayout());
 
@@ -85,6 +85,8 @@ public class SelectMapGui extends JFrame {
         // Request the container to update the GUI
         oldGui.revalidate();
         oldGui.repaint();
+
+        guiMapSelected = oldGui;
     }
 
     //Update the image when an arrow is clicked

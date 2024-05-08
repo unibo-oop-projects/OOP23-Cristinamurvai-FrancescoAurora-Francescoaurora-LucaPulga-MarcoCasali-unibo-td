@@ -66,13 +66,13 @@ public class GuiStart extends JFrame {
         contentPane.add(startButton, gbc);
 
         // Set the layout of the frame
-        this.getContentPane().setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
         // Fit the frame to the screen dimensions
         this.setExtendedState(MAXIMIZED_BOTH);
 
         // Add the empty panel to the frame
-        this.getContentPane().add(contentPane, BorderLayout.CENTER);
+        this.add(contentPane, BorderLayout.CENTER);
 
         // Make the frame visible
         this.setVisible(true);
