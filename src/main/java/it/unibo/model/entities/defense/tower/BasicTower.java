@@ -5,7 +5,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Collection;
 import java.util.Optional;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
@@ -20,6 +19,7 @@ public class BasicTower extends AbstractTower {
     public BasicTower(@JsonProperty("id") int id, 
                       @JsonProperty("name") String name, 
                       @JsonProperty("type") String type, 
+                      @JsonProperty("imgPath") String imgPath,
                       @JsonProperty("position2d") Position2D position2d, 
                       @JsonProperty("direction2d") Vector2D direction2d, 
                       @JsonProperty("cost") int cost, 
@@ -29,7 +29,7 @@ public class BasicTower extends AbstractTower {
                       @JsonProperty("currentWeapon") Weapon currentWeapon,
                       @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
                       @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy) {
-        super(id, name, type, position2d, direction2d, cost, level, range, weapons, currentWeapon, attackStrategy, targetSelectionStrategy);
+        super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, attackStrategy, targetSelectionStrategy);
     }
 
     public Optional<Set<Enemy>> target(Set<Enemy> enemies){
@@ -44,5 +44,15 @@ public class BasicTower extends AbstractTower {
         else{
             System.out.println("No enemies to attack");
         }
+    }
+
+    @Override
+    public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
+        this.targetSelectionStrategy = targetSelectionStrategy;
+    }
+
+    @Override
+    public void setAttackStrategy(AttackStrategy attackStrategy) {
+        this.attackStrategy = attackStrategy;
     }
 }

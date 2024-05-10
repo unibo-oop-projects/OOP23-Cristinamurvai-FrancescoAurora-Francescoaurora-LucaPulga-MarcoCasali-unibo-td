@@ -55,6 +55,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public AbstractTower(@JsonProperty("id") int id, 
                         @JsonProperty("name") String name, 
                         @JsonProperty("type") String type, 
+                        @JsonProperty("imgPath") String imgPath,
                         @JsonProperty("position2d") Position2D position2d, 
                         @JsonProperty("direction2d") Vector2D direction2d, 
                         @JsonProperty("cost") int cost, 
@@ -64,7 +65,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
                         @JsonProperty("currentWeapon") Weapon currentWeapon,
                         @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
                         @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy)  {
-        super(id, name, type, position2d, direction2d);
+        super(id, name, type, imgPath, position2d, direction2d);
         this.cost = cost;
         this.level = level;
         this.range = range;

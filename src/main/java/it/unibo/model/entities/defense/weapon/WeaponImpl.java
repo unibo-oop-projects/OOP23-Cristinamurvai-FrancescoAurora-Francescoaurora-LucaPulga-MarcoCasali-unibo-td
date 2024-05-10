@@ -9,8 +9,8 @@ public class WeaponImpl extends AbstractEntity implements Weapon{
     private int frequnecy; // Tempo in millisecondi tra due bullet.
     private long lastShotTime; // Tempo dell'ultimo sparo.
 
-    public WeaponImpl(int id, String name, String type, int frequnecy) {
-        super(id, name, type);
+    public WeaponImpl(int id, String name, String type, String imgPath, int frequnecy) {
+        super(id, name, type, imgPath);
         this.frequnecy = frequnecy;
         this.lastShotTime = 0;
     }

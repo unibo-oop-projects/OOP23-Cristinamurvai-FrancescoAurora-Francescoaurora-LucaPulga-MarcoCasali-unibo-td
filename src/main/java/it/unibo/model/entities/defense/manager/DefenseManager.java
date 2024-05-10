@@ -22,6 +22,12 @@ public interface DefenseManager {
     Set<Tower> getTowers();
 
     /**
+     * Represents the towers.
+     * @return a set of all the active towers.
+    */
+    int getNumberOfTowers();
+
+    /**
      * Activate all towers.
      * @param towers
      */

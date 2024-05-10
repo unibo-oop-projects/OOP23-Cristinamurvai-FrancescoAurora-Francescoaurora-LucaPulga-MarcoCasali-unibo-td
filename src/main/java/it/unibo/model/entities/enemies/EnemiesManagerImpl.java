@@ -24,7 +24,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 	@Override
 	public void buildEnemy(String enemyName) {
-		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, TYPE, null, null, LP, REWARD);
+		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, TYPE, "", null, null, LP, REWARD);
 		Thread newEnemyThread = new Thread(newEnemy);
 
 		newEnemyThread.start();

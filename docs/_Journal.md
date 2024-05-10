@@ -10,3 +10,17 @@ CheckStyle e build con Gradle
 
 ---------
 
+## 09/02/2024
+###  TODO 
+Custom deserializer per Tower
+string image path (caricamento torri)
+
+GameEngine
+	- RoundManager
+		scope: Gestione round, complessità del round
+
+Map controller
+
+?? Enemy ??
+
+---------

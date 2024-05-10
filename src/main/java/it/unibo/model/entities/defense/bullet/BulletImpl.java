@@ -1,7 +1,5 @@
 package it.unibo.model.entities.defense.bullet;
 
-import java.util.Optional;
-
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
@@ -13,8 +11,8 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
     private int speed;
     private Enemy targetEnemy;
 
-    public BulletImpl(int id, String name, String type, Position2D initialPosition, Vector2D direction2d, int speed, int damage, Enemy enemy) {
-        super(id, name, type, initialPosition, direction2d);
+    public BulletImpl(int id, String name, String type, String imgPath, Position2D initialPosition, Vector2D direction2d, int speed, int damage, Enemy enemy) {
+        super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
         this.damage = damage;
@@ -68,8 +66,8 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
 
     private Vector2D calculateDirection(Position2D currentPosition, Position2D targetPosition) {
         // Calcola il vettore direzione dal currentPosition al targetPosition
-        double deltaX = targetPosition.x() - currentPosition.x();
-        double deltaY = targetPosition.y() - currentPosition.y();
+        int deltaX = targetPosition.x() - currentPosition.x();
+        int deltaY = targetPosition.y() - currentPosition.y();
         Vector2D directionVector = new Vector2D(deltaX, deltaY);
     
         // Normalizza il vettore direzione per ottenere un vettore con lunghezza 1

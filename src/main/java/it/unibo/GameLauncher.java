@@ -4,8 +4,9 @@ import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
-import it.unibo.model.entities.defense.tower.BasicTower;
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.view.GuiStart;
+import java.io.IOException;
 
 /**
  * Running the game.
@@ -17,12 +18,14 @@ public final class GameLauncher {
      * Game Main.
      * @param args Main topics
      */
-    public static void main(final String... args) {
+    public static void main(final String... args) throws IOException {
+        
+        String jsonFilePath = "src/main/resources/towers/json/tower1.json";
         DefenseManager defenseManager = new DefenseManagerImpl();
         EntityFactory entityFactory = new EntityFactoryImpl();
-        String jsonFilePath = "src/main/resources/towers/tower1.json";
-        BasicTower tower = entityFactory.loadEntity(jsonFilePath, null, null, BasicTower.class);
+        Tower tower = entityFactory.loadTower(jsonFilePath);
         defenseManager.buildTower(tower);
+
         new GuiStart();
     }
 }

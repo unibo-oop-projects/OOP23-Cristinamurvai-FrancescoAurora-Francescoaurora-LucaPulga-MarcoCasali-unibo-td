@@ -10,7 +10,7 @@ import it.unibo.model.utilities.Position2D;
 
 
 // Implementazione di selezione del bersaglio basata sulla distanza
-class DistanceBasedTargetSelection implements TargetSelectionStrategy {
+public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
     @Override
     public Optional<Set<Enemy>> selectTarget(Tower tower, Set<Enemy> enemies) {
         Set<Enemy> targets = new HashSet<>();

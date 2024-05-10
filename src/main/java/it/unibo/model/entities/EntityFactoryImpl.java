@@ -1,21 +1,19 @@
 package it.unibo.model.entities;
 
-import it.unibo.model.entities.defense.bullet.Bullet;
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.defense.weapon.Weapon;
-import it.unibo.model.entities.defense.weapon.WeaponImpl;
-import it.unibo.model.entities.enemies.Enemy;
-import it.unibo.model.entities.enemies.EnemyImpl;
+import it.unibo.model.entities.defense.tower.TowerDeserializer;
 import it.unibo.model.utilities.Position2D;
+import it.unibo.model.utilities.Position2DDeserializer;
 import it.unibo.model.utilities.Vector2D;
+import it.unibo.model.utilities.Vector2DDeserializer;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * Entity factory template.
@@ -26,124 +24,48 @@ public class EntityFactoryImpl implements EntityFactory {
      */
     public EntityFactoryImpl() { }
 
-    // @Override
-    // /**
-    //  * Tower instance.
-    //  * @param name.
-    //  * @param position2d.
-    //  * @return Tower instance.
-    //  */
-
-     
-    // public Tower loadTower(final String name, final Position2D position2d) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
-            
-    //         if (jsonString != null) {
-    //             Tower jsonTower = objectMapper.readValue(jsonString, BasicTower.class);
-    //             System.out.println("Nome della torre: " + jsonTower.getName());
-    //             return jsonTower;
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null; 
-    // }
-    
-    // @Override
-    // /**
-    //  * load enemy.
-    //  * @param name.
-    //  * @return Enemy instance.
-    // */
-    // public Enemy loadEnemy(final String name) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
-            
-    //         if (jsonString != null) {
-    //             Enemy jsonTower = objectMapper.readValue(jsonString, EnemyImpl.class);
-    //             System.out.println("Nome della torre: " + jsonTower.getName());
-    //             return jsonTower;
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null; 
-    // }
-
-    // @Override
-    // /**
-    //  * load weapon.
-    //  * @param name.
-    //  * @return Weapon instance.
-    //  */
-    // public Weapon loadWeapon(final String name) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
-            
-    //         if (jsonString != null) {
-    //             Weapon jsonTower = objectMapper.readValue(jsonString, WeaponImpl.class);
-    //             System.out.println("Nome della torre: " + jsonTower.getName());
-    //             return jsonTower;
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null; 
-    // }
-
-    // @Override
-    // /**
-    //  * load bullet.
-    //  * @param name.
-    //  * @param position2d.
-    //  * @param direction.
-    //  * @return Bullet instance.
-    //  */
-    // public Bullet loadBullet(final String name, final Position2D position2d, Vector2D direction) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         String jsonString = new String(Files.readAllBytes(Paths.get(name)));
-            
-    //         if (jsonString != null) {
-    //             Bullet jsonTower = objectMapper.readValue(jsonString, BulletImpl.class);
-    //             System.out.println("Nome della torre: " + jsonTower.getName());
-    //             return jsonTower;
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null; 
-    // }
-
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
-    
         try {
             String jsonString = new String(Files.readAllBytes(Paths.get(filePath)));
-    
             if (jsonString != null) {
-                if (entityType.equals(BulletImpl.class)) {
-                    return (T) objectMapper.readValue(jsonString, BulletImpl.class);
-                } 
-                else if (entityType.equals(WeaponImpl.class)) {
-                    return (T) objectMapper.readValue(jsonString, WeaponImpl.class);
-                } 
-                else if (entityType.equals(BasicTower.class)) {
-                    return (T) objectMapper.readValue(jsonString, BasicTower.class);
-                }
-                else if (entityType.equals(EnemyImpl.class)) {
-                    return (T) objectMapper.readValue(jsonString, EnemyImpl.class);
-                } 
-                else {
-                    throw new IllegalArgumentException("Entity type not supported.");
-                }
+                return (T) objectMapper.readValue(jsonString, entityType);
+                // if (entityType.equals(BulletImpl.class)) {
+                //     return (T) objectMapper.readValue(jsonString, entityType);
+                // } 
+                // else if (entityType.equals(WeaponImpl.class)) {
+                //     return (T) objectMapper.readValue(jsonString, WeaponImpl.class);
+                // } 
+                // else if (entityType.equals(BasicTower.class)) {
+                //     return (T) objectMapper.readValue(jsonString, BasicTower.class);
+                // }
+                // else if (entityType.equals(EnemyImpl.class)) {
+                //     return (T) objectMapper.readValue(jsonString, EnemyImpl.class);
+                // } 
+                // else {
+                //     throw new IllegalArgumentException("Entity type not supported.");
+                // }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Tower loadTower(final String jsonFilePath) throws IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
+        module.addDeserializer(Position2D.class, new Position2DDeserializer());
+        module.addDeserializer(Vector2D.class, new Vector2DDeserializer());
+
+        objectMapper.registerModule(module);
+        String jsonString = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
+        try {
+            BasicTower tower = objectMapper.readValue(jsonString, BasicTower.class);
+            return tower;
         } catch (IOException e) {
             e.printStackTrace();
         }

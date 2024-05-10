@@ -21,4 +21,10 @@ public interface Entity {
      * @return Entity's type.
      */
     String getType();
+
+    /**
+     * Image path.
+     * @return Image path.
+     */
+    String getPath();
 }
