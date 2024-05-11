@@ -5,6 +5,7 @@ import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 import it.unibo.view.GuiStart;
 import java.io.IOException;
 
@@ -25,6 +26,9 @@ public final class GameLauncher {
         EntityFactory entityFactory = new EntityFactoryImpl();
         Tower tower = entityFactory.loadTower(jsonFilePath);
         defenseManager.buildTower(tower);
+
+        EnemiesManagerImpl enemiesManagerImpl = new EnemiesManagerImpl();
+        enemiesManagerImpl.parseEnemies();
 
         new GuiStart();
     }

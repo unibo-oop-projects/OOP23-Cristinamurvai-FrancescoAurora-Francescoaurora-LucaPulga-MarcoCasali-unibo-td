@@ -28,6 +28,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+    implementation("org.json:json:20201115")
 }
 
 application {
