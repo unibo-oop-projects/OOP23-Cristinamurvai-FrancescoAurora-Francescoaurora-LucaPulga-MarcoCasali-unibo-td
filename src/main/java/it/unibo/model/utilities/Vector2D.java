@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 2D Vector class.
  */
 public class Vector2D {
-    private double x;
-    private double y;
+    private int x;
+    private int y;
 
     /**
      * Vector's coordinates.
@@ -16,7 +16,8 @@ public class Vector2D {
      * @param y
      */
     @JsonCreator
-    public Vector2D(@JsonProperty("x") double x, @JsonProperty("y") double y) {
+    public Vector2D(@JsonProperty("x") int x, 
+                    @JsonProperty("y") int y) {
         this.x = x;
         this.y = y;
     }
@@ -25,7 +26,7 @@ public class Vector2D {
      * X coordinate.
      * @return X coordinate.
      */
-    public double x() {
+    public int x() {
         return x;
     }
 
@@ -33,7 +34,7 @@ public class Vector2D {
      * Y coordinate.
      * @return Y coordinate.
      */
-    public double y() {
+    public int y() {
         return y;
     }
 
@@ -41,8 +42,8 @@ public class Vector2D {
      * Vector length.
      * @return Vector length.
      */
-    public double length() {
-        return Math.sqrt(x * x + y * y);
+    public int length() {
+        return (int) Math.sqrt(x * x + y * y);
     }
 
     /**
@@ -50,7 +51,7 @@ public class Vector2D {
      * @return 2D Vector normalized.
      */
     public Vector2D normalize() {
-        double length = length();
+        int length = length();
         return new Vector2D(x / length, y / length);
     }
     /**
@@ -58,7 +59,7 @@ public class Vector2D {
      * @param scalar
      * @return new multiplied vector.
      */
-    public Vector2D multiply(final double scalar) {
+    public Vector2D multiply(final int scalar) {
         return new Vector2D(x * scalar, y * scalar);
     }
 }

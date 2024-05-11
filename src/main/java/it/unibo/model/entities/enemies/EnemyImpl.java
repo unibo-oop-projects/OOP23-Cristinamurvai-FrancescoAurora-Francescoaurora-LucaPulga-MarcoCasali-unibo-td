@@ -11,8 +11,8 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
     private boolean alive;
 	private EnemyState enemyState;
 
-    public EnemyImpl(int id, String name, String type, Position2D position2d, Vector2D direction2d, int lp, int reward) {
-        super(id, name, type, position2d, direction2d);
+    public EnemyImpl(int id, String name, String type, String imgPath, Position2D position2d, Vector2D direction2d, int lp, int reward) {
+        super(id, name, type, imgPath, position2d, direction2d);
         this.lp = lp;
         this.reward = reward;
         this.alive = true;

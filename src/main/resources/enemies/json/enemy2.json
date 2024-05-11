@@ -1,0 +1,11 @@
+{
+    "name": "gobby",
+    "type": "medium",
+    "imgPath": "src/main/resources/enemies/img/gobby_move.gif",
+    "direction2d": {
+        "x": 2,
+        "y": 0
+      },
+    "lp": 20,
+    "reward": 20
+}

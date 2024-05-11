@@ -15,16 +15,8 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements Mo
     @JsonProperty("direction2d")
     protected Vector2D direction2d; 
 
-    /**
-     * General abstact entity's constructor.
-     * @param id
-     * @param name
-     * @param type
-     * @param position2d
-     * @param direction2d
-     */
-    public AbstractMovableEntity(int id, String name, String type, Position2D position2d, Vector2D direction2d) {
-        super(id, name, type);
+    public AbstractMovableEntity(int id, String name, String type, String imgPath, Position2D position2d, Vector2D direction2d) {
+        super(id, name, type, imgPath);
         this.position2d = position2d;
         this.direction2d = direction2d;
     }

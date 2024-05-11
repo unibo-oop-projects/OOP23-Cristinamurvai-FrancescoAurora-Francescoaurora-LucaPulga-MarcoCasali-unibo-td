@@ -43,6 +43,11 @@ public class DefenseManagerImpl implements DefenseManager {
     }
 
     @Override
+    public int getNumberOfTowers(){
+        return this.towers.size();
+    }
+
+    @Override
     public void activateAllTowers(List<Tower> towers) {
         stopAllTowers(); // Ferma tutti i thread delle torri
         executorService = Executors.newCachedThreadPool(); // Crea un nuovo pool di thread

@@ -46,16 +46,12 @@ public interface Tower extends MovableEntity {
     public Optional<Set<Enemy>> target(Set<Enemy> enemies);
 
     public void attack(Set<Enemy> enemies);
-
-    /**
-     * The tower target selection strategy.
-     * @return the tower target selection strategy.
-     */
+    
     TargetSelectionStrategy getTargetSelectionStrategy();
     
-    /**
-     * The tower attack strategy.
-     * @return the tower attack strategy.
-     */
     AttackStrategy getAttackStrategy();
+
+    void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy);
+    
+    void setAttackStrategy(AttackStrategy attackStrategy);
 }

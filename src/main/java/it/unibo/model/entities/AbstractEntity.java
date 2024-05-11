@@ -15,17 +15,15 @@ public abstract class AbstractEntity implements Entity {
 
     @JsonProperty("type")
     protected final String type;
+    
+    @JsonProperty("imgPath")
+    protected final String imgPath;
 
-    /**
-     * General abstact entity's constructor.
-     * @param id
-     * @param name
-     * @param type
-     */
-    public AbstractEntity(final int id, final String name, final String type) {
+    public AbstractEntity(final int id, final String name, final String type, final String imgPath) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type); 
+        this.imgPath = Objects.requireNonNull(imgPath); 
     }
             
     /**
@@ -50,5 +48,13 @@ public abstract class AbstractEntity implements Entity {
      */
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Entity path image.
+     * @return Entity path image.
+     */
+    public String getPath() {
+        return this.imgPath;
     }
 }

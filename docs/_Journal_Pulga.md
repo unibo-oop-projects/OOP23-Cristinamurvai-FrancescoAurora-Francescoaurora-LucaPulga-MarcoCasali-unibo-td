@@ -40,3 +40,10 @@ ALTRO:
 
 Strategy Pattern per attack e target delle torri.
 Lettura json dei nuovi parametri.
+
+---------
+
+## 11/05/2024
+
+Tower custom deserializer done.
+Added imgPath as attribute to all the needed classes.
