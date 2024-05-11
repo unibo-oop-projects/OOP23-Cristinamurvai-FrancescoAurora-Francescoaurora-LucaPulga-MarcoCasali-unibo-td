@@ -16,7 +16,8 @@ public class Position2D {
      * @param y
      */
     @JsonCreator
-    public Position2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
+    public Position2D(@JsonProperty("x") int x, 
+                      @JsonProperty("y") int y) {
         this.x = x;
         this.y = y;
     }

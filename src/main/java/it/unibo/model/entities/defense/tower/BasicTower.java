@@ -9,6 +9,7 @@ import java.util.Optional;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
+import it.unibo.model.entities.defense.weapon.WeaponImpl;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -25,7 +26,7 @@ public class BasicTower extends AbstractTower {
                       @JsonProperty("cost") int cost, 
                       @JsonProperty("level") int level, 
                       @JsonProperty("range") int range, 
-                      @JsonProperty("weapons") Set<Weapon> weapons, 
+                      @JsonProperty("weapons") Set<WeaponImpl> weapons, 
                       @JsonProperty("currentWeapon") Weapon currentWeapon,
                       @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
                       @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy) {

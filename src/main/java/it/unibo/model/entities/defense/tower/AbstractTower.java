@@ -4,6 +4,7 @@ import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 import it.unibo.model.entities.defense.weapon.Weapon;
+import it.unibo.model.entities.defense.weapon.WeaponImpl;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import java.util.Set;
@@ -25,7 +26,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     private int range;
 
     @JsonProperty("weapons")
-    private Set<Weapon> weapons;
+    private Set<WeaponImpl> weapons;
 
     @JsonProperty("currentWeapon")
     private Weapon currentWeapon;
@@ -61,7 +62,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
                         @JsonProperty("cost") int cost, 
                         @JsonProperty("level") int level, 
                         @JsonProperty("range") int range, 
-                        @JsonProperty("weapons") Set<Weapon> weapons, 
+                        @JsonProperty("weapons") Set<WeaponImpl> weapons, 
                         @JsonProperty("currentWeapon") Weapon currentWeapon,
                         @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
                         @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy)  {

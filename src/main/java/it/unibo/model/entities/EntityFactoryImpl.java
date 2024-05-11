@@ -4,9 +4,7 @@ import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.TowerDeserializer;
 import it.unibo.model.utilities.Position2D;
-import it.unibo.model.utilities.Position2DDeserializer;
 import it.unibo.model.utilities.Vector2D;
-import it.unibo.model.utilities.Vector2DDeserializer;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,21 +29,6 @@ public class EntityFactoryImpl implements EntityFactory {
             String jsonString = new String(Files.readAllBytes(Paths.get(filePath)));
             if (jsonString != null) {
                 return (T) objectMapper.readValue(jsonString, entityType);
-                // if (entityType.equals(BulletImpl.class)) {
-                //     return (T) objectMapper.readValue(jsonString, entityType);
-                // } 
-                // else if (entityType.equals(WeaponImpl.class)) {
-                //     return (T) objectMapper.readValue(jsonString, WeaponImpl.class);
-                // } 
-                // else if (entityType.equals(BasicTower.class)) {
-                //     return (T) objectMapper.readValue(jsonString, BasicTower.class);
-                // }
-                // else if (entityType.equals(EnemyImpl.class)) {
-                //     return (T) objectMapper.readValue(jsonString, EnemyImpl.class);
-                // } 
-                // else {
-                //     throw new IllegalArgumentException("Entity type not supported.");
-                // }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,13 +41,11 @@ public class EntityFactoryImpl implements EntityFactory {
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
-        module.addDeserializer(Position2D.class, new Position2DDeserializer());
-        module.addDeserializer(Vector2D.class, new Vector2DDeserializer());
 
         objectMapper.registerModule(module);
         String jsonString = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
         try {
-            BasicTower tower = objectMapper.readValue(jsonString, BasicTower.class);
+            Tower tower = objectMapper.readValue(jsonString, BasicTower.class);
             return tower;
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@
   "id": 1,
   "name": "Tower1",
   "type": "Base",
+  "imgPath": "src/main/resources/towers/img/tower1.jpg",
   "position2d": {
     "x": 10,
     "y": 20

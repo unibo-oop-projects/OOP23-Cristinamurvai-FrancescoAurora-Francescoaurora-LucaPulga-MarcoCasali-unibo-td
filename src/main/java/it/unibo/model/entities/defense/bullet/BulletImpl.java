@@ -1,5 +1,8 @@
 package it.unibo.model.entities.defense.bullet;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
@@ -11,7 +14,17 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
     private int speed;
     private Enemy targetEnemy;
 
-    public BulletImpl(int id, String name, String type, String imgPath, Position2D initialPosition, Vector2D direction2d, int speed, int damage, Enemy enemy) {
+    @JsonCreator
+    public BulletImpl(
+                @JsonProperty("id")int id, 
+                @JsonProperty("name")String name, 
+                @JsonProperty("type")String type, 
+                @JsonProperty("imgPath")String imgPath, 
+                @JsonProperty("initialPosition")Position2D initialPosition, 
+                @JsonProperty("direction2d")Vector2D direction2d, 
+                @JsonProperty("speed")int speed, 
+                @JsonProperty("damage")int damage, 
+                @JsonProperty("enemy")Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
