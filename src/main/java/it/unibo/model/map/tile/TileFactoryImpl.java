@@ -6,11 +6,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.json.JSONObject;
-
 import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.utilities.Position2D;
 
 /**
  * Implementation of a {@link TileFactory}.
@@ -25,16 +22,16 @@ public class TileFactoryImpl implements TileFactory {
      * {@inheritDoc}
      */
     @Override
-    public Tile fromJSONFile(final String fileName, final Position2D position) throws IOException {
+    public Tile fromJSONFile(final String fileName) throws IOException {
         final Path path = Path.of(ClassLoader.getSystemResource(TILE_RESOURCES + fileName).toString());
-        return fromJSON(new String(Files.readAllBytes(path)), position);
+        return fromJSON(new String(Files.readAllBytes(path)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Tile fromJSON(final String jsonString, final Position2D position) {
+    public Tile fromJSON(final String jsonString) {
         final JSONObject source = new JSONObject(jsonString);
 
         //sprite
@@ -43,18 +40,18 @@ public class TileFactoryImpl implements TileFactory {
         final Set<TileFeature> features = source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
         .map(Object::toString).map(TileFeature::valueOf).collect(Collectors.toSet());
 
-        return generic(sprite, position, features);
+        return generic(sprite, features);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Tile fromName(final String name, final Position2D position) throws IOException {
-        return fromJSONFile(name + JSON_EXTENSION, position);
+    public Tile fromName(final String name) throws IOException {
+        return fromJSONFile(name + JSON_EXTENSION);
     }
 
-    private Tile generic(final String sprite, final Position2D position, final Set<TileFeature> features) {
+    private Tile generic(final String sprite, final Set<TileFeature> features) {
         return new Tile() {
             private final String spriteLocation = sprite;
             private Optional<Tower> tower = Optional.empty();
