@@ -37,7 +37,7 @@ public class GameMapImpl implements GameMap {
      */
     @Override
     public Stream<Tile> getDefenseTiles() {
-        return getTiles().filter(tile -> tile.canBuild());
+        return getTiles().filter(Tile::canBuild);
     }
 
     /**
