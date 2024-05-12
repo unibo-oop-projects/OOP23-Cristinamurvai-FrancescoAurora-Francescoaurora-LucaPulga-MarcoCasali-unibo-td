@@ -6,3 +6,7 @@
 - Refactored Tile into unique interface using tile features
 - Refactored and finished testable implementation of GameMap
 - Started GameEngine interface
+
+## 12/05/2024
+- Created TileFactory interface and implementation
+- Started Tile tests
