@@ -10,6 +10,16 @@ import it.unibo.model.utilities.Vector2D;
  */
 public interface GameMap {
     /**
+     * @return the number of rows in the grid
+     */
+    int getRows();
+
+    /**
+     * @return the number of columns in the grid
+     */
+    int getColumns();
+
+    /**
      * @return A {@link Stream} of the map's {@link Tile}s
      */
     Stream<Tile> getTiles();
