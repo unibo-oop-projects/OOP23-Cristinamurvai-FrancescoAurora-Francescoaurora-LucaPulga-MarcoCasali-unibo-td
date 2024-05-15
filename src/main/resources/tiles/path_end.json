@@ -1,0 +1,4 @@
+{
+    "sprite": "stone.png",
+    "features": ["PATH_END"]
+}
