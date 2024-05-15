@@ -1,6 +1,7 @@
 package it.unibo.model.map.tile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -23,7 +24,13 @@ public class TileFactoryImpl implements TileFactory {
      */
     @Override
     public Tile fromJSONFile(final String fileName) throws IOException {
-        final Path path = Path.of(ClassLoader.getSystemResource(TILE_RESOURCES + fileName).toString());
+        Path path = null;
+        try {
+            path = Path.of(ClassLoader.getSystemResource(TILE_RESOURCES + fileName).toURI());
+        } catch (URISyntaxException e) {
+            // TODO: handle exception
+        }
+        
         return fromJSON(new String(Files.readAllBytes(path)));
     }
 

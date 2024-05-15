@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import it.unibo.model.map.tile.Tile;
@@ -54,7 +53,13 @@ public class GameMapFactoryImpl implements GameMapFactory {
      */
     @Override
     public GameMap fromJSONFile(final String fileName) throws IOException {
-        final Path path = Path.of(ClassLoader.getSystemResource(MAP_RESOURCES + fileName).toString());
+        Path path = null; 
+        try {
+            path = Path.of(ClassLoader.getSystemResource(MAP_RESOURCES + fileName).toURI());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
         return fromJSON(new String(Files.readAllBytes(path)));
     }
 
