@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import it.unibo.model.map.tile.Tile;
+import it.unibo.model.map.tile.TileFactory;
+import it.unibo.model.map.tile.TileFactoryImpl;
 import it.unibo.model.map.tile.TileFeature;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -19,12 +23,14 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_ROWS_KEY = "rows";
     private static final String JSON_COLUMNS_KEY = "columns";
     private static final String JSON_TILES_KEY = "tiles";
+    private static final String JSON_TILE_NAME_KEY = "tile";
+    private static final String JSON_TILE_POSITIONS_KEY = "positions";
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSON(String source) {
+    public GameMap fromJSON(String source) throws IOException {
         final JSONObject json = new JSONObject(source);
         final Map<Position2D,Tile> tiles = new HashMap<>();
 
@@ -33,7 +39,9 @@ public class GameMapFactoryImpl implements GameMapFactory {
         //columns
         final int columns = json.getInt(JSON_COLUMNS_KEY);
         //tiles
-
+        for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
+            tiles.putAll(unpackSet((JSONObject)tileSet, columns));
+        }
 
         return generic(rows,columns, tiles);
     }
@@ -108,5 +116,23 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 return new Position2D((int) (position.x() * this.columns), (int) (position.y() * this.rows));
             }
         };
+    }
+
+    private Map<Position2D,Tile> unpackSet(JSONObject json, int columns) throws IOException {
+        final Map<Position2D,Tile> map = new HashMap<>();
+        final TileFactory tileFactory = new TileFactoryImpl();
+        final String tileName = json.getString(JSON_TILE_NAME_KEY);
+        final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
+
+        for(int i = 0; i < posArray.length(); i++) {
+            map.put(indexToPos2D(posArray.getInt(i), columns),
+             tileFactory.fromName(tileName));
+        }
+
+        return map;
+    }
+
+    private Position2D indexToPos2D(int i, int columns) {
+        return new Position2D(i % columns, i / columns);
     }
 }
