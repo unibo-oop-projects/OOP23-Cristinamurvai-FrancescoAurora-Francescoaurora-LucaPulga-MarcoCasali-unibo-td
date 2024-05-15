@@ -1,9 +1,9 @@
 package it.unibo.model.map.tile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,15 +23,17 @@ public class TileFactoryImpl implements TileFactory {
      * {@inheritDoc}
      */
     @Override
-    public Tile fromJSONFile(final String fileName) throws IOException {
-        Path path = null;
-        try {
-            path = Path.of(ClassLoader.getSystemResource(TILE_RESOURCES + fileName).toURI());
-        } catch (URISyntaxException e) {
-            // TODO: handle exception
+    public Tile fromJSONFile(final URL url) throws IOException {
+        String fileContent = null;
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(ClassLoader.getSystemResourceAsStream(TILE_RESOURCES + url.toString())))) {
+            fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         
-        return fromJSON(new String(Files.readAllBytes(path)));
+        return fromJSON(fileContent);
     }
 
     /**
@@ -40,9 +42,15 @@ public class TileFactoryImpl implements TileFactory {
     @Override
     public Tile fromJSON(final String jsonString) {
         final JSONObject source = new JSONObject(jsonString);
+        URL sprite = null;
 
         //sprite
-        final String sprite = source.getString(JSON_SPRITE_KEY);
+        try {
+            sprite = new URL(TILE_RESOURCES + source.getString(JSON_SPRITE_KEY));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+        }
         //features
         final Set<TileFeature> features = source.optJSONArray(JSON_FEATURES_KEY) == null
         ? Set.of() : source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
@@ -56,12 +64,12 @@ public class TileFactoryImpl implements TileFactory {
      */
     @Override
     public Tile fromName(final String name) throws IOException {
-        return fromJSONFile(name + JSON_EXTENSION);
+        return fromJSONFile(new URL(name + JSON_EXTENSION));
     }
 
-    private Tile generic(final String sprite, final Set<TileFeature> features) {
+    private Tile generic(final URL sprite, final Set<TileFeature> features) {
         return new Tile() {
-            private final String spriteLocation = sprite;
+            private final URL spriteLocation = sprite;
             private Optional<Tower> tower = Optional.empty();
             private final Set<TileFeature> tileFeatures = features;
 
@@ -71,7 +79,7 @@ public class TileFactoryImpl implements TileFactory {
             }
 
             @Override
-            public String getSprite() {
+            public URL getSprite() {
                 return this.spriteLocation;
             }
 

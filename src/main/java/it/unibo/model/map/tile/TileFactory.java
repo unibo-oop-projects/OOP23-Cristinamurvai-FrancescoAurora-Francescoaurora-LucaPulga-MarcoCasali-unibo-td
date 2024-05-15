@@ -1,6 +1,7 @@
 package it.unibo.model.map.tile;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Interface for a factory of {@link Tile}s.
@@ -11,7 +12,7 @@ public interface TileFactory {
      * @return A {@link Tile} created from a JSON file
      * @throws IOException if an I/O error occurs
      */
-    Tile fromJSONFile(String fileName) throws IOException;
+    Tile fromJSONFile(URL fileName) throws IOException;
 
     /**
      * @param jsonString The source string in JSON format
