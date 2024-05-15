@@ -7,6 +7,8 @@ import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 import it.unibo.view.GuiStart;
+import it.unibo.view.MapViewTest;
+
 import java.io.IOException;
 
 /**
@@ -31,5 +33,6 @@ public final class GameLauncher {
         enemiesManagerImpl.parseEnemies();
 
         new GuiStart();
+        new MapViewTest();
     }
 }
