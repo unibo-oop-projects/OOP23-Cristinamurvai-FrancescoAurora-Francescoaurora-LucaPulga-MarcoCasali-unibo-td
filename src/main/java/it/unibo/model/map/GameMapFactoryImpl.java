@@ -35,7 +35,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
     @Override
     public GameMap fromJSON(final String source) throws IOException {
         final JSONObject json = new JSONObject(source);
-        final Map<Position2D, Tile> tiles = new HashMap<>();
+        final Map<Integer, Tile> tiles = new HashMap<>();
 
         //rows
         final int rows = json.getInt(JSON_ROWS_KEY);
@@ -74,9 +74,9 @@ public class GameMapFactoryImpl implements GameMapFactory {
         return fromJSONFile(MAP_RESOURCES + name + JSON_EXTENSION);
     }
 
-    private GameMap generic(final int nRows, final int nColumns, final Map<Position2D, Tile> tilesMap) {
+    private GameMap generic(final int nRows, final int nColumns, final Map<Integer, Tile> tilesMap) {
         return new GameMap() {
-            private final Map<Position2D, Tile> tiles = tilesMap;
+            private final Map<Integer, Tile> tiles = tilesMap;
             private final int rows = nRows;
             private final int columns = nColumns;
 
@@ -92,7 +92,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
 
             @Override
             public Stream<Tile> getTiles() {
-                return this.tiles.values().stream();
+                return this.tiles.entrySet().stream().sorted(Map.Entry.comparingByKey())
+                    .map(Map.Entry::getValue);
             }
 
             @Override
@@ -102,14 +103,14 @@ public class GameMapFactoryImpl implements GameMapFactory {
 
             @Override
             public Position2D getSpawnPosition() {
-                return this.tiles.entrySet().stream()
+                return indexToPos2D(this.tiles.entrySet().stream()
                     .filter(entry -> entry.getValue().getTileFeatures()
-                    .contains(TileFeature.PATH_START)).findFirst().get().getKey();
+                    .contains(TileFeature.PATH_START)).findFirst().get().getKey());
             }
 
             @Override
             public Vector2D getPathDirection(final Position2D position) {
-                final Set<TileFeature> directions = this.tiles.get(edge(position)).getTileFeatures();
+                final Set<TileFeature> directions = this.tiles.get(flatten(position)).getTileFeatures();
                 if (directions.contains(TileFeature.MOVE_DOWN)) {
                     return new Vector2D(0, -1);
                 } else if (directions.contains(TileFeature.MOVE_UP)) {
@@ -123,27 +124,26 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 }
             }
 
-            private Position2D edge(final Position2D position) {
-                return new Position2D((int) (position.x() * this.columns), (int) (position.y() * this.rows));
+            private int flatten(final Position2D position) {
+                return position.y() * this.columns + position.x();
+            }
+
+            private Position2D indexToPos2D(final int i) {
+                return new Position2D(i % columns, i / this.columns);
             }
         };
     }
 
-    private Map<Position2D, Tile> unpackSet(final JSONObject json, final int columns) throws IOException {
-        final Map<Position2D, Tile> map = new HashMap<>();
+    private Map<Integer, Tile> unpackSet(final JSONObject json, final int columns) throws IOException {
+        final Map<Integer, Tile> map = new HashMap<>();
         final TileFactory tileFactory = new TileFactoryImpl();
         final String tileName = json.getString(JSON_TILE_NAME_KEY);
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
         for (int i = 0; i < posArray.length(); i++) {
-            map.put(indexToPos2D(posArray.getInt(i), columns),
-             tileFactory.fromName(tileName));
+            map.put(posArray.getInt(i), tileFactory.fromName(tileName));
         }
 
         return map;
-    }
-
-    private Position2D indexToPos2D(final int i, final int columns) {
-        return new Position2D(i % columns, i / columns);
     }
 }
