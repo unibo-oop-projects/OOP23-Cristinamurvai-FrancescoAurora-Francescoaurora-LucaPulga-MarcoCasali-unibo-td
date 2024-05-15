@@ -37,8 +37,8 @@ public class TileFactoryImpl implements TileFactory {
         //sprite
         final String sprite = source.getString(JSON_SPRITE_KEY);
         //features
-        final Set<TileFeature> features = source.optJSONArray(JSON_FEATURES_KEY) == null ?
-        Set.of() : source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
+        final Set<TileFeature> features = source.optJSONArray(JSON_FEATURES_KEY) == null
+        ? Set.of() : source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
         .map(Object::toString).map(TileFeature::valueOf).collect(Collectors.toSet());
 
         return generic(sprite, features);

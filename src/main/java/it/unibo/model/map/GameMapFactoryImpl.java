@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Implementation of {@link GameMapFactory}.
+ */
 public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_EXTENSION = ".json";
     private static final String MAP_RESOURCES = "maps/";
@@ -30,9 +33,9 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSON(String source) throws IOException {
+    public GameMap fromJSON(final String source) throws IOException {
         final JSONObject json = new JSONObject(source);
-        final Map<Position2D,Tile> tiles = new HashMap<>();
+        final Map<Position2D, Tile> tiles = new HashMap<>();
 
         //rows
         final int rows = json.getInt(JSON_ROWS_KEY);
@@ -40,17 +43,17 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final int columns = json.getInt(JSON_COLUMNS_KEY);
         //tiles
         for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
-            tiles.putAll(unpackSet((JSONObject)tileSet, columns));
+            tiles.putAll(unpackSet((JSONObject) tileSet, columns));
         }
 
-        return generic(rows,columns, tiles);
+        return generic(rows, columns, tiles);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSONFile(String fileName) throws IOException {
+    public GameMap fromJSONFile(final String fileName) throws IOException {
         final Path path = Path.of(ClassLoader.getSystemResource(MAP_RESOURCES + fileName).toString());
         return fromJSON(new String(Files.readAllBytes(path)));
     }
@@ -59,7 +62,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromName(String name) throws IOException {
+    public GameMap fromName(final String name) throws IOException {
         return fromJSONFile(name + JSON_EXTENSION);
     }
 
@@ -68,7 +71,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
             private final Map<Position2D, Tile> tiles = tilesMap;
             private final int rows = nRows;
             private final int columns = nColumns;
-            
+
             @Override
             public int getRows() {
                 return this.rows;
@@ -118,13 +121,13 @@ public class GameMapFactoryImpl implements GameMapFactory {
         };
     }
 
-    private Map<Position2D,Tile> unpackSet(JSONObject json, int columns) throws IOException {
-        final Map<Position2D,Tile> map = new HashMap<>();
+    private Map<Position2D, Tile> unpackSet(final JSONObject json, final int columns) throws IOException {
+        final Map<Position2D, Tile> map = new HashMap<>();
         final TileFactory tileFactory = new TileFactoryImpl();
         final String tileName = json.getString(JSON_TILE_NAME_KEY);
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
-        for(int i = 0; i < posArray.length(); i++) {
+        for (int i = 0; i < posArray.length(); i++) {
             map.put(indexToPos2D(posArray.getInt(i), columns),
              tileFactory.fromName(tileName));
         }
@@ -132,7 +135,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
         return map;
     }
 
-    private Position2D indexToPos2D(int i, int columns) {
+    private Position2D indexToPos2D(final int i, final int columns) {
         return new Position2D(i % columns, i / columns);
     }
 }
