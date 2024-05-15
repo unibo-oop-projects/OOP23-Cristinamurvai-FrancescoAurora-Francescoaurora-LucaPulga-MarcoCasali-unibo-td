@@ -1,8 +1,10 @@
 package it.unibo.model.map;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,15 +54,17 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSONFile(final String fileName) throws IOException {
-        Path path = null; 
-        try {
-            path = Path.of(ClassLoader.getSystemResource(MAP_RESOURCES + fileName).toURI());
+    public GameMap fromJSONFile(final URL fileName) throws IOException {
+        String fileContent = null;
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(ClassLoader.getSystemResourceAsStream(MAP_RESOURCES + fileName.toString())))) {
+            fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         
-        return fromJSON(new String(Files.readAllBytes(path)));
+        return fromJSON(fileContent);
     }
 
     /**
@@ -68,7 +72,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
      */
     @Override
     public GameMap fromName(final String name) throws IOException {
-        return fromJSONFile(name + JSON_EXTENSION);
+        return fromJSONFile(new URL(name + JSON_EXTENSION));
     }
 
     private GameMap generic(final int nRows, final int nColumns, final Map<Position2D, Tile> tilesMap) {
