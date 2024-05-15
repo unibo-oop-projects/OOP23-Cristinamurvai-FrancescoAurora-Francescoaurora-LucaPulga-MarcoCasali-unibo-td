@@ -3,7 +3,6 @@ package it.unibo.model.map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.json.JSONArray;
@@ -54,14 +53,14 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSONFile(final URL fileName) throws IOException {
+    public GameMap fromJSONFile(final String fileName) throws IOException {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(ClassLoader.getSystemResourceAsStream(MAP_RESOURCES + fileName.toString())))) {
+            new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getMessage());
+            System.err.println("Error when retrieving json file for map : " + fileName.toString());
         }
         
         return fromJSON(fileContent);
@@ -72,7 +71,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
      */
     @Override
     public GameMap fromName(final String name) throws IOException {
-        return fromJSONFile(new URL(name + JSON_EXTENSION));
+        return fromJSONFile(MAP_RESOURCES + name + JSON_EXTENSION);
     }
 
     private GameMap generic(final int nRows, final int nColumns, final Map<Position2D, Tile> tilesMap) {

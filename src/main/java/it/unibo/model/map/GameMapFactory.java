@@ -1,7 +1,6 @@
 package it.unibo.model.map;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Interface for a factory of {@link GameMap}s.
@@ -18,7 +17,7 @@ public interface GameMapFactory {
      * @return A {@link GameMap} created from a JSON file
      * @throws IOException if an I/O error occurs
      */
-    GameMap fromJSONFile(URL fileName) throws IOException;
+    GameMap fromJSONFile(String fileName) throws IOException;
 
     /**
      * @param name The name of the {@link GameMap} as defined

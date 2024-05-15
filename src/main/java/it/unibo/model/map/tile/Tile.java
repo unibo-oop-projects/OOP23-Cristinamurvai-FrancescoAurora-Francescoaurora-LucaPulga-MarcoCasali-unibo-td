@@ -1,6 +1,5 @@
 package it.unibo.model.map.tile;
 
-import java.net.URL;
 import java.util.Set;
 import it.unibo.model.entities.defense.tower.Tower;
 
@@ -16,7 +15,7 @@ public interface Tile {
     /**
      * @return the path of the file representing the {@link Tile}
      */
-    URL getSprite();
+    String getSprite();
 
     /**
      * @return {@code true} if the {@link Tile} is empty and allows
