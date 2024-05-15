@@ -22,6 +22,6 @@ public class TestTileFactory {
     void testTileNormal() {
         final Tile t = factory.fromJSON(JSON_OK);
         assertEquals(t.getTileFeatures(), Set.of(TileFeature.DEFENSE));
-        assertEquals(t.getSprite(), "defense.png");
+        assertEquals(t.getSprite(), "tiles/defense.png");
     }
 }

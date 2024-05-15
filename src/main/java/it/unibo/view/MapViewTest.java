@@ -10,10 +10,16 @@ import it.unibo.model.map.GameMapFactoryImpl;
 import it.unibo.model.map.tile.Tile;
 import java.awt.GridLayout;
 
+/**
+ * Test view of GameMap.
+ */
 public class MapViewTest extends JFrame {
-    private JPanel contentPanel = new JPanel();
+    private final JPanel contentPanel = new JPanel();
     private final GameMapFactory factory = new GameMapFactoryImpl();
 
+    /**
+     * .
+     */
     public MapViewTest() {
         GameMap map = null;
         try {
@@ -24,7 +30,7 @@ public class MapViewTest extends JFrame {
 
         contentPanel.setLayout(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> addTile(t));
-        
+
 
         this.add(contentPanel);
         this.pack();
@@ -32,7 +38,7 @@ public class MapViewTest extends JFrame {
         this.setVisible(true);
     }
 
-    private void addTile(Tile t) {
+    private void addTile(final Tile t) {
         final JLabel cell = new JLabel();
         cell.setIcon(new ImageIcon(ClassLoader.getSystemResource(t.getSprite())));
         this.contentPanel.add(cell);

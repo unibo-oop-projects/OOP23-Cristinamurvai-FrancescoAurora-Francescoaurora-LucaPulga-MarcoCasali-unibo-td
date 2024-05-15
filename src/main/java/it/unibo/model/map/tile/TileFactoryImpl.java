@@ -31,7 +31,7 @@ public class TileFactoryImpl implements TileFactory {
             e.printStackTrace();
             System.err.println(e.getMessage());
         }
-        
+
         return fromJSON(fileContent);
     }
 

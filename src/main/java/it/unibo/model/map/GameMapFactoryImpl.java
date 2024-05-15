@@ -62,7 +62,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
             e.printStackTrace();
             System.err.println("Error when retrieving json file for map : " + fileName.toString());
         }
-        
+
         return fromJSON(fileContent);
     }
 

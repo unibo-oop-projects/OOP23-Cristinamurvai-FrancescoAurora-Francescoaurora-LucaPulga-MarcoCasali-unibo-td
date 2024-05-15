@@ -16,8 +16,8 @@ public class Vector2D {
      * @param y
      */
     @JsonCreator
-    public Vector2D(@JsonProperty("x") int x, 
-                    @JsonProperty("y") int y) {
+    public Vector2D(@JsonProperty("x") final int x, 
+                    @JsonProperty("y") final int y) {
         this.x = x;
         this.y = y;
     }

@@ -11,13 +11,13 @@ public class Position2D {
     private int y;
 
     /**
-     * Posiition's coordinates.
+     * Position's coordinates.
      * @param x
      * @param y
      */
     @JsonCreator
-    public Position2D(@JsonProperty("x") int x, 
-                      @JsonProperty("y") int y) {
+    public Position2D(@JsonProperty("x") final int x, 
+                      @JsonProperty("y") final int y) {
         this.x = x;
         this.y = y;
     }

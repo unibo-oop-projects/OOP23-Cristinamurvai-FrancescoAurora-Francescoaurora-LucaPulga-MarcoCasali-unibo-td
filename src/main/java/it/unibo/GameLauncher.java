@@ -22,7 +22,7 @@ public final class GameLauncher {
      * @param args Main topics
      */
     public static void main(final String... args) throws IOException {
-        
+
         String jsonFilePath = "src/main/resources/towers/json/tower2.json";
         DefenseManager defenseManager = new DefenseManagerImpl();
         EntityFactory entityFactory = new EntityFactoryImpl();
