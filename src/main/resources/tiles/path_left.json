@@ -1,0 +1,4 @@
+{
+    "sprite": "stone.png",
+    "features": ["MOVE_LEFT"]
+}
