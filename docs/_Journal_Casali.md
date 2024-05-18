@@ -15,4 +15,4 @@
 - finished Tile and GameMap factories
 - started test area
 - added a couple resources for tiles and maps
-- created simple test view for gamemap
+- created simple test view for GameMap

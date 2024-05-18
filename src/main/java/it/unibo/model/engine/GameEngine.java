@@ -1,5 +1,6 @@
 package it.unibo.model.engine;
 
+import it.unibo.controller.GameController;
 import it.unibo.model.entities.Player;
 import it.unibo.model.map.GameMap;
 
@@ -17,11 +18,6 @@ public interface GameEngine {
      */
     void togglePause();
     /**
-     * @return {@code True} if the game is running,
-     * {@code False} otherwise
-     */
-    boolean isRunning();
-    /**
      * @param map The {@link GameMap} to play
      */
     void setGameMap(GameMap map);
@@ -33,4 +29,9 @@ public interface GameEngine {
      * @return The {@link Player} instance of the game
      */
     Player getPlayer();
+    /**
+     * @param controller A {@link GameController} that
+     * will receive updates from the model
+     */
+    void registerController(GameController controller);
 }
