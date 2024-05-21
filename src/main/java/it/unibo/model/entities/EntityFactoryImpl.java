@@ -26,7 +26,7 @@ public class EntityFactoryImpl implements EntityFactory {
     public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(filePath)));
+            String jsonString = new String(Files.readAllBytes(Paths.get(filePath))); // TODO: UTILIZZARE INPUT STREAM COME IN TILEFACTORY_IMPL
             if (jsonString != null) {
                 return (T) objectMapper.readValue(jsonString, entityType);
             }
@@ -43,7 +43,7 @@ public class EntityFactoryImpl implements EntityFactory {
         module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
 
         objectMapper.registerModule(module);
-        String jsonString = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
+        String jsonString = new String(Files.readAllBytes(Paths.get(jsonFilePath))); // TODO: UTILIZZARE INPUT STREAM COME IN TILEFACTORY_IMPL
         try {
             Tower tower = objectMapper.readValue(jsonString, BasicTower.class);
             return tower;
