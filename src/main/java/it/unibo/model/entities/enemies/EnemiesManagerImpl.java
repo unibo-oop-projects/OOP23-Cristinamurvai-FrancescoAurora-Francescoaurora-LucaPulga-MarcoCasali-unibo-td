@@ -28,7 +28,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
 	public void parseEnemies() {
 		try {
 			//trasforma il file path in una stringa da cui posso leggere il file che farà da input alla libreria json
-			String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+			String content = new String(Files.readAllBytes(Paths.get(FILE_PATH))); // TODO: UTILIZZARE INPUT STREAM COME IN TILEFACTORY_IMPL
 			JSONObject jsonObject = new JSONObject(content);
 			JSONArray enemyTypesArray = jsonObject.getJSONArray("enemies");
 			

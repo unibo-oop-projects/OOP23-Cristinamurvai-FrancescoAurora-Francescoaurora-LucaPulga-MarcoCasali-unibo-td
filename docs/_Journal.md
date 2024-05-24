@@ -21,6 +21,34 @@ GameEngine
 
 Map controller
 
-?? Enemy ??
+---------
 
+## 20/05/2024
+### TODO
+
+Prossimo step:
+	mettere torri sulla mappa (capire posizionamento):
+		lettura json delle towers
+			return List<Towers>
+			visualizzo le tower passate dal model
+	
+	costruzione torre:
+		click sulla torre
+		click sulla cella di posizionamento
+			se la cella è disponibile [metodo per evidenziare le celle disponibili]
+				visualizzo l'immagine della torre selezionata nella cella selezionata.		
+		decrease money
+	
+	disattivare torri che hanno costo maggiore dei money attualmente posseduti
+	
+	UTILIZZARE INPUT STREAM COME IN TILEFACTORY_IMPL
+	
+	[WAIT]
+	gestione thread/engine:
+		gestione con engine
+		no gestione thread con towers
+		gestione thread bullets
+		
+	tests
+	
 ---------
