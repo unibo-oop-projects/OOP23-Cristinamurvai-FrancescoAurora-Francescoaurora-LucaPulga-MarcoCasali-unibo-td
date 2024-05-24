@@ -47,3 +47,11 @@ Lettura json dei nuovi parametri.
 
 Tower custom deserializer done.
 Added imgPath as attribute to all the needed classes.
+
+---------
+
+## 24/05/2024
+
+Tower's panel.
+Tooltip for stats.
+Tower's interaction with map.

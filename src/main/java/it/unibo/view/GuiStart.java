@@ -24,7 +24,7 @@ public class GuiStart extends JFrame {
      */
     public GuiStart() {
         // Set the title of the frame
-        super("Proggetto oop - Sostituire con nome gioco");
+        super("Unibo TD");
 
         // Set the close operation of the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

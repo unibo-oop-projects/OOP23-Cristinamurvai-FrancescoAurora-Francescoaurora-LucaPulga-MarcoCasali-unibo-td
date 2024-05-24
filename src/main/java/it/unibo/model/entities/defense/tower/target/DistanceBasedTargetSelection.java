@@ -15,7 +15,7 @@ public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
     public Optional<Set<Enemy>> selectTarget(Tower tower, Set<Enemy> enemies) {
         Set<Enemy> targets = new HashSet<>();
         for (Enemy enemy : enemies) {
-            double distance = calculateDistance(tower.getPosition(), enemy.getPosition());
+            double distance = this.calculateDistance(tower.getPosition(), enemy.getPosition());
             if (distance <= tower.getRange()) {
                 targets.add(enemy);
             }

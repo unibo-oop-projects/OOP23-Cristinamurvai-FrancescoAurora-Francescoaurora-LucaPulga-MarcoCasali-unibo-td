@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.EnemiesManager;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class DefenseManagerImpl implements DefenseManager {
     private ExecutorService executorService;
     private Set<Tower> towers = new HashSet<>();
     private EnemiesManager enemiesManager;
+    private EntityFactory entityFactory;
 
     public DefenseManagerImpl() {
         this.towerThreads = new ArrayList<>();
