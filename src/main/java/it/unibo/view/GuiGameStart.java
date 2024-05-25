@@ -1,6 +1,11 @@
 package it.unibo.view;
 
 import javax.swing.*;
+
+import it.unibo.model.map.GameMap;
+import it.unibo.model.map.GameMapFactory;
+import it.unibo.model.map.GameMapFactoryImpl;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,31 +40,29 @@ public class GuiGameStart extends JFrame {
         oldGui.add(labelPanel, BorderLayout.NORTH);
 
         // Create and add the game map panel
-        JPanel mapPanel = new JPanel(new GridLayout(10, 10)); // Example grid layout for the map
-        JButton[][] mapButtons = new JButton[10][10];
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                JButton mapButton = new JButton(i + "" + j);
-                mapButton.setPreferredSize(new Dimension(40, 40)); // Set preferred size for map buttons
-                mapButton.setBackground(Color.LIGHT_GRAY);
-                mapButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (selectedTowerName != null) {
-                            ImageIcon icon = new ImageIcon(getClass().getResource(selectedTowerImagePath));
-                            Image img = icon.getImage();
-                            Image resizedImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                            mapButton.setIcon(new ImageIcon(resizedImg));
-                            mapButton.setText("");
-                            System.out.println("Placed " + selectedTowerName + " at cell " + mapButton.getText());
-                            selectedTowerName = null; // Clear selection after placing the tower
-                            selectedTowerImagePath = null;
-                        }
+        final GameMapFactory mapFactory = new GameMapFactoryImpl();
+        final GameMap map = mapFactory.fromName("test");
+        JPanel mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns())); // Example grid layout for the map
+        map.getTiles().forEach(t -> {
+            final JButton cell = new JButton();
+            cell.setIcon(new ImageIcon(ClassLoader.getSystemResource(t.getSprite())));
+            cell.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (selectedTowerName != null) {
+                        ImageIcon icon = new ImageIcon(getClass().getResource(selectedTowerImagePath));
+                        Image img = icon.getImage();
+                        Image resizedImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                        cell.setIcon(new ImageIcon(resizedImg));
+                        cell.setText("");
+                        System.out.println("Placed " + selectedTowerName + " at cell " + cell.getText());
+                        selectedTowerName = null; // Clear selection after placing the tower
+                        selectedTowerImagePath = null;
                     }
-                });
-                mapButtons[i][j] = mapButton;
-                mapPanel.add(mapButton);
-            }
-        }
+                }
+            });
+            mapPanel.add(cell);
+        });
+                
         oldGui.add(mapPanel, BorderLayout.CENTER);
 
         // Create and add the tower panel with two columns
