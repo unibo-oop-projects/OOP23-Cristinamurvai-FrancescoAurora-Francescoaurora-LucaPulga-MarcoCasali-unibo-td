@@ -1,13 +1,13 @@
 package it.unibo.controller;
 
 import java.util.Map;
-import java.util.Set;
-import it.unibo.model.entities.Entity;
+import it.unibo.model.core.GameObserver;
+import it.unibo.view.GameView;
 
 /**
  * Represents a controller following the MVC pattern.
  */
-public interface GameController {
+public interface GameController extends GameObserver {
     /**
      * Starts the game, requires a map
      * to be set through {@link #setGameMap}
@@ -28,8 +28,8 @@ public interface GameController {
      */
     void setGameMap(String name);
     /**
-     * @return The set of entities currently
-     * present
+     * Registers a view.
+     * @param view The {@link GameView}
      */
-    Set<Entity> getEntities();
+    void registerView(GameView view);
 }
