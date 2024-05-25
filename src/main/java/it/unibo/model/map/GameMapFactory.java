@@ -10,7 +10,7 @@ public interface GameMapFactory {
      * @param source JSON source string
      * @return A {@link GameMap} created from a JSON string
      */
-    GameMap fromJSON(String source) throws IOException;
+    GameMap fromJSON(String source);
 
     /**
      * @param fileName The filename relative to resources
@@ -23,7 +23,6 @@ public interface GameMapFactory {
      * @param name The name of the {@link GameMap} as defined
      * in the resources
      * @return A {@link GameMap} created from the available resources
-     * @throws IOException if an I/O error occurs
      */
-    GameMap fromName(String name) throws IOException;
+    GameMap fromName(String name);
 }

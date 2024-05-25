@@ -33,15 +33,12 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSON(final String source) throws IOException {
+    public GameMap fromJSON(final String source) {
         final JSONObject json = new JSONObject(source);
         final Map<Integer, Tile> tiles = new HashMap<>();
 
-        //rows
         final int rows = json.getInt(JSON_ROWS_KEY);
-        //columns
         final int columns = json.getInt(JSON_COLUMNS_KEY);
-        //tiles
         for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
             tiles.putAll(unpackSet((JSONObject) tileSet, columns));
         }
@@ -53,14 +50,15 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromJSONFile(final String fileName) throws IOException {
+    public GameMap fromJSONFile(final String fileName) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error when retrieving json file for map : " + fileName.toString());
+            System.err.println(e.getMessage());
+            System.err.println("Error when retrieving json file for map : " + fileName);
         }
 
         return fromJSON(fileContent);
@@ -70,7 +68,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
      * {@inheritDoc}
      */
     @Override
-    public GameMap fromName(final String name) throws IOException {
+    public GameMap fromName(final String name) {
         return fromJSONFile(MAP_RESOURCES + name + JSON_EXTENSION);
     }
 
@@ -134,7 +132,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
         };
     }
 
-    private Map<Integer, Tile> unpackSet(final JSONObject json, final int columns) throws IOException {
+    private Map<Integer, Tile> unpackSet(final JSONObject json, final int columns) {
         final Map<Integer, Tile> map = new HashMap<>();
         final TileFactory tileFactory = new TileFactoryImpl();
         final String tileName = json.getString(JSON_TILE_NAME_KEY);
