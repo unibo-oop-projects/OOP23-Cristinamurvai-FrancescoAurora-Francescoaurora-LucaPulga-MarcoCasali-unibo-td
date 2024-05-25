@@ -22,7 +22,6 @@ public interface TileFactory {
     /**
      * @param name The name of the {@link Tile} as defined in the resources
      * @return A {@link Tile} created from the available resources
-     * @throws IOException if an I/O error occurs
      */
-    Tile fromName(String name) throws IOException;
+    Tile fromName(String name);
 }

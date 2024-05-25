@@ -22,16 +22,16 @@ public class TileFactoryImpl implements TileFactory {
      * {@inheritDoc}
      */
     @Override
-    public Tile fromJSONFile(final String file) throws IOException {
+    public Tile fromJSONFile(final String file) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
+            System.err.println("Error when retrieving json file for tile: " + file);
         }
-
         return fromJSON(fileContent);
     }
 
@@ -56,7 +56,7 @@ public class TileFactoryImpl implements TileFactory {
      * {@inheritDoc}
      */
     @Override
-    public Tile fromName(final String name) throws IOException {
+    public Tile fromName(final String name) {
         return fromJSONFile(TILE_RESOURCES + name + JSON_EXTENSION);
     }
 
