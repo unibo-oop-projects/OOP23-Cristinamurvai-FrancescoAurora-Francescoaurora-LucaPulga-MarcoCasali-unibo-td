@@ -14,14 +14,14 @@ import it.unibo.view.GameView;
  * Implementation of {@link GameController}.
  */
 public class GameControllerImpl implements GameController {
-    private GameState gameState = null;
+    //private GameState gameState = null;
     private final GameMapFactory mapFactory = new GameMapFactoryImpl();
     private final GameEngine engine = new GameEngineImpl();
     private final Set<GameView> views = new HashSet<>();
 
     @Override
     public void update(GameState gameState) {
-        this.gameState = gameState;
+        //this.gameState = gameState;
         this.views.forEach(v -> v.update(gameState));
     }
 

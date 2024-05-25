@@ -1,13 +1,6 @@
 package it.unibo;
 
-import it.unibo.model.entities.EntityFactory;
-import it.unibo.model.entities.EntityFactoryImpl;
-import it.unibo.model.entities.defense.manager.DefenseManager;
-import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
-import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 import it.unibo.view.GuiStart;
-import it.unibo.view.MapViewTest;
 
 import java.io.IOException;
 

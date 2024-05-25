@@ -16,3 +16,9 @@
 - started test area
 - added a couple resources for tiles and maps
 - created simple test view for GameMap
+
+## 25/05/2024
+- created GameEngine interface and implementation, GameState
+- created GameController interface and implementation
+- improved map loading from json
+- created GameView and GameObserver generic interface
