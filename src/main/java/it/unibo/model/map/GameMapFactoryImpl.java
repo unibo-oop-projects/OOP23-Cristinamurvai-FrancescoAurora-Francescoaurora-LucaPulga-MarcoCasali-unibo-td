@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +29,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_TILES_KEY = "tiles";
     private static final String JSON_TILE_NAME_KEY = "tile";
     private static final String JSON_TILE_POSITIONS_KEY = "positions";
+    private static final String FILLER_TILE = "neutral";
+    private static final String RANGE_SEPARATOR = "-";
 
     /**
      * {@inheritDoc}
@@ -36,11 +39,22 @@ public class GameMapFactoryImpl implements GameMapFactory {
     public GameMap fromJSON(final String source) {
         final JSONObject json = new JSONObject(source);
         final Map<Integer, Tile> tiles = new HashMap<>();
+        final TileFactory tileFactory = new TileFactoryImpl();
 
         final int rows = json.getInt(JSON_ROWS_KEY);
         final int columns = json.getInt(JSON_COLUMNS_KEY);
         for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
             tiles.putAll(unpackSet((JSONObject) tileSet, columns));
+        }
+        
+        /**
+         * Filling unspecified tiles with neutral tiles to make
+         * json file simpler.
+        */
+        for (int i = 0; i < rows * columns; i++) {
+            if(!tiles.containsKey(i)) {
+                tiles.put(i, tileFactory.fromName(FILLER_TILE));
+            }
         }
 
         return generic(rows, columns, tiles);
@@ -139,7 +153,16 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
         for (int i = 0; i < posArray.length(); i++) {
-            map.put(posArray.getInt(i), tileFactory.fromName(tileName));
+            String tmp = posArray.getString(i);
+            //horizontal range of tiles ex 1-20
+            if (tmp.contains(RANGE_SEPARATOR)) {
+                IntStream.rangeClosed(Integer.parseInt(tmp.split(RANGE_SEPARATOR)[0]),
+                Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
+                .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
+                //TODO vertical range
+            } else { //singular tile
+                map.put(posArray.getInt(i), tileFactory.fromName(tileName));
+            }  
         }
 
         return map;
