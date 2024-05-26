@@ -2,6 +2,7 @@ package it.unibo.controller;
 
 import java.util.Map;
 import it.unibo.model.core.GameObserver;
+import it.unibo.model.map.GameMap;
 import it.unibo.view.GameView;
 
 /**
@@ -25,8 +26,9 @@ public interface GameController extends GameObserver {
     /**
      * @param name The name of the map to play,
      * chosen from the list in {@link #getAvailableMaps}
+     * @return The instantiated {@link GameMap}
      */
-    void setGameMap(String name);
+    GameMap setGameMap(String name);
     /**
      * Registers a view.
      * @param view The {@link GameView}

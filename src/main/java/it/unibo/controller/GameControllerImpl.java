@@ -6,6 +6,7 @@ import java.util.Set;
 import it.unibo.model.core.GameEngine;
 import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
+import it.unibo.model.map.GameMap;
 import it.unibo.model.map.GameMapFactory;
 import it.unibo.model.map.GameMapFactoryImpl;
 import it.unibo.view.GameView;
@@ -18,6 +19,13 @@ public class GameControllerImpl implements GameController {
     private final GameMapFactory mapFactory = new GameMapFactoryImpl();
     private final GameEngine engine = new GameEngineImpl();
     private final Set<GameView> views = new HashSet<>();
+
+    /**
+     * Constructor.
+     */
+    public GameControllerImpl() {
+        this.engine.registerObserver(this);
+    }
 
     @Override
     public void update(GameState gameState) {
@@ -42,8 +50,10 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void setGameMap(String name) {
-        this.engine.setGameMap(mapFactory.fromName(name));
+    public GameMap setGameMap(String name) {
+        final GameMap map = mapFactory.fromName(name);
+        this.engine.setGameMap(map);
+        return map;
     }
 
     @Override
