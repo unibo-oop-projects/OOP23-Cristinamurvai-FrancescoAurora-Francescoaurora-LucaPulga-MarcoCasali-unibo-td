@@ -5,10 +5,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -118,9 +116,6 @@ public class SelectMapGui extends JFrame {
      * @param mapSelected Number of Map to Selected
      */
     public void changeGui(final int mapSelected) {
-        // Remove the "Map"
-        guiMapSelected.removeAll();
-        //Change Gui for start game
-        new GuiGameStart(guiMapSelected, mapSelected);
+        new GuiGameStart("test");
     }
 }

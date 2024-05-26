@@ -1,25 +1,53 @@
 package it.unibo.view;
 
-import javax.swing.*;
-
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import it.unibo.controller.GameController;
+import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.core.GameState;
 import it.unibo.model.map.GameMap;
-import it.unibo.model.map.GameMapFactory;
-import it.unibo.model.map.GameMapFactoryImpl;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Loading Game Screen.
  */
-public class GuiGameStart extends JFrame {
-
+public class GuiGameStart extends JFrame implements GameView {
+    private static final int ICON_DEFAULT_SIZE = 20;
     private String selectedTowerName = null;
     private String selectedTowerImagePath = null;
+    private JPanel contentPanel = new JPanel();
+    private JPanel mapPanel;
+    private Map<JButton, String> tiles = new HashMap<>();
+    private GameController controller = new GameControllerImpl();
 
-    public GuiGameStart(final JPanel oldGui, final int mapToLoad) {
-        oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
+    public GuiGameStart(final String mapName) {
+        final GameMap map = controller.setGameMap(mapName);
+        contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
         JPanel labelPanel = new JPanel(new GridLayout(1, 3)); // Layout with one row and three columns
@@ -36,56 +64,109 @@ public class GuiGameStart extends JFrame {
         JLabel labelMoney = new JLabel("Soldi disponibili");
         labelPanel.add(labelMoney);
 
-        // Add the label panel to the main layout
-        oldGui.add(labelPanel, BorderLayout.NORTH);
-
-        // Create and add the game map panel
-        final GameMapFactory mapFactory = new GameMapFactoryImpl();
-        final GameMap map = mapFactory.fromName("test");
-        JPanel mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns())); // Example grid layout for the map
-        map.getTiles().forEach(t -> {
-            final JButton cell = new JButton();
-            cell.setIcon(new ImageIcon(ClassLoader.getSystemResource(t.getSprite())));
-            cell.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (selectedTowerName != null) {
-                        ImageIcon icon = new ImageIcon(getClass().getResource(selectedTowerImagePath));
-                        Image img = icon.getImage();
-                        Image resizedImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                        cell.setIcon(new ImageIcon(resizedImg));
-                        cell.setText("");
-                        System.out.println("Placed " + selectedTowerName + " at cell " + cell.getText());
-                        selectedTowerName = null; // Clear selection after placing the tower
-                        selectedTowerImagePath = null;
-                    }
-                }
-            });
-            mapPanel.add(cell);
-        });
-                
-        oldGui.add(mapPanel, BorderLayout.CENTER);
+        contentPanel.add(labelPanel, BorderLayout.NORTH);
+        this.createMap(map);
+        contentPanel.add(mapPanel, BorderLayout.CENTER);
 
         // Create and add the tower panel with two columns
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout with two columns and dynamic rows
 
         // Add towers
-        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.jpg", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.jpg", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
 
         // Add more towers as needed
         JScrollPane scrollPane = new JScrollPane(towerPanel);
         scrollPane.setPreferredSize(new Dimension(300, 0)); // Set preferred size for the scroll pane
-        oldGui.add(scrollPane, BorderLayout.EAST);
+        contentPanel.add(scrollPane, BorderLayout.EAST);
 
-        // Request the container to update the GUI
-        oldGui.revalidate();
-        oldGui.repaint();
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                resizeImages(map);
+            }
+        });
+        Toolkit.getDefaultToolkit().setDynamicLayout(false);
+
+        this.add(contentPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.controller.registerView(this);
+        this.controller.startGame();
+        this.setVisible(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+
+    @Override
+    public void update(GameState gameState) {
+        //TODO entity render
+    }
+
+    private void resizeImages(GameMap map) {
+        this.tiles.entrySet().forEach( e ->
+                setScaledIcon(e.getKey(), e.getValue(),
+                 this.mapPanel.getWidth() / map.getColumns(),
+                 this.mapPanel.getHeight() / map.getRows())
+        );
+    }
+
+    private void createMap(GameMap map) {
+        this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
+        map.getTiles().forEach(t -> {
+            final JButton cell = new JButton();
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
+                this.mapPanel.getHeight() / map.getRows());
+            cell.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    if (selectedTowerName != null) {
+                        setScaledIcon(cell, selectedTowerImagePath, mapPanel.getWidth() / map.getColumns(),
+                            mapPanel.getHeight() / map.getRows());
+                        tiles.put(cell, selectedTowerImagePath);
+                        System.out.println("Placed " + selectedTowerName + " at cell " + cell.getText());
+                    }
+                }
+            });
+            this.tiles.put(cell, t.getSprite());
+            this.mapPanel.add(cell);
+        });
+    }
+
+    private void setScaledIcon(JButton cell, String imgPath, int width, int height) {
+        if(width == 0) {
+            width = ICON_DEFAULT_SIZE;
+        }
+        if(height == 0) {
+            height = ICON_DEFAULT_SIZE;
+        }
+        Image icon = null;
+        try {
+            icon = ImageIO.read(ClassLoader.getSystemResource(imgPath));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("error when retrieving " + imgPath);
+        }
+        cell.setIcon(getScaledImage(icon, width, height));
+    }
+
+    /**
+     * TODO reference
+     * https://stackoverflow.com/a/6714381
+     */
+    private ImageIcon getScaledImage(Image srcImg, int width, int height){
+        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+    
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+    
+        return new ImageIcon(resizedImg);
     }
 
     private JPanel createTowerCard(String name, String imgPath, int stat0, int stat1, int stat2) {
@@ -99,7 +180,7 @@ public class GuiGameStart extends JFrame {
         // Panel for image with top margin
         JPanel imgPanel = new JPanel(new BorderLayout());
         imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); // Add top margin
-        JLabel imgLabel = new JLabel(new ImageIcon(getClass().getResource(imgPath)));
+        JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(imgPath)));
         imgLabel.setPreferredSize(new Dimension(200, 150)); // Set preferred size for image
         imgPanel.add(imgLabel, BorderLayout.NORTH);
         card.add(imgPanel, BorderLayout.NORTH);

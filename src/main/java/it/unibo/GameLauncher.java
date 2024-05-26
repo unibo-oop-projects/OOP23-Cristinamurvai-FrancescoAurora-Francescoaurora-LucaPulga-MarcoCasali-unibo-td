@@ -1,7 +1,6 @@
 package it.unibo;
 
 import it.unibo.view.GuiStart;
-
 import java.io.IOException;
 
 /**
