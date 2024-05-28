@@ -36,6 +36,10 @@ public class GameEngineImpl implements GameEngine, Runnable {
             throw new IllegalStateException("No map selected");
         }
         this.isRunning = true;
+        //added here for enemy test
+        this.enemiesManager.setMap(this.map);
+        this.enemiesManager.parseEnemies();
+
         this.updateGameState();
         final Thread t = new Thread(this);
         t.start();
@@ -72,6 +76,9 @@ public class GameEngineImpl implements GameEngine, Runnable {
         while (!this.gameState.isGameOver()) {
             try {
                 long start = System.currentTimeMillis();
+                // Temporary added here to test enemies
+                this.enemiesManager.updateEnemiesDirections();
+                
                 this.updateGameState();
                 this.updateObservers();
                 long delta = System.currentTimeMillis() - start;
@@ -80,6 +87,8 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 }
             } catch (Exception e) {
                 System.err.println("engine interrupt");
+                e.printStackTrace();
+                System.exit(0);
             }
         }
     }

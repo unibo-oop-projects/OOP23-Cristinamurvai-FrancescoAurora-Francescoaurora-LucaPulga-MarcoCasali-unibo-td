@@ -54,6 +54,8 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 	public void move() {
 		int x = (int)(this.position2d.x() + this.direction2d.x());
 		int y = (int)(this.position2d.y() + this.direction2d.y());
+		// Added only for debug purposes
+		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() + ") to position (" + x + ", " + y + ")");
 		this.position2d = new Position2D(x, y);
 		this.enemyState = EnemyState.MOVING;
 	}
@@ -63,11 +65,14 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 		while (!Thread.currentThread().isInterrupted()) {
             move();
             try {
-                Thread.sleep(20);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 	}
-    
+
+	public void setDirection(Vector2D direction2d) {
+        this.direction2d = direction2d;
+    }
 }
