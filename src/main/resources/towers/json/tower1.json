@@ -2,7 +2,7 @@
   "id": 1,
   "name": "Tower1",
   "type": "Base",
-  "imgPath": "towers/img/tower1.jpg",
+  "imgPath": "towers/img/tower1.png",
   "position2d": {
     "x": 10,
     "y": 20
@@ -14,8 +14,22 @@
   "cost": 100,
   "level": 1,
   "range": 50,
-  "weapons": null,
-  "currentWeapon": null,
-  "attackStrategy": "AreaAttack",
+  "weapons": [
+    {
+      "id": 1,
+      "name": "Weapon1",
+      "type": "Gun",
+      "imgPath": "weapons/bow.png",
+      "frequency": 500
+    }
+  ],
+  "currentWeapon": {
+    "id": 1,
+    "name": "Weapon1",
+    "type": "Gun",
+    "imgPath": "weapons/bow.png",
+    "frequency": 500
+  },
+  "attackStrategy": "SingleTargetAttack",
   "targetSelectionStrategy": "DistanceBasedTargetSelection"
 }

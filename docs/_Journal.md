@@ -52,3 +52,23 @@ Prossimo step:
 	tests
 	
 ---------
+
+## 28/05/2024
+
+ENEMY:
+	observer implementation
+
+DEFENSE:
+	observer implementation
+	GuiGameStart creare TowerCard
+		
+Interazione torri-nemici
+Gestione economia/round
+	Quando posiziono una torre, scalo i soldi
+	Quando killo un nemico, aumento i soldi
+Torri non posizionabili sul percorso
+
+RoundManager come thread separato
+
+IN FUTURO:
+	Gestione transazioni per economia
