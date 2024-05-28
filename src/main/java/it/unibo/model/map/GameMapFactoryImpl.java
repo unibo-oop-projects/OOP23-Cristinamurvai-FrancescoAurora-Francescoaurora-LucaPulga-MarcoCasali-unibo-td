@@ -121,6 +121,13 @@ public class GameMapFactoryImpl implements GameMapFactory {
             }
 
             @Override
+            public Position2D getPathEndPosition() {
+                return indexToPos2D(this.tiles.entrySet().stream()
+                    .filter(entry -> entry.getValue().getTileFeatures()
+                    .contains(TileFeature.PATH_END)).findFirst().get().getKey());
+            }
+
+            @Override
             public Vector2D getPathDirection(final Position2D position) {
                 final Set<TileFeature> directions = this.tiles.get(flatten(position)).getTileFeatures();
                 if (directions.contains(TileFeature.MOVE_DOWN)) {

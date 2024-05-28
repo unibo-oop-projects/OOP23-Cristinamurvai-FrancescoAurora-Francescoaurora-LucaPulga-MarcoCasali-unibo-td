@@ -35,9 +35,13 @@ public interface GameMap {
     Position2D getSpawnPosition();
 
     /**
+     * @return The {@link Position2D} where the path ends
+     */
+    Position2D getPathEndPosition();
+
+    /**
      * @param position The current Position of the enemy
      * @return A {@link Vector2D} that follows the path's direction
      */
     Vector2D getPathDirection(Position2D position);
-
 }
