@@ -6,9 +6,9 @@ package it.unibo.model.entities;
 public class RoundManagerImp implements RoundManager {
     private int numberEnemis;
     private double timeSpawn;
-    private static double DEFAULT_TIME_SPAWN = 4;
-    private static double MIN_TIME_SPAWN = 4;
-    private static int DEFAULT_NUMBER_ENEMIS = 3;
+    private static final double DEFAULT_TIME_SPAWN = 4;
+    private static final double MIN_TIME_SPAWN = 4;
+    private static final int DEFAULT_NUMBER_ENEMIS = 3;
     private int rouds;
     private int[] enemisSpawn;
 
