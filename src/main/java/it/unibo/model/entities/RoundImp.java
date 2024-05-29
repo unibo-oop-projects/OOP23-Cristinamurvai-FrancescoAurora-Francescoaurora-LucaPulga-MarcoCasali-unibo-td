@@ -3,7 +3,7 @@ package it.unibo.model.entities;
 /**
  * Implements for roud manager.
  */
-public class RoundManagerImp implements RoundManager {
+public class RoundImp implements Round {
     private int numberEnemis;
     private double timeSpawn;
     private static final double DEFAULT_TIME_SPAWN = 4;
@@ -15,7 +15,7 @@ public class RoundManagerImp implements RoundManager {
     /**
      * Classroom method.
      */
-    public RoundManagerImp() {
+    public RoundImp() {
         numberEnemis = 2; //get enemis
         timeSpawn = DEFAULT_TIME_SPAWN;
         rouds = 0;

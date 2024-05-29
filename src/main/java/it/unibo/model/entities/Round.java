@@ -3,7 +3,7 @@ package it.unibo.model.entities;
 /**
  * Interface for roud manager.
  */
-public interface RoundManager {
+public interface Round {
 
     /**
      * Increase Round and update parameters.
