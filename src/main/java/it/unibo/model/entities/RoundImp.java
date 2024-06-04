@@ -15,10 +15,10 @@ public class RoundImp implements Round {
     /**
      * Classroom method.
      */
-    public RoundImp() {
-        numberEnemis = 2; //get enemis
+    public RoundImp(int enemis) {
+        numberEnemis = enemis; //get enemis
         timeSpawn = DEFAULT_TIME_SPAWN;
-        rouds = 0;
+        rouds = -1;
         enemisSpawn = new int[numberEnemis];
         enemisSpawn[0] = DEFAULT_NUMBER_ENEMIS;
     }
