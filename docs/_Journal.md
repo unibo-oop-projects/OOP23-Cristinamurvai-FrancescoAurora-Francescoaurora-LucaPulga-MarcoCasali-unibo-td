@@ -72,3 +72,42 @@ RoundManager come thread separato
 
 IN FUTURO:
 	Gestione transazioni per economia
+
+---------------------------
+
+## 05/06/2024
+
+Difesa:
+	- pulizia codice card
+	- interazione con bullet view
+	- guardare quanto deve togliere ogni bullet
+	- update() per Bullet
+	
+Nemici:
+	- Nell'enemy manager togliere o gestire i nemici attivi o meno
+	- Metodo che accetta come parametro (attraverso id) e creare il nemico del tipo di id passato
+	- Metodo numeroNemiciVivi() 
+	- Metodo per gettare il danno nemici che sono alla fine della mappa
+		- eliminare i nemici al termine del metodo dopo aver inflitto il danno al player
+
+Fra:
+	- Countdown visualizzabile sulla mappa
+		Tempo nel GameState: nel gameState ci sarà un'istanza del roundManager
+			getCurrentTime()
+		Quando il countdown termina:
+			- i nemici vengono spawnati
+	- RoundManager
+		metodo gameOver(): smette di andare avanti
+	- Visualizzazione di:
+		- vite con update
+		- tempo ondata
+		- soldi disponibili
+	- EnemiesManager parametro del costruttore roundManager
+	
+Casali:
+	Il percorso deve essere disabilitato (per il posizionamento delle torri)
+	Gestione del fine mappa
+		- ogni enemy muore
+		- toglie vita al player
+			- se player <= 0 e tempo ancora attivo
+				- schermata end
