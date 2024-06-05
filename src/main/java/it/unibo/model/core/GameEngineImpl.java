@@ -11,6 +11,7 @@ import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.enemies.EnemiesManager;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
 
 /**
@@ -77,7 +78,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
             try {
                 long start = System.currentTimeMillis();
                 // Temporary added here to test enemies
-                this.enemiesManager.updateEnemiesDirections();
+                this.enemiesManager.updateEnemiesDirections(start);
                 
                 this.updateGameState();
                 this.updateObservers();
@@ -124,6 +125,12 @@ public class GameEngineImpl implements GameEngine, Runnable {
             @Override
             public boolean isPaused() {
                 return !isRunning;
+            }
+
+            //added here for enemy test
+            @Override
+            public Set<Enemy> getEnemies() {
+                return enemiesManager.getCurrentEnemies();
             }
         };
     }

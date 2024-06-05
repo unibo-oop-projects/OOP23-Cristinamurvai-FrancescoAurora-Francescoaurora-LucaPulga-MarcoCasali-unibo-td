@@ -26,7 +26,7 @@ public interface EnemiesManager {
     /*
      * Uptate directions of all the currently alive enemies
      */
-    void updateEnemiesDirections();
+    void updateEnemiesDirections(long currentTimeMillis);
 
     /**
      * Represents the enemies.

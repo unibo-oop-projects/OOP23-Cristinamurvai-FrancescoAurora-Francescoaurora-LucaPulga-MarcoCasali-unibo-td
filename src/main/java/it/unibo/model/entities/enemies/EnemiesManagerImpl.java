@@ -17,16 +17,19 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 	private static final String FILE_PATH = "src/main/resources/enemies/json/level1.json";
 	private final static double MAX_DISTANCE = 100;
+	private final static long ENEMIES_MAP_ENTERING_SEPARATION = 1000;
 
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Thread> enemiesThreads;
 
 	private Optional<GameMap> gameMap;
+	private long lastNewEnemyStartingTime;
 
     public EnemiesManagerImpl() {
 		this.enemies = new ArrayList<>();
 		this.enemiesThreads = new ArrayList<>();
 		this.gameMap = Optional.empty();
+		this.lastNewEnemyStartingTime = 0;
     }
 
 	@Override
@@ -102,10 +105,17 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 	@Override
 	// TO-DO: raise exception if the optional map is empty
-	public void updateEnemiesDirections() {
+	public void updateEnemiesDirections(long currentTimeMillis) {
+		boolean newEnemyEntered = false;
 		for (Enemy enemy : enemies) {
-			System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
-			System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
+			if(enemy.getState().equals(EnemyState.READY) && !newEnemyEntered && 
+			  (currentTimeMillis - this.lastNewEnemyStartingTime) >= ENEMIES_MAP_ENTERING_SEPARATION) {
+				enemy.startMoving();
+				newEnemyEntered = true;
+				this.lastNewEnemyStartingTime = currentTimeMillis;
+			}
+			//System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
+			//System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
 			enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
 		}
     }

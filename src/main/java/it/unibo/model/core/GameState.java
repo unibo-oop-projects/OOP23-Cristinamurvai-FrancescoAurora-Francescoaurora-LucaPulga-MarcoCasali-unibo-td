@@ -2,6 +2,7 @@ package it.unibo.model.core;
 
 import java.util.Set;
 import it.unibo.model.entities.Entity;
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
 
 /**
@@ -35,4 +36,9 @@ public interface GameState {
      * paused {@code False} if running
      */
     boolean isPaused();
+    /**
+     * @return The set of enemies currently present TO-DO: remove and find enemies from getEntities
+     * 
+     */
+    Set<Enemy> getEnemies();
 }
