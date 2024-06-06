@@ -1,26 +1,31 @@
 package it.unibo.model.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implements for roud manager.
  */
 public class RoundImp implements Round {
-    private int numberEnemis;
+    private int numberEnemies;
     private double timeSpawn;
     private static final double DEFAULT_TIME_SPAWN = 4;
     private static final double MIN_TIME_SPAWN = 4;
-    private static final int DEFAULT_NUMBER_ENEMIS = 3;
+    private static final int DEFAULT_NUMBER_ENEMIES = 3;
     private int rouds;
-    private int[] enemisSpawn;
+    private List<Integer> enemiesSpawn;
 
     /**
      * Classroom method.
      */
     public RoundImp(int enemis) {
-        numberEnemis = enemis; //get enemis
+        numberEnemies = enemis; //get enemis
         timeSpawn = DEFAULT_TIME_SPAWN;
         rouds = -1;
-        enemisSpawn = new int[numberEnemis];
-        enemisSpawn[0] = DEFAULT_NUMBER_ENEMIS;
+        this.enemiesSpawn = new ArrayList<>();
+        for (int i = 0; i < numberEnemies; i++) {
+            this.enemiesSpawn.add(DEFAULT_NUMBER_ENEMIES);
+        }
     }
 
     /**
@@ -31,15 +36,15 @@ public class RoundImp implements Round {
         int tmp = rouds / 10;
         //posso aumentare di un valore costante determinato dal livello / qualcosa, ad esempio +2 per tipo attivo
         //se il tipo termina allora attivo un moltiplicatore che prima ha valore 1 quindi invece che aggiungerne 2 ne aggiunge 4 poi 8 ecc.
-        if (rouds < numberEnemis * 10) {
+        if (rouds < numberEnemies * 10) {
             if (rouds % 10 == 0) {
                 for (int i = 0; i <= tmp; i++) {
-                    enemisSpawn[i] = DEFAULT_NUMBER_ENEMIS;
+                    enemiesSpawn.set(i, DEFAULT_NUMBER_ENEMIES);
                 }
                 timeSpawn = DEFAULT_TIME_SPAWN;
             } else {
                 for (int i = 0; i <= tmp; i++) {
-                    enemisSpawn[i] += 2;
+                    enemiesSpawn.set(i, enemiesSpawn.get(i) + 2);
                 }
                 if (rouds % 10 == 9) {
                     timeSpawn = 3.5;
@@ -64,8 +69,8 @@ public class RoundImp implements Round {
      * Get method for EnemisSpawn.
      * @return vector of enemisSpawn
      */
-    public int[] getEnemisSpawn() {
-        return enemisSpawn;
+    public List<Integer> getEnemiesSpawn() {
+        return enemiesSpawn;
     }
 
     /**

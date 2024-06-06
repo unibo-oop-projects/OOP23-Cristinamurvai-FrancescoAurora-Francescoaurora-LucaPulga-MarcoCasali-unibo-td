@@ -1,5 +1,7 @@
 package it.unibo.model.entities;
 
+import java.util.List;
+
 /**
  * Interface for roud manager.
  */
@@ -20,7 +22,7 @@ public interface Round {
      * Get method for EnemisSpawn.
      * @return vector of enemisSpawn
      */
-    int[] getEnemisSpawn();
+    List<Integer> getEnemiesSpawn();
 
     /**
      * Get actual roud.
