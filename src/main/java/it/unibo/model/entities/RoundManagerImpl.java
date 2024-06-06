@@ -1,7 +1,7 @@
 package it.unibo.model.entities;
 
 import java.util.List;
-
+import java.util.Random;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
@@ -20,6 +20,7 @@ public class RoundManagerImpl {
     private RoundImp round;
     private double timeSpawn;
     private List<Integer> listEnemies;
+    private Random random;
 
     public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
         enemies = enemiesManager;
@@ -97,7 +98,18 @@ public class RoundManagerImpl {
                 
                 spawnCounter += 0.1;
                 if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
-                    // Inserire qui il costruttore del nemico
+                    int enemyIndex = random.nextInt(2); //change with get enemis
+                    boolean spawn = false;
+                    while(!spawn){
+                        if(listEnemies.get(enemyIndex) != 0) {
+                            // Inserire qui il costruttore del nemico
+                            spawn = true;
+                        } else {
+                            enemyIndex++;
+                            enemyIndex = enemyIndex % 2;
+                        }
+                    }
+
                     spawnCounter -= timeSpawn;
                 } else {
                     if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) {//aggiungere isAlive
