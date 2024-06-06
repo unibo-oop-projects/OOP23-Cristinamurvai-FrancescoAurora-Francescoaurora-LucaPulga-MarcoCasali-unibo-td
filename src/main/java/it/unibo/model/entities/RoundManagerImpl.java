@@ -16,10 +16,11 @@ public class RoundManagerImpl {
     private final Object lock = new Object();
     private EnemiesManagerImpl enemies;
     private RoundImp round;
+    private double timeSpawn;
 
     public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
         enemies = enemiesManager;
-        round = new RoundImp(2); //change with get 
+        round = new RoundImp(2); //change with get enemies
     }
 
 
@@ -65,6 +66,7 @@ public class RoundManagerImpl {
 
     private void startSequential() {
         round.increaseRoud();
+        timeSpawn = round.getTimeSpawn();
         sequentialThread = new Thread(new SequentialTask());
         sequentialThread.start();
     }
@@ -73,18 +75,26 @@ public class RoundManagerImpl {
         @Override
         public void run() {
             System.out.println("Sequential counting started");
-            int seconds = 0;
+            double seconds = 0;
+            double spawnCounter = 0; // contatore per la creazione dei nemici
             while (!interrupted) {
                 synchronized (lock) {
-                    currentTime = seconds;
+                    currentTime = (int) seconds;
                 }
-                System.out.println("Sequential count: " + secondsToTimeFormat(seconds));
+                System.out.println("Sequential count: " + secondsToTimeFormat((int) seconds));
+                
+                spawnCounter += 0.1;
+                if (spawnCounter >= timeSpawn) {
+                    // Inserire qui il costruttore del nemico
+                    spawnCounter -= timeSpawn;
+                }
+                
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100); // dormire per 1 millisecondo
                 } catch (InterruptedException e) {
                     return;
                 }
-                seconds++;
+                seconds += 0.001;
             }
             startCountdown();
         }
