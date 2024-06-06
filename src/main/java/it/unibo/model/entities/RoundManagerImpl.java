@@ -1,5 +1,7 @@
 package it.unibo.model.entities;
 
+import java.util.List;
+
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
@@ -17,6 +19,7 @@ public class RoundManagerImpl {
     private EnemiesManagerImpl enemies;
     private RoundImp round;
     private double timeSpawn;
+    private List<Integer> listEnemies;
 
     public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
         enemies = enemiesManager;
@@ -25,6 +28,10 @@ public class RoundManagerImpl {
 
 
     private void startCountdown() {
+        if (interrupted) {
+            return;
+        }
+
         if (sequentialThread != null && sequentialThread.isAlive()) {
             interrupted = true;
             try {
@@ -65,8 +72,13 @@ public class RoundManagerImpl {
     }
 
     private void startSequential() {
+        if (interrupted) {
+            return;
+        }
+
         round.increaseRoud();
         timeSpawn = round.getTimeSpawn();
+        listEnemies = round.getEnemiesSpawn();
         sequentialThread = new Thread(new SequentialTask());
         sequentialThread.start();
     }
@@ -84,18 +96,23 @@ public class RoundManagerImpl {
                 System.out.println("Sequential count: " + secondsToTimeFormat((int) seconds));
                 
                 spawnCounter += 0.1;
-                if (spawnCounter >= timeSpawn) {
+                if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
                     // Inserire qui il costruttore del nemico
                     spawnCounter -= timeSpawn;
+                } else {
+                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) {//aggiungere isAlive
+                        interrupted = true;
+                    }
                 }
                 
                 try {
-                    Thread.sleep(100); // dormire per 1 millisecondo
+                    Thread.sleep(100); // dormire per 0.1 secondi
                 } catch (InterruptedException e) {
                     return;
                 }
-                seconds += 0.001;
+                seconds += 0.1;
             }
+            interrupted = false;
             startCountdown();
         }
 
@@ -122,5 +139,29 @@ public class RoundManagerImpl {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public void gameOver() {
+        interrupted = true;
+
+        if (countdownThread != null && countdownThread.isAlive()) {
+            countdownThread.interrupt();
+            try {
+                countdownThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (sequentialThread != null && sequentialThread.isAlive()) {
+            sequentialThread.interrupt();
+            try {
+                sequentialThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Game Over. All threads stopped.");
     }
 }
