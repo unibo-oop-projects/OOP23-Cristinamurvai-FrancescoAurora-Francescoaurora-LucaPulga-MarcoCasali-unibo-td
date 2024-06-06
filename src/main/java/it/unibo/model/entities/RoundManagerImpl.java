@@ -1,6 +1,6 @@
 package it.unibo.model.entities;
 
-
+import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
  * Implements of interface Management of rouds
@@ -8,19 +8,20 @@ package it.unibo.model.entities;
 public class RoundManagerImpl {
     
 
-    private static final int ROUND_TIME = 30; // countdown time in seconds
+    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread;
     private Thread sequentialThread;
     private boolean interrupted = false;
-    private RoundImp roudeGame;
+    private int currentTime; // tempo corrente in secondi
+    private final Object lock = new Object();
+    private EnemiesManagerImpl enemies;
+    private RoundImp round;
 
-    public RoundManagerImpl() {
-        roudeGame = new RoundImp(2);//replace with get on enemis
+    public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
+        enemies = enemiesManager;
+        round = new RoundImp(2); //change with get 
     }
 
-    public void startGameRound() {
-        startCountdown();
-    }
 
     private void startCountdown() {
         if (sequentialThread != null && sequentialThread.isAlive()) {
@@ -33,6 +34,9 @@ public class RoundManagerImpl {
         }
 
         interrupted = false;
+        synchronized (lock) {
+            currentTime = ROUND_TIME;
+        }
         countdownThread = new Thread(new CountdownTask());
         countdownThread.start();
     }
@@ -42,8 +46,11 @@ public class RoundManagerImpl {
         public void run() {
             System.out.println("Countdown started");
             for (int i = ROUND_TIME; i > 0; i--) {
-                if (interrupted) {
-                    return;
+                synchronized (lock) {
+                    if (interrupted) {
+                        return;
+                    }
+                    currentTime = i;
                 }
                 System.out.println("Countdown: " + i);
                 try {
@@ -57,7 +64,7 @@ public class RoundManagerImpl {
     }
 
     private void startSequential() {
-        roudeGame.increaseRoud();
+        round.increaseRoud();
         sequentialThread = new Thread(new SequentialTask());
         sequentialThread.start();
     }
@@ -68,6 +75,9 @@ public class RoundManagerImpl {
             System.out.println("Sequential counting started");
             int seconds = 0;
             while (!interrupted) {
+                synchronized (lock) {
+                    currentTime = seconds;
+                }
                 System.out.println("Sequential count: " + secondsToTimeFormat(seconds));
                 try {
                     Thread.sleep(1000);
@@ -84,5 +94,23 @@ public class RoundManagerImpl {
             int seconds = totalSeconds % 60;
             return String.format("%02d:%02d", minutes, seconds);
         }
+    }
+
+    public String getTime() {
+        synchronized (lock) {
+            if (countdownThread != null && countdownThread.isAlive()) {
+                return "Countdown: " + currentTime + " seconds";
+            } else if (sequentialThread != null && sequentialThread.isAlive()) {
+                return "Sequential count: " + secondsToTimeFormat(currentTime);
+            } else {
+                return "No active timers";
+            }
+        }
+    }
+
+    private String secondsToTimeFormat(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 }
