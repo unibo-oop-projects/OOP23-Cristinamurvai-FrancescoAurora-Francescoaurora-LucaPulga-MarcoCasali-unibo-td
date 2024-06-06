@@ -35,6 +35,13 @@ public interface Enemy extends MovableEntity {
     int getDamage(int damage);
 
     /**
+     * Represents the image of the enemy.
+     * 
+     * @return the image path of enemy image.
+     */
+    String getImagePath();
+
+    /**
      * Check if the enemy is alive or not.
      * 
      * @return true if alive, false otherwise.
@@ -45,4 +52,9 @@ public interface Enemy extends MovableEntity {
      * Move the enemy of vect2d from pos2d.
      */
     void move();
+
+    /*
+     * Run enemy thread.
+     */
+    void startMoving();
 }

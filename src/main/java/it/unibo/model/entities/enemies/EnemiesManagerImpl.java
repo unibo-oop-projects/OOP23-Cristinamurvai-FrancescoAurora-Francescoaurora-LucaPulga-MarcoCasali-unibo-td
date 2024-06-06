@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.json.JSONArray;
+
+import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
@@ -15,16 +17,23 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 	private static final String FILE_PATH = "src/main/resources/enemies/json/level1.json";
 	private final static double MAX_DISTANCE = 100;
+	private final static long ENEMIES_MAP_ENTERING_SEPARATION = 1000;
 
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Thread> enemiesThreads;
 
+	private Optional<GameMap> gameMap;
+	private long lastNewEnemyStartingTime;
+
     public EnemiesManagerImpl() {
 		this.enemies = new ArrayList<>();
 		this.enemiesThreads = new ArrayList<>();
+		this.gameMap = Optional.empty();
+		this.lastNewEnemyStartingTime = 0;
     }
 
 	@Override
+	// TO-DO: raise exception if the optional map is empty
 	public void parseEnemies() {
 		try {
 			//trasforma il file path in una stringa da cui posso leggere il file che farà da input alla libreria json
@@ -38,14 +47,14 @@ public class EnemiesManagerImpl implements EnemiesManager {
 				String name = enemyType.optString("name");
 				String type = enemyType.getString("type");
 				String imgPath = enemyType.getString("imgPath");
-				Position2D position2d = new Position2D(enemyType.getJSONObject("position2d").getInt("x"), enemyType.getJSONObject("position2d").getInt("y"));
-				Vector2D vector2d = new Vector2D(enemyType.getJSONObject("direction2d").getInt("x"), enemyType.getJSONObject("direction2d").getInt("y"));
+				//Position2D position2d = new Position2D(enemyType.getJSONObject("position2d").getInt("x"), enemyType.getJSONObject("position2d").getInt("y"));
+				//Vector2D vector2d = new Vector2D(enemyType.getJSONObject("direction2d").getInt("x"), enemyType.getJSONObject("direction2d").getInt("y"));
 				int lp = enemyType.getInt("lp");
 				int reward = enemyType.getInt("reward");
 				int quantity = enemyType.getInt("quantity");
 
 				for(int j=0; j<quantity; j++) {
-					buildEnemy(name, type, imgPath, position2d, vector2d, lp, reward);
+					buildEnemy(this.gameMap.get(), name, type, imgPath, lp, reward);
 				}
 			}
 		} catch(Exception e) {
@@ -54,14 +63,19 @@ public class EnemiesManagerImpl implements EnemiesManager {
 	}
 
 	@Override
-	public void buildEnemy(String enemyName, String type, String imgPath, Position2D position2d, Vector2D vector2d, int lp, int reward) {
-		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, position2d, vector2d, lp, reward);
+	public void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward) {
+		Position2D spawnPosition = gameMap.getSpawnPosition();
+		Vector2D direction = gameMap.getPathDirection(spawnPosition);
+		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition, direction, lp, reward);
 		Thread newEnemyThread = new Thread(newEnemy);
 
 		newEnemyThread.start();
 
 		this.enemies.add(newEnemy);
 		this.enemiesThreads.add(newEnemyThread);
+
+		//TO-DO: remove, used only for debug
+		System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() + ") with direction (" + direction.x() + ", " + direction.y() + ")");
 	}
 
     @Override
@@ -83,5 +97,26 @@ public class EnemiesManagerImpl implements EnemiesManager {
 		}
 		return nearestEnemy;
 	}
-	
+
+	@Override
+	public void setMap(GameMap gameMap) {
+		this.gameMap = Optional.of(gameMap);
+	}
+
+	@Override
+	// TO-DO: raise exception if the optional map is empty
+	public void updateEnemiesDirections(long currentTimeMillis) {
+		boolean newEnemyEntered = false;
+		for (Enemy enemy : enemies) {
+			if(enemy.getState().equals(EnemyState.READY) && !newEnemyEntered && 
+			  (currentTimeMillis - this.lastNewEnemyStartingTime) >= ENEMIES_MAP_ENTERING_SEPARATION) {
+				enemy.startMoving();
+				newEnemyEntered = true;
+				this.lastNewEnemyStartingTime = currentTimeMillis;
+			}
+			//System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
+			//System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
+			enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
+		}
+    }
 }

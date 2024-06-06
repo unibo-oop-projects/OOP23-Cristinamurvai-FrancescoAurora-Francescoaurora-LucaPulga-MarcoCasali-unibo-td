@@ -2,10 +2,16 @@ package it.unibo.model.entities.enemies;
 import java.util.Optional;
 import java.util.Set;
 
+import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
-import it.unibo.model.utilities.Vector2D;
 
 public interface EnemiesManager {
+
+    /**
+     * Set the actual map.
+     * @param gameMap
+     */
+    void setMap(GameMap gameMap);
 
     /**
      * Parse enemies from JSON file.
@@ -15,7 +21,12 @@ public interface EnemiesManager {
     /**
      * Build an enemy entity.
      */
-    void buildEnemy(String enemyName, String type, String imgPath, Position2D position2d, Vector2D vector2d, int lp, int reward);
+    void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward);
+
+    /*
+     * Uptate directions of all the currently alive enemies
+     */
+    void updateEnemiesDirections(long currentTimeMillis);
 
     /**
      * Represents the enemies.

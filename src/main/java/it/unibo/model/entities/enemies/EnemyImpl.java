@@ -8,6 +8,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 
     private int lp;
     private int reward;
+	private String imgPath;
     private boolean alive;
 	private EnemyState enemyState;
 
@@ -15,6 +16,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
         super(id, name, type, imgPath, position2d, direction2d);
         this.lp = lp;
         this.reward = reward;
+		this.imgPath = imgPath;
         this.alive = true;
 		this.enemyState = EnemyState.READY;
     } 
@@ -46,6 +48,11 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 	}
 
 	@Override
+	public String getImagePath() {
+		return this.imgPath;
+	}
+
+	@Override
 	public boolean isAlive() {
 		return this.alive;
 	}
@@ -53,21 +60,31 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 	@Override
 	public void move() {
 		int x = (int)(this.position2d.x() + this.direction2d.x());
-		int y = (int)(this.position2d.y() + this.direction2d.y());
+		int y = (int)(this.position2d.y() - this.direction2d.y());
+		// Added only for debug purposes
+		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() + ") to position (" + x + ", " + y + ")");
 		this.position2d = new Position2D(x, y);
-		this.enemyState = EnemyState.MOVING;
 	}
 
 	@Override
 	public void run() {
 		while (!Thread.currentThread().isInterrupted()) {
-            move();
+			if(this.enemyState.equals(EnemyState.MOVING)){
+				move();
+			}
             try {
-                Thread.sleep(20);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 	}
-    
+
+	public void setDirection(Vector2D direction2d) {
+        this.direction2d = direction2d;
+    }
+
+	public void startMoving() {
+		this.enemyState = EnemyState.MOVING;
+	}
 }

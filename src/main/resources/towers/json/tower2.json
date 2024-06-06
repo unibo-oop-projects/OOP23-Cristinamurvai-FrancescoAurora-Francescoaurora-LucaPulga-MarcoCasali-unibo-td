@@ -1,8 +1,8 @@
 {
   "id": 1,
-  "name": "Tower1",
+  "name": "Tower2",
   "type": "Base",
-  "imgPath": "towers/img/tower1.jpg",
+  "imgPath": "towers/img/tower2.png",
   "position2d": {
     "x": 10,
     "y": 20
@@ -19,22 +19,15 @@
       "id": 1,
       "name": "Weapon1",
       "type": "Gun",
-      "imgPath": "weapon1.png",
+      "imgPath": "weapons/bow.png",
       "frequency": 500
-    },
-    {
-      "id": 2,
-      "name": "Weapon2",
-      "type": "Rifle",
-      "imgPath": "weapon2.png",
-      "frequency": 1000
     }
   ],
   "currentWeapon": {
     "id": 1,
     "name": "Weapon1",
     "type": "Gun",
-    "imgPath": "weapon1.png",
+    "imgPath": "weapons/bow.png",
     "frequency": 500
   },
   "attackStrategy": "SingleTargetAttack",

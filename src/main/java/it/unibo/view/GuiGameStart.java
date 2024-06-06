@@ -8,12 +8,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
+import it.unibo.view.enemies.EnemiesPanel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,8 +34,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Loading Game Screen.
@@ -42,8 +48,12 @@ public class GuiGameStart extends JFrame implements GameView {
     private String selectedTowerImagePath = null;
     private JPanel contentPanel = new JPanel();
     private JPanel mapPanel;
+    private JLayeredPane layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
+
+    // Add for enemies test
+    private JPanel enemiesPanel;
 
     public GuiGameStart(final String mapName) {
         final GameMap map = controller.setGameMap(mapName);
@@ -66,24 +76,32 @@ public class GuiGameStart extends JFrame implements GameView {
 
         contentPanel.add(labelPanel, BorderLayout.NORTH);
         this.createMap(map);
-        contentPanel.add(mapPanel, BorderLayout.CENTER);
 
-        // Create and add the tower panel with two columns
-        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout with two columns and dynamic rows
+        // Adding enemies layer and map layer overlapped
+        this.layeredPane = new JLayeredPane();
+        this.layeredPane.setPreferredSize(new Dimension(1200, 800));
+        mapPanel.setBounds(0, 0, 1200, 800);
+        this.layeredPane.add(mapPanel, Integer.valueOf(1));
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel.setBounds(0, 0, 1200, 800);
+        this.enemiesPanel.setOpaque(false);
+        this.layeredPane.add(this.enemiesPanel, Integer.valueOf(2));
+        
+        contentPanel.add(this.layeredPane, BorderLayout.CENTER);
 
-        // Add towers
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower1.jpg", 20, 100, 1));
+        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
 
-        // Add more towers as needed
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
+
         JScrollPane scrollPane = new JScrollPane(towerPanel);
-        scrollPane.setPreferredSize(new Dimension(300, 0)); // Set preferred size for the scroll pane
+        scrollPane.setPreferredSize(new Dimension(300, 0));
         contentPanel.add(scrollPane, BorderLayout.EAST);
 
         this.addComponentListener(new ComponentAdapter() {
@@ -105,7 +123,13 @@ public class GuiGameStart extends JFrame implements GameView {
 
     @Override
     public void update(GameState gameState) {
-        //TODO entity render
+        //Updating enemy layer
+        this.enemiesPanel = new EnemiesPanel((ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList()), mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
+        this.enemiesPanel.setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());
+        this.enemiesPanel.setOpaque(false);
+        this.layeredPane.add(this.enemiesPanel, Integer.valueOf(2));
+        this.layeredPane.revalidate();
+        this.layeredPane.repaint();
     }
 
     private void resizeImages(GameMap map) {
@@ -175,20 +199,18 @@ public class GuiGameStart extends JFrame implements GameView {
         String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 +
         "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
 
-        // Aggiungi tooltip con le statistiche formattate
         card.setToolTipText(tooltipText);
-        // Panel for image with top margin
         JPanel imgPanel = new JPanel(new BorderLayout());
-        imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); // Add top margin
+        imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); 
         JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(imgPath)));
-        imgLabel.setPreferredSize(new Dimension(200, 150)); // Set preferred size for image
+        imgLabel.setPreferredSize(new Dimension(200, 150));
         imgPanel.add(imgLabel, BorderLayout.NORTH);
         card.add(imgPanel, BorderLayout.NORTH);
 
         // Panel for stats with left margin
         JPanel statsPanel = new JPanel();
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); // Add left margin
+        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
         JLabel nameLabel = new JLabel(name);
         statsPanel.add(nameLabel);
@@ -226,7 +248,6 @@ public class GuiGameStart extends JFrame implements GameView {
         JPanel weaponPanel = new JPanel();
         weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
 
-        // Example weapons, you can replace these with real data
         weaponPanel.add(new JLabel("Weapon 1: Damage 10"));
         weaponPanel.add(new JLabel("Weapon 2: Damage 20"));
         weaponPanel.add(new JLabel("Weapon 3: Damage 30"));
