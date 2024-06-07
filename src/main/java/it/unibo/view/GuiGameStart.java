@@ -52,6 +52,8 @@ public class GuiGameStart extends JFrame implements GameView {
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
     private JLabel labelTime = null;
+    private JLabel labelLife = null;
+    private JLabel labelMoney = null;
 
     // Add for enemies test
     private JPanel enemiesPanel;
@@ -64,7 +66,7 @@ public class GuiGameStart extends JFrame implements GameView {
         JPanel labelPanel = new JPanel(new GridLayout(1, 3)); // Layout with one row and three columns
 
         // add label screw
-        JLabel labelLife = new JLabel("Vite e immagine vite");
+        this.labelLife = new JLabel("Vite e immagine vite");
         labelPanel.add(labelLife);
 
         // add label time
@@ -72,7 +74,7 @@ public class GuiGameStart extends JFrame implements GameView {
         labelPanel.add(labelTime);
 
         // Adding label money
-        JLabel labelMoney = new JLabel("Soldi disponibili");
+        this.labelMoney = new JLabel("Soldi disponibili");
         labelPanel.add(labelMoney);
 
         contentPanel.add(labelPanel, BorderLayout.NORTH);
@@ -123,8 +125,10 @@ public class GuiGameStart extends JFrame implements GameView {
     }
 
     @Override
-    public void update(GameState gameState) {
+    public void update(final GameState gameState) {
         this.labelTime.setText(gameState.getRoundTime());
+        this.labelMoney.setText("Your money: " + gameState.getMoney());
+        this.labelLife.setText("Your lives: " + gameState.getLives());
         //Updating enemy layer
         this.enemiesPanel = new EnemiesPanel((ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList()), mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
         this.enemiesPanel.setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());
@@ -184,7 +188,7 @@ public class GuiGameStart extends JFrame implements GameView {
      * TODO reference
      * https://stackoverflow.com/a/6714381
      */
-    private ImageIcon getScaledImage(Image srcImg, int width, int height){
+    private ImageIcon getScaledImage(Image srcImg, int width, int height) {
         BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
     

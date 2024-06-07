@@ -19,7 +19,7 @@ import it.unibo.model.map.GameMap;
  * Implementation of {@link GameEngine}.
  */
 public class GameEngineImpl implements GameEngine, Runnable {
-    private final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
+    private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
     private GameMap map = null;
     private GameState gameState = null;
     private final Player player = new PlayerImpl();
