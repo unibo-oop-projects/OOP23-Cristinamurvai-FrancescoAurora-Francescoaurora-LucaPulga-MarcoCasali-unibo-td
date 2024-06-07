@@ -70,7 +70,6 @@ public class RoundManagerImpl {
          */
         @Override
         public void run() {
-            System.out.println("Countdown started");
             for (int i = ROUND_TIME; i > 0; i--) {
                 synchronized (lock) {
                     if (interrupted) {
@@ -78,7 +77,6 @@ public class RoundManagerImpl {
                     }
                     currentTime = i;
                 }
-                System.out.println("Countdown: " + i);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -113,14 +111,12 @@ public class RoundManagerImpl {
          */
         @Override
         public void run() {
-            System.out.println("Sequential counting started");
             double seconds = 0;
             double spawnCounter = 0; // counter for the creation of enemies
             while (!interrupted) {
                 synchronized (lock) {
                     currentTime = (int) seconds;
                 }
-                System.out.println("Sequential count: " + secondsToTimeFormat((int) seconds));
 
                 spawnCounter += ADVANCEMENT_TIME;
                 if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
@@ -218,7 +214,6 @@ public class RoundManagerImpl {
             }
         }
 
-        System.out.println("Game Over. All threads stopped.");
     }
 
     /**
