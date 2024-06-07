@@ -5,10 +5,10 @@ import java.util.Random;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
- * Implements of interface Management of rouds
+ * Implements of interface Management of rouds.
  */
 public class RoundManagerImpl {
-    
+
 
     private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread;
@@ -16,18 +16,27 @@ public class RoundManagerImpl {
     private boolean interrupted = false;
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
-    private EnemiesManagerImpl enemies;
+    private final EnemiesManagerImpl enemies;
     private RoundImp round;
     private double timeSpawn;
     private List<Integer> listEnemies;
     private Random random;
+    private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
+    private static final double ADVANCEMENT_TIME = 0.1;
 
+    /**
+     * Constructor method, initialise variables.
+     * @param enemiesManager to build enemies and verify alive
+     */
     public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
         enemies = enemiesManager;
         round = new RoundImp(2); //change with get enemies
+        random = new Random();
     }
 
-
+    /**
+     * Method for Starting the Game CountDown.
+     */
     private void startCountdown() {
         if (interrupted) {
             return;
@@ -50,7 +59,13 @@ public class RoundManagerImpl {
         countdownThread.start();
     }
 
-    private class CountdownTask implements Runnable {
+    /**
+     * Countdown thread class.
+     */
+    private final class CountdownTask implements Runnable {
+        /**
+         * method for starting the thread.
+         */
         @Override
         public void run() {
             System.out.println("Countdown started");
@@ -72,6 +87,9 @@ public class RoundManagerImpl {
         }
     }
 
+    /**
+     * sequential round account method.
+     */
     private void startSequential() {
         if (interrupted) {
             return;
@@ -84,24 +102,30 @@ public class RoundManagerImpl {
         sequentialThread.start();
     }
 
-    private class SequentialTask implements Runnable {
+    /**
+     * Sequential thread class.
+     */
+    private final class SequentialTask implements Runnable {
+        /**
+         * method for starting the thread and logic of enemy creation.
+         */
         @Override
         public void run() {
             System.out.println("Sequential counting started");
             double seconds = 0;
-            double spawnCounter = 0; // contatore per la creazione dei nemici
+            double spawnCounter = 0; // counter for the creation of enemies
             while (!interrupted) {
                 synchronized (lock) {
                     currentTime = (int) seconds;
                 }
                 System.out.println("Sequential count: " + secondsToTimeFormat((int) seconds));
-                
-                spawnCounter += 0.1;
+
+                spawnCounter += ADVANCEMENT_TIME;
                 if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
                     int enemyIndex = random.nextInt(2); //change with get enemis
                     boolean spawn = false;
-                    while(!spawn){
-                        if(listEnemies.get(enemyIndex) != 0) {
+                    while (!spawn) {
+                        if (listEnemies.get(enemyIndex) != 0) {
                             // Inserire qui il costruttore del nemico
                             spawn = true;
                         } else {
@@ -112,29 +136,38 @@ public class RoundManagerImpl {
 
                     spawnCounter -= timeSpawn;
                 } else {
-                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) {//aggiungere isAlive
+                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //aggiungere isAlive
                         interrupted = true;
                     }
                 }
-                
+
                 try {
-                    Thread.sleep(100); // dormire per 0.1 secondi
+                    Thread.sleep(100); // sleep for 0.1 seconds
                 } catch (InterruptedException e) {
                     return;
                 }
-                seconds += 0.1;
+                seconds += ADVANCEMENT_TIME;
             }
             interrupted = false;
             startCountdown();
         }
 
-        private String secondsToTimeFormat(int totalSeconds) {
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
+        /**
+         * Conversion of seconds to minutes and seconds.
+         * @param totalSeconds seconds stored in the thread
+         * @return minutes and seconds
+         */
+        private String secondsToTimeFormat(final int totalSeconds) {
+            int minutes = totalSeconds / MINUTES_SECONDS_IN_HOURS_MINUTES;
+            int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
             return String.format("%02d:%02d", minutes, seconds);
         }
     }
 
+    /**
+     * Public call for time.
+     * @return time if active
+     */
     public String getTime() {
         synchronized (lock) {
             if (countdownThread != null && countdownThread.isAlive()) {
@@ -147,12 +180,21 @@ public class RoundManagerImpl {
         }
     }
 
-    private String secondsToTimeFormat(int totalSeconds) {
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
+    /**
+     * Conversion of seconds to minutes and seconds.
+     * @param totalSeconds seconds stored in the thread
+     * @return minutes and seconds
+     */
+    private String secondsToTimeFormat(final int totalSeconds) {
+        int minutes = totalSeconds / MINUTES_SECONDS_IN_HOURS_MINUTES;
+        int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+
+    /**
+     * End-of-game method, usable when the player has run out of lives.
+     */
     public void gameOver() {
         interrupted = true;
 
@@ -175,5 +217,12 @@ public class RoundManagerImpl {
         }
 
         System.out.println("Game Over. All threads stopped.");
+    }
+
+    /**
+     * Method for starting the game.
+     */
+    public void startGame() {
+        startCountdown();
     }
 }

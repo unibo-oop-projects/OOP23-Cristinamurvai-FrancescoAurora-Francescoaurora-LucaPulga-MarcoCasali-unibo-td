@@ -5,23 +5,23 @@ package it.unibo.model.entities;
 public class PlayerImpl implements Player {
 
     private int money; //money of player
-    private static final int maxLives = 10; //max life of player
-    private static final int moneyStart = 200; //money for star game
+    private static final int MAX_LIVES = 10; //max life of player
+    private static final int MONEY_START = 200; //money for star game
     private int lives;
 
     /**
      * Instructor method, constructs the player object with start game values.
      */
     public PlayerImpl() {
-        lives = maxLives; //lives to star game
-        money = moneyStart; //money get player to start
+        lives = MAX_LIVES; //lives to star game
+        money = MONEY_START; //money get player to start
     }
 
     /**
      * @return Returns the maximum number of lives the player can have
      */
     public int getMaxLives() {
-        return maxLives;
+        return MAX_LIVES;
     }
 
     /**

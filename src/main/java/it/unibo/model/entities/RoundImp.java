@@ -14,12 +14,15 @@ public class RoundImp implements Round {
     private static final int DEFAULT_NUMBER_ENEMIES = 3;
     private int rouds;
     private List<Integer> enemiesSpawn;
+    private static final int BOSS_ROUND = 9;
+    private static final double TIME_BOSS_ROUND = 3.5;
 
     /**
      * Classroom method.
+     * @param enemies number of enemies 
      */
-    public RoundImp(int enemis) {
-        numberEnemies = enemis; //get enemis
+    public RoundImp(final int enemies) {
+        numberEnemies = enemies; //get enemis
         timeSpawn = DEFAULT_TIME_SPAWN;
         rouds = -1;
         this.enemiesSpawn = new ArrayList<>();
@@ -29,13 +32,13 @@ public class RoundImp implements Round {
     }
 
     /**
-     * Increase Round and update parameters
+     * Increase Round and update parameters.
      */
     public void increaseRoud() {
         rouds++;
         int tmp = rouds / 10;
-        //posso aumentare di un valore costante determinato dal livello / qualcosa, ad esempio +2 per tipo attivo
-        //se il tipo termina allora attivo un moltiplicatore che prima ha valore 1 quindi invece che aggiungerne 2 ne aggiunge 4 poi 8 ecc.
+        //I can increase by a constant value determined by the level/something, e.g. +2 per active type
+        //if the type ends then I activate a multiplier which first has a value of 1 so instead of adding 2 it adds 4 then 8 etc.
         if (rouds < numberEnemies * 10) {
             if (rouds % 10 == 0) {
                 for (int i = 0; i <= tmp; i++) {
@@ -46,8 +49,8 @@ public class RoundImp implements Round {
                 for (int i = 0; i <= tmp; i++) {
                     enemiesSpawn.set(i, enemiesSpawn.get(i) + 2);
                 }
-                if (rouds % 10 == 9) {
-                    timeSpawn = 3.5;
+                if (rouds % 10 == BOSS_ROUND) {
+                    timeSpawn = TIME_BOSS_ROUND;
                 }
             }
         } else {
@@ -70,7 +73,7 @@ public class RoundImp implements Round {
      * @return vector of enemisSpawn
      */
     public List<Integer> getEnemiesSpawn() {
-        return enemiesSpawn;
+        return new ArrayList<>(enemiesSpawn);
     }
 
     /**
