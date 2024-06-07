@@ -12,11 +12,10 @@ import javax.swing.JPanel;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.entities.enemies.EnemyState;
-import it.unibo.view.GameView;
 
 import java.util.stream.Collectors;
 
-public class EnemiesPanel extends JPanel implements GameView {
+public class EnemiesPanel extends JPanel {
 
     private ArrayList<Enemy> enemies;
     private int xCellSize;
@@ -45,9 +44,12 @@ public class EnemiesPanel extends JPanel implements GameView {
         }
     }
 
-    @Override
-    public void update(GameState gameState) {
+    public void updateView(GameState gameState, int xCellSize, int yCellSize) {
         this.enemies = (ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList());
+        this.xCellSize = xCellSize;
+        this.yCellSize = yCellSize;
+        this.revalidate();
+        this.repaint();
     }
     
 }

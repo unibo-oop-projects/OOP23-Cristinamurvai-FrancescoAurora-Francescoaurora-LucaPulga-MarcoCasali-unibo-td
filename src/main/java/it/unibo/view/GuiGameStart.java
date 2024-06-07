@@ -8,13 +8,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
-import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.enemies.EnemiesPanel;
 
@@ -37,7 +36,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Loading Game Screen.
@@ -48,7 +46,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private String selectedTowerImagePath = null;
     private JPanel contentPanel = new JPanel();
     private JPanel mapPanel;
-    private JLayeredPane layeredPane;
+    private JPanel layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
     private JLabel labelTime = null;
@@ -56,7 +54,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private JLabel labelMoney = null;
 
     // Add for enemies test
-    private JPanel enemiesPanel;
+    private EnemiesPanel enemiesPanel;
 
     public GuiGameStart(final String mapName) {
         final GameMap map = controller.setGameMap(mapName);
@@ -80,17 +78,16 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.add(labelPanel, BorderLayout.NORTH);
         this.createMap(map);
 
+
         // Adding enemies layer and map layer overlapped
-        this.layeredPane = new JLayeredPane();
-        this.layeredPane.setPreferredSize(new Dimension(1200, 800));
-        mapPanel.setBounds(0, 0, 1200, 800);
-        this.layeredPane.add(mapPanel, Integer.valueOf(1));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
-        this.enemiesPanel.setBounds(0, 0, 1200, 800);
+        this.layeredPane = new JPanel();
+        this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight()/ map.getRows());
         this.enemiesPanel.setOpaque(false);
-        this.layeredPane.add(this.enemiesPanel, Integer.valueOf(2));
-        
+        this.layeredPane.add(this.enemiesPanel);
+        this.layeredPane.add(mapPanel);
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
+
 
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
 
@@ -129,13 +126,10 @@ public class GuiGameStart extends JFrame implements GameView {
         this.labelTime.setText(gameState.getRoundTime());
         this.labelMoney.setText("Your money: " + gameState.getMoney());
         this.labelLife.setText("Your lives: " + gameState.getLives());
+
+
         //Updating enemy layer
-        this.enemiesPanel = new EnemiesPanel((ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList()), mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
-        this.enemiesPanel.setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());
-        this.enemiesPanel.setOpaque(false);
-        this.layeredPane.add(this.enemiesPanel, Integer.valueOf(2));
-        this.layeredPane.revalidate();
-        this.layeredPane.repaint();
+        this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
     }
 
     private void resizeImages(GameMap map) {
