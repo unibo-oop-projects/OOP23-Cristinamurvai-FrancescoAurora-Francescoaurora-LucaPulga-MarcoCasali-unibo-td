@@ -51,6 +51,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private JLayeredPane layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
+    private JLabel labelTime = null;
 
     // Add for enemies test
     private JPanel enemiesPanel;
@@ -67,7 +68,7 @@ public class GuiGameStart extends JFrame implements GameView {
         labelPanel.add(labelLife);
 
         // add label time
-        JLabel labelTime = new JLabel("Tempo ondata");
+        this.labelTime = new JLabel("Tempo ondata");
         labelPanel.add(labelTime);
 
         // Adding label money
@@ -123,6 +124,7 @@ public class GuiGameStart extends JFrame implements GameView {
 
     @Override
     public void update(GameState gameState) {
+        this.labelTime.setText(gameState.getRoundTime());
         //Updating enemy layer
         this.enemiesPanel = new EnemiesPanel((ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList()), mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
         this.enemiesPanel.setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());

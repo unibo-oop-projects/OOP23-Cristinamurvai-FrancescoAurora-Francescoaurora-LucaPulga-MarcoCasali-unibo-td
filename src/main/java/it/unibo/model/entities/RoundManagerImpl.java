@@ -2,6 +2,8 @@ package it.unibo.model.entities;
 
 import java.util.List;
 import java.util.Random;
+
+import it.unibo.model.entities.enemies.EnemiesManager;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
@@ -16,7 +18,7 @@ public class RoundManagerImpl {
     private boolean interrupted = false;
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
-    private final EnemiesManagerImpl enemies;
+    private final EnemiesManager enemies;
     private RoundImp round;
     private double timeSpawn;
     private List<Integer> listEnemies;
@@ -28,7 +30,7 @@ public class RoundManagerImpl {
      * Constructor method, initialise variables.
      * @param enemiesManager to build enemies and verify alive
      */
-    public RoundManagerImpl(final EnemiesManagerImpl enemiesManager) {
+    public RoundManagerImpl(final EnemiesManager enemiesManager) {
         enemies = enemiesManager;
         round = new RoundImp(2); //change with get enemies
         random = new Random();

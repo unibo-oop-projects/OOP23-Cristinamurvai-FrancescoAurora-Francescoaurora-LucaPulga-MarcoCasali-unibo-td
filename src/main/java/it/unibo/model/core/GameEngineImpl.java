@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import it.unibo.model.entities.Entity;
 import it.unibo.model.entities.Player;
 import it.unibo.model.entities.PlayerImpl;
+import it.unibo.model.entities.RoundManagerImpl;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.enemies.EnemiesManager;
@@ -24,6 +25,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
     private final Player player = new PlayerImpl();
     private final DefenseManager defenseManager = new DefenseManagerImpl();
     private final EnemiesManager enemiesManager = new EnemiesManagerImpl();
+    private final RoundManagerImpl roudManager = new RoundManagerImpl(enemiesManager);
     private final Set<GameObserver> observers = new HashSet<>();
     private boolean isRunning = false;
     private boolean isGameOver = false;
@@ -74,6 +76,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
      * Main loop of the game.
      */
     public void run() {
+        roudManager.startGame();
         while (!this.gameState.isGameOver()) {
             try {
                 long start = System.currentTimeMillis();
@@ -131,6 +134,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
             @Override
             public Set<Enemy> getEnemies() {
                 return enemiesManager.getCurrentEnemies();
+            }
+
+            @Override
+            public String getRoundTime() {
+                return roudManager.getTime();
             }
         };
     }

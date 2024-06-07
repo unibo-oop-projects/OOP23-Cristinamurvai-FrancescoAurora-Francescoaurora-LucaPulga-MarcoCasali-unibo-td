@@ -41,4 +41,9 @@ public interface GameState {
      * 
      */
     Set<Enemy> getEnemies();
+    /**
+     * 
+     * @return Return time of roud. 
+     */
+    String getRoundTime();
 }
