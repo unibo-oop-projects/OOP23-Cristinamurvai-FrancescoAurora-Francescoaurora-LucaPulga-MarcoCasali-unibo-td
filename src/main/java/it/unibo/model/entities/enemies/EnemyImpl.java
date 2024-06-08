@@ -41,6 +41,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
         if(this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;
+			this.enemyState = EnemyState.DEAD;
         } else {
             this.lp -= damage;
         }

@@ -1,4 +1,4 @@
-package it.unibo.model.entities;
+package it.unibo.model.round;
 
 import java.util.List;
 import java.util.Random;

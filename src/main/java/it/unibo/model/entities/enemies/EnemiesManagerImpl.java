@@ -3,12 +3,13 @@ package it.unibo.model.entities.enemies;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.json.JSONArray;
-
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -16,11 +17,16 @@ import it.unibo.model.utilities.Vector2D;
 public class EnemiesManagerImpl implements EnemiesManager {
 
 	private static final String FILE_PATH = "src/main/resources/enemies/json/level1.json";
+	private static final String FILE_PATH_ENEMY_1 = "src/main/resources/enemies/json/enemy1.json";
+	private static final String FILE_PATH_ENEMY_2 = "src/main/resources/enemies/json/enemy2.json";
+	private static final String FILE_PATH_ENEMY_3 = "src/main/resources/enemies/json/enemy3.json";
+
 	private final static double MAX_DISTANCE = 100;
 	private final static long ENEMIES_MAP_ENTERING_SEPARATION = 1000;
 
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Thread> enemiesThreads;
+	private static final Map<Integer, String> enemyJsonFiles = new HashMap<>();
 
 	private Optional<GameMap> gameMap;
 	private long lastNewEnemyStartingTime;
@@ -30,6 +36,13 @@ public class EnemiesManagerImpl implements EnemiesManager {
 		this.enemiesThreads = new ArrayList<>();
 		this.gameMap = Optional.empty();
 		this.lastNewEnemyStartingTime = 0;
+    }
+
+	static {
+        // Mappatura degli ID dei nemici ai rispettivi file JSON
+        enemyJsonFiles.put(0, FILE_PATH_ENEMY_1);
+        enemyJsonFiles.put(1, FILE_PATH_ENEMY_2);
+		enemyJsonFiles.put(2, FILE_PATH_ENEMY_3);
     }
 
 	@Override
@@ -61,6 +74,25 @@ public class EnemiesManagerImpl implements EnemiesManager {
 			e.printStackTrace();
 		}
 	}
+
+	/*TO-DO
+	metodo pushEnemy(prende in ingresso un intero: 0, 1, 2 in base alla tipologia di nemico
+	*/
+	@Override
+	public void pushEnemy(int id) {
+		String jsonFilePath = enemyJsonFiles.get(id);
+		if(jsonFilePath == null) {
+			System.out.println("Enemy ID not found");
+            return;
+		}
+	}
+
+
+	@Override
+	public long getEnemiesAlive(ArrayList<Enemy> enemies) {
+		return enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.MOVING)).count();
+	}
+
 
 	@Override
 	public void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward) {
@@ -119,4 +151,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
 			enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
 		}
     }
+
+	
+
+	
 }
