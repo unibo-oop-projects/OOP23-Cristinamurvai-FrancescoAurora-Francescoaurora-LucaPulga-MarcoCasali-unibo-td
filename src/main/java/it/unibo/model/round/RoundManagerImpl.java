@@ -13,13 +13,13 @@ public class RoundManagerImpl {
 
 
     private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
-    private Thread countdownThread;
-    private Thread sequentialThread;
+    private Thread countdownThread = null;
+    private Thread sequentialThread = null;
     private boolean interrupted = false;
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
     private final EnemiesManager enemies;
-    private RoundImp round;
+    private Round round;
     private double timeSpawn;
     private List<Integer> listEnemies;
     private Random random;
@@ -43,17 +43,7 @@ public class RoundManagerImpl {
         if (interrupted) {
             return;
         }
-
-        if (sequentialThread != null && sequentialThread.isAlive()) {
-            interrupted = true;
-            try {
-                sequentialThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        interrupted = false;
+        countdownThread = null;
         synchronized (lock) {
             currentTime = ROUND_TIME;
         }
@@ -94,7 +84,7 @@ public class RoundManagerImpl {
         if (interrupted) {
             return;
         }
-
+        countdownThread = null;
         round.increaseRoud();
         timeSpawn = round.getTimeSpawn();
         listEnemies = round.getEnemiesSpawn();
@@ -113,25 +103,24 @@ public class RoundManagerImpl {
         public void run() {
             double seconds = 0;
             double spawnCounter = 0; // counter for the creation of enemies
+            int numEnemiesSpawn = countNonZeroEnemies();
             while (!interrupted) {
                 synchronized (lock) {
                     currentTime = (int) seconds;
                 }
-
-                spawnCounter += ADVANCEMENT_TIME;
                 if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
-                    int enemyIndex = random.nextInt(2); //change with get enemis
+                    int enemyIndex = random.nextInt(numEnemiesSpawn);
                     boolean spawn = false;
                     while (!spawn) {
                         if (listEnemies.get(enemyIndex) != 0) {
                             // Inserire qui il costruttore del nemico
                             spawn = true;
+                            listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);
                         } else {
                             enemyIndex++;
-                            enemyIndex = enemyIndex % 2;
+                            enemyIndex = enemyIndex % numEnemiesSpawn;
                         }
                     }
-
                     spawnCounter -= timeSpawn;
                 } else {
                     if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //aggiungere isAlive
@@ -145,20 +134,17 @@ public class RoundManagerImpl {
                     return;
                 }
                 seconds += ADVANCEMENT_TIME;
+                spawnCounter += ADVANCEMENT_TIME;
             }
             interrupted = false;
             startCountdown();
         }
-
         /**
-         * Conversion of seconds to minutes and seconds.
-         * @param totalSeconds seconds stored in the thread
-         * @return minutes and seconds
+         * Count the types of enemies to be spawned.
+         * @return types of enemies
          */
-        private String secondsToTimeFormat(final int totalSeconds) {
-            int minutes = totalSeconds / MINUTES_SECONDS_IN_HOURS_MINUTES;
-            int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
-            return String.format("%02d:%02d", minutes, seconds);
+        private int countNonZeroEnemies() {
+            return (int) listEnemies.stream().filter(e -> e != 0).count();
         }
     }
 
@@ -221,5 +207,13 @@ public class RoundManagerImpl {
      */
     public void startGame() {
         startCountdown();
+    }
+
+    /**
+     * Method for return round number.
+     * @return round number
+     */
+    public int getRound(){
+        return round.getRoud();
     }
 }

@@ -52,6 +52,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private JLabel labelTime = null;
     private JLabel labelLife = null;
     private JLabel labelMoney = null;
+    private JLabel labelRound = null;
 
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
@@ -61,11 +62,15 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        JPanel labelPanel = new JPanel(new GridLayout(1, 3)); // Layout with one row and three columns
+        JPanel labelPanel = new JPanel(new GridLayout(1, 4)); // Layout with one row and three columns
 
         // add label screw
         this.labelLife = new JLabel("Vite e immagine vite");
         labelPanel.add(labelLife);
+
+        //Add label roud
+        this.labelRound = new JLabel("Roud");
+        labelPanel.add(labelRound);
 
         // add label time
         this.labelTime = new JLabel("Tempo ondata");
@@ -126,8 +131,12 @@ public class GuiGameStart extends JFrame implements GameView {
         this.labelTime.setText(gameState.getRoundTime());
         this.labelMoney.setText("Your money: " + gameState.getMoney());
         this.labelLife.setText("Your lives: " + gameState.getLives());
-
-
+        if (gameState.getRoundNumber() != 0) {
+            this.labelRound.setText("Round: " + gameState.getRoundNumber());
+        } else {
+            this.labelRound.setText("Pre-round, position the towers");
+        }
+        
         //Updating enemy layer
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
     }

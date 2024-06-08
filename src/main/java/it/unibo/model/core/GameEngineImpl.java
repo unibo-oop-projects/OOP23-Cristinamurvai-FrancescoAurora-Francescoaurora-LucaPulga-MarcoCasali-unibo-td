@@ -140,6 +140,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
             public String getRoundTime() {
                 return roudManager.getTime();
             }
+
+            @Override
+            public int getRoundNumber(){
+                return roudManager.getRound();
+            }
         };
     }
 

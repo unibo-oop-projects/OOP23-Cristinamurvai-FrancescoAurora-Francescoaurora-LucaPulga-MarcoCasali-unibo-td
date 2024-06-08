@@ -27,7 +27,7 @@ public class RoundImp implements Round {
         rouds = -1;
         this.enemiesSpawn = new ArrayList<>();
         for (int i = 0; i < numberEnemies; i++) {
-            this.enemiesSpawn.add(DEFAULT_NUMBER_ENEMIES);
+            this.enemiesSpawn.add(0);
         }
     }
 
