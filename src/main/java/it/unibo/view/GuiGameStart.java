@@ -14,8 +14,12 @@ import javax.swing.OverlayLayout;
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
+import it.unibo.model.entities.defense.tower.BasicTower;
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.enemies.EnemiesPanel;
+import it.unibo.view.defense.TowerCardView;
+import it.unibo.view.defense.WeaponCardView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -90,15 +94,14 @@ public class GuiGameStart extends JFrame implements GameView {
 
 
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
+        TowerCardView towerCardView = new TowerCardView(new BasicTower(2, mapName, mapName, mapName, null, null, ERROR, ALLBITS, ABORT, null, null, null, null));
+        
+        towerPanel.add(towerCardView);
+        towerPanel.add(towerCardView);
+        towerPanel.add(towerCardView);
+        towerPanel.add(towerCardView);
+        towerPanel.add(towerCardView);
+        towerPanel.add(towerCardView);
 
         JScrollPane scrollPane = new JScrollPane(towerPanel);
         scrollPane.setPreferredSize(new Dimension(300, 0));
@@ -191,69 +194,5 @@ public class GuiGameStart extends JFrame implements GameView {
         g2.dispose();
     
         return new ImageIcon(resizedImg);
-    }
-
-    private JPanel createTowerCard(String name, String imgPath, int stat0, int stat1, int stat2) {
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 +
-        "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
-
-        card.setToolTipText(tooltipText);
-        JPanel imgPanel = new JPanel(new BorderLayout());
-        imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); 
-        JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(imgPath)));
-        imgLabel.setPreferredSize(new Dimension(200, 150));
-        imgPanel.add(imgLabel, BorderLayout.NORTH);
-        card.add(imgPanel, BorderLayout.NORTH);
-
-        // Panel for stats with left margin
-        JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
-        JLabel nameLabel = new JLabel(name);
-        statsPanel.add(nameLabel);
-
-        JLabel stat1Label = new JLabel("Stat1: " + stat1);
-        statsPanel.add(stat1Label);
-
-        card.add(statsPanel, BorderLayout.CENTER);
-
-        // Button panel with centered button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton weaponButton = new JButton("Weapons");
-        weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showWeaponDialog(name);
-            }
-        });
-        buttonPanel.add(weaponButton);
-        card.add(buttonPanel, BorderLayout.SOUTH);
-
-        card.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                selectedTowerName = name;
-                selectedTowerImagePath = imgPath;
-                System.out.println("Selected tower: " + name);
-            }
-        });
-        return card;
-    }
-
-    private void showWeaponDialog(String towerName) {
-        JDialog weaponDialog = new JDialog(this, "Weapons for " + towerName, true);
-        weaponDialog.setSize(400, 300);
-
-        JPanel weaponPanel = new JPanel();
-        weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
-
-        weaponPanel.add(new JLabel("Weapon 1: Damage 10"));
-        weaponPanel.add(new JLabel("Weapon 2: Damage 20"));
-        weaponPanel.add(new JLabel("Weapon 3: Damage 30"));
-
-        weaponDialog.add(weaponPanel);
-        weaponDialog.setLocationRelativeTo(this);
-        weaponDialog.setVisible(true);
     }
 }
