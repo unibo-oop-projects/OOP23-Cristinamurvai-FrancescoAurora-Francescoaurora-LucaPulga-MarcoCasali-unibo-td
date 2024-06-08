@@ -1,4 +1,5 @@
 {
+    "id": 0,
     "name": "rat",
     "type": "base",
     "imgPath": "src/main/resources/enemies/img/rat_move.gif",

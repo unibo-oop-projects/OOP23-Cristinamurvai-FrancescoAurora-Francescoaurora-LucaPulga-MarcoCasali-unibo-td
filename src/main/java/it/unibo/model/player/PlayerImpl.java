@@ -1,4 +1,5 @@
-package it.unibo.model.entities;
+package it.unibo.model.player;
+
 /**
  * Player implementation.
  */
