@@ -47,6 +47,13 @@ public class RoundManagerImpl {
         synchronized (lock) {
             currentTime = ROUND_TIME;
         }
+        countdownThread = null;
+        round.increaseRoud();
+        timeSpawn = round.getTimeSpawn();
+        listEnemies = round.getEnemiesSpawn();
+        if(round.getLastRound() == true){
+            return;
+        }
         countdownThread = new Thread(new CountdownTask());
         countdownThread.start();
     }
@@ -84,10 +91,6 @@ public class RoundManagerImpl {
         if (interrupted) {
             return;
         }
-        countdownThread = null;
-        round.increaseRoud();
-        timeSpawn = round.getTimeSpawn();
-        listEnemies = round.getEnemiesSpawn();
         sequentialThread = new Thread(new SequentialTask());
         sequentialThread.start();
     }
@@ -158,6 +161,8 @@ public class RoundManagerImpl {
                 return "Countdown: " + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
                 return "Sequential count: " + secondsToTimeFormat(currentTime);
+            } else if (round.getLastRound() == true) {
+                return "You win!";
             } else {
                 return "No active timers";
             }
@@ -215,5 +220,13 @@ public class RoundManagerImpl {
      */
     public int getRound() {
         return round.getRoud();
+    }
+
+    /**
+     * Get if it is the last round from the instance of the round.
+     * @return answer to the question (true or false)
+     */
+    public boolean getLastRound() {
+        return round.getLastRound();
     }
 }

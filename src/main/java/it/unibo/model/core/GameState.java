@@ -51,4 +51,9 @@ public interface GameState {
      * @return round number.
      */
     int getRoundNumber();
+
+    /**
+     * @return if is last round.
+     */
+    boolean getLastRound();
 }

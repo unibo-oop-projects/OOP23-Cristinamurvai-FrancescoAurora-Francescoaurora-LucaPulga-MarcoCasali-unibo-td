@@ -82,9 +82,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 long start = System.currentTimeMillis();
                 // Temporary added here to test enemies
                 this.enemiesManager.updateEnemiesDirections(start);
-
                 this.updateGameState();
                 this.updateObservers();
+                if (this.gameState.getLastRound() == true){                   
+                    return;
+                }
                 long delta = System.currentTimeMillis() - start;
                 if (delta < FRAME_LIMIT) {
                     Thread.sleep(FRAME_LIMIT - delta);
@@ -144,6 +146,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
             @Override
             public int getRoundNumber() {
                 return roudManager.getRound();
+            }
+
+            @Override
+            public boolean getLastRound(){
+                return roudManager.getLastRound();
             }
         };
     }

@@ -11,6 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
@@ -66,7 +69,7 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        JPanel labelPanel = new JPanel(new GridLayout(1, 4)); // Layout with one row and three columns
+        JPanel labelPanel = new JPanel(new GridLayout(1, 5)); // Layout with one row and three columns
 
         // add label screw
         this.labelLife = new JLabel("Vite e immagine vite");
@@ -83,6 +86,26 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding label money
         this.labelMoney = new JLabel("Soldi disponibili");
         labelPanel.add(labelMoney);
+
+        //addming botton paused and settings
+        JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
+        JButton pauseButton = new JButton("Pause");
+
+        ActionListener gamePause = e -> {
+
+        };
+
+        pauseButton.addActionListener(gamePause);
+
+        ActionListener gameSettings = e -> {
+
+        };
+
+        JButton settingsButton = new JButton("Settings");
+        settingsButton.addActionListener(gameSettings);
+        buttonGui.add(pauseButton);
+        buttonGui.add(settingsButton);
+        labelPanel.add(buttonGui);
 
         contentPanel.add(labelPanel, BorderLayout.NORTH);
         this.createMap(map);
@@ -140,6 +163,9 @@ public class GuiGameStart extends JFrame implements GameView {
             this.labelRound.setText("Round: " + gameState.getRoundNumber());
         } else {
             this.labelRound.setText("Pre-round, position the towers");
+        }
+        if(gameState.getLastRound() == true) {
+            showGameWin(gameState.getRoundNumber());
         }
 
         //Updating enemy layer
@@ -272,5 +298,51 @@ public class GuiGameStart extends JFrame implements GameView {
         weaponDialog.add(weaponPanel);
         weaponDialog.setLocationRelativeTo(this);
         weaponDialog.setVisible(true);
+    }
+
+    public static void showGameWin(final int round) {
+        final int widthDialog = 500;
+        final int heightDialog = 200;
+        JDialog winDialog = new JDialog();
+        winDialog.setTitle("Game Win");
+        winDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        winDialog.setSize(widthDialog, heightDialog);
+        winDialog.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        winDialog.add(panel);
+        placeWinComponents(panel, winDialog, round);
+
+        winDialog.setVisible(true);
+    }
+
+    private static void placeWinComponents(final JPanel panel, final JDialog dialog, final int round) {
+        final int alignmentXLabel = 50;
+        final int alignmentYLabel = 20;
+        final int widthLabel = 400;
+        final int heightLabel = 75;
+        final int alignmentXButton = 200;
+        final int alignmentYButton = 120;
+        final int widthButton = 100;
+        final int heightButton = 25;
+        panel.setLayout(null);
+        String message = "<html>Congratulations! You have completed the game.<br>"
+                       + "The number of rounds completed is: " + round + ".<br>"
+                       + "Press \"Exit\" to leave the game.</html>";
+        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
+        panel.add(messageLabel);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
+        panel.add(exitButton);
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                dialog.dispose();
+                System.exit(0);
+            }
+        });
     }
 }
