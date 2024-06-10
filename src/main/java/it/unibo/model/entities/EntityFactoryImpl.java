@@ -38,7 +38,7 @@ public class EntityFactoryImpl implements EntityFactory {
             if (jsonString != null) {
                 return objectMapper.readValue(jsonString, entityType);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
         return null;

@@ -46,13 +46,13 @@ public class GameMapFactoryImpl implements GameMapFactory {
         for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
             tiles.putAll(unpackSet((JSONObject) tileSet, columns));
         }
-        
+
         /**
          * Filling unspecified tiles with neutral tiles to make
          * json file simpler.
         */
         for (int i = 0; i < rows * columns; i++) {
-            if(!tiles.containsKey(i)) {
+            if (!tiles.containsKey(i)) {
                 tiles.put(i, tileFactory.fromName(FILLER_TILE));
             }
         }
@@ -169,7 +169,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 //TODO vertical range
             } else { //singular tile
                 map.put(posArray.getInt(i), tileFactory.fromName(tileName));
-            }  
+            }
         }
 
         return map;

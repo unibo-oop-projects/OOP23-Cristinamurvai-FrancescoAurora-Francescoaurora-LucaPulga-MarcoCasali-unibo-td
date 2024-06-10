@@ -57,6 +57,10 @@ public class GuiGameStart extends JFrame implements GameView {
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
 
+    /**
+     * .
+     * @param mapName
+     */
     public GuiGameStart(final String mapName) {
         final GameMap map = controller.setGameMap(mapName);
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
@@ -87,7 +91,8 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight()/ map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() 
+        / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
         this.layeredPane.add(mapPanel);
@@ -111,7 +116,7 @@ public class GuiGameStart extends JFrame implements GameView {
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(final ComponentEvent e) {
                 resizeImages(map);
             }
         });
@@ -136,27 +141,27 @@ public class GuiGameStart extends JFrame implements GameView {
         } else {
             this.labelRound.setText("Pre-round, position the towers");
         }
-        
+
         //Updating enemy layer
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
     }
 
-    private void resizeImages(GameMap map) {
-        this.tiles.entrySet().forEach( e ->
+    private void resizeImages(final GameMap map) {
+        this.tiles.entrySet().forEach(e ->
                 setScaledIcon(e.getKey(), e.getValue(),
                  this.mapPanel.getWidth() / map.getColumns(),
                  this.mapPanel.getHeight() / map.getRows())
         );
     }
 
-    private void createMap(GameMap map) {
+    private void createMap(final GameMap map) {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
             setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
                 this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
+                public void mouseClicked(final MouseEvent e) {
                     if (selectedTowerName != null) {
                         setScaledIcon(cell, selectedTowerImagePath, mapPanel.getWidth() / map.getColumns(),
                             mapPanel.getHeight() / map.getRows());
@@ -170,11 +175,11 @@ public class GuiGameStart extends JFrame implements GameView {
         });
     }
 
-    private void setScaledIcon(JButton cell, String imgPath, int width, int height) {
-        if(width == 0) {
+    private void setScaledIcon(final JButton cell, final String imgPath, int width, int height) {
+        if (width == 0) {
             width = ICON_DEFAULT_SIZE;
         }
-        if(height == 0) {
+        if (height == 0) {
             height = ICON_DEFAULT_SIZE;
         }
         Image icon = null;
@@ -189,24 +194,27 @@ public class GuiGameStart extends JFrame implements GameView {
 
     /**
      * TODO reference
-     * https://stackoverflow.com/a/6714381
+     * https://stackoverflow.com/a/6714381 .
+     * @param srcImg source Image
+     * @param width
+     * @param height
      */
-    private ImageIcon getScaledImage(Image srcImg, int width, int height) {
+    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
         BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
-    
+
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(srcImg, 0, 0, width, height, null);
         g2.dispose();
-    
+
         return new ImageIcon(resizedImg);
     }
 
-    private JPanel createTowerCard(String name, String imgPath, int stat0, int stat1, int stat2) {
+    private JPanel createTowerCard(final String name, final String imgPath, final int stat0, final int stat1, final int stat2) {
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 +
-        "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
+        String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 
+        + "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
 
         card.setToolTipText(tooltipText);
         JPanel imgPanel = new JPanel(new BorderLayout());
@@ -233,7 +241,7 @@ public class GuiGameStart extends JFrame implements GameView {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton weaponButton = new JButton("Weapons");
         weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 showWeaponDialog(name);
             }
         });
@@ -241,7 +249,7 @@ public class GuiGameStart extends JFrame implements GameView {
         card.add(buttonPanel, BorderLayout.SOUTH);
 
         card.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(final java.awt.event.MouseEvent evt) {
                 selectedTowerName = name;
                 selectedTowerImagePath = imgPath;
                 System.out.println("Selected tower: " + name);
@@ -250,7 +258,7 @@ public class GuiGameStart extends JFrame implements GameView {
         return card;
     }
 
-    private void showWeaponDialog(String towerName) {
+    private void showWeaponDialog(final String towerName) {
         JDialog weaponDialog = new JDialog(this, "Weapons for " + towerName, true);
         weaponDialog.setSize(400, 300);
 

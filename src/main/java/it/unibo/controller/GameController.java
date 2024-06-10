@@ -11,7 +11,7 @@ import it.unibo.view.GameView;
 public interface GameController extends GameObserver {
     /**
      * Starts the game, requires a map
-     * to be set through {@link #setGameMap}
+     * to be set through {@link #setGameMap}.
      */
     void startGame();
     /**

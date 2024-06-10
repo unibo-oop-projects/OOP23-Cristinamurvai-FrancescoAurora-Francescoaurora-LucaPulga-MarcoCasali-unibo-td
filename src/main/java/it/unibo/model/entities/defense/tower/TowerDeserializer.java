@@ -20,12 +20,20 @@ import it.unibo.model.entities.defense.weapon.WeaponImpl;
 import it.unibo.model.entities.defense.tower.attack.AreaAttack;
 
 import java.util.Set;
+
+/**
+ * .
+ */
 public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
     private Class<T> towerClass;
     private ObjectMapper mapper;
 
-    public TowerDeserializer(Class<T> towerClass) {
+    /**
+     * Constructor.
+     * @param towerClass
+     */
+    public TowerDeserializer(final Class<T> towerClass) {
         super(towerClass);
         this.towerClass = towerClass;
         this.mapper = new ObjectMapper();
@@ -33,7 +41,7 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public T deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
         int id = node.get("id").asInt();
@@ -45,7 +53,7 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         int cost = node.get("cost").asInt();
         int level = node.get("level").asInt();
         int range = node.get("range").asInt();
-        Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), new TypeReference<Set<WeaponImpl>>() {});
+        Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), new TypeReference<Set<WeaponImpl>>() { });
         Weapon currentWeapon = mapper.treeToValue(node.get("currentWeapon"), WeaponImpl.class);
 
         String attackStrategyName = node.get("attackStrategy").asText();
@@ -53,8 +61,7 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
         if (attackStrategyName.equals("SingleTargetAttack")) {
             attackStrategy = new SingleTargetAttack();
-        }
-        else {
+        } else {
             attackStrategy = new AreaAttack();
         }
 
@@ -62,14 +69,14 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         TargetSelectionStrategy targetSelectionStrategy;
 
         if (targetSelectionStrategyName.equals("DistanceBasedTargetSelection")) {
-            targetSelectionStrategy = new DistanceBasedTargetSelection();   
-        }
-        else{
+            targetSelectionStrategy = new DistanceBasedTargetSelection();
+        } else {
             targetSelectionStrategy = new DistanceBasedTargetSelection(); 
         }
 
         if (towerClass.equals(BasicTower.class)) {
-            Tower tower = new BasicTower(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, attackStrategy, targetSelectionStrategy);
+            Tower tower = new BasicTower(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons,
+                             currentWeapon, attackStrategy, targetSelectionStrategy);
             return (T) tower;
         }
         return null;

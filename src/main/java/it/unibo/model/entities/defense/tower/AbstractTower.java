@@ -18,10 +18,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class AbstractTower extends AbstractMovableEntity implements Tower {
     @JsonProperty("cost")
     private int cost;
-    
+
     @JsonProperty("level")
     private int level;
-    
+
     @JsonProperty("range")
     private int range;
 
@@ -33,7 +33,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     @JsonProperty("attackStrategy")
     protected AttackStrategy attackStrategy;
-    
+
     @JsonProperty("targetSelectionStrategy")
     protected TargetSelectionStrategy targetSelectionStrategy;
 
@@ -42,6 +42,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @param id
      * @param name
      * @param type
+     * @param imgPath
      * @param position2d
      * @param direction2d
      * @param cost
@@ -53,19 +54,19 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @param targetSelectionStrategy
      */
     @JsonCreator
-    public AbstractTower(@JsonProperty("id") int id, 
-                        @JsonProperty("name") String name, 
-                        @JsonProperty("type") String type, 
-                        @JsonProperty("imgPath") String imgPath,
-                        @JsonProperty("position2d") Position2D position2d, 
-                        @JsonProperty("direction2d") Vector2D direction2d, 
-                        @JsonProperty("cost") int cost, 
-                        @JsonProperty("level") int level, 
-                        @JsonProperty("range") int range, 
-                        @JsonProperty("weapons") Set<WeaponImpl> weapons, 
-                        @JsonProperty("currentWeapon") Weapon currentWeapon,
-                        @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
-                        @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy)  {
+    public AbstractTower(@JsonProperty("id") final int id, 
+                        @JsonProperty("name") final String name, 
+                        @JsonProperty("type") final String type, 
+                        @JsonProperty("imgPath") final String imgPath,
+                        @JsonProperty("position2d") final Position2D position2d, 
+                        @JsonProperty("direction2d") final Vector2D direction2d, 
+                        @JsonProperty("cost") final int cost, 
+                        @JsonProperty("level") final int level, 
+                        @JsonProperty("range") final int range, 
+                        @JsonProperty("weapons") final Set<WeaponImpl> weapons, 
+                        @JsonProperty("currentWeapon") final Weapon currentWeapon,
+                        @JsonProperty("attackStrategy") final AttackStrategy attackStrategy,
+                        @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy)  {
         super(id, name, type, imgPath, position2d, direction2d);
         this.cost = cost;
         this.level = level;
@@ -91,7 +92,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public Vector2D getDirection() {
         return this.direction2d;
     }
-    
+
     /**
      * Get tower's level.
      */
@@ -99,7 +100,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public int getLevel() {
         return this.level;
     }
-    
+
     /**
      * Get tower's position.
      */
@@ -107,7 +108,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public double getRange() {
         return this.range;
     }
-    
+
     /**
      * Get tower's weapons.
      */
@@ -131,7 +132,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public int getCost() {
         return this.cost;
     }
-    
+
     @Override
     public TargetSelectionStrategy getTargetSelectionStrategy() {
         return this.targetSelectionStrategy;

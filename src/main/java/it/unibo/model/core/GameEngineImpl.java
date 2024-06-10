@@ -13,7 +13,7 @@ import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
 import it.unibo.model.player.PlayerImpl;
-import it.unibo.model.round.*;
+import it.unibo.model.round.RoundManagerImpl;
 
 /**
  * Implementation of {@link GameEngine}.
@@ -82,11 +82,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 long start = System.currentTimeMillis();
                 // Temporary added here to test enemies
                 this.enemiesManager.updateEnemiesDirections(start);
-                
+
                 this.updateGameState();
                 this.updateObservers();
                 long delta = System.currentTimeMillis() - start;
-                if(delta < FRAME_LIMIT) {
+                if (delta < FRAME_LIMIT) {
                     Thread.sleep(FRAME_LIMIT - delta);
                 }
             } catch (Exception e) {
@@ -142,7 +142,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
             }
 
             @Override
-            public int getRoundNumber(){
+            public int getRoundNumber() {
                 return roudManager.getRound();
             }
         };

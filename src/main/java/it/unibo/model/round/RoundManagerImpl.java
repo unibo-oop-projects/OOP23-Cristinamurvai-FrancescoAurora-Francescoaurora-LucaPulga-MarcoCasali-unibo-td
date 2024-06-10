@@ -213,7 +213,7 @@ public class RoundManagerImpl {
      * Method for return round number.
      * @return round number
      */
-    public int getRound(){
+    public int getRound() {
         return round.getRoud();
     }
 }

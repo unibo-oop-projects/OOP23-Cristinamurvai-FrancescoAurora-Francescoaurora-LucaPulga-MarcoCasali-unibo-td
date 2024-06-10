@@ -8,36 +8,59 @@ import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
-public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnable{
+/**
+ * .
+ */
+public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnable {
 
     private int damage;
     private int speed;
     private Enemy targetEnemy;
 
+    /**
+     * Constructor.
+     * @param id
+     * @param name
+     * @param type
+     * @param imgPath
+     * @param initialPosition
+     * @param direction2d
+     * @param speed
+     * @param damage
+     * @param enemy
+     */
     @JsonCreator
     public BulletImpl(
-                @JsonProperty("id")int id, 
-                @JsonProperty("name")String name, 
-                @JsonProperty("type")String type, 
-                @JsonProperty("imgPath")String imgPath, 
-                @JsonProperty("initialPosition")Position2D initialPosition, 
-                @JsonProperty("direction2d")Vector2D direction2d, 
-                @JsonProperty("speed")int speed, 
-                @JsonProperty("damage")int damage, 
-                @JsonProperty("enemy")Enemy enemy) {
+                @JsonProperty("id") final int id, 
+                @JsonProperty("name")final String name, 
+                @JsonProperty("type")final String type, 
+                @JsonProperty("imgPath")final String imgPath, 
+                @JsonProperty("initialPosition")final Position2D initialPosition, 
+                @JsonProperty("direction2d")final Vector2D direction2d, 
+                @JsonProperty("speed")final int speed, 
+                @JsonProperty("damage")final int damage, 
+                @JsonProperty("enemy")final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
         this.damage = damage;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean hasReachedTarget() {
         return this.position2d.equals(targetEnemy.getPosition());
     }
 
+    /**
+     * .
+     */
     public Position2D getPosition() {
         return this.position2d;
     }
+
 
     @Override
     public void run() {
@@ -49,7 +72,8 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
             Vector2D movementVector = directionVector.multiply(speed);
 
             // Aggiorna la posizione della Bullet
-            this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() + (int) movementVector.y());
+            this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
+            + (int) movementVector.y());
 
             // Attesa per una frazione di secondo prima di aggiornare la posizione.
             try {
@@ -62,7 +86,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
         // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
         this.targetEnemy.getDamage(damage);
 
-        if(!Thread.interrupted()){
+        if (!Thread.interrupted()) {
             Thread.currentThread().interrupt();
         }
     }
@@ -77,12 +101,18 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
     //     return Math.atan2(deltaY, deltaX);
     // }
 
-    private Vector2D calculateDirection(Position2D currentPosition, Position2D targetPosition) {
+    /**
+     * 
+     * @param currentPosition
+     * @param targetPosition
+     * @return
+     */
+    private Vector2D calculateDirection(final Position2D currentPosition, final Position2D targetPosition) {
         // Calcola il vettore direzione dal currentPosition al targetPosition
         int deltaX = targetPosition.x() - currentPosition.x();
         int deltaY = targetPosition.y() - currentPosition.y();
         Vector2D directionVector = new Vector2D(deltaX, deltaY);
-    
+
         // Normalizza il vettore direzione per ottenere un vettore con lunghezza 1
         return directionVector.normalize();
     }

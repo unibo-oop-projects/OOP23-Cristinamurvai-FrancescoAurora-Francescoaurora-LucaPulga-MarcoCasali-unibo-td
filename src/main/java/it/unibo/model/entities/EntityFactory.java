@@ -11,7 +11,7 @@ import it.unibo.model.utilities.Vector2D;
  */
 public interface EntityFactory {
 
-    Tower loadTower(final String jsonFilePath) throws IOException; 
+    Tower loadTower(String jsonFilePath) throws IOException; 
 
-    <T> T loadEntity(final String jsonFilePath, final Position2D position2d, Vector2D direction, Class<T> entityType);
+    <T> T loadEntity(String jsonFilePath,Position2D position2d, Vector2D direction, Class<T> entityType);
 }

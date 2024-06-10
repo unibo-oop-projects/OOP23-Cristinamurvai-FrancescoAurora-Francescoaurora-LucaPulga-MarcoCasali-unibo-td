@@ -53,9 +53,9 @@ public class EnemiesManagerImpl implements EnemiesManager {
 			String content = new String(Files.readAllBytes(Paths.get(FILE_PATH))); // TODO: UTILIZZARE INPUT STREAM COME IN TILEFACTORY_IMPL
 			JSONObject jsonObject = new JSONObject(content);
 			JSONArray enemyTypesArray = jsonObject.getJSONArray("enemies");
-			
+
 			//uso la libreria json di java e zero problem
-			for(int i=0; i<enemyTypesArray.length(); i++) {
+			for (int i = 0; i < enemyTypesArray.length(); i++) {
 				JSONObject enemyType = enemyTypesArray.getJSONObject(i);
 				String name = enemyType.optString("name");
 				String type = enemyType.getString("type");
@@ -66,11 +66,11 @@ public class EnemiesManagerImpl implements EnemiesManager {
 				int reward = enemyType.getInt("reward");
 				int quantity = enemyType.getInt("quantity");
 
-				for(int j=0; j<quantity; j++) {
+				for (int j = 0; j < quantity; j++) {
 					buildEnemy(this.gameMap.get(), name, type, imgPath, lp, reward);
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -79,9 +79,9 @@ public class EnemiesManagerImpl implements EnemiesManager {
 	metodo pushEnemy(prende in ingresso un intero: 0, 1, 2 in base alla tipologia di nemico
 	*/
 	@Override
-	public void pushEnemy(int id) {
+	public void pushEnemy(final int id) {
 		String jsonFilePath = enemyJsonFiles.get(id);
-		if(jsonFilePath == null) {
+		if (jsonFilePath == null) {
 			System.out.println("Enemy ID not found");
             return;
 		}
@@ -95,10 +95,12 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 
 	@Override
-	public void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward) {
+	public void buildEnemy(final GameMap gameMap, final String enemyName, final String type, final String imgPath,
+								 final int lp, final int reward) {
 		Position2D spawnPosition = gameMap.getSpawnPosition();
 		Vector2D direction = gameMap.getPathDirection(spawnPosition);
-		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition, direction, lp, reward);
+		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
+													 direction, lp, reward);
 		Thread newEnemyThread = new Thread(newEnemy);
 
 		newEnemyThread.start();
@@ -107,22 +109,24 @@ public class EnemiesManagerImpl implements EnemiesManager {
 		this.enemiesThreads.add(newEnemyThread);
 
 		//TO-DO: remove, used only for debug
-		System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() + ") with direction (" + direction.x() + ", " + direction.y() + ")");
+		System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() 
+									+ ") with direction (" + direction.x() + ", " + direction.y() + ")");
 	}
 
     @Override
 	public Set<Enemy> getCurrentEnemies() {
         return this.enemies.stream().collect(Collectors.toSet());
 	}
-    
+
 	@Override
-	public Optional<Enemy> getNearestEnemy(Position2D position2d, int radius) {
+	public Optional<Enemy> getNearestEnemy(final Position2D position2d, final int radius) {
 		Optional<Enemy>  nearestEnemy = Optional.empty();
 		double nearestDistance = MAX_DISTANCE;
 		double distance;
 		for (Enemy enemy : this.enemies) {
-			distance = Math.sqrt(Math.pow(position2d.x() - enemy.getPosition().x(), 2) + Math.pow(position2d.y() - enemy.getPosition().y(), 2));
-			if(distance < nearestDistance && distance <= radius) {
+			distance = Math.sqrt(Math.pow(position2d.x() - enemy.getPosition().x(), 2) + Math.pow(position2d.y() 
+													- enemy.getPosition().y(), 2));
+			if (distance < nearestDistance && distance <= radius) {
 				nearestDistance = distance;
 				nearestEnemy = Optional.of(enemy);
 			}
@@ -131,17 +135,17 @@ public class EnemiesManagerImpl implements EnemiesManager {
 	}
 
 	@Override
-	public void setMap(GameMap gameMap) {
+	public void setMap(final GameMap gameMap) {
 		this.gameMap = Optional.of(gameMap);
 	}
 
 	@Override
 	// TO-DO: raise exception if the optional map is empty
-	public void updateEnemiesDirections(long currentTimeMillis) {
+	public void updateEnemiesDirections(final long currentTimeMillis) {
 		boolean newEnemyEntered = false;
 		for (Enemy enemy : enemies) {
-			if(enemy.getState().equals(EnemyState.READY) && !newEnemyEntered && 
-			  (currentTimeMillis - this.lastNewEnemyStartingTime) >= ENEMIES_MAP_ENTERING_SEPARATION) {
+			if (enemy.getState().equals(EnemyState.READY) && !newEnemyEntered 
+			&& (currentTimeMillis - this.lastNewEnemyStartingTime) >= ENEMIES_MAP_ENTERING_SEPARATION) {
 				enemy.startMoving();
 				newEnemyEntered = true;
 				this.lastNewEnemyStartingTime = currentTimeMillis;

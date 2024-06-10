@@ -33,7 +33,7 @@ public interface EnemiesManager {
     void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward);
 
      /**
-     * Uptate directions of all the currently alive enemies 
+     * Uptate directions of all the currently alive enemies.
      * @param currenTimeMillis
      */
     void updateEnemiesDirections(long currentTimeMillis);

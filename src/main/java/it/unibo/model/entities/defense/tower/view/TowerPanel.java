@@ -12,9 +12,15 @@ import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-
+/**
+ * TowerPanel.
+ */
 public class TowerPanel extends JPanel {
 
+    /**
+     * Constractor.
+     * @param towers
+     */
     public TowerPanel(final Set<Tower> towers) {
         setLayout(new GridLayout(towers.size(), 2));
 
@@ -23,7 +29,7 @@ public class TowerPanel extends JPanel {
         }
     }
 
-    private JPanel createTowerPanel(Tower tower) {
+    private JPanel createTowerPanel(final Tower tower) {
         JPanel towerPanel = new JPanel();
         towerPanel.setBorder(BorderFactory.createEtchedBorder());
         towerPanel.setLayout(new BorderLayout());
