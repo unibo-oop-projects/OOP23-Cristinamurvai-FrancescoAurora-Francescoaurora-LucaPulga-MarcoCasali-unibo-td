@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import it.unibo.model.entities.enemies.EnemiesManager;
-import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 
 /**
  * Implements of interface Management of rouds.
@@ -25,6 +24,7 @@ public class RoundManagerImpl {
     private Random random;
     private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
     private static final double ADVANCEMENT_TIME = 0.1;
+    private boolean isPaused = false;
 
     /**
      * Constructor method, initialise variables.
@@ -68,6 +68,13 @@ public class RoundManagerImpl {
         @Override
         public void run() {
             for (int i = ROUND_TIME; i > 0; i--) {
+                while (isPaused == true) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
                 synchronized (lock) {
                     if (interrupted) {
                         return;
@@ -108,6 +115,13 @@ public class RoundManagerImpl {
             double spawnCounter = 0; // counter for the creation of enemies
             int numEnemiesSpawn = countNonZeroEnemies();
             while (!interrupted) {
+                while (isPaused == true) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
                 synchronized (lock) {
                     currentTime = (int) seconds;
                 }
@@ -228,5 +242,12 @@ public class RoundManagerImpl {
      */
     public boolean getLastRound() {
         return round.getLastRound();
+    }
+
+    /**
+     * Start and Stop Pause.
+     */
+    public void togglePause() {
+        this.isPaused = !isPaused;
     }
 }

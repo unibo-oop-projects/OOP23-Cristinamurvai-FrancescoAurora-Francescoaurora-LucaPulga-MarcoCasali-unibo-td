@@ -92,12 +92,14 @@ public class GuiGameStart extends JFrame implements GameView {
         JButton pauseButton = new JButton("Pause");
 
         ActionListener gamePause = e -> {
-
+            this.controller.togglePause();
+            showGamePause();
         };
 
         pauseButton.addActionListener(gamePause);
 
         ActionListener gameSettings = e -> {
+            this.controller.togglePause();
 
         };
 
@@ -300,7 +302,7 @@ public class GuiGameStart extends JFrame implements GameView {
         weaponDialog.setVisible(true);
     }
 
-    public static void showGameWin(final int round) {
+    private static void showGameWin(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
         JDialog winDialog = new JDialog();
@@ -344,5 +346,41 @@ public class GuiGameStart extends JFrame implements GameView {
                 System.exit(0);
             }
         });
+    }
+
+    private void showGamePause() {
+        final int widthDialog = 500;
+        final int heightDialog = 200;
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Game Pause");
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setSize(widthDialog, heightDialog);
+        dialog.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        dialog.add(panel);final int alignmentXLabel = 50;
+        final int alignmentYLabel = 20;
+        final int widthLabel = 300;
+        final int heightLabel = 75;
+        final int alignmentXButton = 200;
+        final int alignmentYButton = 120;
+        final int widthButton = 100;
+        final int heightButton = 25;
+        panel.setLayout(null);
+        String message = "<html>The game is paused! Click Resume to continue</html>";
+        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
+        panel.add(messageLabel);
+
+        JButton resumeButton = new JButton("Resunme");
+        resumeButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
+        ActionListener gamePause = e -> {
+            this.controller.togglePause();
+            dialog.dispose();
+        };
+        resumeButton.addActionListener(gamePause);
+        panel.add(resumeButton);
+        
+        dialog.setVisible(true);
     }
 }
