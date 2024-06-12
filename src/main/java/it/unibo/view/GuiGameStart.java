@@ -19,6 +19,7 @@ import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.enemies.EnemiesPanel;
 import it.unibo.view.defense.TowerCardView;
@@ -129,14 +130,23 @@ public class GuiGameStart extends JFrame implements GameView {
 
 
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-        TowerCardView towerCardView = new TowerCardView(new BasicTower(2, mapName, mapName, mapName, null, null, ERROR, ALLBITS, ABORT, null, null, null, null));
-        
-        towerPanel.add(towerCardView);
-        towerPanel.add(towerCardView);
-        towerPanel.add(towerCardView);
-        towerPanel.add(towerCardView);
-        towerPanel.add(towerCardView);
-        towerPanel.add(towerCardView);
+
+        TowerCardFactoryImpl towerCardFactory = new TowerCardFactoryImpl();
+        towerCardFactory.createTowerCard(new BasicTower(2, mapName, mapName, mapName, null, null, ERROR, ALLBITS, ABORT, null, null, null, null));
+
+
+        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout with two columns and dynamic rows
+
+        // Add towers
+        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
+
 
         JScrollPane scrollPane = new JScrollPane(towerPanel);
         scrollPane.setPreferredSize(new Dimension(300, 0));

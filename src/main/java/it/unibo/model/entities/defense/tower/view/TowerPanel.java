@@ -44,7 +44,6 @@ public class TowerPanel extends JPanel {
         towerStatsTextArea.append("Target Strategy: " + tower.getTargetSelectionStrategy() + "\n");
         towerStatsTextArea.append("Attack Strategy: " + tower.getAttackStrategy() + "\n");
         towerStatsTextArea.append("Cost: " + tower.getCost() + "\n");
-        // Aggiungi altre statistiche
         towerPanel.add(towerStatsTextArea, BorderLayout.SOUTH);
 
         return towerPanel;
