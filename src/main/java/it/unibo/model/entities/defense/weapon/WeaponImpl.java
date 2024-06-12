@@ -7,17 +7,17 @@ import it.unibo.model.entities.AbstractEntity;
 /**
  * Weapon implementation.
  */
-public class WeaponImpl extends AbstractEntity implements Weapon{
+public class WeaponImpl extends AbstractEntity implements Weapon {
 
     private int frequency; // Tempo in millisecondi tra due bullet.
     private long lastShotTime; // Tempo dell'ultimo sparo.
-    
+
     @JsonCreator
-    public WeaponImpl(@JsonProperty("id")int id, 
-                      @JsonProperty("name")String name, 
-                      @JsonProperty("type")String type, 
-                      @JsonProperty("imgPath")String imgPath, 
-                      @JsonProperty("frequency")int frequency) {
+    public WeaponImpl(@JsonProperty("id")final int id, 
+                      @JsonProperty("name")final String name, 
+                      @JsonProperty("type")final String type, 
+                      @JsonProperty("imgPath")final String imgPath, 
+                      @JsonProperty("frequency")final int frequency) {
         super(id, name, type, imgPath);
         this.frequency = frequency;
         this.lastShotTime = 0;
@@ -38,7 +38,7 @@ public class WeaponImpl extends AbstractEntity implements Weapon{
     }
 
     @Override
-    public void setLastShotTime(long lastShotTime) {
+    public void setLastShotTime(final long lastShotTime) {
         this.lastShotTime = lastShotTime;
     }
 }

@@ -12,7 +12,7 @@ import it.unibo.model.entities.enemies.Enemy;
 /**
  * Represents the tower entity.
 */
-public interface Tower extends MovableEntity {    
+public interface Tower extends MovableEntity {
     /**
      * Represents the level of the tower.
      * @return the level of the tower.
@@ -43,15 +43,15 @@ public interface Tower extends MovableEntity {
      */
     int getCost();
 
-    public Optional<Set<Enemy>> target(Set<Enemy> enemies);
+    Optional<Set<Enemy>> target(Set<Enemy> enemies);
 
-    public void attack(Set<Enemy> enemies);
-    
+    void attack(Set<Enemy> enemies);
+
     TargetSelectionStrategy getTargetSelectionStrategy();
-    
+
     AttackStrategy getAttackStrategy();
 
     void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy);
-    
+
     void setAttackStrategy(AttackStrategy attackStrategy);
 }

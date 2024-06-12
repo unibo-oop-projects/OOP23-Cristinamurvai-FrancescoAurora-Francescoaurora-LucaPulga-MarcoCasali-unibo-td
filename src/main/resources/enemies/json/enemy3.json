@@ -1,4 +1,5 @@
 {
+    "id": 3,
     "name": "knight",
     "type": "advanced",
     "imgPath": "src/main/resources/enemies/img/knight_move.gif",

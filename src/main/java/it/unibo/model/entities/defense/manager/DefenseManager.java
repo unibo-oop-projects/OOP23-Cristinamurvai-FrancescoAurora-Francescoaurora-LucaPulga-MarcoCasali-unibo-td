@@ -10,7 +10,7 @@ import it.unibo.model.entities.defense.tower.Tower;
  */
 public interface DefenseManager {
     /**
-     * @param filename
+     * @param tower tower to be built
      * Builds the entity thread.
     */
     void buildTower(Tower tower);

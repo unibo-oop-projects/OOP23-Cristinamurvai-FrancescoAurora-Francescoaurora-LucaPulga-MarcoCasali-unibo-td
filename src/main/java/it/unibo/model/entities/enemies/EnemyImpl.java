@@ -4,6 +4,9 @@ import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
+/**
+ * .
+ */
 public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable {
 
     private int lp;
@@ -12,7 +15,19 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
     private boolean alive;
 	private EnemyState enemyState;
 
-    public EnemyImpl(int id, String name, String type, String imgPath, Position2D position2d, Vector2D direction2d, int lp, int reward) {
+	/**
+	 * Constructor.
+	 * @param id
+	 * @param name
+	 * @param type
+	 * @param imgPath
+	 * @param position2d
+	 * @param direction2d
+	 * @param lp
+	 * @param reward
+	 */
+    public EnemyImpl(final int id, final String name, final String type, final String imgPath, final Position2D position2d, 
+							final Vector2D direction2d, final int lp, final int reward) {
         super(id, name, type, imgPath, position2d, direction2d);
         this.lp = lp;
         this.reward = reward;
@@ -37,10 +52,11 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 	}
 
 	@Override
-	public int getDamage(int damage) {
-        if(this.lp - damage <= 0) {
+	public int getDamage(final int damage) {
+        if (this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;
+			this.enemyState = EnemyState.DEAD;
         } else {
             this.lp -= damage;
         }
@@ -59,17 +75,18 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 
 	@Override
 	public void move() {
-		int x = (int)(this.position2d.x() + this.direction2d.x());
-		int y = (int)(this.position2d.y() - this.direction2d.y());
+		int x = (int) (this.position2d.x() + this.direction2d.x());
+		int y = (int) (this.position2d.y() - this.direction2d.y());
 		// Added only for debug purposes
-		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() + ") to position (" + x + ", " + y + ")");
+		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
+								+ ") to position (" + x + ", " + y + ")");
 		this.position2d = new Position2D(x, y);
 	}
 
 	@Override
 	public void run() {
 		while (!Thread.currentThread().isInterrupted()) {
-			if(this.enemyState.equals(EnemyState.MOVING)){
+			if (this.enemyState.equals(EnemyState.MOVING)) {
 				move();
 			}
             try {
@@ -80,7 +97,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
         }
 	}
 
-	public void setDirection(Vector2D direction2d) {
+	public void setDirection(final Vector2D direction2d) {
         this.direction2d = direction2d;
     }
 

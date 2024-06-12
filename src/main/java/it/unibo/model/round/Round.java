@@ -1,4 +1,4 @@
-package it.unibo.model.entities;
+package it.unibo.model.round;
 
 import java.util.List;
 
@@ -29,4 +29,10 @@ public interface Round {
      * @return rouds+1
      */
     int getRoud();
+
+    /**
+     * Getting if it's the last round.
+     * @return answer to the question (true or false)
+     */
+    boolean getLastRound();
 }

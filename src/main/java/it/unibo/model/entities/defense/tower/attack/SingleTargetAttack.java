@@ -9,10 +9,12 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Vector2D;
 
-// Implementazione di attacco a un singolo bersaglio
+/**
+ * Implementation of single target attack.
+ */
 public class SingleTargetAttack implements AttackStrategy {
     @Override
-    public void attack(Tower tower, Optional<Set<Enemy>> enemies) {
+    public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {
 
         // Se viene selezionato un nemico e la frequenza di sparatoria è stata rispettata, spara un bullet
         enemies.ifPresentOrElse(
@@ -26,8 +28,9 @@ public class SingleTargetAttack implements AttackStrategy {
 
                     if (timeSinceLastShot >= fireRate) {
                         // Crea e avvia un thread Bullet per inseguire ed attaccare il nemico
-                        Bullet bullet = new BulletImpl(124, "bullet", "base", "", tower.getPosition() , new Vector2D(0, 0), 100, 100, enemy);
-                        Thread bulletThread = new Thread((Runnable)bullet);
+                        Bullet bullet = new BulletImpl(124, "bullet", "base", "",
+                                                        tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy);
+                        Thread bulletThread = new Thread((Runnable) bullet);
                         bulletThread.start();
 
                         // Aggiorna il tempo dell'ultimo sparo

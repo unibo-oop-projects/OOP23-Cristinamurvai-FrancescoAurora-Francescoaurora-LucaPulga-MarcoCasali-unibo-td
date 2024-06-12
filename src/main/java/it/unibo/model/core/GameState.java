@@ -46,4 +46,14 @@ public interface GameState {
      * @return Return time of roud. 
      */
     String getRoundTime();
+
+    /**
+     * @return round number.
+     */
+    int getRoundNumber();
+
+    /**
+     * @return if is last round.
+     */
+    boolean getLastRound();
 }

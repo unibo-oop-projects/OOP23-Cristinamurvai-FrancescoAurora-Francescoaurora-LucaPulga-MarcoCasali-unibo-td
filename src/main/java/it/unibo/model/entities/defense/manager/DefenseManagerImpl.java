@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * .
+ */
 public class DefenseManagerImpl implements DefenseManager {
 
     private List<Thread> towerThreads;
@@ -19,13 +22,16 @@ public class DefenseManagerImpl implements DefenseManager {
     private EnemiesManager enemiesManager;
     private EntityFactory entityFactory;
 
+    /**
+     * Costructor.
+     */
     public DefenseManagerImpl() {
         this.towerThreads = new ArrayList<>();
         this.executorService = Executors.newCachedThreadPool();
     }
 
     @Override
-    public void buildTower(Tower tower) {
+    public void buildTower(final Tower tower) {
         Runnable towerRunnable = () -> {
             while (!Thread.currentThread().isInterrupted()) {
                 tower.target(enemiesManager.getCurrentEnemies());
@@ -45,12 +51,12 @@ public class DefenseManagerImpl implements DefenseManager {
     }
 
     @Override
-    public int getNumberOfTowers(){
+    public int getNumberOfTowers() {
         return this.towers.size();
     }
 
     @Override
-    public void activateAllTowers(List<Tower> towers) {
+    public void activateAllTowers(final List<Tower> towers) {
         stopAllTowers(); // Ferma tutti i thread delle torri
         executorService = Executors.newCachedThreadPool(); // Crea un nuovo pool di thread
         for (Tower tower : towers) {
@@ -60,7 +66,7 @@ public class DefenseManagerImpl implements DefenseManager {
 
     @Override
     public void stopAllTowers() {
-        if (!executorService.isShutdown()){
+        if (!executorService.isShutdown()) {
             executorService.shutdownNow();
         }
     }

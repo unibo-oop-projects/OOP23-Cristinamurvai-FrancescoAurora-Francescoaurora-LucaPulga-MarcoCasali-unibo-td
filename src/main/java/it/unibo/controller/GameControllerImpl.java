@@ -28,7 +28,7 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void update(GameState gameState) {
+    public void update(final GameState gameState) {
         //this.gameState = gameState;
         this.views.forEach(v -> v.update(gameState));
     }
@@ -50,14 +50,14 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public GameMap setGameMap(String name) {
+    public GameMap setGameMap(final String name) {
         final GameMap map = mapFactory.fromName(name);
         this.engine.setGameMap(map);
         return map;
     }
 
     @Override
-    public void registerView(GameView view) {
+    public void registerView(final GameView view) {
         this.views.add(view);
     }
 }

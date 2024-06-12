@@ -17,43 +17,49 @@ import it.unibo.model.utilities.Vector2D;
 public class BasicTower extends AbstractTower {
 
     @JsonCreator
-    public BasicTower(@JsonProperty("id") int id, 
-                      @JsonProperty("name") String name, 
-                      @JsonProperty("type") String type, 
-                      @JsonProperty("imgPath") String imgPath,
-                      @JsonProperty("position2d") Position2D position2d, 
-                      @JsonProperty("direction2d") Vector2D direction2d, 
-                      @JsonProperty("cost") int cost, 
-                      @JsonProperty("level") int level, 
-                      @JsonProperty("range") int range, 
-                      @JsonProperty("weapons") Set<WeaponImpl> weapons, 
-                      @JsonProperty("currentWeapon") Weapon currentWeapon,
-                      @JsonProperty("attackStrategy") AttackStrategy attackStrategy,
-                      @JsonProperty("targetSelectionStrategy") TargetSelectionStrategy targetSelectionStrategy) {
-        super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, attackStrategy, targetSelectionStrategy);
+    public BasicTower(@JsonProperty("id") final int id, 
+                      @JsonProperty("name") final String name, 
+                      @JsonProperty("type") final String type, 
+                      @JsonProperty("imgPath") final String imgPath,
+                      @JsonProperty("position2d") final Position2D position2d, 
+                      @JsonProperty("direction2d") final Vector2D direction2d, 
+                      @JsonProperty("cost") final int cost, 
+                      @JsonProperty("level") final int level, 
+                      @JsonProperty("range") final int range, 
+                      @JsonProperty("weapons") final Set<WeaponImpl> weapons, 
+                      @JsonProperty("currentWeapon") final Weapon currentWeapon,
+                      @JsonProperty("attackStrategy") final AttackStrategy attackStrategy,
+                      @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy) {
+        super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, 
+                attackStrategy, targetSelectionStrategy);
     }
 
-    public Optional<Set<Enemy>> target(Set<Enemy> enemies){
+    /**
+     * .
+     */
+    public Optional<Set<Enemy>> target(final Set<Enemy> enemies) {
         Optional<Set<Enemy>> targets = this.targetSelectionStrategy.selectTarget(this, enemies);
         return targets;
     }
 
-    public void attack(Set<Enemy> enemies) {
-        if (!enemies.isEmpty()){
+    /**
+     * .
+     */
+    public void attack(final Set<Enemy> enemies) {
+        if (!enemies.isEmpty()) {
             this.attackStrategy.attack(this, this.target(enemies));
-        }
-        else{
+        } else {
             System.out.println("No enemies to attack");
         }
     }
 
     @Override
-    public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
+    public void setTargetSelectionStrategy(final TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;
     }
 
     @Override
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
+    public void setAttackStrategy(final AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 }

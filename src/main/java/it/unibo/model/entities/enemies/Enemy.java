@@ -29,7 +29,7 @@ public interface Enemy extends MovableEntity {
 
     /**
      * Represents the damage dealt to the enemy.
-     * 
+     * @param damage
      * @return the damage dealt to the enemy.
      */
     int getDamage(int damage);
@@ -53,7 +53,7 @@ public interface Enemy extends MovableEntity {
      */
     void move();
 
-    /*
+    /**
      * Run enemy thread.
      */
     void startMoving();

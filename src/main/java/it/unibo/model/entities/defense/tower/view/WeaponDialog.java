@@ -1,15 +1,29 @@
 package it.unibo.model.entities.defense.tower.view;
 
-import javax.swing.*;
-
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.weapon.Weapon;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+/**
+ * WeaponDialog.
+ */
 public class WeaponDialog extends JDialog {
-    public WeaponDialog(JFrame parent, Tower tower) {
+    /**
+     * Constractor.
+     * @param parent
+     * @param tower
+     */
+    public WeaponDialog(final JFrame parent, final Tower tower) {
         super(parent, "Weapons for " + tower.getName(), true);
         setSize(600, 400);
         setLocationRelativeTo(parent);

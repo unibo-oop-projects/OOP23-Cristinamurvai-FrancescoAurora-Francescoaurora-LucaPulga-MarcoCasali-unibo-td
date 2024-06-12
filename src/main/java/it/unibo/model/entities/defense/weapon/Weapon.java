@@ -12,7 +12,7 @@ public interface Weapon extends Entity {
      */
     int getFrequency();
 
-    public long getLastShotTime();
+    long getLastShotTime();
 
-    public void setLastShotTime(long lastShotTime);
+    void setLastShotTime(long lastShotTime);
 }
