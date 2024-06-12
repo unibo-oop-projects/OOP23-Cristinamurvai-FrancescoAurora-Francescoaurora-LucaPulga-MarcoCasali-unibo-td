@@ -1,9 +1,13 @@
 package it.unibo.model.entities.defense.tower.view;
 
 import javax.swing.*;
+
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.weapon.Weapon;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Set;
 import java.awt.event.ActionListener;
 
 public class TowerCardFactoryImpl implements TowerCardFactory {
@@ -41,7 +45,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         JButton weaponButton = new JButton("Weapons");
         weaponButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                showWeaponDialog(tower.getName());
+                showWeaponDialog(tower);
             }
         });
         buttonPanel.add(weaponButton);
@@ -56,18 +60,35 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         // });
         return card;
     }
-    private void showWeaponDialog(final String towerName) {
-        JDialog weaponDialog = new JDialog();
-        weaponDialog.setSize(400, 300);
 
+    @Override
+    public JPanel createDefensePanel(Set<Tower> towers){
+        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+        towers.forEach(tower -> towerPanel.add(createTowerCard(tower)));
+        return towerPanel;
+    }
+
+    @Override
+    public void showWeaponDialog(Tower tower) {
         JPanel weaponPanel = new JPanel();
         weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
+        
+        Set<Weapon> weapons = tower.getWeapons();
+        for (Weapon weapon : weapons) {
+            JPanel weaponInfoPanel = new JPanel(new BorderLayout());
 
-        weaponPanel.add(new JLabel("Weapon 1: Damage 10"));
-        weaponPanel.add(new JLabel("Weapon 2: Damage 20"));
-        weaponPanel.add(new JLabel("Weapon 3: Damage 30"));
+            JLabel nameLabel = new JLabel("Name: " + weapon.getName());
+            weaponInfoPanel.add(nameLabel, BorderLayout.NORTH);
 
-        weaponDialog.add(weaponPanel);
-        weaponDialog.setVisible(true);
+            JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
+            weaponInfoPanel.add(damageLabel, BorderLayout.CENTER);
+
+            if (weapon.getPath() != null) {
+                JLabel imageLabel = new JLabel(new ImageIcon(weapon.getPath()));
+                weaponInfoPanel.add(imageLabel, BorderLayout.WEST);
+            }
+            weaponPanel.add(weaponInfoPanel);
+        }
     }
 }

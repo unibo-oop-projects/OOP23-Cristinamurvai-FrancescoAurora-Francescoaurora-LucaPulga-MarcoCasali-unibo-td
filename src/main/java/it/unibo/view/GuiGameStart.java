@@ -1,8 +1,6 @@
 package it.unibo.view;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,18 +15,15 @@ import javax.swing.WindowConstants;
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
-import it.unibo.model.entities.defense.tower.BasicTower;
-import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.EntityFactory;
+import it.unibo.model.entities.EntityFactoryImpl;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.enemies.EnemiesPanel;
-import it.unibo.view.defense.TowerCardView;
-import it.unibo.view.defense.WeaponCardView;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -41,6 +36,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,7 +101,6 @@ public class GuiGameStart extends JFrame implements GameView {
 
         ActionListener gameSettings = e -> {
             this.controller.togglePause();
-
         };
 
         JButton settingsButton = new JButton("Settings");
@@ -129,29 +124,18 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
 
 
-        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-
-        TowerCardFactoryImpl towerCardFactory = new TowerCardFactoryImpl();
-        towerCardFactory.createTowerCard(new BasicTower(2, mapName, mapName, mapName, null, null, ERROR, ALLBITS, ABORT, null, null, null, null));
-
-
-        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout with two columns and dynamic rows
-
-        // Add towers
-        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "/towers/img/tower1.jpg", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "/towers/img/tower1.jpg", 20, 100, 1));
-
-
-        JScrollPane scrollPane = new JScrollPane(towerPanel);
-        scrollPane.setPreferredSize(new Dimension(300, 0));
+        EntityFactory entityFactory = new EntityFactoryImpl();
+        TowerCardFactory towerCardFactory = new TowerCardFactoryImpl();
+        
+        JScrollPane scrollPane;
+        try {
+            scrollPane = new JScrollPane(towerCardFactory.createDefensePanel(entityFactory.loadAllTowers()));
+            scrollPane.setPreferredSize(new Dimension(300, 0));
         contentPanel.add(scrollPane, BorderLayout.EAST);
-
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -249,70 +233,6 @@ public class GuiGameStart extends JFrame implements GameView {
         g2.dispose();
 
         return new ImageIcon(resizedImg);
-    }
-
-    private JPanel createTowerCard(final String name, final String imgPath, final int stat0, final int stat1, final int stat2) {
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 
-        + "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
-
-        card.setToolTipText(tooltipText);
-        JPanel imgPanel = new JPanel(new BorderLayout());
-        imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); 
-        JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(imgPath)));
-        imgLabel.setPreferredSize(new Dimension(200, 150));
-        imgPanel.add(imgLabel, BorderLayout.NORTH);
-        card.add(imgPanel, BorderLayout.NORTH);
-
-        // Panel for stats with left margin
-        JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
-        JLabel nameLabel = new JLabel(name);
-        statsPanel.add(nameLabel);
-
-        JLabel stat1Label = new JLabel("Stat1: " + stat1);
-        statsPanel.add(stat1Label);
-
-        card.add(statsPanel, BorderLayout.CENTER);
-
-        // Button panel with centered button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton weaponButton = new JButton("Weapons");
-        weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                showWeaponDialog(name);
-            }
-        });
-        buttonPanel.add(weaponButton);
-        card.add(buttonPanel, BorderLayout.SOUTH);
-
-        card.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(final java.awt.event.MouseEvent evt) {
-                selectedTowerName = name;
-                selectedTowerImagePath = imgPath;
-                System.out.println("Selected tower: " + name);
-            }
-        });
-        return card;
-    }
-
-    private void showWeaponDialog(final String towerName) {
-        JDialog weaponDialog = new JDialog(this, "Weapons for " + towerName, true);
-        weaponDialog.setSize(400, 300);
-
-        JPanel weaponPanel = new JPanel();
-        weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
-
-        weaponPanel.add(new JLabel("Weapon 1: Damage 10"));
-        weaponPanel.add(new JLabel("Weapon 2: Damage 20"));
-        weaponPanel.add(new JLabel("Weapon 3: Damage 30"));
-
-        weaponDialog.add(weaponPanel);
-        weaponDialog.setLocationRelativeTo(this);
-        weaponDialog.setVisible(true);
     }
 
     private static void showGameWin(final int round) {

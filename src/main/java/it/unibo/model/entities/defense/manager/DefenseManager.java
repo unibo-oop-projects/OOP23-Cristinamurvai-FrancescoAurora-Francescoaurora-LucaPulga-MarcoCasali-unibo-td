@@ -1,9 +1,9 @@
 package it.unibo.model.entities.defense.manager;
 
-import java.util.List;
 import java.util.Set;
 
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.utilities.Position2D;
 
 /**
  * Represents the entity manager to manage all the entities.
@@ -13,7 +13,7 @@ public interface DefenseManager {
      * @param tower tower to be built
      * Builds the entity thread.
     */
-    void buildTower(Tower tower);
+    void buildTower(int id, Position2D position2d);
 
     /**
      * Represents the towers.
@@ -26,15 +26,4 @@ public interface DefenseManager {
      * @return a set of all the active towers.
     */
     int getNumberOfTowers();
-
-    /**
-     * Activate all towers.
-     * @param towers
-     */
-    void activateAllTowers(List<Tower> towers);
-
-    /**
-     * Stop all threads dedicated to towers.
-     */
-    void stopAllTowers();
 }

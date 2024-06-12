@@ -1,48 +1,41 @@
 package it.unibo.model.entities.defense.manager;
 
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import it.unibo.model.entities.EntityFactory;
+import it.unibo.model.core.GameObserver;
+import it.unibo.model.core.GameState;
 import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.enemies.EnemiesManager;
-import java.util.ArrayList;
+import it.unibo.model.map.GameMap;
+import it.unibo.model.utilities.Position2D;
+
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * .
  */
-public class DefenseManagerImpl implements DefenseManager {
+public class DefenseManagerImpl implements DefenseManager, GameObserver {
 
-    private List<Thread> towerThreads;
-    private ExecutorService executorService;
     private Set<Tower> towers = new HashSet<>();
-    private EnemiesManager enemiesManager;
-    private EntityFactory entityFactory;
+    GameMap map;
 
     /**
      * Costructor.
      */
+
+    // Gli passo la mappa
     public DefenseManagerImpl() {
-        this.towerThreads = new ArrayList<>();
-        this.executorService = Executors.newCachedThreadPool();
+
     }
 
     @Override
-    public void buildTower(final Tower tower) {
-        Runnable towerRunnable = () -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                tower.target(enemiesManager.getCurrentEnemies());
-                try {
-                    Thread.sleep(1000); // Attendi un secondo prima di attaccare di nuovo
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        };
-        executorService.submit(towerRunnable);
+    public void buildTower(final int towerID, Position2D position2d) {
+        // TODO: segnare la cella che la torre occupa quando la costruisco, in modo che non sia più costruibile
+        
+    }
+
+    @Override
+    public void update(GameState gameState){
+        towers.forEach(tower -> tower.attack(gameState.getEnemies()));
     }
 
     @Override
@@ -53,21 +46,5 @@ public class DefenseManagerImpl implements DefenseManager {
     @Override
     public int getNumberOfTowers() {
         return this.towers.size();
-    }
-
-    @Override
-    public void activateAllTowers(final List<Tower> towers) {
-        stopAllTowers(); // Ferma tutti i thread delle torri
-        executorService = Executors.newCachedThreadPool(); // Crea un nuovo pool di thread
-        for (Tower tower : towers) {
-            buildTower(tower); // Aggiungi e avvia nuovamente le torri
-        }
-    }
-
-    @Override
-    public void stopAllTowers() {
-        if (!executorService.isShutdown()) {
-            executorService.shutdownNow();
-        }
     }
 }
