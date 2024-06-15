@@ -13,6 +13,7 @@ import it.unibo.model.utilities.Vector2D;
  * Implementation of single target attack.
  */
 public class SingleTargetAttack implements AttackStrategy {
+
     @Override
     public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {
 
@@ -20,7 +21,7 @@ public class SingleTargetAttack implements AttackStrategy {
         enemies.ifPresentOrElse(
             enemySet -> {
                 for (Enemy enemy : enemySet) {
-                    System.out.println("Attacco ad area a " + enemy.getName());
+                    System.out.println("Attacco a " + enemy.getName());
                     long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
                     long currentTime = System.currentTimeMillis();
                     long timeSinceLastShot = currentTime - lastShotTime;
@@ -41,5 +42,32 @@ public class SingleTargetAttack implements AttackStrategy {
             () -> System.out.println("Nessun nemico nell'area")
         );
     }
+
+    // @Override
+    // public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {
+    //     // Se viene selezionato un nemico e la frequenza di sparatoria è stata rispettata, spara un bullet
+    //     enemies.ifPresentOrElse(
+    //         enemySet -> enemySet.stream()
+    //             .filter(enemy -> {
+    //                 long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
+    //                 long currentTime = System.currentTimeMillis();
+    //                 long timeSinceLastShot = currentTime - lastShotTime;
+    //                 long fireRate = tower.getCurrentWeapon().getFrequency();
+
+    //                 return timeSinceLastShot >= fireRate;
+    //             })
+    //             .findFirst()
+    //             .ifPresent(enemy -> {
+    //                 System.out.println("Attacco a " + enemy.getName());
+    //                 Bullet bullet = new BulletImpl(
+    //                     124, "bullet", "base", "",
+    //                     tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy
+    //                 );
+    //                 new Thread((Runnable) bullet).start();
+    //                 tower.getCurrentWeapon().setLastShotTime(System.currentTimeMillis());
+    //             }),
+    //         () -> System.out.println("Nessun nemico nell'area")
+    //     );
+    // }
 
 }

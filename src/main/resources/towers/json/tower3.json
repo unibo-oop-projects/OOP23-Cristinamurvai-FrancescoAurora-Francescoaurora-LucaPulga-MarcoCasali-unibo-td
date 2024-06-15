@@ -1,8 +1,8 @@
 {
-  "id": 2,
-  "name": "Tower2",
+  "id": 3,
+  "name": "Tower3",
   "type": "Base",
-  "imgPath": "towers/img/tower2.png",
+  "imgPath": "towers/img/tower3.png",
   "position2d": null,
   "direction2d": null,
   "cost": 100,

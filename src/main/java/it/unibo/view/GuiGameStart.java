@@ -1,8 +1,6 @@
 package it.unibo.view;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,17 +11,21 @@ import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.BoxLayout;
 
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
+import it.unibo.model.entities.EntityFactory;
+import it.unibo.model.entities.EntityFactoryImpl;
+import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.enemies.EnemiesPanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -36,6 +38,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,17 +48,13 @@ import java.util.Map;
  */
 public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
-    private String selectedTowerName = null;
-    private String selectedTowerImagePath = null;
+    private Tower selectedTower = null;
     private JPanel contentPanel = new JPanel();
     private JPanel mapPanel;
     private JPanel layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
-    private JLabel labelTime = null;
-    private JLabel labelLife = null;
-    private JLabel labelMoney = null;
-    private JLabel labelRound = null;
+    private IconsPanel iconLabelPanel;
 
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
@@ -69,23 +68,8 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        JPanel labelPanel = new JPanel(new GridLayout(1, 5)); // Layout with one row and three columns
-
-        // add label screw
-        this.labelLife = new JLabel("Vite e immagine vite");
-        labelPanel.add(labelLife);
-
-        //Add label roud
-        this.labelRound = new JLabel("Roud");
-        labelPanel.add(labelRound);
-
-        // add label time
-        this.labelTime = new JLabel("Tempo ondata");
-        labelPanel.add(labelTime);
-
-        // Adding label money
-        this.labelMoney = new JLabel("Soldi disponibili");
-        labelPanel.add(labelMoney);
+        iconLabelPanel = new IconsPanel(contentPanel.getWidth(), 50);
+        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
         JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
@@ -100,45 +84,41 @@ public class GuiGameStart extends JFrame implements GameView {
 
         ActionListener gameSettings = e -> {
             this.controller.togglePause();
-
         };
 
         JButton settingsButton = new JButton("Settings");
         settingsButton.addActionListener(gameSettings);
         buttonGui.add(pauseButton);
         buttonGui.add(settingsButton);
-        labelPanel.add(buttonGui);
+        iconLabelPanel.add(buttonGui);
 
-        contentPanel.add(labelPanel, BorderLayout.NORTH);
+        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
         this.createMap(map);
 
 
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() 
-        / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
         this.layeredPane.add(mapPanel);
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
 
+        EntityFactory entityFactory = new EntityFactoryImpl();
+        TowerCardFactory towerCardFactory = new TowerCardFactoryImpl();
 
-        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 100, 540, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower1", "towers/img/tower1.png", 20, 100, 1));
-        towerPanel.add(createTowerCard("Tower2", "towers/img/tower2.png", 20, 100, 1));
-
-        JScrollPane scrollPane = new JScrollPane(towerPanel);
-        scrollPane.setPreferredSize(new Dimension(300, 0));
-        contentPanel.add(scrollPane, BorderLayout.EAST);
-
+        JScrollPane scrollPane;
+        try {
+            JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
+            towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
+            scrollPane = new JScrollPane(towerPanel);
+            scrollPane.setPreferredSize(new Dimension(300, 0));
+            contentPanel.add(scrollPane, BorderLayout.EAST);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -158,13 +138,13 @@ public class GuiGameStart extends JFrame implements GameView {
 
     @Override
     public void update(final GameState gameState) {
-        this.labelTime.setText(gameState.getRoundTime());
-        this.labelMoney.setText("Your money: " + gameState.getMoney());
-        this.labelLife.setText("Your lives: " + gameState.getLives());
+        iconLabelPanel.setLifeText("Lives: " + gameState.getMoney());
+        iconLabelPanel.setMoneyText("Money: " + gameState.getMoney());
+        iconLabelPanel.setTimeText("Time: " + gameState.getRoundTime());
         if (gameState.getRoundNumber() != 0) {
-            this.labelRound.setText("Round: " + gameState.getRoundNumber());
+            iconLabelPanel.setRoundText("Round: " + gameState.getRoundNumber());
         } else {
-            this.labelRound.setText("Pre-round, position the towers");
+            iconLabelPanel.setRoundText("Pre-round, position the towers");
         }
         if(gameState.getLastRound() == true) {
             showGameWin(gameState.getRoundNumber());
@@ -186,16 +166,14 @@ public class GuiGameStart extends JFrame implements GameView {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
-            cell.setBorderPainted(false);
-            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
-                this.mapPanel.getHeight() / map.getRows());
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(final MouseEvent e) {
-                    if (selectedTowerName != null) {
-                        setScaledIcon(cell, selectedTowerImagePath, mapPanel.getWidth() / map.getColumns(),
-                            mapPanel.getHeight() / map.getRows());
-                        tiles.put(cell, selectedTowerImagePath);
-                        System.out.println("Placed " + selectedTowerName + " at cell " + cell.getText());
+                    if (selectedTower != null) {
+                        setScaledIcon(cell, selectedTower.getPath(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+                        tiles.put(cell, selectedTower.getPath());
+                        System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
+                        selectedTower = null;
                     }
                 }
             });
@@ -239,83 +217,18 @@ public class GuiGameStart extends JFrame implements GameView {
         return new ImageIcon(resizedImg);
     }
 
-    private JPanel createTowerCard(final String name, final String imgPath, final int stat0, final int stat1, final int stat2) {
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        String tooltipText = "<html><b>Name:</b> " + name + "<br><b>Stat0:</b> " + stat0 
-        + "<br><b>Stat1:</b> " + stat1 + "<br><b>Stat2:</b> " + stat2 + "</html>";
-
-        card.setToolTipText(tooltipText);
-        JPanel imgPanel = new JPanel(new BorderLayout());
-        imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); 
-        JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(imgPath)));
-        imgLabel.setPreferredSize(new Dimension(200, 150));
-        imgPanel.add(imgLabel, BorderLayout.NORTH);
-        card.add(imgPanel, BorderLayout.NORTH);
-
-        // Panel for stats with left margin
-        JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
-        JLabel nameLabel = new JLabel(name);
-        statsPanel.add(nameLabel);
-
-        JLabel stat1Label = new JLabel("Stat1: " + stat1);
-        statsPanel.add(stat1Label);
-
-        card.add(statsPanel, BorderLayout.CENTER);
-
-        // Button panel with centered button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton weaponButton = new JButton("Weapons");
-        weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                showWeaponDialog(name);
-            }
-        });
-        buttonPanel.add(weaponButton);
-        card.add(buttonPanel, BorderLayout.SOUTH);
-
-        card.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(final java.awt.event.MouseEvent evt) {
-                selectedTowerName = name;
-                selectedTowerImagePath = imgPath;
-                System.out.println("Selected tower: " + name);
-            }
-        });
-        return card;
-    }
-
-    private void showWeaponDialog(final String towerName) {
-        JDialog weaponDialog = new JDialog(this, "Weapons for " + towerName, true);
-        weaponDialog.setSize(400, 300);
-
-        JPanel weaponPanel = new JPanel();
-        weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
-
-        weaponPanel.add(new JLabel("Weapon 1: Damage 10"));
-        weaponPanel.add(new JLabel("Weapon 2: Damage 20"));
-        weaponPanel.add(new JLabel("Weapon 3: Damage 30"));
-
-        weaponDialog.add(weaponPanel);
-        weaponDialog.setLocationRelativeTo(this);
-        weaponDialog.setVisible(true);
-    }
-
     private static void showGameWin(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
         JDialog winDialog = new JDialog();
-        winDialog.setTitle("Game Win");
+        JPanel panel = new JPanel();
+        
+        winDialog.setTitle("Game Won");
         winDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         winDialog.setSize(widthDialog, heightDialog);
         winDialog.setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel();
         winDialog.add(panel);
         placeWinComponents(panel, winDialog, round);
-
         winDialog.setVisible(true);
     }
 
@@ -373,7 +286,7 @@ public class GuiGameStart extends JFrame implements GameView {
         messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
         panel.add(messageLabel);
 
-        JButton resumeButton = new JButton("Resunme");
+        JButton resumeButton = new JButton("Resume");
         resumeButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
         ActionListener gamePause = e -> {
             this.controller.togglePause();

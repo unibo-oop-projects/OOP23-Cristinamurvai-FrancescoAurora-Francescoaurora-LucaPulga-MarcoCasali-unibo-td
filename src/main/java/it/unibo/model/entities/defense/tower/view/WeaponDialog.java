@@ -25,7 +25,7 @@ public class WeaponDialog extends JDialog {
      */
     public WeaponDialog(final JFrame parent, final Tower tower) {
         super(parent, "Weapons for " + tower.getName(), true);
-        setSize(600, 400);
+        
         setLocationRelativeTo(parent);
 
         JPanel weaponPanel = new JPanel();
@@ -41,7 +41,6 @@ public class WeaponDialog extends JDialog {
             JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
             weaponInfoPanel.add(damageLabel, BorderLayout.CENTER);
 
-            // Aggiungi l'immagine dell'arma se disponibile
             if (weapon.getPath() != null) {
                 JLabel imageLabel = new JLabel(new ImageIcon(weapon.getPath()));
                 weaponInfoPanel.add(imageLabel, BorderLayout.WEST);

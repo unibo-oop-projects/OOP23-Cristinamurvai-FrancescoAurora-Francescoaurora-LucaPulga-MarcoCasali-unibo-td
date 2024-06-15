@@ -3,6 +3,8 @@ package it.unibo.model.entities.defense.bullet;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.unibo.model.core.GameObserver;
+import it.unibo.model.core.GameState;
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
@@ -11,7 +13,7 @@ import it.unibo.model.utilities.Vector2D;
 /**
  * .
  */
-public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnable {
+public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObserver {
 
     private int damage;
     private int speed;
@@ -63,7 +65,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
 
 
     @Override
-    public void run() {
+    public void update(GameState gameState) {
         while (!hasReachedTarget()) {
             // Calcola la direzione per inseguire il nemico.
             Vector2D directionVector = calculateDirection(this.position2d, targetEnemy.getPosition());
@@ -74,21 +76,10 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, Runnabl
             // Aggiorna la posizione della Bullet
             this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
             + (int) movementVector.y());
-
-            // Attesa per una frazione di secondo prima di aggiornare la posizione.
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
 
         // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
         this.targetEnemy.getDamage(damage);
-
-        if (!Thread.interrupted()) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     // Metodo per calcolare la direzione per inseguire il nemico.
