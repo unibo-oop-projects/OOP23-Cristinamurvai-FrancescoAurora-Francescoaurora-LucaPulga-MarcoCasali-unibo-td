@@ -1,0 +1,31 @@
+{
+    "rows": 20,
+    "columns": 20,
+    "filler": "lava",
+    "tiles": [
+        {
+            "tile": "path_start",
+            "positions": ["360"]
+        },
+        {
+            "tile": "path_end",
+            "positions": ["379"]
+        },
+        {
+            "tile": "path_right",
+            "positions": ["361-366","47-52","373-378"]
+        },
+        {
+            "tile" : "path_down",
+            "positions": ["53/353"]
+        },
+        {
+            "tile": "path_up",
+            "positions": ["67/367"]
+        },
+        {
+            "tile" : "buildslot",
+            "positions": ["380","32","66","131","186","249","194","326","372","389","359"]
+        }
+    ]
+}

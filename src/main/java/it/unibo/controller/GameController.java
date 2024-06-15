@@ -1,6 +1,6 @@
 package it.unibo.controller;
 
-import java.util.Map;
+import java.util.List;
 import it.unibo.model.core.GameObserver;
 import it.unibo.model.map.GameMap;
 import it.unibo.view.GameView;
@@ -19,10 +19,9 @@ public interface GameController extends GameObserver {
      */
     void togglePause();
     /**
-     * @return A map of available maps names
-     * and the location of a preview image
+     * @return A list of available maps names
      */
-    Map<String, String> getAvailableMaps();
+    List<String> getAvailableMaps();
     /**
      * @param name The name of the map to play,
      * chosen from the list in {@link #getAvailableMaps}

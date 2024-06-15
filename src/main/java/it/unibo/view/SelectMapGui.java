@@ -5,11 +5,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import it.unibo.controller.GameControllerImpl;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 /**
@@ -18,8 +20,7 @@ import java.awt.event.ActionEvent;
 public class SelectMapGui extends JFrame {
     private JLabel[] imageLabels;
     private int focusIndex;
-    private static final int NUM_MAP = 5;
-    private JPanel guiMapSelected;
+    private final List<String> maps = new GameControllerImpl().getAvailableMaps();
 
     /**
      * @param oldGui switching the gui panel of the old window
@@ -32,20 +33,20 @@ public class SelectMapGui extends JFrame {
         focusIndex = 0; // Index of the central image
 
         // Panel to contain the images
-        JPanel imagePanel = new JPanel(new GridLayout(1, 3));
+        JPanel imagePanel = new JPanel(new FlowLayout());
 
         // Initialize the array of JLabels
         imageLabels = new JLabel[3];
 
         // Initialize the JLabels with the images
         for (int i = 0; i < 3; i++) {
-            int index = (focusIndex - 1 + i + NUM_MAP) % NUM_MAP; // Calculate the index of the image
-            imageLabels[i] = new JLabel(new ImageIcon("src/main/resources/map_preview/MAP" + (index + 1) + ".png"));
+            int index = i % maps.size(); // Calculate the index of the image
+            imageLabels[i] = new JLabel(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(index) + ".png")));
             imageLabels[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
                     //change Gui for start Game
-                    changeGui(index + 1);
+                    changeGui(maps.get(index));
 
                 } });
             imagePanel.add(imageLabels[i]);
@@ -59,7 +60,7 @@ public class SelectMapGui extends JFrame {
         leftButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex - 1 + NUM_MAP) % NUM_MAP;
+                focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
                 updateImages();
             }
         });
@@ -72,7 +73,7 @@ public class SelectMapGui extends JFrame {
         rightButton.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex + 1) % NUM_MAP;
+                focusIndex = (focusIndex + 1) % maps.size();
                 updateImages();
             }
         });
@@ -83,39 +84,37 @@ public class SelectMapGui extends JFrame {
         // Request the container to update the GUI
         oldGui.revalidate();
         oldGui.repaint();
-
-        guiMapSelected = oldGui;
     }
 
     //Update the image when an arrow is clicked
     private void updateImages() {
         // Calculate the indices of the images
         int[] indices = {
-            (focusIndex - 1 + NUM_MAP) % NUM_MAP,
+            (focusIndex - 1 + maps.size()) % maps.size(),
             focusIndex,
-            (focusIndex + 1) % NUM_MAP
+            (focusIndex + 1) % maps.size()
         };
 
         // Update the JLabels with the new images
         for (int i = 0; i < 3; i++) {
-            final int tmp = indices[i] + 1;
+            final int tmp = indices[i];
             //imageLabels[i] = new JLabel();
             imageLabels[i].removeMouseListener(imageLabels[i].getMouseListeners()[0]);
-            imageLabels[i].setIcon(new ImageIcon("src/main/resources/map_preview/MAP" + (tmp) + ".png"));
+            imageLabels[i].setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(tmp) + ".png")));
             imageLabels[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
                     //change Gui for start Game
-                    changeGui(tmp);
+                    changeGui(maps.get(tmp));
                 } });
         }
     }
 
     /**
      * Change gui with map selected and start game.
-     * @param mapSelected Number of Map to Selected
+     * @param mapSelected Selected map name
      */
-    public void changeGui(final int mapSelected) {
-        new GuiGameStart("test");
+    public void changeGui(final String mapSelected) {
+        new GuiGameStart(mapSelected);
     }
 }
