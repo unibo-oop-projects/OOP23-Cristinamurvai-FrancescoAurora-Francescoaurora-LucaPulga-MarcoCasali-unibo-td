@@ -1,7 +1,7 @@
 package it.unibo.controller;
 
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 import it.unibo.model.core.GameEngine;
 import it.unibo.model.core.GameEngineImpl;
@@ -44,9 +44,8 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public Map<String, String> getAvailableMaps() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAvailableMaps'");
+    public List<String> getAvailableMaps() {
+        return List.of("grass","water","lava");
     }
 
     @Override

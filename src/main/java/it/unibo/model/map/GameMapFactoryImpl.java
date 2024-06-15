@@ -29,8 +29,9 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_TILES_KEY = "tiles";
     private static final String JSON_TILE_NAME_KEY = "tile";
     private static final String JSON_TILE_POSITIONS_KEY = "positions";
-    private static final String FILLER_TILE = "neutral";
+    private static final String JSON_FILLER_KEY = "filler";
     private static final String RANGE_SEPARATOR = "-";
+    private static final String COLUMN_SEPARATOR = "/";
 
     /**
      * {@inheritDoc}
@@ -52,8 +53,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
          * json file simpler.
         */
         for (int i = 0; i < rows * columns; i++) {
-            if (!tiles.containsKey(i)) {
-                tiles.put(i, tileFactory.fromName(FILLER_TILE));
+            if(!tiles.containsKey(i)) {
+                tiles.put(i, tileFactory.fromName(json.getString(JSON_FILLER_KEY)));
             }
         }
 
@@ -159,15 +160,23 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final String tileName = json.getString(JSON_TILE_NAME_KEY);
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
+        /**
+         * Supports a singular tile x, a horizontal range x-y
+         * or a vertical range x/y.
+         */
         for (int i = 0; i < posArray.length(); i++) {
             String tmp = posArray.getString(i);
-            //horizontal range of tiles ex 1-20
             if (tmp.contains(RANGE_SEPARATOR)) {
                 IntStream.rangeClosed(Integer.parseInt(tmp.split(RANGE_SEPARATOR)[0]),
-                Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
-                .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
-                //TODO vertical range
-            } else { //singular tile
+                    Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
+                    .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
+            } else if(tmp.contains(COLUMN_SEPARATOR)) {
+                IntStream
+                    .iterate(Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[0]), n -> n + columns)
+                    .takeWhile(n -> n <= Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[1]))
+                    .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
+            }
+            else {
                 map.put(posArray.getInt(i), tileFactory.fromName(tileName));
             }
         }

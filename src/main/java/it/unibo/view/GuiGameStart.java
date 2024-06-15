@@ -186,6 +186,7 @@ public class GuiGameStart extends JFrame implements GameView {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
+            cell.setBorderPainted(false);
             setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
                 this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
