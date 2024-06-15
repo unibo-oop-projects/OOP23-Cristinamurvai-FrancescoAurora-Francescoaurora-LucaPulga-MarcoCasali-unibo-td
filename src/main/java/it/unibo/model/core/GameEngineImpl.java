@@ -14,6 +14,7 @@ import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
 import it.unibo.model.player.PlayerImpl;
 import it.unibo.model.round.RoundManagerImpl;
+import it.unibo.model.utilities.Position2D;
 
 /**
  * Implementation of {@link GameEngine}.
@@ -158,5 +159,10 @@ public class GameEngineImpl implements GameEngine, Runnable {
 
     private void updateObservers() {
         this.observers.forEach(obs -> obs.update(this.gameState));
+    }
+
+    @Override
+    public void buildTower(final int id, final Position2D pos) {
+        this.map.buildTower(null, pos);
     }
 }

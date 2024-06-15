@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.tile.Tile;
 import it.unibo.model.map.tile.TileFactory;
 import it.unibo.model.map.tile.TileFactoryImpl;
@@ -150,6 +152,15 @@ public class GameMapFactoryImpl implements GameMapFactory {
 
             private Position2D indexToPos2D(final int i) {
                 return new Position2D(i % columns, i / this.columns);
+            }
+
+            private int Pos2DtoInt(final Position2D pos) {
+                return pos.x() + pos.y() * this.columns;
+            }
+
+            @Override
+            public void buildTower(Tower tower, Position2D position) {
+                this.tiles.get(Pos2DtoInt(position)).buildTower(tower);
             }
         };
     }

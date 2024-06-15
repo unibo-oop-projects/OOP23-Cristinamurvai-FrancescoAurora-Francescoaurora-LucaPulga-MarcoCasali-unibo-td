@@ -9,13 +9,13 @@ import it.unibo.model.core.GameState;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.map.GameMapFactory;
 import it.unibo.model.map.GameMapFactoryImpl;
+import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GameView;
 
 /**
  * Implementation of {@link GameController}.
  */
 public class GameControllerImpl implements GameController {
-    //private GameState gameState = null;
     private final GameMapFactory mapFactory = new GameMapFactoryImpl();
     private final GameEngine engine = new GameEngineImpl();
     private final Set<GameView> views = new HashSet<>();
@@ -29,7 +29,6 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void update(final GameState gameState) {
-        //this.gameState = gameState;
         this.views.forEach(v -> v.update(gameState));
     }
 
@@ -58,5 +57,10 @@ public class GameControllerImpl implements GameController {
     @Override
     public void registerView(final GameView view) {
         this.views.add(view);
+    }
+
+    @Override
+    public void buildTower(final int id, final Position2D pos) {
+        this.engine.buildTower(id, pos);
     }
 }
