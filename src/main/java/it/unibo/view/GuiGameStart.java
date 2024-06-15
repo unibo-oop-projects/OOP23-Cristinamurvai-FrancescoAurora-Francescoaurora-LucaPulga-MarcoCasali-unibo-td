@@ -11,12 +11,14 @@ import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.BoxLayout;
 
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
@@ -46,17 +48,13 @@ import java.util.Map;
  */
 public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
-    private String selectedTowerName = null;
-    private String selectedTowerImagePath = null;
+    private Tower selectedTower = null;
     private JPanel contentPanel = new JPanel();
     private JPanel mapPanel;
     private JPanel layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
-    private JLabel labelTime = null;
-    private JLabel labelLife = null;
-    private JLabel labelMoney = null;
-    private JLabel labelRound = null;
+    private IconsPanel iconLabelPanel;
 
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
@@ -70,23 +68,8 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        JPanel labelPanel = new JPanel(new GridLayout(1, 5)); // Layout with one row and three columns
-
-        // add label screw
-        this.labelLife = new JLabel("Vite e immagine vite");
-        labelPanel.add(labelLife);
-
-        //Add label roud
-        this.labelRound = new JLabel("Roud");
-        labelPanel.add(labelRound);
-
-        // add label time
-        this.labelTime = new JLabel("Tempo ondata");
-        labelPanel.add(labelTime);
-
-        // Adding label money
-        this.labelMoney = new JLabel("Soldi disponibili");
-        labelPanel.add(labelMoney);
+        iconLabelPanel = new IconsPanel(contentPanel.getWidth(), 50);
+        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
         JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
@@ -107,31 +90,31 @@ public class GuiGameStart extends JFrame implements GameView {
         settingsButton.addActionListener(gameSettings);
         buttonGui.add(pauseButton);
         buttonGui.add(settingsButton);
-        labelPanel.add(buttonGui);
+        iconLabelPanel.add(buttonGui);
 
-        contentPanel.add(labelPanel, BorderLayout.NORTH);
+        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
         this.createMap(map);
 
 
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() 
-        / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
         this.layeredPane.add(mapPanel);
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
 
-
         EntityFactory entityFactory = new EntityFactoryImpl();
         TowerCardFactory towerCardFactory = new TowerCardFactoryImpl();
-        
+
         JScrollPane scrollPane;
         try {
-            scrollPane = new JScrollPane(towerCardFactory.createDefensePanel(entityFactory.loadAllTowers()));
+            JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
+            towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
+            scrollPane = new JScrollPane(towerPanel);
             scrollPane.setPreferredSize(new Dimension(300, 0));
-        contentPanel.add(scrollPane, BorderLayout.EAST);
+            contentPanel.add(scrollPane, BorderLayout.EAST);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -155,13 +138,13 @@ public class GuiGameStart extends JFrame implements GameView {
 
     @Override
     public void update(final GameState gameState) {
-        this.labelTime.setText(gameState.getRoundTime());
-        this.labelMoney.setText("Your money: " + gameState.getMoney());
-        this.labelLife.setText("Your lives: " + gameState.getLives());
+        iconLabelPanel.setLifeText("Lives: " + gameState.getMoney());
+        iconLabelPanel.setMoneyText("Money: " + gameState.getMoney());
+        iconLabelPanel.setTimeText("Time: " + gameState.getRoundTime());
         if (gameState.getRoundNumber() != 0) {
-            this.labelRound.setText("Round: " + gameState.getRoundNumber());
+            iconLabelPanel.setRoundText("Round: " + gameState.getRoundNumber());
         } else {
-            this.labelRound.setText("Pre-round, position the towers");
+            iconLabelPanel.setRoundText("Pre-round, position the towers");
         }
         if(gameState.getLastRound() == true) {
             showGameWin(gameState.getRoundNumber());
@@ -183,15 +166,14 @@ public class GuiGameStart extends JFrame implements GameView {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
-            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
-                this.mapPanel.getHeight() / map.getRows());
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(final MouseEvent e) {
-                    if (selectedTowerName != null) {
-                        setScaledIcon(cell, selectedTowerImagePath, mapPanel.getWidth() / map.getColumns(),
-                            mapPanel.getHeight() / map.getRows());
-                        tiles.put(cell, selectedTowerImagePath);
-                        System.out.println("Placed " + selectedTowerName + " at cell " + cell.getText());
+                    if (selectedTower != null) {
+                        setScaledIcon(cell, selectedTower.getPath(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+                        tiles.put(cell, selectedTower.getPath());
+                        System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
+                        selectedTower = null;
                     }
                 }
             });
@@ -239,15 +221,14 @@ public class GuiGameStart extends JFrame implements GameView {
         final int widthDialog = 500;
         final int heightDialog = 200;
         JDialog winDialog = new JDialog();
-        winDialog.setTitle("Game Win");
+        JPanel panel = new JPanel();
+        
+        winDialog.setTitle("Game Won");
         winDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         winDialog.setSize(widthDialog, heightDialog);
         winDialog.setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel();
         winDialog.add(panel);
         placeWinComponents(panel, winDialog, round);
-
         winDialog.setVisible(true);
     }
 
@@ -305,7 +286,7 @@ public class GuiGameStart extends JFrame implements GameView {
         messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
         panel.add(messageLabel);
 
-        JButton resumeButton = new JButton("Resunme");
+        JButton resumeButton = new JButton("Resume");
         resumeButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
         ActionListener gamePause = e -> {
             this.controller.togglePause();

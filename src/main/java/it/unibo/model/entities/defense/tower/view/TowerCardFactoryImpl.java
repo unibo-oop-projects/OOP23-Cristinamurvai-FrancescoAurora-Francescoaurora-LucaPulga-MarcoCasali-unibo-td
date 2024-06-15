@@ -22,13 +22,14 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
                              "<br><b>Type:</b> " + tower.getType() + 
                              "<br><b>Range:</b> " + tower.getRange() + 
                              "<br><b>Cost:</b> " + tower.getCost() + 
+                             "<br><b>Level:</b> " + tower.getLevel() + 
                              "</html>";
 
         card.setToolTipText(tooltipText);
         JPanel imgPanel = new JPanel(new BorderLayout());
         imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(tower.getPath())));
-        imgLabel.setPreferredSize(new Dimension(200, 150));
+        imgLabel.setPreferredSize(new Dimension(250, 200));
         imgPanel.add(imgLabel, BorderLayout.NORTH);
         card.add(imgPanel, BorderLayout.NORTH);
 
@@ -36,8 +37,11 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        JLabel nameLabel = new JLabel(tower.getName());
+        JLabel nameLabel = new JLabel("Name: " + tower.getName());
         statsPanel.add(nameLabel);
+
+        JLabel typeLabel = new JLabel("Type: " + tower.getType());
+        statsPanel.add(typeLabel);
 
         card.add(statsPanel, BorderLayout.CENTER);
 
@@ -51,20 +55,19 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         buttonPanel.add(weaponButton);
         card.add(buttonPanel, BorderLayout.SOUTH);
 
-        // card.addMouseListener(new java.awt.event.MouseAdapter() {
-        //     public void mouseClicked(java.awt.event.MouseEvent evt) {
-        //         selectedTowerName = name;
-        //         selectedTowerImagePath = imgPath;
-        //         System.out.println("Selected tower: " + name);
-        //     }
-        // });
+        card.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Tower selectedTower = null; 
+                selectedTower = tower;
+                System.out.println("Selected tower: " + tower.getName());
+            }
+        });
         return card;
     }
 
     @Override
     public JPanel createDefensePanel(Set<Tower> towers){
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-
         towers.forEach(tower -> towerPanel.add(createTowerCard(tower)));
         return towerPanel;
     }

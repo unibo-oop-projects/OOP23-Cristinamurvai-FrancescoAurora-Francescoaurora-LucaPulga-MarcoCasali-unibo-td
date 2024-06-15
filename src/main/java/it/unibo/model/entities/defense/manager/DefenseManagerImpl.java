@@ -30,7 +30,9 @@ public class DefenseManagerImpl implements DefenseManager, GameObserver {
     @Override
     public void buildTower(final int towerID, Position2D position2d) {
         // TODO: segnare la cella che la torre occupa quando la costruisco, in modo che non sia più costruibile
-        
+        // dall'id mi creo la Tower()
+        //registrare la Tower nella mappa
+
     }
 
     @Override
