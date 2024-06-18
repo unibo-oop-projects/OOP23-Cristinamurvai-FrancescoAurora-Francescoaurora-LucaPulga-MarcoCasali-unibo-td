@@ -1,24 +1,25 @@
 package it.unibo.view;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import it.unibo.controller.GameControllerImpl;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import java.awt.event.ActionEvent;
 
 /**
  * map loading with slider for scrolling.
  */
 public class SelectMapGui extends JFrame {
-    private JLabel[] imageLabels;
+    private final JLabel[] imageLabels;
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
 
@@ -57,12 +58,10 @@ public class SelectMapGui extends JFrame {
 
         // Button to scroll left
         JButton leftButton = new JButton("<");
-        leftButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
-                updateImages();
-            }
+        leftButton.addActionListener((final ActionEvent e) -> {
+            // Update the focusIndex and redraw the images
+            focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
+            updateImages();
         });
 
         // Add the button to scroll left to the frame
@@ -70,12 +69,10 @@ public class SelectMapGui extends JFrame {
 
         // Button to scroll right
         JButton rightButton = new JButton(">");
-        rightButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                // Update the focusIndex and redraw the images
-                focusIndex = (focusIndex + 1) % maps.size();
-                updateImages();
-            }
+        rightButton.addActionListener((final ActionEvent e) -> {
+            // Update the focusIndex and redraw the images
+            focusIndex = (focusIndex + 1) % maps.size();
+            updateImages();
         });
 
         // Add the button to scroll right to the frame
