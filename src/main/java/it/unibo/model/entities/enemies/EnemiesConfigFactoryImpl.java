@@ -19,6 +19,7 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     private static final String QUANTITY = "quantity";
     
     private HashMap<Integer, EnemyConfig> enemiesConfig;
+    private int nEnemyTypes;
 
     public EnemiesConfigFactoryImpl() {
         this.enemiesConfig = fromJSONFile(FILE_PATH);
@@ -42,6 +43,8 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         final JSONArray enemiesArray = source.getJSONArray(ENEMIES);
 
         HashMap<Integer, EnemyConfig> enemiesConfig = new HashMap<>();
+
+        this.nEnemyTypes = enemiesArray.length();
 
         for(int i = 0; i < enemiesArray.length(); i++) {
             JSONObject jObj = enemiesArray.getJSONObject(i);
@@ -99,6 +102,10 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
 
     public HashMap<Integer, EnemyConfig> getEnemiesConfig() {
         return this.enemiesConfig;
+    }
+
+    public int getNEnemyTypes() {
+        return this.nEnemyTypes;
     }
     
 }

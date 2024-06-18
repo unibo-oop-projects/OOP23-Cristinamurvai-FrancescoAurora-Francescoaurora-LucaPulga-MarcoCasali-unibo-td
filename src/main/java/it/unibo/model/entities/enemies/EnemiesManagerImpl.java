@@ -132,4 +132,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
 			enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
 		}
     }
+
+	public int getNEnemyTypes() {
+		return this.enemiesConfigFactory.getNEnemyTypes();
+	}
 }
