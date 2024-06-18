@@ -1,0 +1,35 @@
+{
+    "rows": 20,
+    "columns": 20,
+    "filler": "water",
+    "tiles": [
+        {
+            "tile": "path_start",
+            "positions": ["200"]
+        },
+        {
+            "tile": "path_end",
+            "positions": ["8"]
+        },
+        {
+            "tile": "path_right",
+            "positions": ["201-204","365-375"]
+        },
+        {
+            "tile" : "path_down",
+            "positions": ["205/345"]
+        },
+        {
+            "tile" : "path_left",
+            "positions": ["49-56"]
+        },
+        {
+            "tile": "path_up",
+            "positions": ["76/376","28/48"]
+        },
+        {
+            "tile" : "buildslot",
+            "positions": ["182","384","32","66","131","186","295","194","326","338","219","39"]
+        }
+    ]
+}

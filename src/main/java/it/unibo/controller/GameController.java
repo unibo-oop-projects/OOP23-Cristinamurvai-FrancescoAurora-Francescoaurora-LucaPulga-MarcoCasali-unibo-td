@@ -1,8 +1,9 @@
 package it.unibo.controller;
 
-import java.util.Map;
+import java.util.List;
 import it.unibo.model.core.GameObserver;
 import it.unibo.model.map.GameMap;
+import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GameView;
 
 /**
@@ -19,10 +20,16 @@ public interface GameController extends GameObserver {
      */
     void togglePause();
     /**
-     * @return A map of available maps names
-     * and the location of a preview image
+     * @return A list of available maps names
      */
-    Map<String, String> getAvailableMaps();
+    List<String> getAvailableMaps();
+    /**
+     * Builds the specified {@link Tower}
+     * in the specified position if allowed.
+     * @param id The id of the tower
+     * @param pos The position where to build
+     */
+    void buildTower(int id, Position2D pos);
     /**
      * @param name The name of the map to play,
      * chosen from the list in {@link #getAvailableMaps}

@@ -172,7 +172,7 @@ public class RoundManagerImpl {
     public String getTime() {
         synchronized (lock) {
             if (countdownThread != null && countdownThread.isAlive()) {
-                return "Countdown: " + currentTime + " seconds";
+                return " " + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
                 return "Sequential count: " + secondsToTimeFormat(currentTime);
             } else if (round.getLastRound() == true) {

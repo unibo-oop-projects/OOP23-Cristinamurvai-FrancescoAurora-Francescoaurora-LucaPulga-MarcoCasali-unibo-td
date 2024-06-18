@@ -1,6 +1,8 @@
 package it.unibo.model.map;
 
 import java.util.stream.Stream;
+
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.tile.Tile;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -44,4 +46,10 @@ public interface GameMap {
      * @return A {@link Vector2D} that follows the path's direction
      */
     Vector2D getPathDirection(Position2D position);
+
+    /**
+     * @param tower The {@link Tower} to build
+     * @param position The tower's {@link Position2D}
+     */
+    void buildTower(Tower tower, Position2D position);
 }

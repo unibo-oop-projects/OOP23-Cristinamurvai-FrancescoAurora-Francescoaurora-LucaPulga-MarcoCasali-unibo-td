@@ -3,14 +3,8 @@
   "name": "Tower1",
   "type": "Base",
   "imgPath": "towers/img/tower1.png",
-  "position2d": {
-    "x": 10,
-    "y": 20
-  },
-  "direction2d": {
-    "x": 1,
-    "y": 0
-  },
+  "position2d": null,
+  "direction2d": null,
   "cost": 100,
   "level": 1,
   "range": 50,

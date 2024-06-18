@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
  */
 public class TestGameMapFactory {
     private static final String TEST_MAP = "test";
-    private static final int TEST_MAP_ROWS = 5;
-    private static final int TEST_MAP_COLUMNS = 5;
+    private static final int TEST_MAP_ROWS = 20;
+    private static final int TEST_MAP_COLUMNS = 20;
 
     @Test
     void testSimple() throws IOException {
