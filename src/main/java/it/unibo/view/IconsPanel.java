@@ -1,13 +1,18 @@
 package it.unibo.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class IconsPanel extends JPanel {
-    private IconLabelPanel lifePanel;
-    private IconLabelPanel roundPanel;
-    private IconLabelPanel timePanel;
-    private IconLabelPanel moneyPanel;
+    private final IconLabelPanel lifePanel;
+    private final IconLabelPanel roundPanel;
+    private final IconLabelPanel timePanel;
+    private final IconLabelPanel moneyPanel;
 
     public IconsPanel(int width, int height) {
         this.setLayout(new GridLayout(1, 4)); // Layout con una riga e quattro colonne
@@ -26,8 +31,8 @@ public class IconsPanel extends JPanel {
     }
 
     private class IconLabelPanel extends JPanel {
-        private JLabel iconLabel;
-        private JLabel textLabel;
+        private final JLabel iconLabel;
+        private final JLabel textLabel;
 
         public IconLabelPanel(String iconPath, String text) {
             this.setLayout(new FlowLayout(FlowLayout.LEFT)); // Use FlowLayout for horizontal alignment
