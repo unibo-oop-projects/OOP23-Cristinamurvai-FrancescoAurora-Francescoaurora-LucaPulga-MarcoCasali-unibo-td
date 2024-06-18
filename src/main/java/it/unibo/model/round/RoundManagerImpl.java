@@ -131,6 +131,7 @@ public class RoundManagerImpl {
                     while (!spawn) {
                         if (listEnemies.get(enemyIndex) != 0) {
                             // Inserire qui il costruttore del nemico
+                            enemies.pushEnemy(enemyIndex);
                             spawn = true;
                             listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);
                         } else {
