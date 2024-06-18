@@ -15,8 +15,9 @@ import javax.swing.JPanel;
  * Load the game gui.
  */
 public class GuiStart extends JFrame {
-    private JButton startButton;
+    private final JButton startButton;
     private JPanel contentPane; // Declared as a class field to make it accessible from other methods
+    private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
 
     /**
      * Load the game gui.
@@ -44,18 +45,23 @@ public class GuiStart extends JFrame {
             // Remove the "Start" button
             contentPane.removeAll();
 
-            new SelectMapGui(contentPane);
+            // Initialize SelectMapGui if not already instantiated
+            if (selectMapGui == null) {
+                selectMapGui = new SelectMapGui(contentPane);
+            } else {
+                // Ensure SelectMapGui is visible if it's already instantiated
+                selectMapGui.setVisible(true);
+            }
         };
 
         // Create the start game button
         startButton = new JButton("Start");
- 
+
         // Add an ActionListener for the button
         startButton.addActionListener(startGameListen);
 
         // Set custom dimensions for the button
         final int heightButton = 50, widthButton = 100;
-
         startButton.setPreferredSize(new Dimension(widthButton, heightButton));
 
         // Set the alignment of the button to center
