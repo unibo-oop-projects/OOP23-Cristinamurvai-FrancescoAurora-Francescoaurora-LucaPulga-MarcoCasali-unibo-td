@@ -7,5 +7,6 @@ public enum EnemyState {
     READY,
     MOVING,
     DEAD,
-    FINISHED
+    FINISHED,
+    INACTIVE
 }

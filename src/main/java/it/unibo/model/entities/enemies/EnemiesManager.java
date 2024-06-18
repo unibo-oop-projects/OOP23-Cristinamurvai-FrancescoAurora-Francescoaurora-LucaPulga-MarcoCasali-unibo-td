@@ -61,6 +61,11 @@ public interface EnemiesManager {
      */
     long getEnemiesAlive(ArrayList<Enemy> enemies);
 
+    /* 
+     * @return the damage caused to player by enemies that reached the end of the path.
+     */
+    int getDamageToPlayerLife();
+
     /**
      * Represents the nearest enemy.
      * 

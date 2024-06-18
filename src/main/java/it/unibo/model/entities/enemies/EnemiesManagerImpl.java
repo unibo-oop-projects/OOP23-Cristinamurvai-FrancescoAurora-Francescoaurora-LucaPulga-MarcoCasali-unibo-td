@@ -54,7 +54,20 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
 	@Override
 	public long getEnemiesAlive(ArrayList<Enemy> enemies) {
-		return enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.MOVING)).count();
+		return this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.MOVING)).count();
+	}
+
+	@Override
+	public int getDamageToPlayerLife() {
+		final int damageToPlayer = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
+									.mapToInt(Enemy::getReward)
+									.sum();
+
+		this.enemies.stream()
+					.filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
+					.forEach(enemy -> enemy.deactivate());
+
+		return damageToPlayer;
 	}
 
 	@Override
@@ -62,8 +75,9 @@ public class EnemiesManagerImpl implements EnemiesManager {
 								 final int lp, final int reward) {
 		Position2D spawnPosition = gameMap.getSpawnPosition();
 		Vector2D direction = gameMap.getPathDirection(spawnPosition);
+		Position2D pathEndPosition = gameMap.getPathEndPosition();
 		EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
-													 direction, lp, reward);
+													 direction, pathEndPosition, lp, reward);
 		Thread newEnemyThread = new Thread(newEnemy);
 
 		newEnemyThread.start();

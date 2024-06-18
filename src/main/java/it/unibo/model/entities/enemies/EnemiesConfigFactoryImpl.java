@@ -25,22 +25,15 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     }
 
     public HashMap<Integer, EnemyConfig> fromJSONFile(final String file) {
-        System.out.println("ahahah");
-
         String fileContent = null;
-        
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
-            System.out.println("epsilon");
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
             System.err.println("Error when retrieving json file for enemies: " + file);
-            System.out.println("asdrubale");
         }
-        System.out.println("bhbhb");
-
         return fromJSON(fileContent);
     }
 
