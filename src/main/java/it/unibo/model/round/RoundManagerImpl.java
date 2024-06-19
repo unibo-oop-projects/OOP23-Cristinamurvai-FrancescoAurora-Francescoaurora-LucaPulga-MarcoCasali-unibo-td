@@ -18,10 +18,10 @@ public class RoundManagerImpl {
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
     private final EnemiesManager enemies;
-    private Round round;
+    private final Round round;
     private double timeSpawn;
     private List<Integer> listEnemies;
-    private Random random;
+    private final Random random;
     private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
     private static final double ADVANCEMENT_TIME = 0.1;
     private boolean isPaused = false;
@@ -32,7 +32,7 @@ public class RoundManagerImpl {
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
         enemies = enemiesManager;
-        round = new RoundImp(2); //change with get enemies
+        round = new RoundImp(2); //TODO change with get enemies
         random = new Random();
     }
 
@@ -141,7 +141,7 @@ public class RoundManagerImpl {
                     }
                     spawnCounter -= timeSpawn;
                 } else {
-                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //aggiungere isAlive
+                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //TODO aggiungere isAlive
                         interrupted = true;
                     }
                 }
