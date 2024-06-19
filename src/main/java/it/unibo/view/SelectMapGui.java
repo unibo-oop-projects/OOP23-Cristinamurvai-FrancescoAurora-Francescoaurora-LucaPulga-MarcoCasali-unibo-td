@@ -95,6 +95,10 @@ public class SelectMapGui extends JFrame {
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
 
+        /**TODO settare il pannello imagePannel alla dimensione della larghezza - bottoni, dedicare 1/4 
+        //all'immagine di destra e sinistra e 2/4 a quella centrale, impostare resize, e gestione dimensione 0
+        aggiungere i nomi delle mappe
+        */
         // Panel to contain the images
         JPanel imagePanel = new JPanel(new FlowLayout());
 
