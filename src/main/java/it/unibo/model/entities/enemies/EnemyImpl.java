@@ -81,13 +81,22 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 		final int x = (int) (this.position2d.x() + this.direction2d.x());
 		final int y = (int) (this.position2d.y() - this.direction2d.y());
 		final Position2D newPosition2d = new Position2D(x, y);
+		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
+									+ ") to position (" + x + ", " + y + ")");
+		this.position2d = new Position2D(x, y);
 		if (newPosition2d.x() == this.pathEndPosition2d.x() && newPosition2d.y() == this.pathEndPosition2d.y()) {
+			// TO-DO: see if it is possible to retard without breaking threads
+			/*try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
 			this.enemyState = EnemyState.FINISHED;
 		} else {
 			// Added only for debug purposes
-			System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
+			/*System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
 									+ ") to position (" + x + ", " + y + ")");
-			this.position2d = new Position2D(x, y);
+			this.position2d = new Position2D(x, y);*/
 		}
 	}
 

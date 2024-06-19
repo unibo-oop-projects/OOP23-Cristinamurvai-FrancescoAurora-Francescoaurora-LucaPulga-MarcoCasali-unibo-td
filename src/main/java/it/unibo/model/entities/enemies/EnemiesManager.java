@@ -75,4 +75,9 @@ public interface EnemiesManager {
      * @return the nearest enemy.
      */
     Optional<Enemy> getNearestEnemy(Position2D position2d, int radius);
+
+    /* 
+     * @return the number of different enemy types.
+     */
+    int getNEnemyTypes();
 }

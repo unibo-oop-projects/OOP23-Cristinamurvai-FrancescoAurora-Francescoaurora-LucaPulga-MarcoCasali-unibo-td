@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
-    private static final String FILE_PATH = "enemies/json/level1.json";
+    private static final String FILE_PATH = "enemies/json/enemies_config.json";
     private static final String ENEMIES = "enemies";
     private static final String NAME = "name";
     private static final String TYPE = "type";
@@ -26,11 +26,12 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     }
 
     public HashMap<Integer, EnemyConfig> fromJSONFile(final String file) {
-        String fileContent = null;
+        String fileContent;
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
+            fileContent = "";
             e.printStackTrace();
             System.err.println(e.getMessage());
             System.err.println("Error when retrieving json file for enemies: " + file);

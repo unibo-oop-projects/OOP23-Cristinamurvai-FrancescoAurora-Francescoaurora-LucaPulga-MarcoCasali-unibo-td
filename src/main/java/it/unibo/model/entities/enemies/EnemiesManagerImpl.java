@@ -60,8 +60,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
 	@Override
 	public int getDamageToPlayerLife() {
 		final int damageToPlayer = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
-									.mapToInt(Enemy::getReward)
-									.sum();
+											   .mapToInt(Enemy::getReward)
+											   .sum();
 
 		this.enemies.stream()
 					.filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
@@ -129,10 +129,13 @@ public class EnemiesManagerImpl implements EnemiesManager {
 			}
 			//System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
 			//System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
-			enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
+			if (!(enemy.getPosition().x() == this.gameMap.get().getPathEndPosition().x() && enemy.getPosition().y() == this.gameMap.get().getPathEndPosition().y())) {
+				enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
+			}
 		}
     }
 
+	@Override
 	public int getNEnemyTypes() {
 		return this.enemiesConfigFactory.getNEnemyTypes();
 	}
