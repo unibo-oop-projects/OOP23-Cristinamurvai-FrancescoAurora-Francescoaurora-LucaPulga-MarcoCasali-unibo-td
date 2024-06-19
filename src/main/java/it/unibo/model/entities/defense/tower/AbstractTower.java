@@ -78,22 +78,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     }
 
     /**
-     * Get tower's position.
-     */
-    @Override
-    public Position2D getPosition() {
-        return this.position2d;
-    }
-
-    /**
-     * Get tower's direction.
-     */
-    @Override
-    public Vector2D getDirection() {
-        return this.direction2d;
-    }
-
-    /**
      * Get tower's level.
      */
     @Override

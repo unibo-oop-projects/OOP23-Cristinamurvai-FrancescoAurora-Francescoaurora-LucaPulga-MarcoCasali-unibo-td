@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 public class EntityFactoryImpl implements EntityFactory {
     private static final String JSON_EXTENSION = ".json";
-    private static final String ENTITY_RESOURCES = "entities/";
     private static final String TOWERS_RESOURCES = "towers/json/";
 
     /**
@@ -35,6 +34,8 @@ public class EntityFactoryImpl implements EntityFactory {
     @Override
     public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
+        // Entity entity = id, name, type
+        // 
         try {
             String jsonString = readFileFromResources(filePath);
             if (jsonString != null) {
@@ -94,7 +95,7 @@ public class EntityFactoryImpl implements EntityFactory {
 
     private String readFileFromResources(final String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(ClassLoader.getSystemResourceAsStream(ENTITY_RESOURCES + filePath)))) {
+            new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath)))) {
             return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
             e.printStackTrace();

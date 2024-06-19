@@ -34,6 +34,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_FILLER_KEY = "filler";
     private static final String RANGE_SEPARATOR = "-";
     private static final String COLUMN_SEPARATOR = "/";
+    private int rows;
+    private int columns;
 
     /**
      * {@inheritDoc}
@@ -44,8 +46,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final Map<Integer, Tile> tiles = new HashMap<>();
         final TileFactory tileFactory = new TileFactoryImpl();
 
-        final int rows = json.getInt(JSON_ROWS_KEY);
-        final int columns = json.getInt(JSON_COLUMNS_KEY);
+        this.rows = json.getInt(JSON_ROWS_KEY);
+        this.columns = json.getInt(JSON_COLUMNS_KEY);
         for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
             tiles.putAll(unpackSet((JSONObject) tileSet, columns));
         }
@@ -118,21 +120,21 @@ public class GameMapFactoryImpl implements GameMapFactory {
 
             @Override
             public Position2D getSpawnPosition() {
-                return indexToPos2D(this.tiles.entrySet().stream()
+                return Position2D.IntToPos2D(this.tiles.entrySet().stream()
                     .filter(entry -> entry.getValue().getTileFeatures()
-                    .contains(TileFeature.PATH_START)).findFirst().get().getKey());
+                    .contains(TileFeature.PATH_START)).findFirst().get().getKey(), this.columns);
             }
 
             @Override
             public Position2D getPathEndPosition() {
-                return indexToPos2D(this.tiles.entrySet().stream()
+                return Position2D.IntToPos2D(this.tiles.entrySet().stream()
                     .filter(entry -> entry.getValue().getTileFeatures()
-                    .contains(TileFeature.PATH_END)).findFirst().get().getKey());
+                    .contains(TileFeature.PATH_END)).findFirst().get().getKey(), this.columns);
             }
 
             @Override
             public Vector2D getPathDirection(final Position2D position) {
-                final Set<TileFeature> directions = this.tiles.get(flatten(position)).getTileFeatures();
+                final Set<TileFeature> directions = this.tiles.get(Position2D.Pos2DtoInt(position, this.columns)).getTileFeatures();
                 if (directions.contains(TileFeature.MOVE_DOWN)) {
                     return new Vector2D(0, -1);
                 } else if (directions.contains(TileFeature.MOVE_UP)) {
@@ -146,28 +148,15 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 }
             }
 
-            private int flatten(final Position2D position) {
-                return position.y() * this.columns + position.x();
-            }
-
-            private Position2D indexToPos2D(final int i) {
-                return new Position2D(i % columns, i / this.columns);
-            }
-
-            private int Pos2DtoInt(final Position2D pos) {
-                return pos.x() + pos.y() * this.columns;
-            }
-
             @Override
             public void buildTower(Tower tower) {
-                this.tiles.get(Pos2DtoInt(tower.getPosition())).buildTower(tower);
+                this.tiles.get(Position2D.Pos2DtoInt(tower.getPosition(), this.columns)).buildTower(tower);
             }
         };
     }
 
     private Map<Integer, Tile> unpackSet(final JSONObject json, final int columns) {
         final Map<Integer, Tile> map = new HashMap<>();
-        final TileFactory tileFactory = new TileFactoryImpl();
         final String tileName = json.getString(JSON_TILE_NAME_KEY);
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
@@ -180,18 +169,24 @@ public class GameMapFactoryImpl implements GameMapFactory {
             if (tmp.contains(RANGE_SEPARATOR)) {
                 IntStream.rangeClosed(Integer.parseInt(tmp.split(RANGE_SEPARATOR)[0]),
                     Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
-                    .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
+                    .forEach(e -> createTile(e, tileName, map));
             } else if(tmp.contains(COLUMN_SEPARATOR)) {
                 IntStream
                     .iterate(Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[0]), n -> n + columns)
                     .takeWhile(n -> n <= Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[1]))
-                    .forEach(e -> map.put(e, tileFactory.fromName(tileName)));
+                    .forEach(e -> createTile(e, tileName, map));
             }
             else {
-                map.put(posArray.getInt(i), tileFactory.fromName(tileName));
+                this.createTile(posArray.getInt(i), tileName, map);
             }
         }
-
         return map;
+    }
+
+    private void createTile(int index, String name, Map<Integer, Tile> map) {
+        final TileFactory tileFactory = new TileFactoryImpl();
+        Tile t = tileFactory.fromName(name);
+        t.setPosition(Position2D.IntToPos2D(index, this.columns));
+        map.put(index, t);
     }
 }

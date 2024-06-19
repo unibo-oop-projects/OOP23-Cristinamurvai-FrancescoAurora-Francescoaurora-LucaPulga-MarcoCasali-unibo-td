@@ -6,12 +6,12 @@ import it.unibo.model.core.GameObserver;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
-import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * .
@@ -19,8 +19,8 @@ import java.util.HashSet;
 public class DefenseManagerImpl implements DefenseManager, GameObserver {
 
     private Set<Tower> towers = new HashSet<>();
-    EntityFactory towerFactory = new EntityFactoryImpl();
-    GameMap map;
+    private EntityFactory towerFactory = new EntityFactoryImpl();
+	private Optional<GameMap> map;
 
     /**
      * Costructor.
@@ -30,10 +30,10 @@ public class DefenseManagerImpl implements DefenseManager, GameObserver {
 
     @Override
     public void buildTower(Tower tower) {
-        Tower newTower;
-        try {
-            newTower = towerFactory.loadTower("towers/json/tower" + tower.getId() + ".json");
-            map.buildTower(newTower);
+        try { 
+            Tower newTower = towerFactory.loadTower("towers/json/tower" + tower.getId() + ".json");
+            newTower.setPosition(tower.getPosition());
+            map.get().buildTower(newTower); // TODO: fix this
             towers.add(newTower);
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class DefenseManagerImpl implements DefenseManager, GameObserver {
     }
 
     @Override
-    public void update(GameState gameState){
+    public void update(GameState gameState) {
         towers.forEach(tower -> tower.attack(gameState.getEnemies()));
     }
 
@@ -54,4 +54,9 @@ public class DefenseManagerImpl implements DefenseManager, GameObserver {
     public int getNumberOfTowers() {
         return this.towers.size();
     }
+
+    @Override
+	public void setMap(final GameMap gameMap) {
+		this.map = Optional.of(gameMap);
+	}
 }

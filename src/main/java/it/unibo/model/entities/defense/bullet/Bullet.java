@@ -1,11 +1,11 @@
 package it.unibo.model.entities.defense.bullet;
 
-import it.unibo.model.entities.MovableEntity;
+import it.unibo.model.entities.IMovableEntity;
 
 /**
  * Represents the bullet fired from the defensive tower's weapon.
  */
-public interface Bullet extends MovableEntity {
+public interface Bullet extends IMovableEntity {
 
     /**
      * Represents the damage dealt to the target enemy.

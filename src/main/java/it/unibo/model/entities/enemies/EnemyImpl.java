@@ -32,6 +32,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 							final Vector2D direction2d, final Position2D pathEndPosition2d, final int lp, final int reward) {
         super(id, name, type, imgPath, position2d, direction2d);
 		this.pathEndPosition2d = pathEndPosition2d;
+		this.position2d = position2d;
         this.lp = lp;
         this.reward = reward;
 		this.imgPath = imgPath;
@@ -81,8 +82,8 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 		final int x = (int) (this.position2d.x() + this.direction2d.x());
 		final int y = (int) (this.position2d.y() - this.direction2d.y());
 		final Position2D newPosition2d = new Position2D(x, y);
-		System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
-									+ ") to position (" + x + ", " + y + ")");
+		// System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
+		// 							+ ") to position (" + x + ", " + y + ")");
 		this.position2d = new Position2D(x, y);
 		if (newPosition2d.x() == this.pathEndPosition2d.x() && newPosition2d.y() == this.pathEndPosition2d.y()) {
 			// TO-DO: see if it is possible to retard without breaking threads

@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface EntityFactory {
 
-    <T> T loadEntity(String jsonFilePath,Position2D position2d, Vector2D direction, Class<T> entityType);
+    <T> T loadEntity(String jsonFilePath, Position2D position2d, Vector2D direction, Class<T> entityType);
 
     Set<Tower> loadAllTowers() throws IOException;
 

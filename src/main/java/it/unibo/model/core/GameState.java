@@ -1,7 +1,8 @@
 package it.unibo.model.core;
 
 import java.util.Set;
-import it.unibo.model.entities.Entity;
+
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.map.GameMap;
 
@@ -13,7 +14,7 @@ public interface GameState {
      * @return The set of entities currently
      * present
      */
-    Set<Entity> getEntities();
+    Set<Tower> getTowers();
     /**
      * @return The current {@link GameMap}
      */

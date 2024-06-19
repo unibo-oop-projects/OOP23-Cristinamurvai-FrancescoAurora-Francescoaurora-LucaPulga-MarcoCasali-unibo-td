@@ -6,12 +6,7 @@ import it.unibo.model.utilities.Vector2D;
 /**
  * .
  */
-public interface MovableEntity extends Entity {
-    /**
-     * Entity's position.
-     * @return Entity's position.
-     */
-    Position2D getPosition();
+public interface IMovableEntity extends IEntity {
 
     /**
      * Entity's direction.
@@ -25,9 +20,12 @@ public interface MovableEntity extends Entity {
      */
     void setDirection(Vector2D direction2d);
 
+    Position2D getPosition();
+
     /**
      * Modify Entity's direction.
      * @param direction2d
      */
     void setPosition(Position2D position2d);
+    
 }

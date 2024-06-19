@@ -1,11 +1,11 @@
 package it.unibo.model.entities.enemies;
 
-import it.unibo.model.entities.MovableEntity;
+import it.unibo.model.entities.IMovableEntity;
 
 /**
  * Represents the enemy entity.
  */
-public interface Enemy extends MovableEntity {
+public interface Enemy extends IMovableEntity {
     /**
      * Represents the actual state of the enemy.
      * 

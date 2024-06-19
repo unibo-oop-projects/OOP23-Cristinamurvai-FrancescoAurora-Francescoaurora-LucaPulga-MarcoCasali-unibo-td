@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -42,7 +43,7 @@ import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
-import it.unibo.view.enemies.EnemiesPanel;
+import it.unibo.view.enemies.EntitiesPanel;
 
 /**
  * Loading Game Screen.
@@ -59,11 +60,10 @@ public class GuiGameStart extends JFrame implements GameView {
     private IconsPanel iconLabelPanel;
     EntityFactory entityFactory;
     TowerCardFactory towerCardFactory;
-    int i = 0;
     JButton pauseButton;
 
     // Add for enemies test
-    private EnemiesPanel enemiesPanel;
+    private EntitiesPanel enemiesPanel;
 
     /**
      * .
@@ -106,7 +106,7 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EntitiesPanel(new HashSet<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
         this.layeredPane.add(mapPanel);
@@ -158,7 +158,7 @@ public class GuiGameStart extends JFrame implements GameView {
 
         //Updating enemy layer
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
-        System.out.println("Entities: " + (gameState.getEntities().size() - gameState.getEnemies().size()));
+        //System.out.println("Entities: " + (gameState.getTowers().size() - gameState.getEnemies().size()));
         // this.tiles.put(pauseButton,);
     }
 
@@ -173,7 +173,6 @@ public class GuiGameStart extends JFrame implements GameView {
     private void createMap(final GameMap map) {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
-            i += 1;
             final JButton cell = new JButton();
             cell.setBorderPainted(false);
             setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
@@ -182,15 +181,11 @@ public class GuiGameStart extends JFrame implements GameView {
                 public void mouseClicked(final MouseEvent e) {
                     Tower selectedTower = towerCardFactory.getSelectedTower();
                     if (selectedTower != null) {
+                        selectedTower.setPosition(t.getPosition());
                         controller.buildTower(selectedTower);
-                        selectedTower.setPosition(convertIndexToPosition(i));
                         System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
                         selectedTower = null;
                     }
-                }
-
-                private Position2D convertIndexToPosition(final int i) {
-                    return new Position2D(i % map.getColumns(), i / map.getColumns());
                 }
             });
             this.tiles.put(cell, t.getSprite());

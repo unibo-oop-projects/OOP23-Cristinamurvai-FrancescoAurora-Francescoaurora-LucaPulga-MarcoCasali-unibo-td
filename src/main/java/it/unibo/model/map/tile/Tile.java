@@ -2,6 +2,7 @@ package it.unibo.model.map.tile;
 
 import java.util.Set;
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.utilities.Position2D;
 
 /**
  * Represents a square 2-dimensional tile that forms the {@link it.unibo.model.map.GameMap GameMap}.
@@ -33,4 +34,14 @@ public interface Tile {
      * Destroys the built {@link Tower} if present.
      */
     void destroyTower();
+
+    /**
+     * @return tile's position. 
+     */
+    Position2D getPosition();
+
+    /**
+     * Set the tile's {@link Position2D}.
+     */
+    void setPosition(Position2D position2D);
 }

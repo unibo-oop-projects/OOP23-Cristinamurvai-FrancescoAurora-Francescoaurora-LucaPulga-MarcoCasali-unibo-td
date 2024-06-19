@@ -3,7 +3,7 @@ package it.unibo.model.entities;
 /**
  * Represents an entity in the game, that is, something that has name, position and direction.
  */
-public interface Entity {
+public interface IEntity {
     /**
      * Entity's id.
      * @return Entity's id.
@@ -22,9 +22,5 @@ public interface Entity {
      */
     String getType();
 
-    /**
-     * Image path.
-     * @return Image path.
-     */
     String getPath();
 }

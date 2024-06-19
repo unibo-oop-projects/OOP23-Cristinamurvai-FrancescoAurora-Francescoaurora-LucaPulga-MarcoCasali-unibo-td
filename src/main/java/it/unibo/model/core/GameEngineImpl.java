@@ -2,9 +2,6 @@ package it.unibo.model.core;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import it.unibo.model.entities.Entity;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.defense.tower.Tower;
@@ -15,7 +12,6 @@ import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
 import it.unibo.model.player.PlayerImpl;
 import it.unibo.model.round.RoundManagerImpl;
-import it.unibo.model.utilities.Position2D;
 
 /**
  * Implementation of {@link GameEngine}.
@@ -43,6 +39,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
         this.isRunning = true;
         //added here for enemy test
         this.enemiesManager.setMap(this.map);
+        this.defenseManager.setMap(this.map);
         //this.enemiesManager.parseEnemies();
 
         this.updateGameState();
@@ -105,9 +102,8 @@ public class GameEngineImpl implements GameEngine, Runnable {
     private void updateGameState() {
         this.gameState = new GameState() {
             @Override
-            public Set<Entity> getEntities() {
-                return Stream.concat(enemiesManager.getCurrentEnemies().stream(),
-                 defenseManager.getTowers().stream()).collect(Collectors.toSet());
+            public Set<Tower> getTowers() {
+                return defenseManager.getTowers();
             }
 
             @Override

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.json.JSONObject;
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.utilities.Position2D;
 
 /**
  * Implementation of a {@link TileFactory}.
@@ -65,6 +66,7 @@ public class TileFactoryImpl implements TileFactory {
             private final String spriteLocation = sprite;
             private Optional<Tower> tower = Optional.empty();
             private final Set<TileFeature> tileFeatures = features;
+            private Position2D position2D;
 
             @Override
             public Set<TileFeature> getTileFeatures() {
@@ -89,6 +91,16 @@ public class TileFactoryImpl implements TileFactory {
             @Override
             public void destroyTower() {
                 this.tower = Optional.empty();
+            }
+
+            @Override
+            public Position2D getPosition() {
+                return this.position2D;
+            }
+
+            @Override
+            public void setPosition(Position2D position2D) {
+                this.position2D = position2D;
             }
         };
     }
