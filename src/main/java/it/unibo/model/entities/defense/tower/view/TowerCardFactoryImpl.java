@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 
 public class TowerCardFactoryImpl implements TowerCardFactory {
 
+    public Tower selectedTower;
+
     public TowerCardFactoryImpl () { }
 
     @Override
@@ -57,7 +59,6 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
         card.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Tower selectedTower = null; 
                 selectedTower = tower;
                 System.out.println("Selected tower: " + tower.getName());
             }
@@ -93,5 +94,10 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
             }
             weaponPanel.add(weaponInfoPanel);
         }
+    }
+
+    @Override
+    public Tower getSelectedTower(){
+        return this.selectedTower;
     }
 }

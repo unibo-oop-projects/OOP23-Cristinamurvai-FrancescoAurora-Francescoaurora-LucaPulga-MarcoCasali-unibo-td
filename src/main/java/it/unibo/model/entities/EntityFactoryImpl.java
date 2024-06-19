@@ -46,24 +46,23 @@ public class EntityFactoryImpl implements EntityFactory {
         return null;
     }
 
-    // TODO: togliere e utilizzare il generico sopra
-    // @Override
-    // public Tower loadTower(final String jsonFilePath) throws IOException {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     SimpleModule module = new SimpleModule();
-    //     module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
+    @Override
+    public Tower loadTower(final String jsonFilePath) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
 
-    //     objectMapper.registerModule(module);
-    //     try {
-    //         String jsonString = readFileFromResources(jsonFilePath);
-    //         if (jsonString != null) {
-    //             return objectMapper.readValue(jsonString, BasicTower.class);
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null;
-    // }
+        objectMapper.registerModule(module);
+        try {
+            String jsonString = readFileFromResources(jsonFilePath);
+            if (jsonString != null) {
+                return objectMapper.readValue(jsonString, BasicTower.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public Set<Tower> loadAllTowers() throws IOException {

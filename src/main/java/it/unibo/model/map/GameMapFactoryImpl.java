@@ -159,8 +159,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
             }
 
             @Override
-            public void buildTower(Tower tower, Position2D position) {
-                this.tiles.get(Pos2DtoInt(position)).buildTower(tower);
+            public void buildTower(Tower tower) {
+                this.tiles.get(Pos2DtoInt(tower.getPosition())).buildTower(tower);
             }
         };
     }

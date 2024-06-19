@@ -7,12 +7,14 @@ import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
+import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
  * Implementation of single target attack.
  */
 public class SingleTargetAttack implements AttackStrategy {
+
 
     @Override
     public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {
@@ -41,7 +43,7 @@ public class SingleTargetAttack implements AttackStrategy {
             },
             () -> System.out.println("Nessun nemico nell'area")
         );
-    }
+	}
 
     // @Override
     // public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {

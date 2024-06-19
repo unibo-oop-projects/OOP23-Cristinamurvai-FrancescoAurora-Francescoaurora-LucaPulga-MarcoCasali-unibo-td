@@ -14,5 +14,7 @@ public interface EntityFactory {
 
     <T> T loadEntity(String jsonFilePath,Position2D position2d, Vector2D direction, Class<T> entityType);
 
-    public Set<Tower> loadAllTowers() throws IOException;
+    Set<Tower> loadAllTowers() throws IOException;
+
+    Tower loadTower(final String jsonFilePath) throws IOException;
 }

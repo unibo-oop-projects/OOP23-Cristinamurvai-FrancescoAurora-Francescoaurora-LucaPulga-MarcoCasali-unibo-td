@@ -6,10 +6,10 @@ import java.util.Set;
 import it.unibo.model.core.GameEngine;
 import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.map.GameMapFactory;
 import it.unibo.model.map.GameMapFactoryImpl;
-import it.unibo.model.utilities.Position2D;
 import it.unibo.view.GameView;
 
 /**
@@ -60,7 +60,7 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void buildTower(final int id, final Position2D pos) {
-        this.engine.buildTower(id, pos);
+    public void buildTower(Tower tower) {
+        this.engine.buildTower(tower);
     }
 }

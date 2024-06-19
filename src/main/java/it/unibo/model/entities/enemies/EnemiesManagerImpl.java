@@ -109,8 +109,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
 		this.enemiesThreads.add(newEnemyThread);
 
 		//TO-DO: remove, used only for debug
-		System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() 
-									+ ") with direction (" + direction.x() + ", " + direction.y() + ")");
+		// System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() 
+		// 							+ ") with direction (" + direction.x() + ", " + direction.y() + ")");
 	}
 
     @Override

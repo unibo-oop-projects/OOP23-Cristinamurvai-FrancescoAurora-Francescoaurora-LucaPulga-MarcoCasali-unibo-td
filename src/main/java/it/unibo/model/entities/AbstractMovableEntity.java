@@ -54,4 +54,8 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements Mo
     public void setDirection(final Vector2D direction2d) {
         this.direction2d = direction2d;
     }
+
+    public void setPosition(final Position2D position2d) {
+        this.position2d = position2d;
+    }
 }

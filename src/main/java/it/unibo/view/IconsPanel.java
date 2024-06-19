@@ -1,6 +1,9 @@
 package it.unibo.view;
 
 import javax.swing.*;
+
+import it.unibo.model.core.GameState;
+
 import java.awt.*;
 
 public class IconsPanel extends JPanel {
@@ -23,6 +26,17 @@ public class IconsPanel extends JPanel {
         this.add(timePanel);
         this.add(moneyPanel);
         this.setPreferredSize(new Dimension(width, height)); // Set preferred height to 100px
+    }
+
+    public void update(GameState gameState) {
+        this.setLifeText("Lives: " + gameState.getLives());
+        this.setMoneyText("Money: " + gameState.getMoney());
+        this.setTimeText("Time: " + gameState.getRoundTime());
+        if (gameState.getRoundNumber() != 0) {
+            this.setRoundText("Round: " + gameState.getRoundNumber());
+        } else {
+            this.setRoundText("Pre-round, position the towers");
+        }
     }
 
     private class IconLabelPanel extends JPanel {

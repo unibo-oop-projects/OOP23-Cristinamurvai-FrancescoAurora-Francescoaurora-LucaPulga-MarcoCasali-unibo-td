@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import it.unibo.model.entities.Entity;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
+import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.EnemiesManager;
 import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 import it.unibo.model.entities.enemies.Enemy;
@@ -162,7 +163,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
     }
 
     @Override
-    public void buildTower(final int id, final Position2D pos) {
-        this.map.buildTower(null, pos);
+    public void buildTower(Tower tower) {
+        defenseManager.buildTower(tower);
     }
 }

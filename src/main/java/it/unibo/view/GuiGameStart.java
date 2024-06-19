@@ -22,6 +22,7 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
+import it.unibo.model.utilities.Position2D;
 import it.unibo.view.enemies.EnemiesPanel;
 
 import java.awt.BorderLayout;
@@ -48,13 +49,17 @@ import java.util.Map;
  */
 public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
-    private Tower selectedTower = null;
     private JPanel contentPanel = new JPanel();
     private JPanel mapPanel;
     private JPanel layeredPane;
+    private JScrollPane scrollPane;
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
     private IconsPanel iconLabelPanel;
+    EntityFactory entityFactory;
+    TowerCardFactory towerCardFactory;
+    int i = 0;
+    JButton pauseButton;
 
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
@@ -73,7 +78,7 @@ public class GuiGameStart extends JFrame implements GameView {
 
         //addming botton paused and settings
         JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
-        JButton pauseButton = new JButton("Pause");
+        pauseButton = new JButton("Pause");
 
         ActionListener gamePause = e -> {
             this.controller.togglePause();
@@ -105,10 +110,10 @@ public class GuiGameStart extends JFrame implements GameView {
         this.layeredPane.add(mapPanel);
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
 
-        EntityFactory entityFactory = new EntityFactoryImpl();
-        TowerCardFactory towerCardFactory = new TowerCardFactoryImpl();
 
-        JScrollPane scrollPane;
+        entityFactory = new EntityFactoryImpl();
+        towerCardFactory = new TowerCardFactoryImpl();
+
         try {
             JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
             towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
@@ -138,20 +143,16 @@ public class GuiGameStart extends JFrame implements GameView {
 
     @Override
     public void update(final GameState gameState) {
-        iconLabelPanel.setLifeText("Lives: " + gameState.getMoney());
-        iconLabelPanel.setMoneyText("Money: " + gameState.getMoney());
-        iconLabelPanel.setTimeText("Time: " + gameState.getRoundTime());
-        if (gameState.getRoundNumber() != 0) {
-            iconLabelPanel.setRoundText("Round: " + gameState.getRoundNumber());
-        } else {
-            iconLabelPanel.setRoundText("Pre-round, position the towers");
-        }
+        iconLabelPanel.update(gameState);
+
         if(gameState.getLastRound() == true) {
             showGameWin(gameState.getRoundNumber());
         }
 
         //Updating enemy layer
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
+        System.out.println("Entities: " + (gameState.getEntities().size() - gameState.getEnemies().size()));
+        // this.tiles.put(pauseButton,);
     }
 
     private void resizeImages(final GameMap map) {
@@ -165,16 +166,23 @@ public class GuiGameStart extends JFrame implements GameView {
     private void createMap(final GameMap map) {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
+            i += 1;
             final JButton cell = new JButton();
+            cell.setBorderPainted(false);
             setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(final MouseEvent e) {
+                    Tower selectedTower = towerCardFactory.getSelectedTower();
                     if (selectedTower != null) {
-                        setScaledIcon(cell, selectedTower.getPath(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
-                        tiles.put(cell, selectedTower.getPath());
+                        controller.buildTower(selectedTower);
+                        selectedTower.setPosition(convertIndexToPosition(i));
                         System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
                         selectedTower = null;
                     }
+                }
+
+                private Position2D convertIndexToPosition(final int i) {
+                    return new Position2D(i % map.getColumns(), i / map.getColumns());
                 }
             });
             this.tiles.put(cell, t.getSprite());

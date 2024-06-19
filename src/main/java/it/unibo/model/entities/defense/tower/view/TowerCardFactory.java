@@ -10,4 +10,6 @@ public interface TowerCardFactory {
     JPanel createDefensePanel(Set<Tower> towers);
 
     void showWeaponDialog(Tower tower);
+
+    Tower getSelectedTower();
 }
