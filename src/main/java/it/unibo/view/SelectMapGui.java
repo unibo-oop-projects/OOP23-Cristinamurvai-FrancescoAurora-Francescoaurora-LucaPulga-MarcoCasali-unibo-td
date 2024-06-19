@@ -47,29 +47,6 @@ public class SelectMapGui extends JFrame {
 
         focusIndex = 0; // Index of the central image
 
-        // Panel to contain the images
-        JPanel imagePanel = new JPanel(new FlowLayout());
-
-        // Initialize the array of JLabels
-        imageLabels = new JLabel[3];
-
-        // Initialize the JLabels with the images
-        for (int i = 0; i < 3; i++) {
-            int index = i % maps.size(); // Calculate the index of the image
-            imageLabels[i] = new JLabel(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(index) + ".png")));
-            final int tmpIndex = index; // Save the index for use in the mouse listener
-            imageLabels[i].addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(final MouseEvent e) {
-                    // Change GUI for starting game
-                    changeGui(maps.get(tmpIndex));
-                }
-            });
-            imagePanel.add(imageLabels[i]);
-        }
-
-        
-
         // Button to scroll left
         this.leftButton = new JLabel();
         leftButton.addMouseListener(new MouseAdapter() {
@@ -117,6 +94,27 @@ public class SelectMapGui extends JFrame {
         
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
+
+        // Panel to contain the images
+        JPanel imagePanel = new JPanel(new FlowLayout());
+
+        // Initialize the array of JLabels
+        imageLabels = new JLabel[3];
+
+        // Initialize the JLabels with the images
+        for (int i = 0; i < 3; i++) {
+            int index = i % maps.size(); // Calculate the index of the image
+            imageLabels[i] = new JLabel(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(index) + ".png")));
+            final int tmpIndex = index; // Save the index for use in the mouse listener
+            imageLabels[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    // Change GUI for starting game
+                    changeGui(maps.get(tmpIndex));
+                }
+            });
+            imagePanel.add(imageLabels[i]);
+        }
 
         // Initialize the JLabels with the images
         oldGui.add(imagePanel, BorderLayout.CENTER);
