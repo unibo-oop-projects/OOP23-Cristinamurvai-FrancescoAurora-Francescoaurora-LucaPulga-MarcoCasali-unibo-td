@@ -218,8 +218,7 @@ public class RoundManagerImpl {
             } catch (InterruptedException e) {
                 System.err.println(e.getMessage());
             }
-        }     
-
+        }
     }
 
     /**

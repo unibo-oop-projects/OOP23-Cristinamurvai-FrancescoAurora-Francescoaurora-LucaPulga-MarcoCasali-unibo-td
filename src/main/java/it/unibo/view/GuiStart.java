@@ -2,22 +2,34 @@ package it.unibo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
+import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-import javax.swing.JButton;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
  * Load the game gui.
  */
 public class GuiStart extends JFrame {
-    private final JButton startButton;
-    private JPanel contentPane; // Declared as a class field to make it accessible from other methods
+    private final JLabel startButton;
+    private JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
+    private final int propButton = 3; // Set custom dimensions for the button
+    private Image icon = null;
 
     /**
      * Load the game gui.
@@ -30,45 +42,18 @@ public class GuiStart extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create an empty panel
-        contentPane = new JPanel();
+        contentPanel = new JPanel();
+
+        
 
         // Set the layout of the empty panel to GridBagLayout
-        contentPane.setLayout(new GridBagLayout());
+        contentPanel.setLayout(new GridBagLayout());
 
         // Create a GridBagConstraints to configure the positioning of the button
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Column position
         gbc.gridy = 0; // Row position
         gbc.insets = new Insets(10, 10, 10, 10); // External margin
-
-        ActionListener startGameListen = e -> {
-            // Remove the "Start" button
-            contentPane.removeAll();
-
-            // Initialize SelectMapGui if not already instantiated
-            if (selectMapGui == null) {
-                selectMapGui = new SelectMapGui(contentPane);
-            } else {
-                // Ensure SelectMapGui is visible if it's already instantiated
-                selectMapGui.setVisible(true);
-            }
-        };
-
-        // Create the start game button
-        startButton = new JButton("Start");
-
-        // Add an ActionListener for the button
-        startButton.addActionListener(startGameListen);
-
-        // Set custom dimensions for the button
-        final int heightButton = 50, widthButton = 100;
-        startButton.setPreferredSize(new Dimension(widthButton, heightButton));
-
-        // Set the alignment of the button to center
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        // Add the button to the panel with GridBagConstraints specifications
-        contentPane.add(startButton, gbc);
 
         // Set the layout of the frame
         this.setLayout(new BorderLayout());
@@ -77,9 +62,87 @@ public class GuiStart extends JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
 
         // Add the empty panel to the frame
-        this.add(contentPane, BorderLayout.CENTER);
+        this.add(contentPanel, BorderLayout.CENTER);
+
+        // Create the start game button
+        startButton = new JLabel();
+        // Add an ActionListener for the button
+        startButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                // Remove the "Start" button
+                contentPanel.removeAll();
+
+                // Initialize SelectMapGui if not already instantiated
+                if (selectMapGui == null) {
+                    selectMapGui = new SelectMapGui(contentPanel);
+                } else {
+                    // Ensure SelectMapGui is visible if it's already instantiated
+                    selectMapGui.setVisible(true);
+                }
+            }
+        });
+
+        try {
+            icon = ImageIO.read(ClassLoader.getSystemResource("buttons/Play.png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "buttons/Play.png");
+        }
 
         // Make the frame visible
         this.setVisible(true);
+
+        startButton.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
+        // Set the alignment of the button to center
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Add the button to the panel with GridBagConstraints specifications
+        contentPanel.add(startButton, gbc);
+
+        startButton.setIcon(getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+        ComponentAdapter resize = new ComponentAdapter() {
+            @Override
+            public void componentResized(final ComponentEvent e) {
+                resizeImages(startButton);
+            }
+        };
+        this.contentPanel.addComponentListener(resize);
+
+        // Request the container to update the GUI
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
+
+    private void resizeImages(final JLabel panel) {
+        panel.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
+        panel.setIcon(getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+    }
+    
+    private int dimensionsImage() {
+        if (this.getWidth() < this.getHeight()) {
+            return this.getWidth() / propButton;
+        }
+
+        return this.getHeight() / propButton;
+    } 
+
+    /**
+     * TODO reference
+     * https://stackoverflow.com/a/6714381 .
+     * @param srcImg source Image
+     * @param width
+     * @param height
+     */
+    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
+        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+
+        return new ImageIcon(resizedImg);
+    }
+    
 }
