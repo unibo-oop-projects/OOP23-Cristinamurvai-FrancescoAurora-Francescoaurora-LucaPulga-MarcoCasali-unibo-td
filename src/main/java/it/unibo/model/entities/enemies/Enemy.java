@@ -57,4 +57,9 @@ public interface Enemy extends MovableEntity {
      * Run enemy thread.
      */
     void startMoving();
+
+    /**
+     * Deactivate an enemy when its damage has already been taken into account.
+     */
+    void deactivate();
 }

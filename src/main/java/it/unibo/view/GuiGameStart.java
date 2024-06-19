@@ -1,30 +1,5 @@
 package it.unibo.view;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.OverlayLayout;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.BoxLayout;
-
-import it.unibo.controller.GameController;
-import it.unibo.controller.GameControllerImpl;
-import it.unibo.model.core.GameState;
-import it.unibo.model.entities.EntityFactory;
-import it.unibo.model.entities.EntityFactoryImpl;
-import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
-import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
-import it.unibo.model.map.GameMap;
-import it.unibo.model.utilities.Position2D;
-import it.unibo.view.enemies.EnemiesPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -44,12 +19,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+import it.unibo.controller.GameController;
+import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.core.GameState;
+import it.unibo.model.entities.EntityFactory;
+import it.unibo.model.entities.EntityFactoryImpl;
+import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
+import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
+import it.unibo.model.map.GameMap;
+import it.unibo.model.utilities.Position2D;
+import it.unibo.view.enemies.EnemiesPanel;
+
 /**
  * Loading Game Screen.
  */
 public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
-    private JPanel contentPanel = new JPanel();
+    private Tower selectedTower = null;
+    private JPanel contentPanel;
     private JPanel mapPanel;
     private JPanel layeredPane;
     private JScrollPane scrollPane;
@@ -68,8 +69,9 @@ public class GuiGameStart extends JFrame implements GameView {
      * .
      * @param mapName
      */
-    public GuiGameStart(final String mapName) {
+    public GuiGameStart(final String mapName, final JPanel oldGui) {
         final GameMap map = controller.setGameMap(mapName);
+        this.contentPanel = oldGui;
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
@@ -121,24 +123,29 @@ public class GuiGameStart extends JFrame implements GameView {
             scrollPane.setPreferredSize(new Dimension(300, 0));
             contentPanel.add(scrollPane, BorderLayout.EAST);
         } catch (IOException e1) {
-            e1.printStackTrace();
+            System.err.println(e1.getMessage());
         }
         
-        this.addComponentListener(new ComponentAdapter() {
+        ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 resizeImages(map);
             }
-        });
+        };
+
+        //if you set this the window will not recognize that the jbutton are scaled,
+        //instead putting the map when it goes to occupy all the space it is assigned to will work
+        this.mapPanel.addComponentListener(resize);
         Toolkit.getDefaultToolkit().setDynamicLayout(false);
 
-        this.add(contentPanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
         this.controller.registerView(this);
         this.controller.startGame();
-        this.setVisible(true);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        
+        // Request the container to update the GUI
+        contentPanel.revalidate();
+        contentPanel.repaint();
+        
     }
 
     @Override
@@ -171,6 +178,7 @@ public class GuiGameStart extends JFrame implements GameView {
             cell.setBorderPainted(false);
             setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(final MouseEvent e) {
                     Tower selectedTower = towerCardFactory.getSelectedTower();
                     if (selectedTower != null) {
@@ -200,9 +208,9 @@ public class GuiGameStart extends JFrame implements GameView {
         Image icon = null;
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource(imgPath));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("error when retrieving " + imgPath);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + imgPath);
         }
         cell.setIcon(getScaledImage(icon, width, height));
     }
@@ -261,12 +269,9 @@ public class GuiGameStart extends JFrame implements GameView {
         exitButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
         panel.add(exitButton);
 
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                dialog.dispose();
-                System.exit(0);
-            }
+        exitButton.addActionListener((final ActionEvent e) -> {
+            dialog.dispose();
+            System.exit(0);
         });
     }
 

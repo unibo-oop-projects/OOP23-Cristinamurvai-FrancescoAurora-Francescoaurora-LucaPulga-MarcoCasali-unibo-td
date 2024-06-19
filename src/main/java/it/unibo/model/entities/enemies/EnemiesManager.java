@@ -61,6 +61,11 @@ public interface EnemiesManager {
      */
     long getEnemiesAlive(ArrayList<Enemy> enemies);
 
+    /* 
+     * @return the damage caused to player by enemies that reached the end of the path.
+     */
+    int getDamageToPlayerLife();
+
     /**
      * Represents the nearest enemy.
      * 
@@ -70,4 +75,9 @@ public interface EnemiesManager {
      * @return the nearest enemy.
      */
     Optional<Enemy> getNearestEnemy(Position2D position2d, int radius);
+
+    /* 
+     * @return the number of different enemy types.
+     */
+    int getNEnemyTypes();
 }

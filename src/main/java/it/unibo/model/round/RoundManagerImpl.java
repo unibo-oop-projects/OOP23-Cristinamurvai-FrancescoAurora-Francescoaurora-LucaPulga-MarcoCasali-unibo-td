@@ -11,17 +11,17 @@ import it.unibo.model.entities.enemies.EnemiesManager;
 public class RoundManagerImpl {
 
 
-    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
+    private static final int ROUND_TIME = 2; // tempo del conto alla rovescia in secondi
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
     private boolean interrupted = false;
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
     private final EnemiesManager enemies;
-    private Round round;
+    private final Round round;
     private double timeSpawn;
     private List<Integer> listEnemies;
-    private Random random;
+    private final Random random;
     private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
     private static final double ADVANCEMENT_TIME = 0.1;
     private boolean isPaused = false;
@@ -32,7 +32,7 @@ public class RoundManagerImpl {
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
         enemies = enemiesManager;
-        round = new RoundImp(2); //change with get enemies
+        round = new RoundImp(2); //TODO change with get enemies
         random = new Random();
     }
 
@@ -131,6 +131,7 @@ public class RoundManagerImpl {
                     while (!spawn) {
                         if (listEnemies.get(enemyIndex) != 0) {
                             // Inserire qui il costruttore del nemico
+                            enemies.pushEnemy(enemyIndex);
                             spawn = true;
                             listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);
                         } else {
@@ -140,7 +141,7 @@ public class RoundManagerImpl {
                     }
                     spawnCounter -= timeSpawn;
                 } else {
-                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //aggiungere isAlive
+                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //TODO aggiungere isAlive
                         interrupted = true;
                     }
                 }
@@ -206,7 +207,7 @@ public class RoundManagerImpl {
             try {
                 countdownThread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
         }
 
@@ -215,7 +216,7 @@ public class RoundManagerImpl {
             try {
                 sequentialThread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
         }
 
