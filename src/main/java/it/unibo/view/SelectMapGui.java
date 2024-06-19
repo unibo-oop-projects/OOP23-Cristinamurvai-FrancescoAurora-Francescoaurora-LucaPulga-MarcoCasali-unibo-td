@@ -24,6 +24,7 @@ public class SelectMapGui extends JFrame {
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
     private final JPanel oldGui;
+    private GuiGameStart guiGameStart;
 
     /**
      * @param oldGui switching the gui panel of the old window
@@ -120,9 +121,11 @@ public class SelectMapGui extends JFrame {
      */
     public void changeGui(final String mapSelected) {
         oldGui.removeAll();
-        oldGui.setLayout(new BorderLayout());
-        oldGui.add(new GuiGameStart(mapSelected), BorderLayout.CENTER);
-        oldGui.revalidate();
-        oldGui.repaint();
+        if (guiGameStart == null) {
+            guiGameStart = new GuiGameStart((mapSelected), this.oldGui);
+        } else {
+            // Ensure SelectMapGui is visible if it's already instantiated
+            guiGameStart.setVisible(true);
+        }
     }
 }

@@ -49,7 +49,7 @@ import java.util.Map;
 public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
     private Tower selectedTower = null;
-    private JPanel contentPanel = new JPanel();
+    private JPanel contentPanel;
     private JPanel mapPanel;
     private JPanel layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
@@ -63,8 +63,9 @@ public class GuiGameStart extends JFrame implements GameView {
      * .
      * @param mapName
      */
-    public GuiGameStart(final String mapName) {
+    public GuiGameStart(final String mapName, final JPanel oldGui) {
         final GameMap map = controller.setGameMap(mapName);
+        this.contentPanel = oldGui;
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
@@ -119,21 +120,26 @@ public class GuiGameStart extends JFrame implements GameView {
             e1.printStackTrace();
         }
         
-        this.addComponentListener(new ComponentAdapter() {
+        ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 resizeImages(map);
             }
-        });
+        };
+
+        //if you set this the window will not recognize that the jbutton are scaled,
+        //instead putting the map when it goes to occupy all the space it is assigned to will work
+        this.mapPanel.addComponentListener(resize);
         Toolkit.getDefaultToolkit().setDynamicLayout(false);
 
-        this.add(contentPanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
         this.controller.registerView(this);
         this.controller.startGame();
-        this.setVisible(true);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        
+        // Request the container to update the GUI
+        contentPanel.revalidate();
+        contentPanel.repaint();
+        
     }
 
     @Override
