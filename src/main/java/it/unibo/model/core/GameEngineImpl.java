@@ -160,7 +160,12 @@ public class GameEngineImpl implements GameEngine, Runnable {
 
     @Override
     public void buildTower(Tower tower) {
-        defenseManager.buildTower(tower);
-        player.setMoney(-tower.getCost());
+        if (player.getMoney() >= player.getMoney()) {
+            defenseManager.buildTower(tower);
+            player.setMoney(-tower.getCost());
+        }
+        else{
+            tower.setPosition(null);
+        }
     }
 }
