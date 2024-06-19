@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "Bullet",
+  "type": "Base",
+  "imgPath": "bullet/img/bullet.png",
+  "initialPosition": null,
+  "direction2d": null,
+  "speed": 100,
+  "damage": 25,
+  "range": 50
+}

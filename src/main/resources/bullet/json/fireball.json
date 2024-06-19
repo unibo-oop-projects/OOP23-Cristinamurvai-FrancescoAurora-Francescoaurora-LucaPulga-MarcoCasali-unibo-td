@@ -1,0 +1,11 @@
+{
+  "id": 2,
+  "name": "Fireball",
+  "type": "Base",
+  "imgPath": "bullet/img/fireball.gif",
+  "initialPosition": null,
+  "direction2d": null,
+  "speed": 10,
+  "damage": 20,
+  "range": 200
+}

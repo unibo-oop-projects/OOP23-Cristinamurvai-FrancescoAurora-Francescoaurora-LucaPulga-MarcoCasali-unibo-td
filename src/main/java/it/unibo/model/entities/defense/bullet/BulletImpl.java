@@ -41,7 +41,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
                 @JsonProperty("direction2d")final Vector2D direction2d, 
                 @JsonProperty("speed")final int speed, 
                 @JsonProperty("damage")final int damage, 
-                @JsonProperty("enemy")final Enemy enemy) {
+                final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
