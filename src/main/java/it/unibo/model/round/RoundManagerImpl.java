@@ -207,7 +207,7 @@ public class RoundManagerImpl {
             try {
                 countdownThread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
         }
 
@@ -216,7 +216,7 @@ public class RoundManagerImpl {
             try {
                 sequentialThread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
         }
 
