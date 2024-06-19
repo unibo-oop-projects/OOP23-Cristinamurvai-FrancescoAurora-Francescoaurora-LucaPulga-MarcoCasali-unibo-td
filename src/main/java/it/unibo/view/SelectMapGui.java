@@ -1,15 +1,20 @@
 package it.unibo.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +30,11 @@ public class SelectMapGui extends JFrame {
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
     private final JPanel oldGui;
     private GuiGameStart guiGameStart;
+    private JLabel leftButton;
+    private JLabel rightButton;
+    private Image left = null;
+    private Image right = null;
+    private static final int DIMENSION_BUTTONS = 100;
 
     /**
      * @param oldGui switching the gui panel of the old window
@@ -58,30 +68,58 @@ public class SelectMapGui extends JFrame {
             imagePanel.add(imageLabels[i]);
         }
 
-        // Initialize the JLabels with the images
-        oldGui.add(imagePanel, BorderLayout.CENTER);
+        
 
         // Button to scroll left
-        JButton leftButton = new JButton("<");
-        leftButton.addActionListener((final ActionEvent e) -> {
+        this.leftButton = new JLabel();
+        leftButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
             // Update the focusIndex and redraw the images
             focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
             updateImages();
+            }
         });
+
+        try {
+            left = ImageIO.read(ClassLoader.getSystemResource("buttons/left.png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "buttons/left.png");
+        }
+
+        leftButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        leftButton.setIcon(getScaledImage(left, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
 
         // Add the button to scroll left to the frame
         oldGui.add(leftButton, BorderLayout.WEST);
 
         // Button to scroll right
-        JButton rightButton = new JButton(">");
-        rightButton.addActionListener((final ActionEvent e) -> {
+        this.rightButton = new JLabel();
+        rightButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
             // Update the focusIndex and redraw the images
             focusIndex = (focusIndex + 1) % maps.size();
             updateImages();
+            }
         });
 
+        try {
+            right = ImageIO.read(ClassLoader.getSystemResource("buttons/right.png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "buttons/right.png");
+        }
+
+        rightButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        rightButton.setIcon(getScaledImage(right, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
+
+        // Initialize the JLabels with the images
+        oldGui.add(imagePanel, BorderLayout.CENTER);
 
         // Request the container to update the GUI
         oldGui.revalidate();
@@ -127,5 +165,23 @@ public class SelectMapGui extends JFrame {
             // Ensure SelectMapGui is visible if it's already instantiated
             guiGameStart.setVisible(true);
         }
+    }
+
+    /**
+     * TODO reference
+     * https://stackoverflow.com/a/6714381 .
+     * @param srcImg source Image
+     * @param width
+     * @param height
+     */
+    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
+        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+
+        return new ImageIcon(resizedImg);
     }
 }
