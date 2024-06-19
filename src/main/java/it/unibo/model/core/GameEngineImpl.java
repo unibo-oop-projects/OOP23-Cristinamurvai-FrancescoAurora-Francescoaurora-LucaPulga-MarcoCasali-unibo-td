@@ -42,7 +42,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
         this.isRunning = true;
         //added here for enemy test
         this.enemiesManager.setMap(this.map);
-        this.enemiesManager.parseEnemies();
+        //this.enemiesManager.parseEnemies();
 
         this.updateGameState();
         final Thread t = new Thread(this);
