@@ -51,6 +51,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         JButton weaponButton = new JButton("Weapons");
         weaponButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Weapon button clicked");
                 showWeaponDialog(tower);
             }
         });
@@ -75,25 +76,43 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
     @Override
     public void showWeaponDialog(Tower tower) {
-        JPanel weaponPanel = new JPanel();
-        weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
-        
-        Set<Weapon> weapons = tower.getWeapons();
-        for (Weapon weapon : weapons) {
-            JPanel weaponInfoPanel = new JPanel(new BorderLayout());
-
-            JLabel nameLabel = new JLabel("Name: " + weapon.getName());
-            weaponInfoPanel.add(nameLabel, BorderLayout.NORTH);
-
-            JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
-            weaponInfoPanel.add(damageLabel, BorderLayout.CENTER);
-
-            if (weapon.getPath() != null) {
-                JLabel imageLabel = new JLabel(new ImageIcon(weapon.getPath()));
-                weaponInfoPanel.add(imageLabel, BorderLayout.WEST);
-            }
-            weaponPanel.add(weaponInfoPanel);
-        }
+       // Creazione del pannello delle armi
+       JPanel weaponPanel = new JPanel();
+       weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
+       
+       Set<Weapon> weapons = tower.getWeapons();
+       for (Weapon weapon : weapons) {
+           JPanel weaponInfoPanel = new JPanel(new BorderLayout());
+   
+           // Aggiunta dell'immagine a sinistra
+           if (weapon.getPath() != null) {
+               JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(weapon.getPath())));
+               imgLabel.setPreferredSize(new Dimension(150, 100));
+               weaponInfoPanel.add(imgLabel, BorderLayout.WEST);
+           }
+   
+           // Creazione di un pannello per le specifiche
+           JPanel specsPanel = new JPanel();
+           specsPanel.setLayout(new BoxLayout(specsPanel, BoxLayout.Y_AXIS));
+   
+           JLabel nameLabel = new JLabel("Name: " + weapon.getName());
+           specsPanel.add(nameLabel);
+   
+           JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
+           specsPanel.add(damageLabel);
+   
+           // Aggiunta del pannello delle specifiche al centro
+           weaponInfoPanel.add(specsPanel, BorderLayout.CENTER);
+   
+           weaponPanel.add(weaponInfoPanel);
+       }
+   
+       // Creazione e visualizzazione della finestra di dialogo
+       JDialog dialog = new JDialog((Frame) null, "Weapon Information", true);
+       dialog.setContentPane(weaponPanel);
+       dialog.setSize(400, 300); // Imposta la dimensione preferita
+       dialog.setLocationRelativeTo(null); // Centra la finestra sullo schermo
+       dialog.setVisible(true);
     }
 
     @Override

@@ -156,8 +156,6 @@ public class GuiGameStart extends JFrame implements GameView {
 
         //Updating enemy layer
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
-        //System.out.println("Entities: " + (gameState.getTowers().size() - gameState.getEnemies().size()));
-        // this.tiles.put(pauseButton,);
     }
 
     private void resizeImages(final GameMap map) {
