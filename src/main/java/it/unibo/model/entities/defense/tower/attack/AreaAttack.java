@@ -13,6 +13,7 @@ import it.unibo.model.utilities.Vector2D;
  * Implementation of area attack.
  */
 public class AreaAttack implements AttackStrategy {
+
     @Override
     public void attack(final Tower tower, final Optional<Set<Enemy>> enemies) {
 
@@ -20,7 +21,7 @@ public class AreaAttack implements AttackStrategy {
         enemies.ifPresentOrElse(
             enemySet -> {
                 for (Enemy enemy : enemySet) {
-                    System.out.println("Attacco ad area a " + enemy.getName());
+                    System.out.println("Attacco multiplo verso " + enemy.getName());
                     long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
                     long currentTime = System.currentTimeMillis();
                     long timeSinceLastShot = currentTime - lastShotTime;
@@ -28,11 +29,8 @@ public class AreaAttack implements AttackStrategy {
 
                     if (timeSinceLastShot >= fireRate) {
                         // Crea e avvia un thread Bullet per inseguire ed attaccare il nemico
-                        Bullet bullet = new BulletImpl(124, "bullet", "base", "", tower.getPosition(),
-                                                         new Vector2D(0, 0), 100, 100, enemy);
-                        Thread bulletThread = new Thread((Runnable) bullet);
-                        bulletThread.start();
-
+                        Bullet bullet = new BulletImpl(124, "bullet", "base", "bullet/img/bullet.png",
+                                                        tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy);
                         // Aggiorna il tempo dell'ultimo sparo
                         tower.getCurrentWeapon().setLastShotTime(currentTime);
                     }
@@ -40,5 +38,5 @@ public class AreaAttack implements AttackStrategy {
             },
             () -> System.out.println("Nessun nemico nell'area")
         );
-    }
+	}
 }

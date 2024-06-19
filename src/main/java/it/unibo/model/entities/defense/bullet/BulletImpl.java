@@ -56,14 +56,6 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
         return this.position2d.equals(targetEnemy.getPosition());
     }
 
-    /**
-     * .
-     */
-    public Position2D getPosition() {
-        return this.position2d;
-    }
-
-
     @Override
     public void update(GameState gameState) {
         while (!hasReachedTarget()) {
