@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -112,7 +114,8 @@ public class SelectMapGui extends JFrame {
         // Initialize the JLabels with the images
             
             imageLabels.setSize(this.oldGui.getWidth(), this.oldGui.getHeight());
-            imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+            imageLabels.setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(this.focusIndex) + ".png")));
+            imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(),imageLabels.getIcon().getIconWidth() ));
             imageLabels.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -120,6 +123,16 @@ public class SelectMapGui extends JFrame {
                     changeGui(maps.get(focusIndex));
                 }
             });
+
+            ComponentAdapter resize = new ComponentAdapter() {
+                @Override
+                public void componentResized(final ComponentEvent e) {
+                    imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(),imageLabels.getIcon().getIconWidth()));
+                }
+            };
+            imagePanel.addComponentListener(resize);
+
+            
             imagePanel.add(imageLabels);
         
             // Request the container to update the GUI
@@ -140,7 +153,7 @@ public class SelectMapGui extends JFrame {
             for (MouseListener adapter : imageLabels.getMouseListeners()) {
                 imageLabels.removeMouseListener(adapter);
             }
-            imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+            imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(),imageLabels.getIcon().getIconWidth()));
             imageLabels.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -183,7 +196,7 @@ public class SelectMapGui extends JFrame {
         return new ImageIcon(resizedImg);
     }
 
-    private ImageIcon getScalated( final String image) {
+    private ImageIcon getScalated(final String image, final int imageHeight, final int imageWidth) {
         int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
         BufferedImage icon;
         try {
@@ -193,15 +206,29 @@ public class SelectMapGui extends JFrame {
             System.err.println("error when retrieving " + "map_preview/" + image + ".png");
             return null;
         }
-        if (this.oldGui.getHeight() == 0 || widthWitchButton == 0) {
-            return getScaledImage(icon, this.oldGui.getWidth(), this.oldGui.getHeight());
+
+        if (this.oldGui.getHeight() <= 0 || widthWitchButton <= 0) {
+            return getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
         }
-        if(icon.getWidth() > widthWitchButton) {
-            return getScaledImage(icon, widthWitchButton, icon.getHeight() * widthWitchButton /  icon.getWidth());
+
+        // Calculates the proportions of the image
+        double iconAspectRatio = (double) icon.getWidth() / icon.getHeight();
+        double panelAspectRatio = (double) widthWitchButton / this.oldGui.getHeight();
+
+        // Check if the image is wider than the available space
+        if (icon.getWidth() > widthWitchButton || icon.getHeight() > this.oldGui.getHeight()) {
+            if (panelAspectRatio > iconAspectRatio) {
+                // L'altezza è il fattore limitante
+                int newHeight = this.oldGui.getHeight();
+                int newWidth = (int) (newHeight * iconAspectRatio);
+                return getScaledImage(icon, newWidth, newHeight);
+            } else {
+                // Width is the limiting factor
+                int newWidth = widthWitchButton;
+                int newHeight = (int) (newWidth / iconAspectRatio);
+                return getScaledImage(icon, newWidth, newHeight);
+            }
         }
-        if (icon.getHeight() > this.oldGui.getHeight()) {
-            return getScaledImage(icon, icon.getWidth() * this.oldGui.getHeight() / icon.getHeight(), this.oldGui.getHeight());
-        }
-        return getScaledImage(icon, icon.getWidth(), icon.getHeight());
+        return new ImageIcon(icon);
     }
 }
