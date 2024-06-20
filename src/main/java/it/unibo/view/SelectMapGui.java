@@ -25,7 +25,7 @@ import it.unibo.controller.GameControllerImpl;
  * map loading with slider for scrolling.
  */
 public class SelectMapGui extends JFrame {
-    private final JLabel[] imageLabels;
+    private final JLabel imageLabels;
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
     private final JPanel oldGui;
@@ -103,25 +103,30 @@ public class SelectMapGui extends JFrame {
         JPanel imagePanel = new JPanel(new FlowLayout());
 
         // Initialize the array of JLabels
-        imageLabels = new JLabel[3];
-
-        // Initialize the JLabels with the images
-        for (int i = 0; i < 3; i++) {
-            int index = i % maps.size(); // Calculate the index of the image
-            imageLabels[i] = new JLabel(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(index) + ".png")));
-            final int tmpIndex = index; // Save the index for use in the mouse listener
-            imageLabels[i].addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(final MouseEvent e) {
-                    // Change GUI for starting game
-                    changeGui(maps.get(tmpIndex));
-                }
-            });
-            imagePanel.add(imageLabels[i]);
-        }
+        this.imageLabels = new JLabel();
 
         // Initialize the JLabels with the images
         oldGui.add(imagePanel, BorderLayout.CENTER);
+
+        
+        // Initialize the JLabels with the images
+            
+            imageLabels.setSize(this.oldGui.getWidth(), this.oldGui.getHeight());
+            imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+            imageLabels.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    // Change GUI for starting game
+                    changeGui(maps.get(focusIndex));
+                }
+            });
+            imagePanel.add(imageLabels);
+        
+            // Request the container to update the GUI
+        oldGui.revalidate();
+        oldGui.repaint();
+
+        
 
         // Request the container to update the GUI
         oldGui.revalidate();
@@ -130,29 +135,20 @@ public class SelectMapGui extends JFrame {
 
     // Update the image when an arrow is clicked
     private void updateImages() {
-        // Calculate the indices of the images
-        int[] indices = {
-            (focusIndex - 1 + maps.size()) % maps.size(),
-            focusIndex,
-            (focusIndex + 1) % maps.size()
-        };
-
-        // Update the JLabels with the new images
-        for (int i = 0; i < 3; i++) {
-            final int tmp = indices[i];
+        
             // Remove previous mouse listeners
-            for (MouseListener adapter : imageLabels[i].getMouseListeners()) {
-                imageLabels[i].removeMouseListener(adapter);
+            for (MouseListener adapter : imageLabels.getMouseListeners()) {
+                imageLabels.removeMouseListener(adapter);
             }
-            imageLabels[i].setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(tmp) + ".png")));
-            imageLabels[i].addMouseListener(new MouseAdapter() {
+            imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+            imageLabels.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
                     // Change GUI for starting game
-                    changeGui(maps.get(tmp));
+                    changeGui(maps.get(focusIndex));
                 }
             });
-        }
+        
     }
 
     /**
@@ -185,5 +181,27 @@ public class SelectMapGui extends JFrame {
         g2.dispose();
 
         return new ImageIcon(resizedImg);
+    }
+
+    private ImageIcon getScalated( final String image) {
+        int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
+        BufferedImage icon;
+        try {
+            icon = ImageIO.read(ClassLoader.getSystemResource("map_preview/" + image + ".png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "map_preview/" + image + ".png");
+            return null;
+        }
+        if (this.oldGui.getHeight() == 0 || widthWitchButton == 0) {
+            return getScaledImage(icon, this.oldGui.getWidth(), this.oldGui.getHeight());
+        }
+        if(icon.getWidth() > widthWitchButton) {
+            return getScaledImage(icon, widthWitchButton, icon.getHeight() * widthWitchButton /  icon.getWidth());
+        }
+        if (icon.getHeight() > this.oldGui.getHeight()) {
+            return getScaledImage(icon, icon.getWidth() * this.oldGui.getHeight() / icon.getHeight(), this.oldGui.getHeight());
+        }
+        return getScaledImage(icon, icon.getWidth(), icon.getHeight());
     }
 }

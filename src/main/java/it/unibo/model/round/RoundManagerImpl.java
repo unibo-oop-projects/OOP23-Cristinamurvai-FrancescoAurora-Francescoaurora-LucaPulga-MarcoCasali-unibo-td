@@ -32,7 +32,7 @@ public class RoundManagerImpl {
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
         enemies = enemiesManager;
-        round = new RoundImp(2); //TODO change with get enemies
+        round = new RoundImp(enemies.getNEnemyTypes()); //return # enemies
         random = new Random();
     }
 
@@ -141,7 +141,7 @@ public class RoundManagerImpl {
                     }
                     spawnCounter -= timeSpawn;
                 } else {
-                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0) { //TODO aggiungere isAlive
+                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0 && enemies.getCurrentEnemies().isEmpty()) { //check id round finished to spown anche enemies is not Alive
                         interrupted = true;
                     }
                 }
