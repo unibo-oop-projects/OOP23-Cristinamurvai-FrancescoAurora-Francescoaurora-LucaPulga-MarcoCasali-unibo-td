@@ -66,16 +66,6 @@ public interface EnemiesManager {
      */
     int getDamageToPlayerLife();
 
-    /**
-     * Represents the nearest enemy.
-     * 
-     * @param position2d
-     * @param radius
-     * 
-     * @return the nearest enemy.
-     */
-    Optional<Enemy> getNearestEnemy(Position2D position2d, int radius);
-
     /* 
      * @return the number of different enemy types.
      */

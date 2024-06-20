@@ -92,23 +92,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
 	public Set<Enemy> getCurrentEnemies() {
-        return this.enemies.stream().collect(Collectors.toSet());
-	}
-
-	@Override
-	public Optional<Enemy> getNearestEnemy(final Position2D position2d, final int radius) {
-		Optional<Enemy>  nearestEnemy = Optional.empty();
-		double nearestDistance = MAX_DISTANCE;
-		double distance;
-		for (Enemy enemy : this.enemies) {
-			distance = Math.sqrt(Math.pow(position2d.x() - enemy.getPosition().x(), 2) + Math.pow(position2d.y() 
-													- enemy.getPosition().y(), 2));
-			if (distance < nearestDistance && distance <= radius) {
-				nearestDistance = distance;
-				nearestEnemy = Optional.of(enemy);
-			}
-		}
-		return nearestEnemy;
+        //return this.enemies.stream().collect(Collectors.toSet());
+        return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet());
 	}
 
 	@Override

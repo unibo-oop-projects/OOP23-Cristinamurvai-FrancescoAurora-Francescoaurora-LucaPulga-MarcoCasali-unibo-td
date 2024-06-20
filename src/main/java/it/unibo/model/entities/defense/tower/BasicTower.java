@@ -5,7 +5,10 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
 import java.util.Optional;
+
+import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
@@ -15,6 +18,8 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 public class BasicTower extends AbstractTower {
+
+    private Set<Bullet> bullets = new HashSet<>();
 
     @JsonCreator
     public BasicTower(@JsonProperty("id") final int id, 
@@ -62,4 +67,9 @@ public class BasicTower extends AbstractTower {
     public void setAttackStrategy(final AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
+
+    // @Override
+    // public Set<Bullet> getBullets(){
+    //     this.bullets;
+    // }
 }

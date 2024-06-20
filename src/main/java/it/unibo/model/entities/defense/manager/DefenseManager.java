@@ -2,13 +2,16 @@ package it.unibo.model.entities.defense.manager;
 
 import java.util.Set;
 
+import it.unibo.model.core.GameObserver;
+import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 
 /**
  * Represents the entity manager to manage all the entities.
  */
-public interface DefenseManager {
+public interface DefenseManager extends GameObserver {
+    
     /**
      * @param tower tower to be built
      * Builds the entity thread.
@@ -29,8 +32,13 @@ public interface DefenseManager {
 
     /**
      * Set the actual map.
-     * 
      * @param gameMap
      */
     void setMap(GameMap gameMap);
+
+    /**
+     * Set the actual map.
+     * @param gameMap
+     */
+    Set<Bullet> getBullets();
 }

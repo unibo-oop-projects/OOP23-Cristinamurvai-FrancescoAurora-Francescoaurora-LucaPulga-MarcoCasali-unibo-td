@@ -2,6 +2,8 @@ package it.unibo.model.core;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.defense.tower.Tower;
@@ -40,7 +42,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
         //added here for enemy test
         this.enemiesManager.setMap(this.map);
         this.defenseManager.setMap(this.map);
-        //this.enemiesManager.parseEnemies();
+        this.registerObserver(defenseManager);
 
         this.updateGameState();
         final Thread t = new Thread(this);
@@ -151,6 +153,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
             public boolean getLastRound(){
                 return roudManager.getLastRound();
             }
+
+            @Override
+            public Set<Bullet> getBullets() {
+                return defenseManager.getBullets();
+            }
         };
     }
 
@@ -160,7 +167,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
 
     @Override
     public void buildTower(Tower tower) {
-        if (player.getMoney() >= player.getMoney()) {
+        if (player.getMoney() >= tower.getCost()) {
             defenseManager.buildTower(tower);
             player.setMoney(-tower.getCost());
         }

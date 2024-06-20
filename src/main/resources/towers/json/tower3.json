@@ -14,7 +14,7 @@
       "name": "Weapon1",
       "type": "Gun",
       "imgPath": "weapons/bow.png",
-      "frequency": 500
+      "frequency": 1
     }
   ],
   "currentWeapon": {
@@ -22,7 +22,7 @@
     "name": "Weapon1",
     "type": "Gun",
     "imgPath": "weapons/bow.png",
-    "frequency": 500
+    "frequency": 1
   },
   "attackStrategy": "SingleTargetAttack",
   "targetSelectionStrategy": "DistanceBasedTargetSelection"

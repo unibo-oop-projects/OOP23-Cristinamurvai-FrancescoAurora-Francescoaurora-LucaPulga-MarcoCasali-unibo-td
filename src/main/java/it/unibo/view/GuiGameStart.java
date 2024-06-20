@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,7 +42,8 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
-import it.unibo.view.enemies.EntitiesPanel;
+import it.unibo.view.enemies.EnemiesPanel;
+import it.unibo.view.enemies.DefensePanel;
 
 /**
  * Loading Game Screen.
@@ -61,7 +63,8 @@ public class GuiGameStart extends JFrame implements GameView {
     JButton pauseButton;
 
     // Add for enemies test
-    private EntitiesPanel enemiesPanel;
+    private DefensePanel defensePanel;
+    private EnemiesPanel enemiesPanel;
 
     /**
      * .
@@ -100,16 +103,20 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
         this.createMap(map);
 
-
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EntitiesPanel(new HashSet<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
+        
+        this.defensePanel = new DefensePanel(new HashSet<>(), new HashSet<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.defensePanel.setOpaque(false);
+        this.layeredPane.add(this.defensePanel);
+
         this.layeredPane.add(mapPanel);
         contentPanel.add(this.layeredPane, BorderLayout.CENTER);
-
 
         entityFactory = new EntityFactoryImpl();
         towerCardFactory = new TowerCardFactoryImpl();
@@ -139,11 +146,9 @@ public class GuiGameStart extends JFrame implements GameView {
         this.controller.registerView(this);
         this.controller.startGame();
 
-        
         // Request the container to update the GUI
         contentPanel.revalidate();
         contentPanel.repaint();
-        
     }
 
     @Override
@@ -155,6 +160,7 @@ public class GuiGameStart extends JFrame implements GameView {
         }
 
         //Updating enemy layer
+        this.defensePanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
         this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
     }
 

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import it.unibo.model.entities.IMovableEntity;
+import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
@@ -36,6 +37,8 @@ public interface Tower extends IMovableEntity {
      * @return Current weapon.
      */
     Weapon getCurrentWeapon();
+
+    // Set<Bullet> getBullets();
 
     /**
      * Tower's cost.

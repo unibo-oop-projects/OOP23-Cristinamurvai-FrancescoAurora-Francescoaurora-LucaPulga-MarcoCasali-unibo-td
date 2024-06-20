@@ -24,21 +24,17 @@ public class SingleTargetAttack implements AttackStrategy {
                     long currentTime = System.currentTimeMillis();
                     long timeSinceLastShot = currentTime - lastShotTime;
                     long fireRate = tower.getCurrentWeapon().getFrequency();
-
                     return timeSinceLastShot >= fireRate;
                 })
                 .findFirst()
                 .ifPresent(enemy -> {
-                    System.out.println("Attacco a " + enemy.getName());
-                    Bullet bullet = new BulletImpl(
-                        124, "bullet", "base", "bullet/img/fireball.gif",
-                        tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy
-                    );
-                    new Thread((Runnable) bullet).start();
+                    System.out.println(tower.getName() + "Attacco a " + enemy.getName());
+                    Bullet bullet = new BulletImpl(124, "bullet", "base", "bullet/img/fireball.gif",
+                        tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy);
+                    //new Thread((Runnable) bullet).start();
                     tower.getCurrentWeapon().setLastShotTime(System.currentTimeMillis());
                 }),
-            () -> System.out.println("Nessun nemico nell'area")
+            () -> System.out.println(tower.getName() + ": nessun nemico nell'area")
         );
     }
-
 }
