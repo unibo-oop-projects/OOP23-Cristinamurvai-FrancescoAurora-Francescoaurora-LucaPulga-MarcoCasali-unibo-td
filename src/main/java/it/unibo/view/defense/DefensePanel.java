@@ -1,4 +1,4 @@
-package it.unibo.view.enemies;
+package it.unibo.view.defense;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -45,7 +45,7 @@ public class DefensePanel extends JPanel {
         for (Tower entity : this.towers) {
             try {
                 BufferedImage enemyImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(getScaledImage(enemyImage, this.xCellSize, this.yCellSize), entity.getPosition().x() * this.xCellSize, entity.getPosition().y() * this.yCellSize, this);
+                g.drawImage(getScaledImage(enemyImage, this.xCellSize, this.yCellSize*2), entity.getPosition().x() * this.xCellSize, entity.getPosition().y() * this.yCellSize, this);
             } catch (IOException e) {
                 e.printStackTrace();
             }

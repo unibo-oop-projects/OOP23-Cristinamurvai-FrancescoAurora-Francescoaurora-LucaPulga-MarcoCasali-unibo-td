@@ -1,6 +1,5 @@
 package it.unibo.model.entities.defense.tower.target;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -11,25 +10,21 @@ import it.unibo.model.utilities.Position2D;
 
 // Implementazione di selezione del bersaglio basata sulla distanza
 public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
+
     @Override
-    public Optional<Set<Enemy>> selectTarget(Tower tower, Set<Enemy> enemies) {
-        Set<Enemy> targets = new HashSet<>();
+    public Optional<Enemy> selectTarget(Tower tower, Set<Enemy> enemies) {
         for (Enemy enemy : enemies) {
             double distance = this.calculateDistance(tower.getPosition(), enemy.getPosition());
             if (distance <= tower.getRange()) {
-                targets.add(enemy);
+                return Optional.of(enemy);
             }
         }
-        if (!targets.isEmpty()) {
-            return Optional.of(targets);
-        } else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
-    private double calculateDistance(Position2D position1, Position2D position2) {
-        int deltaX = position2.x() - position1.x();
-        int deltaY = position2.y() - position1.y();
+    private double calculateDistance(Position2D towerPosition2d, Position2D enemyPosition2d) {
+        int deltaX = towerPosition2d.x() - enemyPosition2d.x();
+        int deltaY = towerPosition2d.y() - enemyPosition2d.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }

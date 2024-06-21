@@ -1,5 +1,6 @@
 package it.unibo.model.entities.defense.bullet;
 
+import it.unibo.model.core.GameState;
 import it.unibo.model.entities.IMovableEntity;
 
 /**
@@ -20,4 +21,8 @@ public interface Bullet extends IMovableEntity {
      * @return the speed bullet.
      */
     int getSpeed();
+
+    boolean hasReachedTarget();
+
+    public void update(GameState gameState);
 }

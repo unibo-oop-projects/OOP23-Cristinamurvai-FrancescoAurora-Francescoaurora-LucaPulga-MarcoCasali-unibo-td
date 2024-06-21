@@ -24,6 +24,6 @@
     "imgPath": "bullet/img/bolt-icon.png",
     "frequency": 2
   },
-  "attackStrategy": "AreaTargetAttack",
+  "attackStrategy": "SingleTargetAttack",
   "targetSelectionStrategy": "DistanceBasedTargetSelection"
 }

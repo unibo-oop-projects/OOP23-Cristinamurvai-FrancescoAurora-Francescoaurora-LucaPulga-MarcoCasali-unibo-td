@@ -53,7 +53,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
      * @return
      */
     public boolean hasReachedTarget() {
-        return this.position2d.equals(targetEnemy.getPosition());
+        return this.position2d.equals(targetEnemy.getPosition()) && targetEnemy.isAlive();
     }
 
     @Override

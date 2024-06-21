@@ -8,5 +8,5 @@ import java.util.Set;
 
 // Interfaccia per la selezione del bersaglio
 public interface TargetSelectionStrategy {
-    Optional<Set<Enemy>> selectTarget(Tower tower, Set<Enemy> enemies);
+    Optional<Enemy> selectTarget(Tower tower, Set<Enemy> enemies);
 }

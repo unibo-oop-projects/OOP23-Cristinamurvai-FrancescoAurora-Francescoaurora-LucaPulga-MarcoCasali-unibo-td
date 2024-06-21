@@ -42,8 +42,8 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
+import it.unibo.view.defense.DefensePanel;
 import it.unibo.view.enemies.EnemiesPanel;
-import it.unibo.view.enemies.DefensePanel;
 
 /**
  * Loading Game Screen.

@@ -32,6 +32,8 @@ public interface Tower extends IMovableEntity {
      */
     Set<Weapon> getWeapons();
 
+    Set<Bullet> getBullets();
+
     /**
      * Current weapon.
      * @return Current weapon.
@@ -46,7 +48,7 @@ public interface Tower extends IMovableEntity {
      */
     int getCost();
 
-    Optional<Set<Enemy>> target(Set<Enemy> enemies);
+    Optional<Enemy> target(Set<Enemy> enemies);
 
     void attack(Set<Enemy> enemies);
 
@@ -57,4 +59,6 @@ public interface Tower extends IMovableEntity {
     void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy);
 
     void setAttackStrategy(AttackStrategy attackStrategy);
+
+    public void clearBullets();
 }

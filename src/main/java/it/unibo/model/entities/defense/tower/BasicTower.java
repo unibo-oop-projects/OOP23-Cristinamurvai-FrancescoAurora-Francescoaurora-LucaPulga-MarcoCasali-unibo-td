@@ -1,14 +1,14 @@
 package it.unibo.model.entities.defense.tower;
 
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet;
-import java.util.Optional;
-
 import it.unibo.model.entities.defense.bullet.Bullet;
+import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
@@ -19,7 +19,7 @@ import it.unibo.model.utilities.Vector2D;
 
 public class BasicTower extends AbstractTower {
 
-    private Set<Bullet> bullets = new HashSet<>();
+    private Set<Bullet> bullets;
 
     @JsonCreator
     public BasicTower(@JsonProperty("id") final int id, 
@@ -37,39 +37,57 @@ public class BasicTower extends AbstractTower {
                       @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy) {
         super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, 
                 attackStrategy, targetSelectionStrategy);
-    }
-
-    /**
-     * .
-     */
-    public Optional<Set<Enemy>> target(final Set<Enemy> enemies) {
-        Optional<Set<Enemy>> targets = this.targetSelectionStrategy.selectTarget(this, enemies);
-        return targets;
-    }
-
-    /**
-     * .
-     */
-    public void attack(final Set<Enemy> enemies) {
-        if (!enemies.isEmpty()) {
-            this.attackStrategy.attack(this, this.target(enemies));
-        } else {
-            System.out.println("No enemies to attack");
-        }
+        this.bullets = new HashSet<>();
     }
 
     @Override
-    public void setTargetSelectionStrategy(final TargetSelectionStrategy targetSelectionStrategy) {
+    public Optional<Enemy> target(Set<Enemy> enemies) {
+        return this.targetSelectionStrategy.selectTarget(this, enemies);
+    }
+
+    @Override
+    public void attack(Set<Enemy> enemies) {
+        if (!enemies.isEmpty()) {
+            Optional<Enemy> chosenEnemy = this.target(enemies);
+            chosenEnemy.ifPresent(enemy -> {
+                this.attackStrategy.attack(this, chosenEnemy);
+                createBullet(enemy);
+            });
+        }
+    }
+
+    private void createBullet(Enemy target) {
+        Bullet bullet = new BulletImpl(
+            this.getId(), 
+            this.getName() + " bullet", 
+            "bullet", 
+            "bullet/img/bullet.png",
+            this.getPosition(), 
+            new Vector2D(0, 0), 
+            10,  
+            100, 
+            target
+        );
+        this.bullets.add(bullet);
+    }
+
+    @Override
+    public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;
     }
 
     @Override
-    public void setAttackStrategy(final AttackStrategy attackStrategy) {
+    public void setAttackStrategy(AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 
-    // @Override
-    // public Set<Bullet> getBullets(){
-    //     this.bullets;
-    // }
+    @Override
+    public Set<Bullet> getBullets() {
+        return this.bullets;
+    }
+
+    @Override
+    public void clearBullets() {
+        this.bullets.clear();
+    }
 }
