@@ -2,8 +2,10 @@ package it.unibo.model.core;
 
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import it.unibo.model.entities.defense.bullet.Bullet;
+
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
 import it.unibo.model.entities.defense.tower.Tower;
@@ -77,6 +79,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
     /**
      * Main loop of the game.
      */
+    @Override
     public void run() {
         roudManager.startGame();
         while (!this.gameState.isGameOver()) {
