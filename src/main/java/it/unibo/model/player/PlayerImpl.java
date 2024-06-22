@@ -19,51 +19,50 @@ public class PlayerImpl implements Player {
     }
 
     /**
-     * @return Returns the maximum number of lives the player can have
+     * {@inheritDoc}
      */
+    @Override
     public int getMaxLives() {
         return MAX_LIVES;
     }
 
     /**
-     * @return Number of lives the player has left
+     * {@inheritDoc}
      */
+    @Override
     public int getRemainingLives() {
         return lives;
     }
 
     /**
-     * Damage the player's screw.
-     * @param damage Number of lives the player has lost
+     * {@inheritDoc}
      */
+    @Override
     public void loseLives(final int damage) {
         lives = lives - damage;
-        return;
     }
 
     /**
-     * Restoring the player's screw. I use the damage method by passing a negative value (see subtraction).
-     * @param numberLives Number of lives to be restored
+     * {@inheritDoc}
      */
+    @Override
     public void restoreLives(final int numberLives) {
         loseLives(-numberLives);
-        return;
     }
 
     /**
-     * @return money currently held
+     * {@inheritDoc}
      */
+    @Override
     public int getMoney() {
         return money;
     }
 
     /**
-     * the cash will be added to the money.
-     * @param cash in the case of a reward the value stored in the money will increase, 
-     * - however in the case of a construction cost the past value will be negative so it will decrease
+     * {@inheritDoc}
      */
+    @Override
     public void setMoney(final int cash) {
         money = money + cash;
-        return;
     }
 }
