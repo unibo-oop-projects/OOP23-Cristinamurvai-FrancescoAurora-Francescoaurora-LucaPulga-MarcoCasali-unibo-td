@@ -7,23 +7,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 2D Vector class.
  */
 public class Vector2D {
-    private int x;
-    private int y;
+
+    private final int x;
+    private final int y;
 
     /**
      * Vector's coordinates.
+     *
      * @param x
      * @param y
      */
     @JsonCreator
-    public Vector2D(@JsonProperty("x") final int x, 
-                    @JsonProperty("y") final int y) {
+    public Vector2D(@JsonProperty("x") final int x,
+            @JsonProperty("y") final int y) {
         this.x = x;
         this.y = y;
     }
 
     /**
      * X coordinate.
+     *
      * @return X coordinate.
      */
     public int x() {
@@ -32,6 +35,7 @@ public class Vector2D {
 
     /**
      * Y coordinate.
+     *
      * @return Y coordinate.
      */
     public int y() {
@@ -40,6 +44,7 @@ public class Vector2D {
 
     /**
      * Vector length.
+     *
      * @return Vector length.
      */
     public int length() {
@@ -48,14 +53,17 @@ public class Vector2D {
 
     /**
      * Vector normalization.
+     *
      * @return 2D Vector normalized.
      */
     public Vector2D normalize() {
         int length = length();
         return new Vector2D(x / length, y / length);
     }
+
     /**
      * Scalar-vector multiplication.
+     *
      * @param scalar
      * @return new multiplied vector.
      */
