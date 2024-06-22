@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -46,6 +45,8 @@ import it.unibo.view.enemies.EnemiesPanel;
 public class GuiGameStart extends JFrame implements GameView {
 
     private static final int ICON_DEFAULT_SIZE = 20;
+    private static final int ICON_PANEL_SIZE = 50;
+    private static final int ICON_BUTTON_SIZE = 80;
     private Tower selectedTower = null;
     private JPanel contentPanel;
     private JPanel mapPanel;
@@ -53,6 +54,9 @@ public class GuiGameStart extends JFrame implements GameView {
     private Map<JButton, String> tiles = new HashMap<>();
     private GameController controller = new GameControllerImpl();
     private IconsPanel iconLabelPanel;
+    private Image icon = null;
+    private boolean pause = false;
+    private JLabel pauseButton = null;
 
     // Add for enemies test
     private EnemiesPanel enemiesPanel;
@@ -67,26 +71,55 @@ public class GuiGameStart extends JFrame implements GameView {
         contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        iconLabelPanel = new IconsPanel(contentPanel.getWidth(), 50);
+        iconLabelPanel = new IconsPanel(contentPanel.getWidth(), ICON_PANEL_SIZE);
         contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
         JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
-        JButton pauseButton = new JButton("Pause");
 
-        ActionListener gamePause = e -> {
-            this.controller.togglePause();
-            showGamePause();
-        };
+        try {
+            icon = ImageIO.read(ClassLoader.getSystemResource("buttons/pause.png"));
+        } catch (final IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "buttons/pause.png");
+        }
 
-        pauseButton.addActionListener(gamePause);
+        pauseButton = new JLabel();
+        pauseButton.setIcon(ScaledImage.getScaledImage(icon, ICON_BUTTON_SIZE, ICON_BUTTON_SIZE));
 
-        ActionListener gameSettings = e -> {
-            this.controller.togglePause();
-        };
+        pauseButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                controller.togglePause();
+                Image tmp = null;
+                if (pause) {
+                    try {
+                        tmp = ImageIO.read(ClassLoader.getSystemResource("buttons/pause.png"));
+                    } catch (final IOException ex) {
+                        System.err.println(ex.getMessage());
+                        System.err.println("error when retrieving " + "buttons/pause.png");
+                    }
+                } else {
+                    try {
+                        tmp = ImageIO.read(ClassLoader.getSystemResource("buttons/playPause.png"));
+                    } catch (final IOException ex) {
+                        System.err.println(ex.getMessage());
+                        System.err.println("error when retrieving " + "buttons/playPause.png");
+                    }
+                }
+                pause = !pause;
+                pauseButton.setIcon(ScaledImage.getScaledImage(tmp, ICON_BUTTON_SIZE, ICON_BUTTON_SIZE));
+            }
+        });
 
-        JButton settingsButton = new JButton("Settings");
-        settingsButton.addActionListener(gameSettings);
+        JLabel settingsButton = new JLabel();
+        try {
+            icon = ImageIO.read(ClassLoader.getSystemResource("buttons/settings.png"));
+        } catch (final IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("error when retrieving " + "buttons/settings.png");
+        }
+        settingsButton.setIcon(ScaledImage.getScaledImage(icon, ICON_BUTTON_SIZE, ICON_BUTTON_SIZE));
         buttonGui.add(pauseButton);
         buttonGui.add(settingsButton);
         iconLabelPanel.add(buttonGui);
@@ -242,42 +275,5 @@ public class GuiGameStart extends JFrame implements GameView {
             dialog.dispose();
             System.exit(0);
         });
-    }
-
-    private void showGamePause() {
-        final int widthDialog = 500;
-        final int heightDialog = 200;
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Game Pause");
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setSize(widthDialog, heightDialog);
-        dialog.setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel();
-        dialog.add(panel);
-        final int alignmentXLabel = 50;
-        final int alignmentYLabel = 20;
-        final int widthLabel = 300;
-        final int heightLabel = 75;
-        final int alignmentXButton = 200;
-        final int alignmentYButton = 120;
-        final int widthButton = 100;
-        final int heightButton = 25;
-        panel.setLayout(null);
-        String message = "<html>The game is paused! Click Resume to continue</html>";
-        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
-        messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
-        panel.add(messageLabel);
-
-        JButton resumeButton = new JButton("Resume");
-        resumeButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
-        ActionListener gamePause = e -> {
-            this.controller.togglePause();
-            dialog.dispose();
-        };
-        resumeButton.addActionListener(gamePause);
-        panel.add(resumeButton);
-
-        dialog.setVisible(true);
     }
 }
