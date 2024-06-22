@@ -10,7 +10,6 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-
     private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
@@ -28,6 +27,7 @@ public class RoundManagerImpl {
 
     /**
      * Constructor method, initialise variables.
+     *
      * @param enemiesManager to build enemies and verify alive
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
@@ -51,7 +51,7 @@ public class RoundManagerImpl {
         round.increaseRoud();
         timeSpawn = round.getTimeSpawn();
         listEnemies = round.getEnemiesSpawn();
-        if(round.getLastRound() == true){
+        if (round.getLastRound() == true) {
             return;
         }
         countdownThread = new Thread(new CountdownTask());
@@ -62,6 +62,7 @@ public class RoundManagerImpl {
      * Countdown thread class.
      */
     private final class CountdownTask implements Runnable {
+
         /**
          * method for starting the thread.
          */
@@ -106,6 +107,7 @@ public class RoundManagerImpl {
      * Sequential thread class.
      */
     private final class SequentialTask implements Runnable {
+
         /**
          * method for starting the thread and logic of enemy creation.
          */
@@ -157,8 +159,10 @@ public class RoundManagerImpl {
             interrupted = false;
             startCountdown();
         }
+
         /**
          * Count the types of enemies to be spawned.
+         *
          * @return types of enemies
          */
         private int countNonZeroEnemies() {
@@ -168,6 +172,7 @@ public class RoundManagerImpl {
 
     /**
      * Public call for time.
+     *
      * @return time if active
      */
     public String getTime() {
@@ -186,6 +191,7 @@ public class RoundManagerImpl {
 
     /**
      * Conversion of seconds to minutes and seconds.
+     *
      * @param totalSeconds seconds stored in the thread
      * @return minutes and seconds
      */
@@ -194,7 +200,6 @@ public class RoundManagerImpl {
         int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
         return String.format("%02d:%02d", minutes, seconds);
     }
-
 
     /**
      * End-of-game method, usable when the player has run out of lives.
@@ -230,6 +235,7 @@ public class RoundManagerImpl {
 
     /**
      * Method for return round number.
+     *
      * @return round number
      */
     public int getRound() {
@@ -238,6 +244,7 @@ public class RoundManagerImpl {
 
     /**
      * Get if it is the last round from the instance of the round.
+     *
      * @return answer to the question (true or false)
      */
     public boolean getLastRound() {
