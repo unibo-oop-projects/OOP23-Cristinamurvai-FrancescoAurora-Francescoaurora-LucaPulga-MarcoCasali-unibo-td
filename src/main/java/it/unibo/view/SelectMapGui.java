@@ -31,12 +31,12 @@ public class SelectMapGui extends JFrame {
     private final JLabel imageLabels;
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
-    private final JPanel oldGui;
+    //private final JPanel oldGui;
     private GuiGameStart guiGameStart;
     private JLabel leftButton;
     private JLabel rightButton;
-    private Image left = null;
-    private Image right = null;
+    private transient Image left = null;
+    private transient Image right = null;
     private static final int DIMENSION_BUTTONS = 100;
     private static final int SPACE_TEXT = 25;
     private final JLabel textLabel;
@@ -45,7 +45,7 @@ public class SelectMapGui extends JFrame {
      * @param oldGui switching the gui panel of the old window
      */
     public SelectMapGui(final JPanel oldGui) {
-        this.oldGui = oldGui;
+        //this.oldGui = oldGui;
 
         // Set the layout of the contentPane to BorderLayout
         oldGui.setLayout(new BorderLayout());
@@ -59,7 +59,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
-                updateImages();
+                updateImages(oldGui);
             }
         });
 
@@ -83,7 +83,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex + 1) % maps.size();
-                updateImages();
+                updateImages(oldGui);
             }
         });
 
@@ -100,7 +100,7 @@ public class SelectMapGui extends JFrame {
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
         textLabel = new JLabel("Select the map for starting the game. This is " + maps.get(this.focusIndex));
-        textLabel.setSize(textLabel.getWidth(), 25);
+        textLabel.setSize(textLabel.getWidth(), SPACE_TEXT);
         textLabel.setHorizontalAlignment(SwingConstants.CENTER);
         oldGui.add(textLabel, BorderLayout.NORTH);
 
@@ -115,21 +115,21 @@ public class SelectMapGui extends JFrame {
         oldGui.add(imagePanel, BorderLayout.CENTER);
 
         // Initialize the JLabels with the images
-        imageLabels.setSize(this.oldGui.getWidth(), this.oldGui.getHeight());
+        imageLabels.setSize(oldGui.getWidth(), oldGui.getHeight());
         imageLabels.setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(this.focusIndex) + ".png")));
-        imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex));
+                changeGui(maps.get(focusIndex), oldGui);
             }
         });
 
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
-                imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+                imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
             }
         };
         imagePanel.addComponentListener(resize);
@@ -145,19 +145,23 @@ public class SelectMapGui extends JFrame {
         oldGui.repaint();
     }
 
-    // Update the image when an arrow is clicked
-    private void updateImages() {
+    /**
+     * Update the image when an arrow is clicked.
+     *
+     * @param oldGui for image calculation
+     */
+    private void updateImages(final JPanel oldGui) {
         textLabel.setText("Select the map for starting the game. This is " + maps.get(this.focusIndex));
         // Remove previous mouse listeners
         for (MouseListener adapter : imageLabels.getMouseListeners()) {
             imageLabels.removeMouseListener(adapter);
         }
-        imageLabels.setIcon(getScalated(maps.get(focusIndex)));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex));
+                changeGui(maps.get(focusIndex), oldGui);
             }
         });
 
@@ -167,20 +171,28 @@ public class SelectMapGui extends JFrame {
      * Change gui with map selected and start game.
      *
      * @param mapSelected Selected map name
+     * @param oldGui panel to pass
      */
-    public void changeGui(final String mapSelected) {
+    public void changeGui(final String mapSelected, final JPanel oldGui) {
         oldGui.removeAll();
         if (guiGameStart == null) {
-            guiGameStart = new GuiGameStart((mapSelected), this.oldGui);
+            guiGameStart = new GuiGameStart((mapSelected), oldGui);
         } else {
             // Ensure SelectMapGui is visible if it's already instantiated
             guiGameStart.setVisible(true);
         }
     }
 
-    private ImageIcon getScalated(final String image) {
-        int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
-        int heightWitchText = this.oldGui.getHeight() - SPACE_TEXT;
+    /**
+     * Scale the image by fitting it to the smaller side.
+     *
+     * @param image image to adapt
+     * @param oldGui window for size calculation
+     * @return the adapted image
+     */
+    private ImageIcon getScalated(final String image, final JPanel oldGui) {
+        int widthWitchButton = oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
+        int heightWitchText = oldGui.getHeight() - SPACE_TEXT;
         BufferedImage icon;
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("map_preview/" + image + ".png"));
