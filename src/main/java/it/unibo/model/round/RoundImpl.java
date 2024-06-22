@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Implements for roud manager.
  */
-public class RoundImp implements Round {
+public class RoundImpl implements Round {
 
     private final int numberEnemies;
     private double timeSpawn;
@@ -24,7 +24,7 @@ public class RoundImp implements Round {
      *
      * @param enemies number of enemies
      */
-    public RoundImp(final int enemies) {
+    public RoundImpl(final int enemies) {
         numberEnemies = enemies; //get enemis
         timeSpawn = DEFAULT_TIME_SPAWN;
         rounds = -1;

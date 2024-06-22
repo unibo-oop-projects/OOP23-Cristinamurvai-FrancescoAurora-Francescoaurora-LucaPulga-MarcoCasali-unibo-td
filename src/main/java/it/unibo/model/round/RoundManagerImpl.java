@@ -31,7 +31,7 @@ public class RoundManagerImpl {
      * @param enemiesManager to build enemies and verify alive
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
-        round = new RoundImp(enemiesManager.getNEnemyTypes()); //return # enemies
+        round = new RoundImpl(enemiesManager.getNEnemyTypes()); //return # enemies
         random = new Random();
     }
 
