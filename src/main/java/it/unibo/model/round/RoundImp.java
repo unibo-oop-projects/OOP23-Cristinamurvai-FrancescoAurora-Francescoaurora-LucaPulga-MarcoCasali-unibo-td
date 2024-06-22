@@ -7,20 +7,22 @@ import java.util.List;
  * Implements for roud manager.
  */
 public class RoundImp implements Round {
-    private int numberEnemies;
+
+    private final int numberEnemies;
     private double timeSpawn;
     private static final double DEFAULT_TIME_SPAWN = 4;
     private static final double MIN_TIME_SPAWN = 0.2;
     private static final int DEFAULT_NUMBER_ENEMIES = 3;
     private int rounds;
-    private List<Integer> enemiesSpawn;
+    private final List<Integer> enemiesSpawn;
     private static final int BOSS_ROUND = 9;
     private static final double TIME_BOSS_ROUND = 3.5;
     private boolean lastRound = false;
 
     /**
      * Constructor.
-     * @param enemies number of enemies 
+     *
+     * @param enemies number of enemies
      */
     public RoundImp(final int enemies) {
         numberEnemies = enemies; //get enemis
@@ -33,7 +35,7 @@ public class RoundImp implements Round {
     }
 
     @Override
-    public void increaseRoud() {
+    public final void increaseRoud() {
         rounds++;
         int tmp = rounds / 10;
         //I can increase by a constant value determined by the level/something, e.g. +2 per active type
@@ -63,22 +65,22 @@ public class RoundImp implements Round {
     }
 
     @Override
-    public double getTimeSpawn() {
+    public final double getTimeSpawn() {
         return timeSpawn;
     }
 
     @Override
-    public List<Integer> getEnemiesSpawn() {
+    public final List<Integer> getEnemiesSpawn() {
         return new ArrayList<>(enemiesSpawn);
     }
 
     @Override
-    public int getRoud() {
+    public final int getRoud() {
         return rounds + 1;
     }
 
     @Override
-    public boolean getLastRound() {
+    public final boolean getLastRound() {
         return lastRound;
     }
 }
