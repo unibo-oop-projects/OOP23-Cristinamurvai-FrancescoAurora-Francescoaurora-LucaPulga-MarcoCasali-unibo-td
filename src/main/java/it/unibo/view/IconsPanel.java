@@ -8,6 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Class for icon panel construction.
+ */
 public class IconsPanel extends JPanel {
 
     private final IconLabelPanel lifePanel;
@@ -15,7 +18,13 @@ public class IconsPanel extends JPanel {
     private final IconLabelPanel timePanel;
     private final IconLabelPanel moneyPanel;
 
-    public IconsPanel(int width, int height) {
+    /**
+     * Constructor method.
+     *
+     * @param width panel width
+     * @param height panel height
+     */
+    public IconsPanel(final int width, final int height) {
         this.setLayout(new GridLayout(1, 4)); // Layout con una riga e quattro colonne
         this.setPreferredSize(new Dimension(0, 100)); // Imposta l'altezza preferita a 100px
 
@@ -31,12 +40,15 @@ public class IconsPanel extends JPanel {
         this.setPreferredSize(new Dimension(width, height)); // Set preferred height to 100px
     }
 
+    /**
+     * Class for icon label construction.
+     */
     private static class IconLabelPanel extends JPanel {
 
         private final JLabel iconLabel;
         private final JLabel textLabel;
 
-        public IconLabelPanel(String iconPath, String text) {
+        IconLabelPanel(final String iconPath, final String text) {
             this.setLayout(new FlowLayout(FlowLayout.LEFT)); // Use FlowLayout for horizontal alignment
             this.iconLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(iconPath)));
             this.textLabel = new JLabel(text);
@@ -44,24 +56,44 @@ public class IconsPanel extends JPanel {
             this.add(textLabel);
         }
 
-        public void setText(String text) {
+        public void setText(final String text) {
             this.textLabel.setText(text);
         }
     }
 
-    public void setLifeText(String text) {
+    /**
+     * set the label life text.
+     *
+     * @param text label text
+     */
+    public void setLifeText(final String text) {
         lifePanel.setText(text);
     }
 
-    public void setRoundText(String text) {
+    /**
+     * set the label round text.
+     *
+     * @param text label text
+     */
+    public void setRoundText(final String text) {
         roundPanel.setText(text);
     }
 
-    public void setTimeText(String text) {
+    /**
+     * set the label time text.
+     *
+     * @param text label text
+     */
+    public void setTimeText(final String text) {
         timePanel.setText(text);
     }
 
-    public void setMoneyText(String text) {
+    /**
+     * set the label money text.
+     *
+     * @param text label text
+     */
+    public void setMoneyText(final String text) {
         moneyPanel.setText(text);
     }
 }
