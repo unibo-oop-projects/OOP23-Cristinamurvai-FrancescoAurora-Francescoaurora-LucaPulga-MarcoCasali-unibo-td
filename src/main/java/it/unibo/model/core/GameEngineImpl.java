@@ -21,6 +21,7 @@ import it.unibo.model.utilities.Position2D;
  * Implementation of {@link GameEngine}.
  */
 public class GameEngineImpl implements GameEngine, Runnable {
+
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
     private GameMap map = null;
     private GameState gameState = null;
@@ -80,7 +81,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
      */
     @Override
     public void run() {
-        roudManager.startGame();
+        roudManager.startGame(enemiesManager);
         while (!this.gameState.isGameOver()) {
             try {
                 long start = System.currentTimeMillis();
@@ -88,16 +89,15 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 this.enemiesManager.updateEnemiesDirections(start);
                 this.updateGameState();
                 this.updateObservers();
-                if (this.gameState.getLastRound() == true){                   
+                if (this.gameState.getLastRound() == true) {
                     return;
                 }
                 long delta = System.currentTimeMillis() - start;
                 if (delta < FRAME_LIMIT) {
                     Thread.sleep(FRAME_LIMIT - delta);
                 }
-            } catch (Exception e) {
+            } catch (final InterruptedException e) {
                 System.err.println("engine interrupt");
-                e.printStackTrace();
                 System.exit(0);
             }
         }
@@ -108,7 +108,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
             @Override
             public Set<Entity> getEntities() {
                 return Stream.concat(enemiesManager.getCurrentEnemies().stream(),
-                 defenseManager.getTowers().stream()).collect(Collectors.toSet());
+                        defenseManager.getTowers().stream()).collect(Collectors.toSet());
             }
 
             @Override
@@ -153,7 +153,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
             }
 
             @Override
-            public boolean getLastRound(){
+            public boolean getLastRound() {
                 return roudManager.getLastRound();
             }
         };
