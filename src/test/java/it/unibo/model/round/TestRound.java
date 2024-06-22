@@ -15,6 +15,9 @@ public class TestRound {
 
     private RoundImpl round;
 
+    /**
+     * Sets up a new instance of {@link RoundImpl} before each test.
+     */
     @BeforeEach
     public void setUp() {
         round = new RoundImpl(5); // Initialize with 5 enemies for testing
@@ -54,7 +57,7 @@ public class TestRound {
         assertEquals(5, enemiesSpawn.size());
         assertEquals(5, enemiesSpawn.get(0));
         assertEquals(0, enemiesSpawn.get(1));
-        for (int i = 0; i < 10; i++) {// round 12
+        for (int i = 0; i < 10; i++) { // Rounds 3 to 12
             round.increaseRoud();
         }
         enemiesSpawn = round.getEnemiesSpawn();
