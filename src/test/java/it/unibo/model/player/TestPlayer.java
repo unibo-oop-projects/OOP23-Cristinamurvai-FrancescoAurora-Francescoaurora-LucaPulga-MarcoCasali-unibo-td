@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 public class TestPlayer {
 
     private PlayerImpl player;
+    private static final int MONEY_TEST = 50;
 
     /**
      * Sets up a new instance of {@link PlayerImpl} before each test.
@@ -71,8 +72,8 @@ public class TestPlayer {
      */
     @Test
     public void testSetMoney() throws NoSuchFieldException, IllegalAccessException {
-        player.setMoney(100);
-        assertEquals(getFieldValue(PlayerImpl.class, "MONEY_START") + 100, player.getMoney());
+        player.setMoney(MONEY_TEST);
+        assertEquals(getFieldValue(PlayerImpl.class, "MONEY_START") + MONEY_TEST, player.getMoney());
     }
 
     /**
@@ -84,8 +85,8 @@ public class TestPlayer {
      */
     @Test
     public void testSetMoneyNegative() throws NoSuchFieldException, IllegalAccessException {
-        player.setMoney(-50);
-        assertEquals(getFieldValue(PlayerImpl.class, "MONEY_START") - 50, player.getMoney());
+        player.setMoney(-MONEY_TEST);
+        assertEquals(getFieldValue(PlayerImpl.class, "MONEY_START") - MONEY_TEST, player.getMoney());
     }
 
     /**
@@ -99,7 +100,8 @@ public class TestPlayer {
      * found.
      * @throws IllegalAccessException if the underlying field is inaccessible.
      */
-    private static int getFieldValue(Class<?> clazz, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+    private static int getFieldValue(final Class<?> clazz, final String fieldName)
+            throws NoSuchFieldException, IllegalAccessException {
         Field field = clazz.getDeclaredField(fieldName);
         field.setAccessible(true);
         return (int) field.get(null); // Use null for static fields
