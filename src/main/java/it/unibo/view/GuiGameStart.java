@@ -48,13 +48,12 @@ public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_PANEL_SIZE = 50;
     private static final int ICON_BUTTON_SIZE = 80;
     private Tower selectedTower = null;
-    private JPanel contentPanel;
     private JPanel mapPanel;
     private JPanel layeredPane;
     private Map<JButton, String> tiles = new HashMap<>();
-    private GameController controller = new GameControllerImpl();
+    private transient GameController controller = new GameControllerImpl();
     private IconsPanel iconLabelPanel;
-    private Image icon = null;
+    private transient Image icon = null;
     private boolean pause = false;
     private JLabel pauseButton = null;
 
@@ -62,17 +61,18 @@ public class GuiGameStart extends JFrame implements GameView {
     private EnemiesPanel enemiesPanel;
 
     /**
-     * .
-     * @param mapName
+     * constructor method.
+     *
+     * @param mapName name of the selected map
+     * @param oldGui screen where to upload
      */
     public GuiGameStart(final String mapName, final JPanel oldGui) {
         final GameMap map = controller.setGameMap(mapName);
-        this.contentPanel = oldGui;
-        contentPanel.setLayout(new BorderLayout()); // Main layout with BorderLayout
+        oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
-        iconLabelPanel = new IconsPanel(contentPanel.getWidth(), ICON_PANEL_SIZE);
-        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
+        iconLabelPanel = new IconsPanel(oldGui.getWidth(), ICON_PANEL_SIZE);
+        oldGui.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
         JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
@@ -124,17 +124,18 @@ public class GuiGameStart extends JFrame implements GameView {
         buttonGui.add(settingsButton);
         iconLabelPanel.add(buttonGui);
 
-        contentPanel.add(iconLabelPanel, BorderLayout.NORTH);
+        oldGui.add(iconLabelPanel, BorderLayout.NORTH);
         this.createMap(map);
 
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(),
+                mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
         this.layeredPane.add(mapPanel);
-        contentPanel.add(this.layeredPane, BorderLayout.CENTER);
+        oldGui.add(this.layeredPane, BorderLayout.CENTER);
 
         EntityFactory entityFactory = new EntityFactoryImpl();
         TowerCardFactory towerCardFactory = new TowerCardFactoryImpl();
@@ -145,7 +146,7 @@ public class GuiGameStart extends JFrame implements GameView {
             towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
             scrollPane = new JScrollPane(towerPanel);
             scrollPane.setPreferredSize(new Dimension(300, 0));
-            contentPanel.add(scrollPane, BorderLayout.EAST);
+            oldGui.add(scrollPane, BorderLayout.EAST);
         } catch (IOException e1) {
             System.err.println(e1.getMessage());
         }
@@ -166,8 +167,8 @@ public class GuiGameStart extends JFrame implements GameView {
         this.controller.startGame();
 
         // Request the container to update the GUI
-        contentPanel.revalidate();
-        contentPanel.repaint();
+        oldGui.revalidate();
+        oldGui.repaint();
 
     }
 
@@ -181,14 +182,20 @@ public class GuiGameStart extends JFrame implements GameView {
         } else {
             iconLabelPanel.setRoundText("Pre-round, position the towers");
         }
-        if (gameState.getLastRound() == true) {
+        if (gameState.getLastRound()) {
             showGameWin(gameState.getRoundNumber());
         }
 
         //Updating enemy layer
-        this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
+        this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(),
+                mapPanel.getHeight() / gameState.getGameMap().getRows());
     }
 
+    /**
+     * resize the map.
+     *
+     * @param map where to resize the map
+     */
     private void resizeImages(final GameMap map) {
         this.tiles.entrySet().forEach(e
                 -> setScaledIcon(e.getKey(), e.getValue(),
@@ -197,16 +204,23 @@ public class GuiGameStart extends JFrame implements GameView {
         );
     }
 
+    /**
+     * Create the map.
+     *
+     * @param map where to upload the map
+     */
     private void createMap(final GameMap map) {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
-            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
+                    this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
                     if (selectedTower != null) {
-                        setScaledIcon(cell, selectedTower.getPath(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+                        setScaledIcon(cell, selectedTower.getPath(), mapPanel.getWidth() / map.getColumns(),
+                                mapPanel.getHeight() / map.getRows());
                         tiles.put(cell, selectedTower.getPath());
                         System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
                         selectedTower = null;
@@ -218,12 +232,22 @@ public class GuiGameStart extends JFrame implements GameView {
         });
     }
 
-    private void setScaledIcon(final JButton cell, final String imgPath, int width, int height) {
+    /**
+     * Scale the image.
+     *
+     * @param cell cell to scale
+     * @param imgPath image path
+     * @param width image size
+     * @param height image size
+     */
+    private void setScaledIcon(final JButton cell, final String imgPath, final int width, final int height) {
+        int finalWidth = width;
+        int finalHeight = height;
         if (width == 0) {
-            width = ICON_DEFAULT_SIZE;
+            finalWidth = ICON_DEFAULT_SIZE;
         }
         if (height == 0) {
-            height = ICON_DEFAULT_SIZE;
+            finalHeight = ICON_DEFAULT_SIZE;
         }
         Image icon = null;
         try {
@@ -232,9 +256,14 @@ public class GuiGameStart extends JFrame implements GameView {
             System.err.println(e.getMessage());
             System.err.println("error when retrieving " + imgPath);
         }
-        cell.setIcon(ScaledImage.getScaledImage(icon, width, height));
+        cell.setIcon(ScaledImage.getScaledImage(icon, finalWidth, finalHeight));
     }
 
+    /**
+     * shows the victory jdialog.
+     *
+     * @param round number of rounds played
+     */
     private static void showGameWin(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
@@ -250,6 +279,13 @@ public class GuiGameStart extends JFrame implements GameView {
         winDialog.setVisible(true);
     }
 
+    /**
+     * Builds the jdialog.
+     *
+     * @param panel panel to print on
+     * @param dialog to close jdialog
+     * @param round number of rounds played
+     */
     private static void placeWinComponents(final JPanel panel, final JDialog dialog, final int round) {
         final int alignmentXLabel = 50;
         final int alignmentYLabel = 20;
