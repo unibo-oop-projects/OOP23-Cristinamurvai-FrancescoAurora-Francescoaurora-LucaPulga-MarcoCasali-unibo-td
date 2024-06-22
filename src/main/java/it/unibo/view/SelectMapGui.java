@@ -40,7 +40,7 @@ public class SelectMapGui extends JFrame {
     private Image right = null;
     private static final int DIMENSION_BUTTONS = 100;
     private static final int SPACE_TEXT = 25;
-    private JLabel textLabel;
+    private final JLabel textLabel;
 
     /**
      * @param oldGui switching the gui panel of the old window
@@ -118,7 +118,7 @@ public class SelectMapGui extends JFrame {
         // Initialize the JLabels with the images
         imageLabels.setSize(this.oldGui.getWidth(), this.oldGui.getHeight());
         imageLabels.setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(this.focusIndex) + ".png")));
-        imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(), imageLabels.getIcon().getIconWidth()));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex)));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
@@ -130,7 +130,7 @@ public class SelectMapGui extends JFrame {
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
-                imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(), imageLabels.getIcon().getIconWidth()));
+                imageLabels.setIcon(getScalated(maps.get(focusIndex)));
             }
         };
         imagePanel.addComponentListener(resize);
@@ -153,8 +153,7 @@ public class SelectMapGui extends JFrame {
         for (MouseListener adapter : imageLabels.getMouseListeners()) {
             imageLabels.removeMouseListener(adapter);
         }
-        imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(),
-                imageLabels.getIcon().getIconWidth()));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex)));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
@@ -198,7 +197,7 @@ public class SelectMapGui extends JFrame {
         return new ImageIcon(resizedImg);
     }
 
-    private ImageIcon getScalated(final String image, final int imageHeight, final int imageWidth) {
+    private ImageIcon getScalated(final String image) {
         int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
         int heightWitchText = this.oldGui.getHeight() - SPACE_TEXT;
         BufferedImage icon;
