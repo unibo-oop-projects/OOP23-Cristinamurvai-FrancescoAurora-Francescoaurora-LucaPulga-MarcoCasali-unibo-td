@@ -14,13 +14,24 @@ import org.junit.jupiter.api.Test;
 public class TestRound {
 
     private RoundImpl round;
+    private static final int ENEMIES_BOSS = 21;
+    private static final int ENEMIES_SIZE = 5;
+    private static final int ENEMIES_NOTE_SPAWN = 0;
+    private static final int MAX_ROUND = 67;
+    private static final Double TIME_SPAWN = 4.0;
+    private static final Double TIME_SPAWN_BOSS = 3.5;
+    private static final int ENEMIES_SPAWN_ROUND_2 = 5;
+    private static final int ENEMIES_SPAWN_ROUND_1 = 3;
+    private static final int ENEMIES_SPAWN_NO = 0;
+    private static final int ROUND_1 = 1;
+    private static final int LIVEL_BOSS_30 = 30;
 
     /**
      * Sets up a new instance of {@link RoundImpl} before each test.
      */
     @BeforeEach
     public void setUp() {
-        round = new RoundImpl(5); // Initialize with 5 enemies for testing
+        round = new RoundImpl(ENEMIES_SIZE); // Initialize with 5 enemies for testing
     }
 
     /**
@@ -30,14 +41,14 @@ public class TestRound {
     @Test
     public void testInitialValues() {
         assertFalse(round.getLastRound());
-        assertEquals(4.0, round.getTimeSpawn());
+        assertEquals(TIME_SPAWN, round.getTimeSpawn());
         assertEquals(0, round.getRoud());
         round.increaseRoud();
-        assertEquals(4.0, round.getTimeSpawn());
-        assertEquals(1, round.getRoud());
+        assertEquals(TIME_SPAWN, round.getTimeSpawn());
+        assertEquals(ROUND_1, round.getRoud());
         List<Integer> enemiesSpawn = round.getEnemiesSpawn();
-        assertEquals(5, enemiesSpawn.size());
-        assertEquals(3, enemiesSpawn.stream().reduce(0, Integer::sum));
+        assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
+        assertEquals(ENEMIES_SPAWN_ROUND_1, enemiesSpawn.stream().reduce(0, Integer::sum));
     }
 
     /**
@@ -47,24 +58,24 @@ public class TestRound {
     @Test
     public void testIncreaseRoundDefault() {
         round.increaseRoud(); // Round 1
-        assertEquals(4.0, round.getTimeSpawn());
+        assertEquals(TIME_SPAWN, round.getTimeSpawn());
         List<Integer> enemiesSpawn = round.getEnemiesSpawn();
-        assertEquals(5, enemiesSpawn.size());
-        assertEquals(3, enemiesSpawn.get(0));
+        assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
+        assertEquals(ENEMIES_SPAWN_ROUND_1, enemiesSpawn.get(0));
         round.increaseRoud(); // Round 2
-        assertEquals(4.0, round.getTimeSpawn());
+        assertEquals(TIME_SPAWN, round.getTimeSpawn());
         enemiesSpawn = round.getEnemiesSpawn();
-        assertEquals(5, enemiesSpawn.size());
-        assertEquals(5, enemiesSpawn.get(0));
-        assertEquals(0, enemiesSpawn.get(1));
+        assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
+        assertEquals(ENEMIES_SPAWN_ROUND_2, enemiesSpawn.get(0));
+        assertEquals(ENEMIES_SPAWN_NO, enemiesSpawn.get(1));
         for (int i = 0; i < 10; i++) { // Rounds 3 to 12
             round.increaseRoud();
         }
         enemiesSpawn = round.getEnemiesSpawn();
-        assertEquals(5, enemiesSpawn.size());
-        assertEquals(5, enemiesSpawn.get(0));
-        assertEquals(5, enemiesSpawn.get(1));
-        assertEquals(0, enemiesSpawn.get(2));
+        assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
+        assertEquals(ENEMIES_SPAWN_ROUND_2, enemiesSpawn.get(0));
+        assertEquals(ENEMIES_SPAWN_ROUND_2, enemiesSpawn.get(1));
+        assertEquals(ENEMIES_SPAWN_NO, enemiesSpawn.get(2));
     }
 
     /**
@@ -73,18 +84,18 @@ public class TestRound {
      */
     @Test
     public void testIncreaseRoundBossRound() {
-        for (int i = 0; i < 29; i++) {
+        for (int i = 0; i < LIVEL_BOSS_30 - 1; i++) {
             round.increaseRoud();
         }
         round.increaseRoud(); // Round 30 (boss round)
-        assertEquals(3.5, round.getTimeSpawn());
+        assertEquals(TIME_SPAWN_BOSS, round.getTimeSpawn());
         List<Integer> enemiesSpawn = round.getEnemiesSpawn();
-        assertEquals(5, enemiesSpawn.size());
-        assertEquals(21, enemiesSpawn.get(0));
-        assertEquals(21, enemiesSpawn.get(1));
-        assertEquals(21, enemiesSpawn.get(2)); // Boss round adds enemies
-        assertEquals(0, enemiesSpawn.get(3));
-        assertEquals(0, enemiesSpawn.get(4));
+        assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
+        assertEquals(ENEMIES_BOSS, enemiesSpawn.get(0));
+        assertEquals(ENEMIES_BOSS, enemiesSpawn.get(1));
+        assertEquals(ENEMIES_BOSS, enemiesSpawn.get(2)); // Boss round adds enemies
+        assertEquals(ENEMIES_NOTE_SPAWN, enemiesSpawn.get(3));
+        assertEquals(ENEMIES_NOTE_SPAWN, enemiesSpawn.get(4));
     }
 
     /**
@@ -93,10 +104,10 @@ public class TestRound {
      */
     @Test
     public void testIncreaseRoundLastRound() {
-        for (int i = 0; i < 68; i++) { // Simulate rounds until last round
+        for (int i = 0; i < MAX_ROUND + 1; i++) { // Simulate rounds until last round
             round.increaseRoud();
         }
         assertTrue(round.getLastRound());
-        assertEquals(67, round.getRoud());
+        assertEquals(MAX_ROUND, round.getRoud());
     }
 }

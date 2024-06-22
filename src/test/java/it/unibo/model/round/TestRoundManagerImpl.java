@@ -14,6 +14,18 @@ public class TestRoundManagerImpl {
 
     private RoundManagerImpl roundManager;
 
+    /**
+     * Constructor for TestRoundManagerImpl.
+     */
+    public TestRoundManagerImpl() {
+        // Initialize RoundManagerImpl with a mock EnemiesManager having 3 enemy types
+        EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
+        roundManager = new RoundManagerImpl(mockEnemiesManager);
+    }
+
+    /**
+     * Sets up a new instance of {@link RoundManagerImpl} before each test.
+     */
     @BeforeEach
     public void setUp() {
         // Initialize RoundManagerImpl with a mock EnemiesManager having 3 enemy types
@@ -23,11 +35,12 @@ public class TestRoundManagerImpl {
 
     /**
      * Test starting the game and checking the initial round number. Verifies
-     * that the game starts correctly and the initial round is 0.
+     * that the game starts correctly and the initial round is 1.
      */
     @Test
     public void testStartGameAndGetRound() {
-        roundManager.startGame(new EnemiesManagerImpl());
+        EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
+        roundManager.startGame(mockEnemiesManager);
         assertEquals(1, roundManager.getRound());
     }
 }
