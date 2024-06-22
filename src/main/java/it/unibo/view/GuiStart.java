@@ -28,7 +28,7 @@ public class GuiStart extends JFrame {
     private JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
     private static final int PROP_BUTTON = 3; // Set custom dimensions for the button
-    private Image icon = null;
+    private transient Image icon = null;
 
     /**
      * Load the game gui.
@@ -91,13 +91,15 @@ public class GuiStart extends JFrame {
         // Make the frame visible
         this.setVisible(true);
 
-        startButton.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
+        int initialDimension = calculateDimensions();
+
+        startButton.setPreferredSize(new Dimension(initialDimension, initialDimension));
         // Set the alignment of the button to center
         gbc.anchor = GridBagConstraints.CENTER;
 
         // Add the button to the panel with GridBagConstraints specifications
         contentPanel.add(startButton, gbc);
-        startButton.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+        startButton.setIcon(ScaledImage.getScaledImage(icon, calculateDimensions(), calculateDimensions()));
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -117,17 +119,18 @@ public class GuiStart extends JFrame {
      * @param panel panel containing the image
      */
     private void resizeImages(final JLabel panel) {
-        panel.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
-        panel.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+        int newDimension = calculateDimensions();
+        panel.setPreferredSize(new Dimension(newDimension, newDimension));
+        panel.setIcon(ScaledImage.getScaledImage(icon, newDimension, newDimension));
     }
 
     /**
-     * Calculates the size of the new image.
+     * Calculates the size of the image.
      *
-     * @return size of the new image
+     * @return image size
      */
-    private int dimensionsImage() {
-        Dimension size = getSize();
+    private int calculateDimensions() {
+        Dimension size = super.getSize(); // Use super.getSize() to avoid overwritinga
         if (size.width < size.height) {
             return size.width / PROP_BUTTON;
         }
