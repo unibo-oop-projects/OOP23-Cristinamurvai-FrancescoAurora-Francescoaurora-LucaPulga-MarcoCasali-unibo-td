@@ -19,7 +19,7 @@ public class ScaledImage {
      * @param width
      * @param height
      */
-    public ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
+    public static ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
         BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 

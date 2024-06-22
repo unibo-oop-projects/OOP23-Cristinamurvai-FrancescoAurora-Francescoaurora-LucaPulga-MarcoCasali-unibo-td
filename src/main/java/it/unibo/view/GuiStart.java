@@ -2,29 +2,28 @@ package it.unibo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import it.unibo.model.utilities.ScaledImage;
 
 /**
  * Load the game gui.
  */
 public class GuiStart extends JFrame {
+
     private final JLabel startButton;
     private JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
@@ -35,6 +34,7 @@ public class GuiStart extends JFrame {
      * Load the game gui.
      */
     public GuiStart() {
+
         // Set the title of the frame
         super("Unibo TD");
 
@@ -43,8 +43,6 @@ public class GuiStart extends JFrame {
 
         // Create an empty panel
         contentPanel = new JPanel();
-
-        
 
         // Set the layout of the empty panel to GridBagLayout
         contentPanel.setLayout(new GridBagLayout());
@@ -100,7 +98,7 @@ public class GuiStart extends JFrame {
         // Add the button to the panel with GridBagConstraints specifications
         contentPanel.add(startButton, gbc);
 
-        startButton.setIcon(getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+        startButton.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -116,33 +114,14 @@ public class GuiStart extends JFrame {
 
     private void resizeImages(final JLabel panel) {
         panel.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
-        panel.setIcon(getScaledImage(icon, dimensionsImage(), dimensionsImage()));
+        panel.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
     }
-    
+
     private int dimensionsImage() {
         if (this.getWidth() < this.getHeight()) {
             return this.getWidth() / propButton;
         }
 
         return this.getHeight() / propButton;
-    } 
-
-    /**
-     * TODO reference
-     * https://stackoverflow.com/a/6714381 .
-     * @param srcImg source Image
-     * @param width
-     * @param height
-     */
-    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, width, height, null);
-        g2.dispose();
-
-        return new ImageIcon(resizedImg);
     }
-    
 }

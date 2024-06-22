@@ -3,9 +3,7 @@ package it.unibo.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -23,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.utilities.ScaledImage;
 
 /**
  * map loading with slider for scrolling.
@@ -72,7 +71,7 @@ public class SelectMapGui extends JFrame {
         }
 
         leftButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
-        leftButton.setIcon(getScaledImage(left, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        leftButton.setIcon(ScaledImage.getScaledImage(left, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
 
         // Add the button to scroll left to the frame
         oldGui.add(leftButton, BorderLayout.WEST);
@@ -96,7 +95,7 @@ public class SelectMapGui extends JFrame {
         }
 
         rightButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
-        rightButton.setIcon(getScaledImage(right, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        rightButton.setIcon(ScaledImage.getScaledImage(right, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
 
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
@@ -179,24 +178,6 @@ public class SelectMapGui extends JFrame {
         }
     }
 
-    /**
-     * TODO reference https://stackoverflow.com/a/6714381 .
-     *
-     * @param srcImg source Image
-     * @param width
-     * @param height
-     */
-    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, width, height, null);
-        g2.dispose();
-
-        return new ImageIcon(resizedImg);
-    }
-
     private ImageIcon getScalated(final String image) {
         int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
         int heightWitchText = this.oldGui.getHeight() - SPACE_TEXT;
@@ -210,7 +191,7 @@ public class SelectMapGui extends JFrame {
         }
 
         if (heightWitchText <= 0 || widthWitchButton <= 0) {
-            return getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
+            return ScaledImage.getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
         }
 
         // Calculates the proportions of the image
@@ -223,12 +204,12 @@ public class SelectMapGui extends JFrame {
                 // L'altezza è il fattore limitante
                 int newHeight = heightWitchText;
                 int newWidth = (int) (newHeight * iconAspectRatio);
-                return getScaledImage(icon, newWidth, newHeight);
+                return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             } else {
                 // Width is the limiting factor
                 int newWidth = widthWitchButton;
                 int newHeight = (int) (newWidth / iconAspectRatio);
-                return getScaledImage(icon, newWidth, newHeight);
+                return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             }
         }
         return new ImageIcon(icon);
