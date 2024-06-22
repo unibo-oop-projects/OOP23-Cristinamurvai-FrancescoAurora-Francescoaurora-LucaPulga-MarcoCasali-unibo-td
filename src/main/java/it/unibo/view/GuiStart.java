@@ -27,7 +27,7 @@ public class GuiStart extends JFrame {
     private final JLabel startButton;
     private JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
-    private final int propButton = 3; // Set custom dimensions for the button
+    private static final int PROP_BUTTON = 3; // Set custom dimensions for the button
     private Image icon = null;
 
     /**
@@ -97,7 +97,6 @@ public class GuiStart extends JFrame {
 
         // Add the button to the panel with GridBagConstraints specifications
         contentPanel.add(startButton, gbc);
-
         startButton.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
@@ -112,16 +111,26 @@ public class GuiStart extends JFrame {
         contentPanel.repaint();
     }
 
+    /**
+     * resize image present in label.
+     *
+     * @param panel panel containing the image
+     */
     private void resizeImages(final JLabel panel) {
         panel.setPreferredSize(new Dimension(dimensionsImage(), dimensionsImage()));
         panel.setIcon(ScaledImage.getScaledImage(icon, dimensionsImage(), dimensionsImage()));
     }
 
+    /**
+     * Calculates the size of the new image.
+     *
+     * @return size of the new image
+     */
     private int dimensionsImage() {
-        if (this.getWidth() < this.getHeight()) {
-            return this.getWidth() / propButton;
+        Dimension size = getSize();
+        if (size.width < size.height) {
+            return size.width / PROP_BUTTON;
         }
-
-        return this.getHeight() / propButton;
+        return size.height / PROP_BUTTON;
     }
 }

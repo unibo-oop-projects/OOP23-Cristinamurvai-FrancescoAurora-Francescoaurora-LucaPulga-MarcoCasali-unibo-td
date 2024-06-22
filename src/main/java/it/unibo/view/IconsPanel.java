@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class IconsPanel extends JPanel {
+
     private final IconLabelPanel lifePanel;
     private final IconLabelPanel roundPanel;
     private final IconLabelPanel timePanel;
@@ -30,7 +31,8 @@ public class IconsPanel extends JPanel {
         this.setPreferredSize(new Dimension(width, height)); // Set preferred height to 100px
     }
 
-    private class IconLabelPanel extends JPanel {
+    private static class IconLabelPanel extends JPanel {
+
         private final JLabel iconLabel;
         private final JLabel textLabel;
 
