@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import it.unibo.model.core.GameState;
@@ -32,7 +31,7 @@ public class DefensePanel extends JPanel {
      * @param xCellSize
      * @param yCellSize
      */
-    public DefensePanel(final Set<Tower> towers, final Set<Bullet> bullets, final int xCellSize, final int yCellSize) {
+    public DefensePanel(final Set<Tower> towers, final Set<Bullet> bullets,final int xCellSize, final int yCellSize) {
         this.towers = towers;
         this.bullets = bullets;
         this.xCellSize = xCellSize;
@@ -44,17 +43,16 @@ public class DefensePanel extends JPanel {
         super.paintComponent(g);
         for (Tower entity : this.towers) {
             try {
-                BufferedImage enemyImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(getScaledImage(enemyImage, this.xCellSize, this.yCellSize*2), entity.getPosition().x() * this.xCellSize, entity.getPosition().y() * this.yCellSize, this);
+                BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
+                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), (int)(entity.getPosition().x() * this.xCellSize), (int)(entity.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-        for (Bullet entity : this.bullets) {
+        for (Bullet bullet : this.bullets) {
             try {
-                BufferedImage enemyImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(enemyImage, entity.getPosition().x() * this.xCellSize, entity.getPosition().y() * this.yCellSize, this);
+                BufferedImage bulletImage = ImageIO.read(ClassLoader.getSystemResource(bullet.getPath()));
+                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), (int)(bullet.getPosition().x() * this.xCellSize), (int)(bullet.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 e.printStackTrace();
             }

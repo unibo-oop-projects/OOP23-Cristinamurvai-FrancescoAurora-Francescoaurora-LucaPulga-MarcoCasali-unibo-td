@@ -220,7 +220,7 @@ public class GuiGameStart extends JFrame implements GameView {
             cell.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
-                    Tower selectedTower = towerCardFactory.getSelectedTower();
+                    selectedTower = towerCardFactory.getSelectedTower();
                     if (selectedTower != null) {
                         selectedTower.setPosition(t.getPosition());
                         controller.buildTower(selectedTower);

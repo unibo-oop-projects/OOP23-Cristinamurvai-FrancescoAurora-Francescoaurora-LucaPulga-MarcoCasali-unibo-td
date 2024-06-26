@@ -23,8 +23,8 @@ public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
     }
 
     private double calculateDistance(Position2D towerPosition2d, Position2D enemyPosition2d) {
-        int deltaX = towerPosition2d.x() - enemyPosition2d.x();
-        int deltaY = towerPosition2d.y() - enemyPosition2d.y();
+        double deltaX = towerPosition2d.x() - enemyPosition2d.x();
+        double deltaY = towerPosition2d.y() - enemyPosition2d.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }

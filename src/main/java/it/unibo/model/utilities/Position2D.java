@@ -10,8 +10,8 @@ import it.unibo.model.entities.defense.tower.Tower;
  */
 public class Position2D {
 
-    private final int x;
-    private final int y;
+    private final double x;
+    private final double y;
 
     /**
      * Position's coordinates.
@@ -20,8 +20,8 @@ public class Position2D {
      * @param y
      */
     @JsonCreator
-    public Position2D(@JsonProperty("x") final int x,
-            @JsonProperty("y") final int y) {
+    public Position2D(@JsonProperty("x") final double x,
+            @JsonProperty("y") final double y) {
         this.x = x;
         this.y = y;
     }
@@ -31,7 +31,7 @@ public class Position2D {
      *
      * @return X coordinate.
      */
-    public int x() {
+    public double x() {
         return x;
     }
 
@@ -40,7 +40,7 @@ public class Position2D {
      *
      * @return Y coordinate.
      */
-    public int y() {
+    public double y() {
         return y;
     }
 
@@ -48,7 +48,7 @@ public class Position2D {
      * Index to {@link Position2D}.
      * @return Index converted.
      */    
-    public static Position2D IntToPos2D(final int i, final int columns) {
+    public static Position2D IntToPos2D(final double i, final double columns) {
         return new Position2D(i % columns, i / columns);
     }
 
@@ -56,7 +56,19 @@ public class Position2D {
      * {@link Position2D} to index.
      * @return Position2d converted.
      */    
-    public static int Pos2DtoInt(final Position2D pos, final int columns) {
-        return pos.x() + pos.y() * columns;
+    public static int Pos2DtoInt(final Position2D pos, final double columns) {
+        return (int)(pos.x() + pos.y() * columns);
+    }
+
+    public Position2D add(Vector2D vec) {
+        return new Position2D(this.x + vec.x(), this.y + vec.y());
+    }
+
+    public Vector2D subtract(Position2D other) {
+        return new Vector2D(this.x - other.x(), this.y - other.y());
+    }
+
+    public double distanceTo(Position2D other) {
+        return Math.sqrt(Math.pow(this.x - other.x(), 2) + Math.pow(this.y - other.y(), 2));
     }
 }

@@ -24,7 +24,6 @@ public class DefenseManagerImpl implements DefenseManager {
     private Set<Tower> towers = new HashSet<>();
     private EntityFactory towerFactory = new EntityFactoryImpl();
 	private Optional<GameMap> map;
-    private Set<Bullet> bullets = new HashSet<>();
 
     /**
      * Costructor.
@@ -47,12 +46,8 @@ public class DefenseManagerImpl implements DefenseManager {
     public void update(GameState gameState) {
         towers.forEach(tower -> {
             tower.attack(gameState.getEnemies());
-            if (!tower.getBullets().isEmpty()) {
-                bullets.addAll(tower.getBullets());
-                tower.clearBullets();  // Clear bullets from tower after collecting them
-            }
+            tower.getBullets().forEach(b->b.update(gameState));
         });
-        updateBullets(gameState);
     }
 
     @Override
@@ -60,12 +55,7 @@ public class DefenseManagerImpl implements DefenseManager {
         return Set.copyOf(towers);
     }
 
-    @Override
-    public Set<Bullet> getBullets() {
-        return towers.stream()
-                    .flatMap(tower -> tower.getBullets().stream())
-                    .collect(Collectors.toSet());
-    }
+    
     @Override
     public int getNumberOfTowers() {
         return this.towers.size();
@@ -76,14 +66,10 @@ public class DefenseManagerImpl implements DefenseManager {
 		this.map = Optional.of(gameMap);
 	}
 
-    private void updateBullets(GameState gameState) {
-        Set<Bullet> bulletsToRemove = new HashSet<>();
-        bullets.forEach(bullet -> {
-            bullet.update(gameState);
-            if (bullet.hasReachedTarget()) {
-                bulletsToRemove.add(bullet);
-            }
-        });
-        bullets.removeAll(bulletsToRemove);
+    public Set<Bullet> getBullets() {
+        return towers.stream()
+                     .flatMap(tower -> tower.getBullets().stream())
+                     .collect(Collectors.toSet());
     }
+
 }

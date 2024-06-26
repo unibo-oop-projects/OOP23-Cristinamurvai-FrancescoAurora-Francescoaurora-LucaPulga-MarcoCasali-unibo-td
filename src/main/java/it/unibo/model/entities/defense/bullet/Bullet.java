@@ -20,9 +20,11 @@ public interface Bullet extends IMovableEntity {
      * 
      * @return the speed bullet.
      */
-    int getSpeed();
+    double getSpeed();
 
     boolean hasReachedTarget();
 
-    public void update(GameState gameState);
+    void update(GameState gameState);
+
+    boolean isOutOfBounds();
 }

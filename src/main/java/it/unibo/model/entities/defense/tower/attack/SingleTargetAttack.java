@@ -7,6 +7,7 @@ import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Vector2D;
+import it.unibo.model.utilities.Position2D;
 
 /**
  * Implementation of single target attack.
@@ -15,23 +16,26 @@ public class SingleTargetAttack implements AttackStrategy {
 
     @Override
     public void attack(final Tower tower, final Optional<Enemy> enemy) {
-        // Se viene selezionato un nemico e la frequenza di sparatoria è stata rispettata, spara un bullet
         enemy.ifPresent(e -> {
             long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
             long currentTime = System.currentTimeMillis();
             long timeSinceLastShot = currentTime - lastShotTime;
-            long fireRate = tower.getCurrentWeapon().getFrequency();
+            long fireRateInMilliseconds = (long) (5000 / tower.getCurrentWeapon().getFrequency());
 
-            if (timeSinceLastShot >= fireRate) {
+            if (timeSinceLastShot >= fireRateInMilliseconds) {
                 System.out.println(tower.getName() + " attacco a " + e.getName());
-                Bullet bullet = new BulletImpl(
-                    124, "bullet", "base", "bullet/img/bullet.png",
-                    tower.getPosition(), new Vector2D(0, 0), 20, 5, e
-                );
+                Vector2D direction = calculateDirection(tower.getPosition(), e.getPosition());
+                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.1, 5, e);
                 
                 tower.getBullets().add(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);
             }
         });
+    }
+
+    private Vector2D calculateDirection(Position2D towerPos, Position2D enemyPos) {
+        double dx = enemyPos.x() - towerPos.x();
+        double dy = enemyPos.y() - towerPos.y();
+        return new Vector2D(dx, dy).normalize();
     }
 }

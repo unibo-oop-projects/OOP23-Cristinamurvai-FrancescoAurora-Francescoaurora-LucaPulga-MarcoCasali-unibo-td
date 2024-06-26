@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.unibo.model.entities.defense.bullet.Bullet;
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
@@ -19,7 +18,7 @@ import it.unibo.model.utilities.Vector2D;
 
 public class BasicTower extends AbstractTower {
 
-    private Set<Bullet> bullets;
+    private Set<Bullet> bullets = new HashSet<>();
 
     @JsonCreator
     public BasicTower(@JsonProperty("id") final int id, 
@@ -51,26 +50,16 @@ public class BasicTower extends AbstractTower {
             Optional<Enemy> chosenEnemy = this.target(enemies);
             chosenEnemy.ifPresent(enemy -> {
                 this.attackStrategy.attack(this, chosenEnemy);
-                createBullet(enemy);
             });
         }
+        updateBullets();
     }
-
-    private void createBullet(Enemy target) {
-        Bullet bullet = new BulletImpl(
-            this.getId(), 
-            this.getName() + " bullet", 
-            "bullet", 
-            "bullet/img/bullet.png",
-            this.getPosition(), 
-            new Vector2D(0, 0), 
-            10,  
-            100, 
-            target
-        );
-        this.bullets.add(bullet);
+    
+    private void updateBullets() {
+        this.bullets.forEach(b->b.update(null));
+        // Remove bullets that have hit their targets or gone out of bounds
+        bullets.removeIf(bullet -> bullet.hasReachedTarget() || bullet.isOutOfBounds());
     }
-
     @Override
     public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;

@@ -16,7 +16,7 @@ import it.unibo.model.utilities.Vector2D;
 public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObserver {
 
     private int damage;
-    private int speed;
+    private double speed;
     private Enemy targetEnemy;
 
     /**
@@ -39,7 +39,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
                 @JsonProperty("imgPath")final String imgPath, 
                 @JsonProperty("initialPosition")final Position2D initialPosition, 
                 @JsonProperty("direction2d")final Vector2D direction2d, 
-                @JsonProperty("speed")final int speed, 
+                @JsonProperty("speed")final double speed, 
                 @JsonProperty("damage")final int damage, 
                 final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
@@ -56,23 +56,22 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
         return this.position2d.equals(targetEnemy.getPosition()) && targetEnemy.isAlive();
     }
 
-    @Override
-    public void update(GameState gameState) {
-        while (!hasReachedTarget()) {
-            // Calcola la direzione per inseguire il nemico.
-            Vector2D directionVector = calculateDirection(this.position2d, targetEnemy.getPosition());
+    // public void update(GameState gameState) {
+    //     while (!hasReachedTarget()) {
+    //         // Calcola la direzione per inseguire il nemico.
+    //         Vector2D directionVector = calculateDirection(this.position2d, targetEnemy.getPosition());
 
-            // Moltiplica il vettore direzione per la velocità per ottenere la spostamento
-            Vector2D movementVector = directionVector.multiply(speed);
+    //         // Moltiplica il vettore direzione per la velocità per ottenere la spostamento
+    //         Vector2D movementVector = directionVector.multiply(speed);
 
-            // Aggiorna la posizione della Bullet
-            this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
-            + (int) movementVector.y());
-        }
+    //         // Aggiorna la posizione della Bullet
+    //         this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
+    //         + (int) movementVector.y());
+    //     }
 
-        // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
-        this.targetEnemy.getDamage(damage);
-    }
+    //     // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
+    //     this.targetEnemy.getDamage(damage);
+    // }
 
     // Metodo per calcolare la direzione per inseguire il nemico.
     // private double calculateDirection(Position2D currentPosition, Position2D targetPosition) {
@@ -84,20 +83,14 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
     //     return Math.atan2(deltaY, deltaX);
     // }
 
-    /**
-     * 
-     * @param currentPosition
-     * @param targetPosition
-     * @return
-     */
-    private Vector2D calculateDirection(final Position2D currentPosition, final Position2D targetPosition) {
-        // Calcola il vettore direzione dal currentPosition al targetPosition
-        int deltaX = targetPosition.x() - currentPosition.x();
-        int deltaY = targetPosition.y() - currentPosition.y();
-        Vector2D directionVector = new Vector2D(deltaX, deltaY);
+    public void update(GameState gameState) {
+        // Move bullet towards target
+        this.position2d = this.position2d.add(this.direction2d.scale(this.speed));
 
-        // Normalizza il vettore direzione per ottenere un vettore con lunghezza 1
-        return directionVector.normalize();
+        // Check if bullet has hit the target
+        if (this.position2d.distanceTo(targetEnemy.getPosition()) < 1 || hasReachedTarget()) {
+            this.targetEnemy.getDamage(this.damage);
+        }
     }
 
     @Override
@@ -106,7 +99,12 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
     }
 
     @Override
-    public int getSpeed() {
+    public double getSpeed() {
         return this.speed;
+    }
+
+    @Override
+    public boolean isOutOfBounds() {
+        return this.position2d.x() < 0 || this.position2d.x() > 100 || this.position2d.y() < 0 || this.position2d.y() > 100;
     }
 }
