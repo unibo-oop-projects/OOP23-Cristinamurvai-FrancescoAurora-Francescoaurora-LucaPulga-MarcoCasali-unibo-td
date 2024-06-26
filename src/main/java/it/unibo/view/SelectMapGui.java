@@ -3,9 +3,7 @@ package it.unibo.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -23,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.utilities.ScaledImage;
 
 /**
  * map loading with slider for scrolling.
@@ -32,21 +31,21 @@ public class SelectMapGui extends JFrame {
     private final JLabel imageLabels;
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
-    private final JPanel oldGui;
+    //private final JPanel oldGui;
     private GuiGameStart guiGameStart;
     private JLabel leftButton;
     private JLabel rightButton;
-    private Image left = null;
-    private Image right = null;
+    private transient Image left = null;
+    private transient Image right = null;
     private static final int DIMENSION_BUTTONS = 100;
     private static final int SPACE_TEXT = 25;
-    private JLabel textLabel;
+    private final JLabel textLabel;
 
     /**
      * @param oldGui switching the gui panel of the old window
      */
     public SelectMapGui(final JPanel oldGui) {
-        this.oldGui = oldGui;
+        //this.oldGui = oldGui;
 
         // Set the layout of the contentPane to BorderLayout
         oldGui.setLayout(new BorderLayout());
@@ -60,7 +59,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
-                updateImages();
+                updateImages(oldGui);
             }
         });
 
@@ -72,7 +71,7 @@ public class SelectMapGui extends JFrame {
         }
 
         leftButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
-        leftButton.setIcon(getScaledImage(left, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        leftButton.setIcon(ScaledImage.getScaledImage(left, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
 
         // Add the button to scroll left to the frame
         oldGui.add(leftButton, BorderLayout.WEST);
@@ -84,7 +83,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex + 1) % maps.size();
-                updateImages();
+                updateImages(oldGui);
             }
         });
 
@@ -96,12 +95,12 @@ public class SelectMapGui extends JFrame {
         }
 
         rightButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
-        rightButton.setIcon(getScaledImage(right, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
+        rightButton.setIcon(ScaledImage.getScaledImage(right, DIMENSION_BUTTONS, DIMENSION_BUTTONS));
 
         // Add the button to scroll right to the frame
         oldGui.add(rightButton, BorderLayout.EAST);
         textLabel = new JLabel("Select the map for starting the game. This is " + maps.get(this.focusIndex));
-        textLabel.setSize(textLabel.getWidth(), 25);
+        textLabel.setSize(textLabel.getWidth(), SPACE_TEXT);
         textLabel.setHorizontalAlignment(SwingConstants.CENTER);
         oldGui.add(textLabel, BorderLayout.NORTH);
 
@@ -116,21 +115,21 @@ public class SelectMapGui extends JFrame {
         oldGui.add(imagePanel, BorderLayout.CENTER);
 
         // Initialize the JLabels with the images
-        imageLabels.setSize(this.oldGui.getWidth(), this.oldGui.getHeight());
+        imageLabels.setSize(oldGui.getWidth(), oldGui.getHeight());
         imageLabels.setIcon(new ImageIcon(ClassLoader.getSystemResource("map_preview/" + maps.get(this.focusIndex) + ".png")));
-        imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(), imageLabels.getIcon().getIconWidth()));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex));
+                changeGui(maps.get(focusIndex), oldGui);
             }
         });
 
         ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
-                imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(), imageLabels.getIcon().getIconWidth()));
+                imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
             }
         };
         imagePanel.addComponentListener(resize);
@@ -146,20 +145,23 @@ public class SelectMapGui extends JFrame {
         oldGui.repaint();
     }
 
-    // Update the image when an arrow is clicked
-    private void updateImages() {
+    /**
+     * Update the image when an arrow is clicked.
+     *
+     * @param oldGui for image calculation
+     */
+    private void updateImages(final JPanel oldGui) {
         textLabel.setText("Select the map for starting the game. This is " + maps.get(this.focusIndex));
         // Remove previous mouse listeners
         for (MouseListener adapter : imageLabels.getMouseListeners()) {
             imageLabels.removeMouseListener(adapter);
         }
-        imageLabels.setIcon(getScalated(maps.get(focusIndex), imageLabels.getIcon().getIconHeight(),
-                imageLabels.getIcon().getIconWidth()));
+        imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
         imageLabels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex));
+                changeGui(maps.get(focusIndex), oldGui);
             }
         });
 
@@ -169,11 +171,12 @@ public class SelectMapGui extends JFrame {
      * Change gui with map selected and start game.
      *
      * @param mapSelected Selected map name
+     * @param oldGui panel to pass
      */
-    public void changeGui(final String mapSelected) {
+    public void changeGui(final String mapSelected, final JPanel oldGui) {
         oldGui.removeAll();
         if (guiGameStart == null) {
-            guiGameStart = new GuiGameStart((mapSelected), this.oldGui);
+            guiGameStart = new GuiGameStart((mapSelected), oldGui);
         } else {
             // Ensure SelectMapGui is visible if it's already instantiated
             guiGameStart.setVisible(true);
@@ -181,26 +184,15 @@ public class SelectMapGui extends JFrame {
     }
 
     /**
-     * TODO reference https://stackoverflow.com/a/6714381 .
+     * Scale the image by fitting it to the smaller side.
      *
-     * @param srcImg source Image
-     * @param width
-     * @param height
+     * @param image image to adapt
+     * @param oldGui window for size calculation
+     * @return the adapted image
      */
-    private ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, width, height, null);
-        g2.dispose();
-
-        return new ImageIcon(resizedImg);
-    }
-
-    private ImageIcon getScalated(final String image, final int imageHeight, final int imageWidth) {
-        int widthWitchButton = this.oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
-        int heightWitchText = this.oldGui.getHeight() - SPACE_TEXT;
+    private ImageIcon getScalated(final String image, final JPanel oldGui) {
+        int widthWitchButton = oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
+        int heightWitchText = oldGui.getHeight() - SPACE_TEXT;
         BufferedImage icon;
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("map_preview/" + image + ".png"));
@@ -211,7 +203,7 @@ public class SelectMapGui extends JFrame {
         }
 
         if (heightWitchText <= 0 || widthWitchButton <= 0) {
-            return getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
+            return ScaledImage.getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
         }
 
         // Calculates the proportions of the image
@@ -224,12 +216,12 @@ public class SelectMapGui extends JFrame {
                 // L'altezza è il fattore limitante
                 int newHeight = heightWitchText;
                 int newWidth = (int) (newHeight * iconAspectRatio);
-                return getScaledImage(icon, newWidth, newHeight);
+                return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             } else {
                 // Width is the limiting factor
                 int newWidth = widthWitchButton;
                 int newHeight = (int) (newWidth / iconAspectRatio);
-                return getScaledImage(icon, newWidth, newHeight);
+                return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             }
         }
         return new ImageIcon(icon);

@@ -10,14 +10,12 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-
-    private static final int ROUND_TIME = 5; // tempo del conto alla rovescia in secondi
+    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
     private boolean interrupted = false;
     private int currentTime; // tempo corrente in secondi
     private final Object lock = new Object();
-    private final EnemiesManager enemies;
     private final Round round;
     private double timeSpawn;
     private List<Integer> listEnemies;
@@ -25,21 +23,25 @@ public class RoundManagerImpl {
     private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
     private static final double ADVANCEMENT_TIME = 0.1;
     private boolean isPaused = false;
+    private static final int TIME_SLEEP_PAUSE = 500;
 
     /**
      * Constructor method, initialise variables.
+     *
      * @param enemiesManager to build enemies and verify alive
      */
     public RoundManagerImpl(final EnemiesManager enemiesManager) {
-        enemies = enemiesManager;
-        round = new RoundImp(enemies.getNEnemyTypes()); //return # enemies
+        round = new RoundImpl(enemiesManager.getNEnemyTypes()); //return # enemies
         random = new Random();
     }
 
     /**
      * Method for Starting the Game CountDown.
+     *
+     * @param enemiesManager reference instance of enemiesManager passing
+     * threats in real time
      */
-    private void startCountdown() {
+    private void startCountdown(final EnemiesManager enemiesManager) {
         if (interrupted) {
             return;
         }
@@ -51,123 +53,123 @@ public class RoundManagerImpl {
         round.increaseRoud();
         timeSpawn = round.getTimeSpawn();
         listEnemies = round.getEnemiesSpawn();
-        if(round.getLastRound() == true){
+        if (round.getLastRound()) {
             return;
         }
-        countdownThread = new Thread(new CountdownTask());
+        countdownThread = new Thread(() -> runCountdownTask(enemiesManager));
         countdownThread.start();
     }
 
     /**
-     * Countdown thread class.
+     * Method for running the countdown task.
+     *
+     * @param enemiesManager the enemies manager to be used in the task
      */
-    private final class CountdownTask implements Runnable {
-        /**
-         * method for starting the thread.
-         */
-        @Override
-        public void run() {
-            for (int i = ROUND_TIME; i > 0; i--) {
-                while (isPaused == true) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
-                synchronized (lock) {
-                    if (interrupted) {
-                        return;
-                    }
-                    currentTime = i;
-                }
+    private void runCountdownTask(final EnemiesManager enemiesManager) {
+        for (int i = ROUND_TIME; i > 0; i--) {
+            while (isPaused) {
                 try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
+                    Thread.sleep(TIME_SLEEP_PAUSE);
+                } catch (final InterruptedException e) {
                     return;
                 }
             }
-            startSequential();
+            synchronized (lock) {
+                if (interrupted) {
+                    return;
+                }
+                currentTime = i;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (final InterruptedException e) {
+                return;
+            }
         }
+        startSequential(enemiesManager);
     }
 
     /**
      * sequential round account method.
+     *
+     * @param enemiesManager reference instance of enemiesManager passing
+     * threats in real time
      */
-    private void startSequential() {
+    private void startSequential(final EnemiesManager enemiesManager) {
         if (interrupted) {
             return;
         }
-        sequentialThread = new Thread(new SequentialTask());
+        sequentialThread = new Thread(() -> runSequentialTask(enemiesManager));
         sequentialThread.start();
     }
 
     /**
-     * Sequential thread class.
+     * Method for running the sequential task.
+     *
+     * @param enemiesManager the enemies manager to be used in the task
      */
-    private final class SequentialTask implements Runnable {
-        /**
-         * method for starting the thread and logic of enemy creation.
-         */
-        @Override
-        public void run() {
-            double seconds = 0;
-            double spawnCounter = 0; // counter for the creation of enemies
-            int numEnemiesSpawn = countNonZeroEnemies();
-            while (!interrupted) {
-                while (isPaused == true) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
-                synchronized (lock) {
-                    currentTime = (int) seconds;
-                }
-                if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
-                    int enemyIndex = random.nextInt(numEnemiesSpawn);
-                    boolean spawn = false;
-                    while (!spawn) {
-                        if (listEnemies.get(enemyIndex) != 0) {
-                            // Inserire qui il costruttore del nemico
-                            enemies.pushEnemy(enemyIndex);
-                            spawn = true;
-                            listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);
-                        } else {
-                            enemyIndex++;
-                            enemyIndex = enemyIndex % numEnemiesSpawn;
-                        }
-                    }
-                    spawnCounter -= timeSpawn;
-                } else {
-                    if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0 && enemies.getCurrentEnemies().isEmpty()) { //check id round finished to spown anche enemies is not Alive
-                        interrupted = true;
-                    }
-                }
-
+    private void runSequentialTask(final EnemiesManager enemiesManager) {
+        double seconds = 0;
+        double spawnCounter = 0; // counter for the creation of enemies
+        int numEnemiesSpawn = countNonZeroEnemies();
+        while (!interrupted) {
+            while (isPaused) {
                 try {
-                    Thread.sleep(100); // sleep for 0.1 seconds
+                    Thread.sleep(TIME_SLEEP_PAUSE);
                 } catch (InterruptedException e) {
                     return;
                 }
-                seconds += ADVANCEMENT_TIME;
-                spawnCounter += ADVANCEMENT_TIME;
             }
-            interrupted = false;
-            startCountdown();
+            synchronized (lock) {
+                currentTime = (int) seconds;
+            }
+            if (spawnCounter >= timeSpawn && listEnemies.stream().mapToInt(Integer::intValue).sum() != 0) {
+                int enemyIndex = random.nextInt(numEnemiesSpawn);
+                boolean spawn = false;
+                while (!spawn) {
+                    if (listEnemies.get(enemyIndex) != 0) {
+                        // Inserire qui il costruttore del nemico
+                        enemiesManager.pushEnemy(enemyIndex);
+                        spawn = true;
+                        listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);
+                    } else {
+                        enemyIndex++;
+                        enemyIndex = enemyIndex % numEnemiesSpawn;
+                    }
+                }
+                spawnCounter -= timeSpawn;
+            } else {
+                // check if round finished to spawn and enemies are not alive
+                if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0
+                        && enemiesManager.getCurrentEnemies().isEmpty()) {
+                    interrupted = true;
+                }
+            }
+
+            try {
+                Thread.sleep(100); // sleep for 0.1 seconds
+            } catch (InterruptedException e) {
+                return;
+            }
+            seconds += ADVANCEMENT_TIME;
+            spawnCounter += ADVANCEMENT_TIME;
         }
-        /**
-         * Count the types of enemies to be spawned.
-         * @return types of enemies
-         */
-        private int countNonZeroEnemies() {
-            return (int) listEnemies.stream().filter(e -> e != 0).count();
-        }
+        interrupted = false;
+        startCountdown(enemiesManager);
+    }
+
+    /**
+     * Count the types of enemies to be spawned.
+     *
+     * @return types of enemies
+     */
+    private int countNonZeroEnemies() {
+        return (int) listEnemies.stream().filter(e -> e != 0).count();
     }
 
     /**
      * Public call for time.
+     *
      * @return time if active
      */
     public String getTime() {
@@ -176,7 +178,7 @@ public class RoundManagerImpl {
                 return " " + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
                 return "Sequential count: " + secondsToTimeFormat(currentTime);
-            } else if (round.getLastRound() == true) {
+            } else if (round.getLastRound()) {
                 return "You win!";
             } else {
                 return "No active timers";
@@ -186,6 +188,7 @@ public class RoundManagerImpl {
 
     /**
      * Conversion of seconds to minutes and seconds.
+     *
      * @param totalSeconds seconds stored in the thread
      * @return minutes and seconds
      */
@@ -194,7 +197,6 @@ public class RoundManagerImpl {
         int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
         return String.format("%02d:%02d", minutes, seconds);
     }
-
 
     /**
      * End-of-game method, usable when the player has run out of lives.
@@ -223,13 +225,17 @@ public class RoundManagerImpl {
 
     /**
      * Method for starting the game.
+     *
+     * @param enemiesManager reference instance of enemiesManager passing
+     * threats in real time
      */
-    public void startGame() {
-        startCountdown();
+    public void startGame(final EnemiesManager enemiesManager) {
+        startCountdown(enemiesManager);
     }
 
     /**
      * Method for return round number.
+     *
      * @return round number
      */
     public int getRound() {
@@ -238,6 +244,7 @@ public class RoundManagerImpl {
 
     /**
      * Get if it is the last round from the instance of the round.
+     *
      * @return answer to the question (true or false)
      */
     public boolean getLastRound() {
