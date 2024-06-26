@@ -7,22 +7,22 @@
   "direction2d": null,
   "cost": 100,
   "level": 1,
-  "range": 50,
+  "range": 7,
   "weapons": [
     {
       "id": 1,
       "name": "Weapon1",
       "type": "Gun",
-      "imgPath": "weapons/bow.png",
-      "frequency": 1
+      "imgPath": "weapons/bolt-icon.png",
+      "frequency": 3
     }
   ],
   "currentWeapon": {
     "id": 1,
     "name": "Weapon1",
     "type": "Gun",
-    "imgPath": "weapons/bow.png",
-    "frequency": 1
+    "imgPath": "weapons/bolt-icon.png",
+    "frequency": 3
   },
   "attackStrategy": "SingleTargetAttack",
   "targetSelectionStrategy": "DistanceBasedTargetSelection"

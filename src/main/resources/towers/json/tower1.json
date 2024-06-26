@@ -5,7 +5,7 @@
   "imgPath": "towers/img/tower1.png",
   "position2d": null,
   "direction2d": null,
-  "cost": 100,
+  "cost": 50,
   "level": 1,
   "range": 10,
   "weapons": [
@@ -14,7 +14,7 @@
       "name": "Weapon1",
       "type": "Gun",
       "imgPath": "weapons/bow.png",
-      "frequency": 5
+      "frequency": 2
     }
   ],
   "currentWeapon": {
@@ -22,7 +22,7 @@
     "name": "Weapon1",
     "type": "Gun",
     "imgPath": "weapons/bow.png",
-    "frequency": 5
+    "frequency": 2
   },
   "attackStrategy": "SingleTargetAttack",
   "targetSelectionStrategy": "DistanceBasedTargetSelection"

@@ -3,8 +3,6 @@ package it.unibo.model.utilities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import it.unibo.model.entities.defense.tower.Tower;
-
 /**
  * 2D position class.
  */
