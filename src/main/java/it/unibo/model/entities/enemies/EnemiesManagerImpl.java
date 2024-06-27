@@ -86,9 +86,6 @@ public class EnemiesManagerImpl implements EnemiesManager {
         this.enemies.add(newEnemy);
         this.enemiesThreads.add(newEnemyThread);
 
-        //TO-DO: remove, used only for debug
-        // System.out.println("Enemy: " + this.enemies.size() + "spawned at pos (" + spawnPosition.x() + ", " + spawnPosition.y() 
-        // 							+ ") with direction (" + direction.x() + ", " + direction.y() + ")");
     }
 
     @Override
@@ -113,8 +110,6 @@ public class EnemiesManagerImpl implements EnemiesManager {
                 newEnemyEntered = true;
                 this.lastNewEnemyStartingTime = currentTimeMillis;
             }
-            //System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
-            //System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
             if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
                 enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
             }
