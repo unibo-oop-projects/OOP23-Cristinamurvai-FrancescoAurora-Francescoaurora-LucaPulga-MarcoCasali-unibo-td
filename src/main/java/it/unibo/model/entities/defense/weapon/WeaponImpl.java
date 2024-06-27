@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.unibo.model.entities.AbstractEntity;
+import it.unibo.model.entities.defense.bullet.Bullet;
 
 /**
- * Weapon implementation.
+ * Represents the Weapon implementation.
  */
 public class WeaponImpl extends AbstractEntity implements Weapon {
 
-    private int frequency; // Tempo in millisecondi tra due bullet.
-    private long lastShotTime; // Tempo dell'ultimo sparo.
+    final private int frequency;
+    private long lastShotTime;
 
     @JsonCreator
     public WeaponImpl(@JsonProperty("id") final int id,
@@ -25,20 +26,27 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
     }
 
     /**
-     * Weapoon hit frequnecy.
-     *
-     * @return weapoon hit frequnecy.
+     * Represents the frequency with which the {@link Weapon} can fire a {@link Bullet}.
+     * @return the frequency with which the weapon can fire a {@link Bullet}.
      */
     @Override
     public int getFrequency() {
         return this.frequency;
     }
 
+    /**
+     * Represents the last {@link Bullet}'s time fired by the {@link Weapon}.
+     * @return the last {@link Bullet}'s time fired by the {@link Weapon} in millis.
+     */
     @Override
     public long getLastShotTime() {
         return lastShotTime;
     }
 
+    /**
+     * Sets the last {@link Bullet}'s time fired by the {@link Weapon}.
+     * @param lastShotTime sets the last {@link Bullet}'s time fired by the {@link Weapon} in millis.
+     */
     @Override
     public void setLastShotTime(final long lastShotTime) {
         this.lastShotTime = lastShotTime;

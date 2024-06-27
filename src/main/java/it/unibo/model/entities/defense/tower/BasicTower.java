@@ -1,13 +1,11 @@
 package it.unibo.model.entities.defense.tower;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
@@ -17,8 +15,6 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 public class BasicTower extends AbstractTower {
-
-    private Set<Bullet> bullets = new HashSet<>();
 
     @JsonCreator
     public BasicTower(@JsonProperty("id") final int id,
@@ -36,14 +32,22 @@ public class BasicTower extends AbstractTower {
             @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy) {
         super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon,
                 attackStrategy, targetSelectionStrategy);
-        this.bullets = new HashSet<>();
     }
 
+    /**
+     * {@link Tower}'s target method to identify the target {@link Enemy}.
+     * Target @param enemies available on the map.
+     */
     @Override
     public Optional<Enemy> target(Set<Enemy> enemies) {
         return this.targetSelectionStrategy.selectTarget(this, enemies);
     }
 
+    
+    /**
+     * {@link Tower}'s attack method to attack {@link Enemy}.
+     * @param enemies available on the map.
+     */
     @Override
     public void attack(Set<Enemy> enemies) {
         if (!enemies.isEmpty()) {
@@ -53,31 +57,5 @@ public class BasicTower extends AbstractTower {
             });
         }
         updateBullets();
-    }
-
-    private void updateBullets() {
-        this.bullets.forEach(b -> b.update(null));
-        // Remove bullets that have hit their targets or gone out of bounds
-        bullets.removeIf(bullet -> (bullet.hasReachedTarget() || bullet.isOutOfBounds()));
-    }
-
-    @Override
-    public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
-        this.targetSelectionStrategy = targetSelectionStrategy;
-    }
-
-    @Override
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
-        this.attackStrategy = attackStrategy;
-    }
-
-    @Override
-    public Set<Bullet> getBullets() {
-        return this.bullets;
-    }
-
-    @Override
-    public void clearBullets() {
-        this.bullets.clear();
     }
 }

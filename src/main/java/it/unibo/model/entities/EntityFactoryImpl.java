@@ -33,11 +33,18 @@ public class EntityFactoryImpl implements EntityFactory {
     public EntityFactoryImpl() {
     }
 
+    /**
+     * Load a generic {@link IEntity}.
+     * @param <T> generic type.
+     * {@link IEntity}'s @param jsonFilePath
+     * {@link IEntity}'s @param position2d
+     * {@link IEntity}'s @param direction
+     * {@link IEntity}'s @param entityType
+     * @return parsed {@link IEntity}. 
+     */
     @Override
     public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
-        // Entity entity = id, name, type
-        // 
         try {
             String jsonString = readFileFromResources(filePath);
             if (jsonString != null) {
@@ -49,6 +56,12 @@ public class EntityFactoryImpl implements EntityFactory {
         return null;
     }
 
+    /**
+     * Load a specific {@link Tower}.
+     * {@link Tower}'s @param jsonFilePath to know which file to read.
+     * @return parsed {@link IEntity}.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Override
     public Tower loadTower(final String jsonFilePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -67,6 +80,11 @@ public class EntityFactoryImpl implements EntityFactory {
         return null;
     }
 
+    /**
+     * Load all {@link Tower}s from JSON.
+     * @return all the {@link Tower}s istances available.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Override
     public Set<Tower> loadAllTowers() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -95,6 +113,12 @@ public class EntityFactoryImpl implements EntityFactory {
         return Set.of();
     }
 
+    /**
+     * Utility method to read from files.
+     * File's @param filePath to load.
+     * @return the file's content.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     private String readFileFromResources(final String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath)))) {

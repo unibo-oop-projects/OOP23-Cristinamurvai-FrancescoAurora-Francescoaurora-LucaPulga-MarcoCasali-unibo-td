@@ -34,11 +34,11 @@ import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
-import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.ScaledImage;
 import it.unibo.view.defense.DefensePanel;
+import it.unibo.view.defense.TowerCardFactory;
+import it.unibo.view.defense.TowerCardFactoryImpl;
 import it.unibo.view.enemies.EnemiesPanel;
 
 /**

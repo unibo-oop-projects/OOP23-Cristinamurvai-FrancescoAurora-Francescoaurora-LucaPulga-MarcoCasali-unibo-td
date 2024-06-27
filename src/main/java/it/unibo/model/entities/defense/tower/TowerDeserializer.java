@@ -22,7 +22,7 @@ import it.unibo.model.entities.defense.tower.attack.AreaAttack;
 import java.util.Set;
 
 /**
- * .
+ * Custom {@link Tower}'s JSON deserializer.
  */
 public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
@@ -31,8 +31,7 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
     /**
      * Constructor.
-     *
-     * @param towerClass
+     * @param towerClass (generally BasicTower)
      */
     public TowerDeserializer(final Class<T> towerClass) {
         super(towerClass);

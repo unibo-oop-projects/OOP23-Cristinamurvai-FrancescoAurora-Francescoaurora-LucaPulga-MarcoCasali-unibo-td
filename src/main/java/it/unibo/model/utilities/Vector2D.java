@@ -56,22 +56,37 @@ public class Vector2D {
 
     /**
      * Scalar-vector multiplication.
-     * @param scalar
-     * @return new multiplied vector.
+     * @param scalar Scalar value.
+     * @return New vector after multiplication.
      */
     public Vector2D multiply(final double scalar) {
         return new Vector2D(x * scalar, y * scalar);
     }
 
+    /**
+     * Scales the vector by a scalar.
+     * @param scalar Scalar value.
+     * @return New scaled vector.
+     */
     public Vector2D scale(final double scalar) {
         return new Vector2D(this.x * scalar, this.y * scalar);
     }
 
+    /**
+     * Normalizes the vector.
+     * @return New normalized vector.
+     */
     public Vector2D normalize() {
         double length = Math.sqrt(x * x + y * y);
         return new Vector2D(this.x / length, this.y / length);
     }
 
+    /**
+     * Calculates the direction vector from one position to another.
+     * @param initiPosition2d Starting position.
+     * @param endingPosition2d Ending position.
+     * @return Normalized direction vector.
+     */
     public static Vector2D calculateDirection(Position2D initiPosition2d, Position2D endingPosition2d) {
         double dx = endingPosition2d.x() - initiPosition2d.x();
         double dy = endingPosition2d.y() - initiPosition2d.y();

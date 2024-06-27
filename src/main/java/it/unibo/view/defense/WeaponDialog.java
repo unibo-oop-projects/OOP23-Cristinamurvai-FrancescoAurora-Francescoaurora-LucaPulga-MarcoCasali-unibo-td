@@ -1,4 +1,4 @@
-package it.unibo.model.entities.defense.tower.view;
+package it.unibo.view.defense;
 
 import java.awt.BorderLayout;
 import java.util.Set;
@@ -15,15 +15,14 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.weapon.Weapon;
 
 /**
- * WeaponDialog.
+ * Weapons dialog related to a specific {@link Tower}.
  */
 public class WeaponDialog extends JDialog {
 
     /**
-     * Constractor.
-     *
-     * @param parent
-     * @param tower
+     * Constructor.
+     * @param parent {@link Tower} card.
+     * @param tower's info.
      */
     public WeaponDialog(final JFrame parent, final Tower tower) {
         super(parent, "Weapons for " + tower.getName(), true);

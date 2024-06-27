@@ -15,8 +15,8 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
     private final double speed;
     private final Enemy targetEnemy;
     private final int MAP_MIN = 0;
-    private final int MAP_MAX = 100;
-    private final int BULLET_DISTANCE_TOLLERANCE = 1;
+    private final int MAP_MAX = 50;
+    private final double BULLET_DISTANCE_TOLLERANCE = 0.5;
 
     /**
      * BulletImpl Constructor.

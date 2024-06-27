@@ -30,7 +30,7 @@ public class SingleTargetAttack implements AttackStrategy {
             if (timeSinceLastShot >= fireRateInMilliseconds) {
                 System.out.println(tower.getName() + " attacco a " + e.getName());
                 Vector2D direction = Vector2D.calculateDirection(tower.getPosition(), e.getPosition());
-                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.25, 1, e);
+                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.15, 5, e);
 
                 tower.getBullets().add(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);

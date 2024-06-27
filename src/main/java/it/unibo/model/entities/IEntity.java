@@ -7,25 +7,26 @@ package it.unibo.model.entities;
 public interface IEntity {
 
     /**
-     * Entity's id.
-     *
-     * @return Entity's id.
+     * {@link IEntity}'s id.
+     * @return {@link IEntity}'s id.
      */
     int getId();
 
     /**
-     * Entity's name.
-     *
-     * @return Entity's name.
+     * {@link IEntity}'s name.
+     * @return {@link IEntity}'s name.
      */
     String getName();
 
     /**
-     * Entity's type.
-     *
-     * @return Entity's type.
+     * {@link IEntity}'s type.
+     * @return {@link IEntity}'s type.
      */
     String getType();
 
+    /**
+     * {@link IEntity}'s image path.
+     * @return {@link IEntity}'s image path.
+     */
     String getPath();
 }

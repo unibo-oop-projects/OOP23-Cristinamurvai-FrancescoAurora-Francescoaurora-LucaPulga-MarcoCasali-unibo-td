@@ -24,11 +24,10 @@ public abstract class AbstractEntity implements IEntity {
 
     /**
      * Costructor.
-     *
-     * @param id
-     * @param name
-     * @param type
-     * @param imgPath
+     * {@link AbstractEntity}'s @param id
+     * {@link AbstractEntity}'s @param name
+     * {@link AbstractEntity}'s @param type
+     * {@link AbstractEntity}'s @param imgPath
      */
     public AbstractEntity(final int id, final String name, final String type, final String imgPath) {
         this.id = Objects.requireNonNull(id);
@@ -38,32 +37,33 @@ public abstract class AbstractEntity implements IEntity {
     }
 
     /**
-     * Entity id.
-     *
-     * @return Entity id.
+     * {@link AbstractEntity}'s id.
+     * @return {@link AbstractEntity}'s id.
      */
     public int getId() {
         return this.id;
     }
 
     /**
-     * Entity name.
-     *
-     * @return Entity name.
+     * {@link AbstractEntity}'s name.
+     * @return {@link AbstractEntity}'s name.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Entity type.
-     *
-     * @return Entity type.
+     * {@link AbstractEntity}'s type.
+     * @return {@link AbstractEntity}'s type.
      */
     public String getType() {
         return this.type;
     }
 
+    /**
+     * {@link AbstractEntity}'s image path.
+     * @return {@link AbstractEntity}'s image path.
+     */
     public String getPath() {
         return this.imgPath;
     }
