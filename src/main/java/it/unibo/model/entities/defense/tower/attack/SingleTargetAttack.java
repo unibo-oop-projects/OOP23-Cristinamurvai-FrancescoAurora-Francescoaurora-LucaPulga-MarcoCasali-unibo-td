@@ -5,15 +5,20 @@ import java.util.Optional;
 import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.enemies.Enemy;
-import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * Implementation of single target attack.
+ * Strategy pattern implmentation. Attack based on a single target.
  */
 public class SingleTargetAttack implements AttackStrategy {
 
+    /**
+     * {@link Tower}'s attack method to attack target {@link Enemy}.
+     * Attacking @param tower.
+     * Target @param enemy chosen by the {@link Tower} depending on the {@link TargetSelectionStrategy}.
+     */
     @Override
     public void attack(final Tower tower, final Optional<Enemy> enemy) {
         enemy.ifPresent(e -> {
@@ -24,18 +29,12 @@ public class SingleTargetAttack implements AttackStrategy {
 
             if (timeSinceLastShot >= fireRateInMilliseconds) {
                 System.out.println(tower.getName() + " attacco a " + e.getName());
-                Vector2D direction = calculateDirection(tower.getPosition(), e.getPosition());
-                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.1, 1, e);
+                Vector2D direction = Vector2D.calculateDirection(tower.getPosition(), e.getPosition());
+                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.25, 1, e);
 
                 tower.getBullets().add(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);
             }
         });
-    }
-
-    private Vector2D calculateDirection(Position2D towerPos, Position2D enemyPos) {
-        double dx = enemyPos.x() - towerPos.x();
-        double dy = enemyPos.y() - towerPos.y();
-        return new Vector2D(dx, dy).normalize();
     }
 }

@@ -3,34 +3,21 @@ package it.unibo.model.entities.defense.tower.attack;
 import java.util.Optional;
 
 import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.enemies.Enemy;
 
 /**
- * Implementation of area attack.
+ * Strategy pattern implmentation. Attack based on an area target, multiple attack.
  */
 public class AreaAttack implements AttackStrategy {
 
+    /**
+     * {@link Tower}'s attack method to attack target {@link Enemy}.
+     * Attacking @param tower.
+     * Target @param enemy chosen by the {@link Tower} depending on the {@link TargetSelectionStrategy}.
+     */
     @Override
     public void attack(final Tower tower, final Optional<Enemy> enemy) {
-        // Se viene selezionato un nemico e la frequenza di sparatoria è stata rispettata, spara un bullet
-        // enemies.ifPresentOrElse(
-        //     enemySet -> {
-        //         for (Enemy enemy : enemySet) {
-        //             System.out.println(tower.getName() + "Attacco multiplo verso " + enemy.getName());
-        //             long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
-        //             long currentTime = System.currentTimeMillis();
-        //             long timeSinceLastShot = currentTime - lastShotTime;
-        //             long fireRate = tower.getCurrentWeapon().getFrequency();
-        //             if (timeSinceLastShot >= fireRate) {
-        //                 // Crea e avvia un thread Bullet per inseguire ed attaccare il nemico
-        //                 Bullet bullet = new BulletImpl(2, "bullet", "base", "bullet/img/bullet.png", 
-        //                                                 tower.getPosition(), new Vector2D(0, 0), 100, 100, enemy);
-        //                 // Aggiorna il tempo dell'ultimo sparo
-        //                 tower.getCurrentWeapon().setLastShotTime(currentTime);
-        //             }
-        //         }
-        //     },
-        //     () -> System.out.println(tower.getName() + "Nessun nemico nell'area")
-        // );
+        throw new UnsupportedOperationException("Attack based on an area target, multiple attack, will be implemented in a new release version of UNIBO-TD.");
     }
 }

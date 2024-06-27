@@ -13,9 +13,8 @@ public class Vector2D {
 
     /**
      * Vector's coordinates.
-     *
-     * @param x
-     * @param y
+     * @param x coordinate.
+     * @param y coordinate.
      */
     @JsonCreator
     public Vector2D(@JsonProperty("x") final double x, @JsonProperty("y") final double y) {
@@ -25,7 +24,6 @@ public class Vector2D {
 
     /**
      * X coordinate.
-     *
      * @return X coordinate.
      */
     public double x() {
@@ -34,7 +32,6 @@ public class Vector2D {
 
     /**
      * X coordinate int.
-     *
      * @return X coordinate.
      */
     public int xInt() {
@@ -43,7 +40,6 @@ public class Vector2D {
 
     /**
      * Y coordinate.
-     *
      * @return Y coordinate.
      */
     public double y() {
@@ -52,7 +48,6 @@ public class Vector2D {
 
     /**
      * Y coordinate int.
-     *
      * @return Y coordinate.
      */
     public int yInt() {
@@ -61,7 +56,6 @@ public class Vector2D {
 
     /**
      * Scalar-vector multiplication.
-     *
      * @param scalar
      * @return new multiplied vector.
      */
@@ -74,7 +68,13 @@ public class Vector2D {
     }
 
     public Vector2D normalize() {
-        double length = (double) Math.sqrt(x * x + y * y);
+        double length = Math.sqrt(x * x + y * y);
         return new Vector2D(this.x / length, this.y / length);
+    }
+
+    public static Vector2D calculateDirection(Position2D initiPosition2d, Position2D endingPosition2d) {
+        double dx = endingPosition2d.x() - initiPosition2d.x();
+        double dy = endingPosition2d.y() - initiPosition2d.y();
+        return new Vector2D(dx, dy).normalize();
     }
 }

@@ -13,17 +13,11 @@ public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
     @Override
     public Optional<Enemy> selectTarget(Tower tower, Set<Enemy> enemies) {
         for (Enemy enemy : enemies) {
-            double distance = this.calculateDistance(tower.getPosition(), enemy.getPosition());
+            double distance = Position2D.calculateDistance(tower.getPosition(), enemy.getPosition());
             if (distance <= tower.getRange()) {
                 return Optional.of(enemy);
             }
         }
         return Optional.empty();
-    }
-
-    private double calculateDistance(Position2D towerPosition2d, Position2D enemyPosition2d) {
-        double deltaX = towerPosition2d.x() - enemyPosition2d.x();
-        double deltaY = towerPosition2d.y() - enemyPosition2d.y();
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
