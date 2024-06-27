@@ -3,6 +3,7 @@ package it.unibo.controller;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import it.unibo.model.core.GameEngine;
 import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
@@ -16,6 +17,7 @@ import it.unibo.view.GameView;
  * Implementation of {@link GameController}.
  */
 public class GameControllerImpl implements GameController {
+
     private final GameMapFactory mapFactory = new GameMapFactoryImpl();
     private final GameEngine engine = new GameEngineImpl();
     private final Set<GameView> views = new HashSet<>();
@@ -44,7 +46,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public List<String> getAvailableMaps() {
-        return List.of("grass","water","lava");
+        return List.of("grass", "water", "lava");
     }
 
     @Override
