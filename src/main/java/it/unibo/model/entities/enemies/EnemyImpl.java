@@ -94,6 +94,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 				e.printStackTrace();
 			}*/
             this.enemyState = EnemyState.FINISHED;
+            this.alive = false;
         } else {
             // Added only for debug purposes
             /*System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
