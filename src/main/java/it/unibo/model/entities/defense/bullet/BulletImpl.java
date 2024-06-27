@@ -1,6 +1,5 @@
 package it.unibo.model.entities.defense.bullet;
 
-import it.unibo.model.core.GameObserver;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.entities.enemies.Enemy;
@@ -8,9 +7,9 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * Implementation of {@link Bullet} as an {@link AbstractMovableEntity} managed with {@link GameObserver}.
+ * Implementation of {@link Bullet} as an {@link AbstractMovableEntity}.
  */
-public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObserver {
+public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     private final int damage;
     private final double speed;

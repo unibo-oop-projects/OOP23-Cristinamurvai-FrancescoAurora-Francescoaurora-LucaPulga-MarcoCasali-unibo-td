@@ -1,15 +1,15 @@
 package it.unibo.model.entities.defense.bullet;
 
-import it.unibo.model.core.GameState;
+import it.unibo.model.core.GameObserver;
 import it.unibo.model.entities.IMovableEntity;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.enemies.Enemy;
 
 /**
- * Represents the {@link Bullet} as a {@link IMovableEntity} fired from the defensive {@link Tower}'s {@link Weapon}.
+ * Represents the {@link Bullet} as a {@link IMovableEntity} managed with {@link GameObserver} fired from the defensive {@link Tower}'s {@link Weapon}.
  */
-public interface Bullet extends IMovableEntity {
+public interface Bullet extends IMovableEntity, GameObserver {
 
     /**
      * Represents the damage dealt to the target {@link Enemy}.
@@ -28,11 +28,6 @@ public interface Bullet extends IMovableEntity {
      * @return {@code True} if target enemy's position reached, otherwise {@code False}.
      */
     boolean hasReachedTarget();
-
-    /**
-     * Implement {@link Bullet}'s observer.
-     */
-    void update(GameState gameState);
 
     /**
      * Determines if {@link Bullet} is out of bound or not.
