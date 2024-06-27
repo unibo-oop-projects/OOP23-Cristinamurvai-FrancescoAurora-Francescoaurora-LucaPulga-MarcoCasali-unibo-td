@@ -1,6 +1,7 @@
 package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import it.unibo.model.map.GameMap;
@@ -64,7 +65,7 @@ public interface EnemiesManager {
     /* 
      * @return the damage and rewards caused by enemies that reached the end of the path.
      */
-    Set<Integer> getDamageAndRewardsFromFinishedEnemies();
+    List<Integer> getDamageAndRewardsFromFinishedEnemies();
 
     /* 
      * @return the number of different enemy types.

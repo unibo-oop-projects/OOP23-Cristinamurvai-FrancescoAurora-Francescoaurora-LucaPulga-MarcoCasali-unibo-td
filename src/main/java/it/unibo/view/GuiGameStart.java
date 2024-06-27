@@ -184,6 +184,9 @@ public class GuiGameStart extends JFrame implements GameView {
     @Override
     public void update(final GameState gameState) {
         iconLabelPanel.update(gameState);
+        if (gameState.isGameOver()) {
+            showGameOver(gameState.getRoundNumber());
+        }
         if (gameState.getLastRound()) {
             showGameWin(gameState.getRoundNumber());
         }
@@ -299,6 +302,55 @@ public class GuiGameStart extends JFrame implements GameView {
         final int heightButton = 25;
         panel.setLayout(null);
         String message = "<html>Congratulations! You have completed the game.<br>"
+                + "The number of rounds completed is: " + round + ".<br>"
+                + "Press \"Exit\" to leave the game.</html>";
+        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
+        panel.add(messageLabel);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
+        panel.add(exitButton);
+
+        exitButton.addActionListener((final ActionEvent e) -> {
+            dialog.dispose();
+            System.exit(0);
+        });
+    }
+
+    private static void showGameOver(final int round) {
+        final int widthDialog = 500;
+        final int heightDialog = 200;
+        JDialog gameOverDialog = new JDialog();
+        JPanel panel = new JPanel();
+
+        gameOverDialog.setTitle("Game Over");
+        gameOverDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        gameOverDialog.setSize(widthDialog, heightDialog);
+        gameOverDialog.setLocationRelativeTo(null);
+        gameOverDialog.add(panel);
+        placeGameOverComponents(panel, gameOverDialog, round);
+        gameOverDialog.setVisible(true);
+    }
+
+    /**
+     * Builds the JDialog for game over.
+     *
+     * @param panel panel to print on
+     * @param dialog JDialog to close
+     * @param round number of rounds played
+     */
+    private static void placeGameOverComponents(final JPanel panel, final JDialog dialog, final int round) {
+        final int alignmentXLabel = 50;
+        final int alignmentYLabel = 20;
+        final int widthLabel = 400;
+        final int heightLabel = 75;
+        final int alignmentXButton = 200;
+        final int alignmentYButton = 120;
+        final int widthButton = 100;
+        final int heightButton = 25;
+        panel.setLayout(null);
+        String message = "<html>Game Over!<br>"
                 + "The number of rounds completed is: " + round + ".<br>"
                 + "Press \"Exit\" to leave the game.</html>";
         JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
