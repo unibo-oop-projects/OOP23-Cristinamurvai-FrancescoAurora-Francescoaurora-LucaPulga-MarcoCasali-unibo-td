@@ -175,9 +175,9 @@ public class RoundManagerImpl {
     public String getTime() {
         synchronized (lock) {
             if (countdownThread != null && countdownThread.isAlive()) {
-                return " " + currentTime + " seconds";
+                return " -" + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
-                return "Sequential count: " + secondsToTimeFormat(currentTime);
+                return "" + secondsToTimeFormat(currentTime);
             } else if (round.getLastRound()) {
                 return "You win!";
             } else {
