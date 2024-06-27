@@ -10,12 +10,14 @@ public interface IMovableEntity extends IEntity {
 
     /**
      * Entity's direction.
+     *
      * @return Entity's direction.
      */
     Vector2D getDirection();
 
     /**
      * Modify Entity's direction.
+     *
      * @param direction2d
      */
     void setDirection(Vector2D direction2d);
@@ -24,8 +26,9 @@ public interface IMovableEntity extends IEntity {
 
     /**
      * Modify Entity's direction.
+     *
      * @param direction2d
      */
     void setPosition(Position2D position2d);
-    
+
 }

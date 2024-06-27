@@ -37,8 +37,8 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactory;
 import it.unibo.model.entities.defense.tower.view.TowerCardFactoryImpl;
 import it.unibo.model.map.GameMap;
-import it.unibo.view.defense.DefensePanel;
 import it.unibo.model.utilities.ScaledImage;
+import it.unibo.view.defense.DefensePanel;
 import it.unibo.view.enemies.EnemiesPanel;
 
 /**
@@ -136,10 +136,10 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(),mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
-        
+
         this.defensePanel = new DefensePanel(new HashSet<>(), new HashSet<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
         this.defensePanel.setOpaque(false);
         this.layeredPane.add(this.defensePanel);

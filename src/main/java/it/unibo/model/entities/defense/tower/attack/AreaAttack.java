@@ -1,13 +1,9 @@
 package it.unibo.model.entities.defense.tower.attack;
 
 import java.util.Optional;
-import java.util.Set;
 
-import it.unibo.model.entities.defense.bullet.Bullet;
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
-import it.unibo.model.utilities.Vector2D;
 
 /**
  * Implementation of area attack.
@@ -36,5 +32,5 @@ public class AreaAttack implements AttackStrategy {
         //     },
         //     () -> System.out.println(tower.getName() + "Nessun nemico nell'area")
         // );
-	}
+    }
 }

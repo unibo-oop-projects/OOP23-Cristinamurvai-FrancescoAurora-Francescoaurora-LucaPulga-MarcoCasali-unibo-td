@@ -1,4 +1,5 @@
 package it.unibo.view.defense;
+
 import javax.swing.*;
 
 import it.unibo.model.entities.defense.tower.Tower;
@@ -11,8 +12,8 @@ import java.lang.reflect.Field;
 public class TowerCardView extends JFrame {
 
     private Tower tower;
-    
-    public TowerCardView (Tower tower){
+
+    public TowerCardView(Tower tower) {
         this.tower = tower;
     }
 

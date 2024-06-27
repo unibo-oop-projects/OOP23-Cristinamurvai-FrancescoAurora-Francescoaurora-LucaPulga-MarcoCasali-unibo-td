@@ -1,10 +1,12 @@
 package it.unibo.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * Abstract implementation of a general abstract entity such as an enemy, a tower, a weapon or a bullet.
+ * Abstract implementation of a general abstract entity such as an enemy, a
+ * tower, a weapon or a bullet.
  */
 public abstract class AbstractEntity implements IEntity {
 
@@ -22,6 +24,7 @@ public abstract class AbstractEntity implements IEntity {
 
     /**
      * Costructor.
+     *
      * @param id
      * @param name
      * @param type
@@ -31,11 +34,12 @@ public abstract class AbstractEntity implements IEntity {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);
-        this.imgPath = Objects.requireNonNull(imgPath); 
+        this.imgPath = Objects.requireNonNull(imgPath);
     }
 
     /**
      * Entity id.
+     *
      * @return Entity id.
      */
     public int getId() {
@@ -44,6 +48,7 @@ public abstract class AbstractEntity implements IEntity {
 
     /**
      * Entity name.
+     *
      * @return Entity name.
      */
     public String getName() {
@@ -52,6 +57,7 @@ public abstract class AbstractEntity implements IEntity {
 
     /**
      * Entity type.
+     *
      * @return Entity type.
      */
     public String getType() {

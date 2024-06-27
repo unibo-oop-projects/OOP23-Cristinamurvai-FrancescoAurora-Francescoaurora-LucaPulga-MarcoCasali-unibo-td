@@ -6,6 +6,7 @@ import java.io.IOException;
  * Interface for a factory of {@link GameMap}s.
  */
 public interface GameMapFactory {
+
     /**
      * @param source JSON source string
      * @return A {@link GameMap} created from a JSON string
@@ -20,8 +21,7 @@ public interface GameMapFactory {
     GameMap fromJSONFile(String fileName) throws IOException;
 
     /**
-     * @param name The name of the {@link GameMap} as defined
-     * in the resources
+     * @param name The name of the {@link GameMap} as defined in the resources
      * @return A {@link GameMap} created from the available resources
      */
     GameMap fromName(String name);

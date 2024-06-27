@@ -10,14 +10,14 @@ public interface Bullet extends IMovableEntity {
 
     /**
      * Represents the damage dealt to the target enemy.
-     * 
+     *
      * @return the damage dealt to the target enemy.
      */
     int getDamage();
 
     /**
      * Represents the speed bullet.
-     * 
+     *
      * @return the speed bullet.
      */
     double getSpeed();

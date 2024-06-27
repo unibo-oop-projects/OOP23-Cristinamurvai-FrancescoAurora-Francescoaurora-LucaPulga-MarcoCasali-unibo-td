@@ -8,5 +8,5 @@ public interface EnemiesConfigFactory {
 
     HashMap<Integer, EnemyConfig> fromJSON(final String jsonString);
 
-    HashMap<Integer, EnemyConfig> getEnemiesConfig();    
+    HashMap<Integer, EnemyConfig> getEnemiesConfig();
 }

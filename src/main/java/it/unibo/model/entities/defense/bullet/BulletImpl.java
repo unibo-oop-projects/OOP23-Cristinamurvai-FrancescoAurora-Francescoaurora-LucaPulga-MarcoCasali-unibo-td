@@ -21,6 +21,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
 
     /**
      * Constructor.
+     *
      * @param id
      * @param name
      * @param type
@@ -33,15 +34,15 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
      */
     @JsonCreator
     public BulletImpl(
-                @JsonProperty("id") final int id, 
-                @JsonProperty("name")final String name, 
-                @JsonProperty("type")final String type, 
-                @JsonProperty("imgPath")final String imgPath, 
-                @JsonProperty("initialPosition")final Position2D initialPosition, 
-                @JsonProperty("direction2d")final Vector2D direction2d, 
-                @JsonProperty("speed")final double speed, 
-                @JsonProperty("damage")final int damage, 
-                final Enemy enemy) {
+            @JsonProperty("id") final int id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("type") final String type,
+            @JsonProperty("imgPath") final String imgPath,
+            @JsonProperty("initialPosition") final Position2D initialPosition,
+            @JsonProperty("direction2d") final Vector2D direction2d,
+            @JsonProperty("speed") final double speed,
+            @JsonProperty("damage") final int damage,
+            final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
@@ -49,7 +50,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
     }
 
     /**
-     * 
+     *
      * @return
      */
     public boolean hasReachedTarget() {
@@ -60,29 +61,23 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
     //     while (!hasReachedTarget()) {
     //         // Calcola la direzione per inseguire il nemico.
     //         Vector2D directionVector = calculateDirection(this.position2d, targetEnemy.getPosition());
-
     //         // Moltiplica il vettore direzione per la velocità per ottenere la spostamento
     //         Vector2D movementVector = directionVector.multiply(speed);
-
     //         // Aggiorna la posizione della Bullet
     //         this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
     //         + (int) movementVector.y());
     //     }
-
     //     // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
     //     this.targetEnemy.getDamage(damage);
     // }
-
     // Metodo per calcolare la direzione per inseguire il nemico.
     // private double calculateDirection(Position2D currentPosition, Position2D targetPosition) {
     //     // Calcola la differenza tra le coordinate x e y della posizione attuale e del nemico.
     //     int deltaX = targetPosition.x() - currentPosition.x();
     //     int deltaY = targetPosition.y() - currentPosition.y();
-
     //     // Calcola l'angolo in radianti tra l'asse x positivo e la direzione del nemico.
     //     return Math.atan2(deltaY, deltaX);
     // }
-
     public void update(GameState gameState) {
         // Move bullet towards target
         this.position2d = this.position2d.add(this.direction2d.scale(this.speed));

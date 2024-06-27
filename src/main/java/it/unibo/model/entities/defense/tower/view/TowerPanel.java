@@ -1,16 +1,16 @@
 package it.unibo.model.entities.defense.tower.view;
 
-import it.unibo.model.entities.defense.tower.Tower;
-
-import java.util.Set;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
-import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
+import it.unibo.model.entities.defense.tower.Tower;
 
 /**
  * TowerPanel.
@@ -19,6 +19,7 @@ public class TowerPanel extends JPanel {
 
     /**
      * Constractor.
+     *
      * @param towers
      */
     public TowerPanel(final Set<Tower> towers) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.unibo.model.entities.AbstractEntity;
+
 /**
  * Weapon implementation.
  */
@@ -13,11 +14,11 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
     private long lastShotTime; // Tempo dell'ultimo sparo.
 
     @JsonCreator
-    public WeaponImpl(@JsonProperty("id")final int id, 
-                      @JsonProperty("name")final String name, 
-                      @JsonProperty("type")final String type, 
-                      @JsonProperty("imgPath")final String imgPath, 
-                      @JsonProperty("frequency")final int frequency) {
+    public WeaponImpl(@JsonProperty("id") final int id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("type") final String type,
+            @JsonProperty("imgPath") final String imgPath,
+            @JsonProperty("frequency") final int frequency) {
         super(id, name, type, imgPath);
         this.frequency = frequency;
         this.lastShotTime = 0;
@@ -25,8 +26,9 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
 
     /**
      * Weapoon hit frequnecy.
-     * @return weapoon hit frequnecy. 
-    */
+     *
+     * @return weapoon hit frequnecy.
+     */
     @Override
     public int getFrequency() {
         return this.frequency;

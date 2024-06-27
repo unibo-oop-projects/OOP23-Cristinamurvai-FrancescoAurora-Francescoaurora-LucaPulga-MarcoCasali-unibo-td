@@ -6,6 +6,7 @@ import java.io.IOException;
  * Interface for a factory of {@link Tile}s.
  */
 public interface TileFactory {
+
     /**
      * @param fileName The file name
      * @return A {@link Tile} created from a JSON file

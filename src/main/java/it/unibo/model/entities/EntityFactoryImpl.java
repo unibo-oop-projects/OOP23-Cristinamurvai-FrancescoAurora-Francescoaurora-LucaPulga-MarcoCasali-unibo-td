@@ -23,13 +23,15 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  * Entity factory template.
  */
 public class EntityFactoryImpl implements EntityFactory {
+
     private static final String JSON_EXTENSION = ".json";
     private static final String TOWERS_RESOURCES = "towers/json/";
 
     /**
      * Base constructor.
      */
-    public EntityFactoryImpl() { }
+    public EntityFactoryImpl() {
+    }
 
     @Override
     public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
@@ -74,19 +76,19 @@ public class EntityFactoryImpl implements EntityFactory {
 
         try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource(TOWERS_RESOURCES).toURI()))) {
             return paths
-                .filter(Files::isRegularFile)
-                .filter(path -> path.toString().endsWith(JSON_EXTENSION))
-                .map(path -> {
-                    try {
-                        String jsonString = new String(Files.readAllBytes(path));
-                        return objectMapper.readValue(jsonString, BasicTower.class);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                })
-                .filter(tower -> tower != null)
-                .collect(Collectors.toSet());
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(JSON_EXTENSION))
+                    .map(path -> {
+                        try {
+                            String jsonString = new String(Files.readAllBytes(path));
+                            return objectMapper.readValue(jsonString, BasicTower.class);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .filter(tower -> tower != null)
+                    .collect(Collectors.toSet());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,7 +97,7 @@ public class EntityFactoryImpl implements EntityFactory {
 
     private String readFileFromResources(final String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath)))) {
             return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
             e.printStackTrace();

@@ -7,7 +7,6 @@ import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
 
-
 // Implementazione di selezione del bersaglio basata sulla distanza
 public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
 

@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.json.JSONObject;
+
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 
@@ -14,6 +16,7 @@ import it.unibo.model.utilities.Position2D;
  * Implementation of a {@link TileFactory}.
  */
 public class TileFactoryImpl implements TileFactory {
+
     private static final String JSON_EXTENSION = ".json";
     private static final String TILE_RESOURCES = "tiles/";
     private static final String JSON_SPRITE_KEY = "sprite";
@@ -26,7 +29,7 @@ public class TileFactoryImpl implements TileFactory {
     public Tile fromJSONFile(final String file) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,8 +50,8 @@ public class TileFactoryImpl implements TileFactory {
         final String sprite = TILE_RESOURCES + source.getString(JSON_SPRITE_KEY);
         //features
         final Set<TileFeature> features = source.optJSONArray(JSON_FEATURES_KEY) == null
-        ? Set.of() : source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
-        .map(Object::toString).map(TileFeature::valueOf).collect(Collectors.toSet());
+                ? Set.of() : source.optJSONArray(JSON_FEATURES_KEY).toList().stream()
+                .map(Object::toString).map(TileFeature::valueOf).collect(Collectors.toSet());
 
         return generic(sprite, features);
     }

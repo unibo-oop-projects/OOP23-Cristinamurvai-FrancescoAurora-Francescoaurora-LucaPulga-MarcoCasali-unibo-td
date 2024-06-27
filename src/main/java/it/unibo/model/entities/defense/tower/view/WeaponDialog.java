@@ -1,8 +1,5 @@
 package it.unibo.model.entities.defense.tower.view;
 
-import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.defense.weapon.Weapon;
-
 import java.awt.BorderLayout;
 import java.util.Set;
 
@@ -14,18 +11,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.weapon.Weapon;
+
 /**
  * WeaponDialog.
  */
 public class WeaponDialog extends JDialog {
+
     /**
      * Constractor.
+     *
      * @param parent
      * @param tower
      */
     public WeaponDialog(final JFrame parent, final Tower tower) {
         super(parent, "Weapons for " + tower.getName(), true);
-        
+
         setLocationRelativeTo(parent);
 
         JPanel weaponPanel = new JPanel();

@@ -6,16 +6,19 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * Abstract implementation of an abstract entity but movable such as an enemy, a tower or a bullet.
+ * Abstract implementation of an abstract entity but movable such as an enemy, a
+ * tower or a bullet.
  */
 public abstract class AbstractMovableEntity extends AbstractEntity implements IMovableEntity {
+
     @JsonProperty("direction2d")
-    protected Vector2D direction2d; 
+    protected Vector2D direction2d;
     @JsonProperty("position2d")
     protected Position2D position2d;
-    
+
     /**
      * Construcotr.
+     *
      * @param id
      * @param name
      * @param type
@@ -31,14 +34,16 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements IM
 
     /**
      * Entity's direction.
+     *
      * @return Entity's direction.
-     */ 
+     */
     public Vector2D getDirection() {
         return this.direction2d;
     }
 
     /**
      * Modify Entity's direction.
+     *
      * @param direction2d
      */
     public void setDirection(final Vector2D direction2d) {
@@ -51,6 +56,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements IM
 
     /**
      * Modify Entity's direction.
+     *
      * @param direction2d
      */
     public void setPosition(final Position2D position2d) {

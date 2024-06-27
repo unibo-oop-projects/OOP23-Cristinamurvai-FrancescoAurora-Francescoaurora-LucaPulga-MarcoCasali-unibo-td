@@ -14,11 +14,12 @@ import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import it.unibo.view.defense.WeaponCardView;
 
-public class WeaponCardView extends JFrame{
+public class WeaponCardView extends JFrame {
+
     private String towerName;
     private Set<Weapon> weapons;
 
-    public WeaponCardView(String towerName, Set<Weapon> weapons){
+    public WeaponCardView(String towerName, Set<Weapon> weapons) {
         this.towerName = towerName;
         this.weapons = weapons;
     }

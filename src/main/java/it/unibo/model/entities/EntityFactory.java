@@ -1,11 +1,11 @@
 package it.unibo.model.entities;
 
 import java.io.IOException;
+import java.util.Set;
 
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
-import java.util.Set;
 
 /**
  * Entity factory method.

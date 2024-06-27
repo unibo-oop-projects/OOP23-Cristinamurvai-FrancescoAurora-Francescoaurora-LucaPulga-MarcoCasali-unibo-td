@@ -11,6 +11,7 @@ import it.unibo.model.utilities.Vector2D;
  * Represents a grid of {@link Tile}s with a fixed path.
  */
 public interface GameMap {
+
     /**
      * @return the number of rows in the grid
      */

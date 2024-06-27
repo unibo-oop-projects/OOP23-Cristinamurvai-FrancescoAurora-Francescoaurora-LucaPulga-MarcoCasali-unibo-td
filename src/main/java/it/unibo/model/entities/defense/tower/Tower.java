@@ -12,22 +12,26 @@ import it.unibo.model.entities.enemies.Enemy;
 
 /**
  * Represents the tower entity.
-*/
+ */
 public interface Tower extends IMovableEntity {
+
     /**
      * Represents the level of the tower.
+     *
      * @return the level of the tower.
      */
     int getLevel();
 
     /**
      * Represents the attackable range from the tower.
+     *
      * @return the attackable range from the tower.
      */
     double getRange();
 
     /**
      * Represents the associated weapons.
+     *
      * @return the the associated weapons.
      */
     Set<Weapon> getWeapons();
@@ -36,14 +40,15 @@ public interface Tower extends IMovableEntity {
 
     /**
      * Current weapon.
+     *
      * @return Current weapon.
      */
     Weapon getCurrentWeapon();
 
     // Set<Bullet> getBullets();
-
     /**
      * Tower's cost.
+     *
      * @return tower's cost.
      */
     int getCost();

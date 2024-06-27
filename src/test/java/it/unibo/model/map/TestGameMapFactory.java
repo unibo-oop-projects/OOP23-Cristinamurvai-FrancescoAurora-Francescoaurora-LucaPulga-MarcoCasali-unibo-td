@@ -1,13 +1,15 @@
 package it.unibo.model.map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link GameMapFactory}.
  */
 public class TestGameMapFactory {
+
     private static final String TEST_MAP = "test";
     private static final int TEST_MAP_ROWS = 20;
     private static final int TEST_MAP_COLUMNS = 20;

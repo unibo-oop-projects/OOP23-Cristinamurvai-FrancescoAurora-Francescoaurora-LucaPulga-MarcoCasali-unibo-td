@@ -9,5 +9,6 @@ import it.unibo.model.entities.enemies.Enemy;
  * Interface for attacks.
  */
 public interface AttackStrategy {
+
     void attack(Tower tower, Optional<Enemy> enemy);
 }

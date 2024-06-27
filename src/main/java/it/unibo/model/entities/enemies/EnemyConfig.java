@@ -1,7 +1,7 @@
 package it.unibo.model.entities.enemies;
 
 public interface EnemyConfig {
-    
+
     String getEnemyName();
 
     String getEnemyType();
@@ -13,4 +13,4 @@ public interface EnemyConfig {
     int getReward();
 
     int getQuantity();
-} 
+}

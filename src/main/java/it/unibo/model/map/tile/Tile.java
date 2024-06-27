@@ -1,13 +1,16 @@
 package it.unibo.model.map.tile;
 
 import java.util.Set;
+
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
 
 /**
- * Represents a square 2-dimensional tile that forms the {@link it.unibo.model.map.GameMap GameMap}.
+ * Represents a square 2-dimensional tile that forms the
+ * {@link it.unibo.model.map.GameMap GameMap}.
  */
 public interface Tile {
+
     /**
      * @return The set of {@link TileFeature}
      */
@@ -19,13 +22,14 @@ public interface Tile {
     String getSprite();
 
     /**
-     * @return {@code true} if the {@link Tile} is empty and allows
-     * buildings, {@code false} otherwise
+     * @return {@code true} if the {@link Tile} is empty and allows buildings,
+     * {@code false} otherwise
      */
     boolean canBuild();
 
     /**
      * Occupies the current {@link Tile} with a {@link Tower}.
+     *
      * @param tower The {@link Tower} to build
      */
     void buildTower(Tower tower);
@@ -36,7 +40,7 @@ public interface Tile {
     void destroyTower();
 
     /**
-     * @return tile's position. 
+     * @return tile's position.
      */
     Position2D getPosition();
 

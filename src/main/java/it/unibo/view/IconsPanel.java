@@ -54,6 +54,7 @@ public class IconsPanel extends JPanel {
     }
 
     private static class IconLabelPanel extends JPanel {
+
         private final JLabel iconLabel;
         private final JLabel textLabel;
 

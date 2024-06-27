@@ -31,6 +31,7 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
     /**
      * Constructor.
+     *
      * @param towerClass
      */
     public TowerDeserializer(final Class<T> towerClass) {
@@ -53,7 +54,8 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         int cost = node.get("cost").asInt();
         int level = node.get("level").asInt();
         int range = node.get("range").asInt();
-        Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), new TypeReference<Set<WeaponImpl>>() { });
+        Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), new TypeReference<Set<WeaponImpl>>() {
+        });
         Weapon currentWeapon = mapper.treeToValue(node.get("currentWeapon"), WeaponImpl.class);
 
         String attackStrategyName = node.get("attackStrategy").asText();
@@ -71,12 +73,12 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         if (targetSelectionStrategyName.equals("DistanceBasedTargetSelection")) {
             targetSelectionStrategy = new DistanceBasedTargetSelection();
         } else {
-            targetSelectionStrategy = new DistanceBasedTargetSelection(); 
+            targetSelectionStrategy = new DistanceBasedTargetSelection();
         }
 
         if (towerClass.equals(BasicTower.class)) {
             Tower tower = new BasicTower(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons,
-                             currentWeapon, attackStrategy, targetSelectionStrategy);
+                    currentWeapon, attackStrategy, targetSelectionStrategy);
             return (T) tower;
         }
         return null;

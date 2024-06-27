@@ -1,8 +1,8 @@
 package it.unibo.model.entities.defense.tower;
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,20 +21,20 @@ public class BasicTower extends AbstractTower {
     private Set<Bullet> bullets = new HashSet<>();
 
     @JsonCreator
-    public BasicTower(@JsonProperty("id") final int id, 
-                      @JsonProperty("name") final String name, 
-                      @JsonProperty("type") final String type, 
-                      @JsonProperty("imgPath") final String imgPath,
-                      @JsonProperty("position2d") final Position2D position2d, 
-                      @JsonProperty("direction2d") final Vector2D direction2d, 
-                      @JsonProperty("cost") final int cost, 
-                      @JsonProperty("level") final int level, 
-                      @JsonProperty("range") final int range, 
-                      @JsonProperty("weapons") final Set<WeaponImpl> weapons, 
-                      @JsonProperty("currentWeapon") final Weapon currentWeapon,
-                      @JsonProperty("attackStrategy") final AttackStrategy attackStrategy,
-                      @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy) {
-        super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon, 
+    public BasicTower(@JsonProperty("id") final int id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("type") final String type,
+            @JsonProperty("imgPath") final String imgPath,
+            @JsonProperty("position2d") final Position2D position2d,
+            @JsonProperty("direction2d") final Vector2D direction2d,
+            @JsonProperty("cost") final int cost,
+            @JsonProperty("level") final int level,
+            @JsonProperty("range") final int range,
+            @JsonProperty("weapons") final Set<WeaponImpl> weapons,
+            @JsonProperty("currentWeapon") final Weapon currentWeapon,
+            @JsonProperty("attackStrategy") final AttackStrategy attackStrategy,
+            @JsonProperty("targetSelectionStrategy") final TargetSelectionStrategy targetSelectionStrategy) {
+        super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon,
                 attackStrategy, targetSelectionStrategy);
         this.bullets = new HashSet<>();
     }
@@ -54,12 +54,13 @@ public class BasicTower extends AbstractTower {
         }
         updateBullets();
     }
-    
+
     private void updateBullets() {
-        this.bullets.forEach(b->b.update(null));
+        this.bullets.forEach(b -> b.update(null));
         // Remove bullets that have hit their targets or gone out of bounds
         bullets.removeIf(bullet -> bullet.hasReachedTarget() || bullet.isOutOfBounds());
     }
+
     @Override
     public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;

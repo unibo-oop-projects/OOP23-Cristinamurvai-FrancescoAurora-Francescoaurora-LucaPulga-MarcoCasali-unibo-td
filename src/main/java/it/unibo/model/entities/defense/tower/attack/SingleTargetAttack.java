@@ -6,8 +6,8 @@ import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.enemies.Enemy;
-import it.unibo.model.utilities.Vector2D;
 import it.unibo.model.utilities.Position2D;
+import it.unibo.model.utilities.Vector2D;
 
 /**
  * Implementation of single target attack.
@@ -26,7 +26,7 @@ public class SingleTargetAttack implements AttackStrategy {
                 System.out.println(tower.getName() + " attacco a " + e.getName());
                 Vector2D direction = calculateDirection(tower.getPosition(), e.getPosition());
                 Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.1, 1, e);
-                
+
                 tower.getBullets().add(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);
             }
