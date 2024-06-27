@@ -2,6 +2,7 @@ package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,17 +61,25 @@ public class EnemiesManagerImpl implements EnemiesManager {
     }
 
     @Override
-    public Set<Integer> getDamageAndRewardsFromFinishedEnemies() {
+    public List<Integer> getDamageAndRewardsFromFinishedEnemies() {
         int damage = 0;
         int rewards = 0;
         for (Enemy enemy : enemies) {
-            if (enemy.getState().equals(EnemyState.FINISHED)) {
-                damage += enemy.getDamage(0);
+            if (enemy.getState().equals(EnemyState.DEAD)) {
                 rewards += enemy.getReward();
                 enemy.deactivate();
             }
+            if (enemy.getState().equals(EnemyState.FINISHED)) {
+                damage += enemy.getDamage(0);
+                enemy.deactivate();
+            }
         }
-        Set<Integer> damageAndRewards = new HashSet<>();
+        for (int i = enemies.size() - 1; i >= 0; i--) {
+            if (enemies.get(i).getState().equals(EnemyState.FINISHED)) {
+                enemies.remove(i);
+            }
+        }
+        List<Integer> damageAndRewards = new ArrayList<>();
         damageAndRewards.add(damage);
         damageAndRewards.add(rewards);
         return damageAndRewards;

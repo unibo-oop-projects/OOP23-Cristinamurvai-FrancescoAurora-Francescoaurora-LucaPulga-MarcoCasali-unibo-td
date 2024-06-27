@@ -1,6 +1,7 @@
 package it.unibo.model.core;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import it.unibo.model.entities.defense.bullet.Bullet;
@@ -88,6 +89,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 this.enemiesManager.updateEnemiesDirections(start);
                 this.updateGameState();
                 this.updateObservers();
+                this.setDamageAndRewards();
                 if (this.gameState.getLastRound() == true) {
                     return;
                 }
@@ -116,7 +118,11 @@ public class GameEngineImpl implements GameEngine, Runnable {
 
             @Override
             public int getLives() {
-                return player.getRemainingLives();
+                int tmp = player.getRemainingLives();
+                if (tmp <= 0) {
+                    isGameOver = true;
+                }
+                return tmp;
             }
 
             @Override
@@ -160,6 +166,12 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 return defenseManager.getBullets();
             }
         };
+    }
+
+    private void setDamageAndRewards() {
+        List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
+        player.setMoney(damageAndRewards.get(1));
+        player.loseLives(damageAndRewards.get(0));
     }
 
     private void updateObservers() {
