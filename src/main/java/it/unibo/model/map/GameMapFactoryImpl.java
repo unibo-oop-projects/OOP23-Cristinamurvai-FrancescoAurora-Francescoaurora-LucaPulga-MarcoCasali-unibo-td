@@ -3,9 +3,13 @@ package it.unibo.model.map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,14 +20,12 @@ import it.unibo.model.map.tile.TileFactoryImpl;
 import it.unibo.model.map.tile.TileFeature;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Implementation of {@link GameMapFactory}.
  */
 public class GameMapFactoryImpl implements GameMapFactory {
+
     private static final String JSON_EXTENSION = ".json";
     private static final String MAP_RESOURCES = "maps/";
     private static final String JSON_ROWS_KEY = "rows";
@@ -53,11 +55,11 @@ public class GameMapFactoryImpl implements GameMapFactory {
         }
 
         /**
-         * Filling unspecified tiles with neutral tiles to make
-         * json file simpler.
-        */
+         * Filling unspecified tiles with neutral tiles to make json file
+         * simpler.
+         */
         for (int i = 0; i < rows * columns; i++) {
-            if(!tiles.containsKey(i)) {
+            if (!tiles.containsKey(i)) {
                 tiles.put(i, tileFactory.fromName(json.getString(JSON_FILLER_KEY)));
             }
         }
@@ -72,7 +74,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
     public GameMap fromJSONFile(final String fileName) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,7 +112,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
             @Override
             public Stream<Tile> getTiles() {
                 return this.tiles.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                    .map(Map.Entry::getValue);
+                        .map(Map.Entry::getValue);
             }
 
             @Override
@@ -121,15 +123,15 @@ public class GameMapFactoryImpl implements GameMapFactory {
             @Override
             public Position2D getSpawnPosition() {
                 return Position2D.IntToPos2D(this.tiles.entrySet().stream()
-                    .filter(entry -> entry.getValue().getTileFeatures()
-                    .contains(TileFeature.PATH_START)).findFirst().get().getKey(), this.columns);
+                        .filter(entry -> entry.getValue().getTileFeatures()
+                        .contains(TileFeature.PATH_START)).findFirst().get().getKey(), this.columns);
             }
 
             @Override
             public Position2D getPathEndPosition() {
                 return Position2D.IntToPos2D(this.tiles.entrySet().stream()
-                    .filter(entry -> entry.getValue().getTileFeatures()
-                    .contains(TileFeature.PATH_END)).findFirst().get().getKey(), this.columns);
+                        .filter(entry -> entry.getValue().getTileFeatures()
+                        .contains(TileFeature.PATH_END)).findFirst().get().getKey(), this.columns);
             }
 
             @Override
@@ -161,22 +163,21 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final JSONArray posArray = json.getJSONArray(JSON_TILE_POSITIONS_KEY);
 
         /**
-         * Supports a singular tile x, a horizontal range x-y
-         * or a vertical range x/y.
+         * Supports a singular tile x, a horizontal range x-y or a vertical
+         * range x/y.
          */
         for (int i = 0; i < posArray.length(); i++) {
             String tmp = posArray.getString(i);
             if (tmp.contains(RANGE_SEPARATOR)) {
                 IntStream.rangeClosed(Integer.parseInt(tmp.split(RANGE_SEPARATOR)[0]),
-                    Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
-                    .forEach(e -> createTile(e, tileName, map));
-            } else if(tmp.contains(COLUMN_SEPARATOR)) {
+                        Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
+                        .forEach(e -> createTile(e, tileName, map));
+            } else if (tmp.contains(COLUMN_SEPARATOR)) {
                 IntStream
-                    .iterate(Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[0]), n -> n + columns)
-                    .takeWhile(n -> n <= Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[1]))
-                    .forEach(e -> createTile(e, tileName, map));
-            }
-            else {
+                        .iterate(Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[0]), n -> n + columns)
+                        .takeWhile(n -> n <= Integer.parseInt(tmp.split(COLUMN_SEPARATOR)[1]))
+                        .forEach(e -> createTile(e, tileName, map));
+            } else {
                 this.createTile(posArray.getInt(i), tileName, map);
             }
         }
