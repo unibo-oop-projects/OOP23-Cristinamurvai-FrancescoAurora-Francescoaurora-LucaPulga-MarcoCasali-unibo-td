@@ -21,15 +21,15 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
     /**
      * BulletImpl Constructor.
      *
-     * @param id {@Bullet's id}.
-     * @param name {@Bullet's name}.
-     * @param type {@Bullet's type}.
-     * @param imgPath {@Bullet's image path}.
-     * @param initialPosition {@Bullet's initial position}.
-     * @param direction2d {@Bullet's current direction}.
-     * @param speed {@Bullet's speed}.
-     * @param damage {@Bullet's damage}.
-     * @param enemy {@Bullet's targetted enemy}.
+     * {@link Bullet}'s @param id.
+     * {@link Bullet}'s @param name.
+     * {@link Bullet}'s @param type.
+     * {@link Bullet}'s @param imgPath.
+     * {@link Bullet}'s @param initialPosition.
+     * {@link Bullet}'s @param direction2d.
+     * {@link Bullet}'s @param speed.
+     * {@link Bullet}'s @param damage.
+     * {@link Bullet}'s @param enemy.
      */
     public BulletImpl(
                     final int id,
@@ -58,6 +58,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     /**
      * Implement {@link Bullet}'s observer.
+     * @param gameState current gameState.
      */
     @Override
     public void update(final GameState gameState) {

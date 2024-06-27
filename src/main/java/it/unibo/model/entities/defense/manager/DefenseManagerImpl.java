@@ -24,7 +24,7 @@ public class DefenseManagerImpl implements DefenseManager {
     private Optional<GameMap> map;
 
     /**
-     * Costructor.
+     * Base Costructor.
      */
     public DefenseManagerImpl() { }
 
@@ -74,7 +74,7 @@ public class DefenseManagerImpl implements DefenseManager {
 
     /**
      * Set the actual map.
-     * @param gameMap.
+     * @param gameMap actual map.
      */
     @Override
     public void setMap(final GameMap gameMap) {

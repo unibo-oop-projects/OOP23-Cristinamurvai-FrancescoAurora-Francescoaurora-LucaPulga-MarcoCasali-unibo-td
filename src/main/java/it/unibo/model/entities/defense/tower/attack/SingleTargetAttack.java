@@ -14,6 +14,10 @@ import it.unibo.model.utilities.Vector2D;
  */
 public class SingleTargetAttack implements AttackStrategy {
 
+    private final int SLOW_FREQ = 5000;
+    private final double BULLET_SPEED = 0.15;
+    private final int BULLET_DAMAGE = 5000;
+
     /**
      * {@link Tower}'s attack method to attack target {@link Enemy}.
      * Attacking @param tower.
@@ -25,12 +29,12 @@ public class SingleTargetAttack implements AttackStrategy {
             long lastShotTime = tower.getCurrentWeapon().getLastShotTime();
             long currentTime = System.currentTimeMillis();
             long timeSinceLastShot = currentTime - lastShotTime;
-            long fireRateInMilliseconds = (long) (5000 / tower.getCurrentWeapon().getFrequency());
+            long fireRateInMilliseconds = (long) (SLOW_FREQ / tower.getCurrentWeapon().getFrequency());
 
             if (timeSinceLastShot >= fireRateInMilliseconds) {
                 System.out.println(tower.getName() + " attacco a " + e.getName());
                 Vector2D direction = Vector2D.calculateDirection(tower.getPosition(), e.getPosition());
-                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, 0.15, 5, e);
+                Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(), direction, BULLET_SPEED, BULLET_DAMAGE, e);
 
                 tower.getBullets().add(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);
