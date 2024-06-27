@@ -1,8 +1,5 @@
 package it.unibo.model.entities.defense.bullet;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import it.unibo.model.core.GameObserver;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.AbstractMovableEntity;
@@ -11,38 +8,40 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * .
+ * Implementation of {@link Bullet} as an {@link AbstractMovableEntity} managed with {@link GameObserver}.
  */
 public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObserver {
 
-    private int damage;
-    private double speed;
-    private Enemy targetEnemy;
+    private final int damage;
+    private final double speed;
+    private final Enemy targetEnemy;
+    private final int MAP_MIN = 0;
+    private final int MAP_MAX = 100;
+    private final int BULLET_DISTANCE_TOLLERANCE = 1;
 
     /**
-     * Constructor.
+     * BulletImpl Constructor.
      *
-     * @param id
-     * @param name
-     * @param type
-     * @param imgPath
-     * @param initialPosition
-     * @param direction2d
-     * @param speed
-     * @param damage
-     * @param enemy
+     * @param id {@Bullet's id}.
+     * @param name {@Bullet's name}.
+     * @param type {@Bullet's type}.
+     * @param imgPath {@Bullet's image path}.
+     * @param initialPosition {@Bullet's initial position}.
+     * @param direction2d {@Bullet's current direction}.
+     * @param speed {@Bullet's speed}.
+     * @param damage {@Bullet's damage}.
+     * @param enemy {@Bullet's targetted enemy}.
      */
-    @JsonCreator
     public BulletImpl(
-            @JsonProperty("id") final int id,
-            @JsonProperty("name") final String name,
-            @JsonProperty("type") final String type,
-            @JsonProperty("imgPath") final String imgPath,
-            @JsonProperty("initialPosition") final Position2D initialPosition,
-            @JsonProperty("direction2d") final Vector2D direction2d,
-            @JsonProperty("speed") final double speed,
-            @JsonProperty("damage") final int damage,
-            final Enemy enemy) {
+                    final int id,
+                    final String name,
+                    final String type,
+                    final String imgPath,
+                    final Position2D initialPosition,
+                    final Vector2D direction2d,
+                    final double speed,
+                    final int damage,
+                    final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
@@ -50,56 +49,53 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet, GameObs
     }
 
     /**
-     *
-     * @return
+     * Determines whether the {@link Bullet} has reached the position of the target {@link Enemy}.
+     * @return {@code True} if target enemy's position reached, otherwise {@code False}.
      */
+    @Override
     public boolean hasReachedTarget() {
-        return this.position2d.equals(targetEnemy.getPosition()) && targetEnemy.isAlive();
+        return this.position2d.distanceTo(targetEnemy.getPosition()) < BULLET_DISTANCE_TOLLERANCE && targetEnemy.isAlive();
     }
 
-    // public void update(GameState gameState) {
-    //     while (!hasReachedTarget()) {
-    //         // Calcola la direzione per inseguire il nemico.
-    //         Vector2D directionVector = calculateDirection(this.position2d, targetEnemy.getPosition());
-    //         // Moltiplica il vettore direzione per la velocità per ottenere la spostamento
-    //         Vector2D movementVector = directionVector.multiply(speed);
-    //         // Aggiorna la posizione della Bullet
-    //         this.position2d = new Position2D(this.position2d.x() + (int) movementVector.x(), this.position2d.y() 
-    //         + (int) movementVector.y());
-    //     }
-    //     // Quando il Bullet raggiunge il nemico, infliggi danni al nemico.
-    //     this.targetEnemy.getDamage(damage);
-    // }
-    // Metodo per calcolare la direzione per inseguire il nemico.
-    // private double calculateDirection(Position2D currentPosition, Position2D targetPosition) {
-    //     // Calcola la differenza tra le coordinate x e y della posizione attuale e del nemico.
-    //     int deltaX = targetPosition.x() - currentPosition.x();
-    //     int deltaY = targetPosition.y() - currentPosition.y();
-    //     // Calcola l'angolo in radianti tra l'asse x positivo e la direzione del nemico.
-    //     return Math.atan2(deltaY, deltaX);
-    // }
-    public void update(GameState gameState) {
-        // Move bullet towards target
+    /**
+     * Implement {@link Bullet}'s observer.
+     */
+    @Override
+    public void update(final GameState gameState) {
+        // Move bullet towards the target enemy updating its position.
         this.position2d = this.position2d.add(this.direction2d.scale(this.speed));
 
-        // Check if bullet has hit the target
-        if (this.position2d.distanceTo(targetEnemy.getPosition()) < 1 || hasReachedTarget()) {
+        // Check if bullet has hit the target enemy.
+        if (hasReachedTarget()) {
             this.targetEnemy.getDamage(this.damage);
+            System.out.println("this.targetEnemy.getLP()): " + this.targetEnemy.getLP());
         }
     }
 
+    /**
+     * Represents the damage dealt to the target {@link Enemy}.
+     * @return the damage dealt to the target {@link Enemy}.
+     */
     @Override
     public int getDamage() {
         return this.damage;
     }
 
+    /**
+     * Represents the speed {@link Bullet}.
+     * @return the speed {@link Bullet}.
+     */
     @Override
     public double getSpeed() {
         return this.speed;
     }
 
+    /**
+     * Determines if {@link Bullet} is out of bound or not.
+     * @return {@code True} if {@link Bullet} is out of bound, otherwise {@code False}.
+     */
     @Override
     public boolean isOutOfBounds() {
-        return this.position2d.x() < 0 || this.position2d.x() > 100 || this.position2d.y() < 0 || this.position2d.y() > 100;
+        return this.position2d.x() < MAP_MIN || this.position2d.x() > MAP_MAX || this.position2d.y() < MAP_MIN || this.position2d.y() > MAP_MAX;
     }
 }

@@ -58,7 +58,7 @@ public class BasicTower extends AbstractTower {
     private void updateBullets() {
         this.bullets.forEach(b -> b.update(null));
         // Remove bullets that have hit their targets or gone out of bounds
-        bullets.removeIf(bullet -> bullet.hasReachedTarget() || bullet.isOutOfBounds());
+        bullets.removeIf(bullet -> (bullet.hasReachedTarget() || bullet.isOutOfBounds()));
     }
 
     @Override
