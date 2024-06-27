@@ -115,7 +115,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
             }
             //System.out.println("Pos:" + enemy.getPosition().x() + "," + enemy.getPosition().y());
             //System.out.println("Dir:" + this.gameMap.get().getPathDirection(enemy.getPosition()).x() + "," + this.gameMap.get().getPathDirection(enemy.getPosition()).y());
-            if (!(enemy.getPosition().x() == this.gameMap.get().getPathEndPosition().x() && enemy.getPosition().y() == this.gameMap.get().getPathEndPosition().y())) {
+            if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
                 enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
             }
         }

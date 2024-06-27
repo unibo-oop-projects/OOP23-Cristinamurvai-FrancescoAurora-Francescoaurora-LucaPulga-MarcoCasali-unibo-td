@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -12,8 +13,6 @@ import javax.swing.JPanel;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.entities.enemies.EnemyState;
-
-import java.util.stream.Collectors;
 
 /**
  * .
@@ -44,7 +43,7 @@ public class EnemiesPanel extends JPanel {
             if (enemy.getState().equals(EnemyState.MOVING)) {
                 try {
                     BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
-                    g.drawImage(enemyImage, (int)(enemy.getPosition().x() * this.xCellSize), (int)(enemy.getPosition().y() * this.yCellSize), this);
+                    g.drawImage(enemyImage, (int) (enemy.getPosition().xInt() * this.xCellSize), (int) (enemy.getPosition().yInt() * this.yCellSize), this);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

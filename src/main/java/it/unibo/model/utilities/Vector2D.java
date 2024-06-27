@@ -33,12 +33,30 @@ public class Vector2D {
     }
 
     /**
+     * X coordinate int.
+     *
+     * @return X coordinate.
+     */
+    public int xInt() {
+        return (int) x;
+    }
+
+    /**
      * Y coordinate.
      *
      * @return Y coordinate.
      */
     public double y() {
         return y;
+    }
+
+    /**
+     * Y coordinate int.
+     *
+     * @return Y coordinate.
+     */
+    public int yInt() {
+        return (int) y;
     }
 
     /**
@@ -56,7 +74,7 @@ public class Vector2D {
     }
 
     public Vector2D normalize() {
-        double length = (double)Math.sqrt(x * x + y * y);
+        double length = (double) Math.sqrt(x * x + y * y);
         return new Vector2D(this.x / length, this.y / length);
     }
 }

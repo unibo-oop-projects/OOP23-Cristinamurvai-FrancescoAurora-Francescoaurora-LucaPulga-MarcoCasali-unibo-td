@@ -34,6 +34,15 @@ public class Position2D {
     }
 
     /**
+     * X coordinate int.
+     *
+     * @return X coordinate.
+     */
+    public int xInt() {
+        return (int) x;
+    }
+
+    /**
      * Y coordinate.
      *
      * @return Y coordinate.
@@ -43,19 +52,30 @@ public class Position2D {
     }
 
     /**
+     * Y coordinate int.
+     *
+     * @return Y coordinate.
+     */
+    public int yInt() {
+        return (int) y;
+    }
+
+    /**
      * Index to {@link Position2D}.
+     *
      * @return Index converted.
-     */    
+     */
     public static Position2D IntToPos2D(final double i, final double columns) {
         return new Position2D(i % columns, i / columns);
     }
 
     /**
      * {@link Position2D} to index.
+     *
      * @return Position2d converted.
-     */    
+     */
     public static int Pos2DtoInt(final Position2D pos, final double columns) {
-        return (int)(pos.x() + pos.y() * columns);
+        return (int) (pos.x() + pos.y() * columns);
     }
 
     public Position2D add(Vector2D vec) {
