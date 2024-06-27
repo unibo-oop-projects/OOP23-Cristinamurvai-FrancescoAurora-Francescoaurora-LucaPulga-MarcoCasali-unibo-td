@@ -62,9 +62,9 @@ public interface EnemiesManager {
     long getEnemiesAlive(ArrayList<Enemy> enemies);
 
     /* 
-     * @return the damage caused to player by enemies that reached the end of the path.
+     * @return the damage and rewards caused by enemies that reached the end of the path.
      */
-    int getDamageToPlayerLife();
+    Set<Integer> getDamageAndRewardsFromFinishedEnemies();
 
     /* 
      * @return the number of different enemy types.

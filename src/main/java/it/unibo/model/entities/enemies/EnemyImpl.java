@@ -58,6 +58,9 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 
     @Override
     public int getDamage(final int damage) {
+        if (this.alive == false) {
+            return this.lp;
+        }
         if (this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;
