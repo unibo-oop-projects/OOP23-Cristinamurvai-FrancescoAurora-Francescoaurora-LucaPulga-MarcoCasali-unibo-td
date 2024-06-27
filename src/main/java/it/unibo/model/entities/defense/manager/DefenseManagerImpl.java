@@ -32,7 +32,7 @@ public class DefenseManagerImpl implements DefenseManager {
      * Selected @param tower to be built, chosen by the {@link Player}.
      */
     @Override
-    public void buildTower(Tower tower) {
+    public void buildTower(final Tower tower) {
         try {
             Tower newTower = towerFactory.loadTower("towers/json/tower" + tower.getId() + ".json");
             newTower.setPosition(tower.getPosition());
@@ -47,7 +47,7 @@ public class DefenseManagerImpl implements DefenseManager {
      * Implement {@link Tower}'s observer.
      */
     @Override
-    public void update(GameState gameState) {
+    public void update(final GameState gameState) {
         towers.forEach(tower -> {
             tower.attack(gameState.getEnemies());
             tower.getBullets().forEach(b -> b.update(gameState));

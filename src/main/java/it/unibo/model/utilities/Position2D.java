@@ -75,7 +75,7 @@ public class Position2D {
      * @param vec Vector to add.
      * @return New Position2D after addition.
      */
-    public Position2D add(Vector2D vec) {
+    public Position2D add(final Vector2D vec) {
         return new Position2D(this.x + vec.x(), this.y + vec.y());
     }
 
@@ -84,7 +84,7 @@ public class Position2D {
      * @param other Position to subtract.
      * @return New Vector2D representing the difference.
      */
-    public Vector2D subtract(Position2D other) {
+    public Vector2D subtract(final Position2D other) {
         return new Vector2D(this.x - other.x(), this.y - other.y());
     }
 
@@ -93,7 +93,7 @@ public class Position2D {
      * @param other Position to which distance is calculated.
      * @return Distance to the other position.
      */
-    public double distanceTo(Position2D other) {
+    public double distanceTo(final Position2D other) {
         return Math.sqrt(Math.pow(this.x - other.x(), 2) + Math.pow(this.y - other.y(), 2));
     }
 
@@ -103,7 +103,7 @@ public class Position2D {
      * @param endingPosition2d Ending position.
      * @return Distance between the two positions.
      */
-    public static double calculateDistance(Position2D initialPosition2d, Position2D endingPosition2d) {
+    public static double calculateDistance(final Position2D initialPosition2d, final Position2D endingPosition2d) {
         double deltaX = initialPosition2d.x() - endingPosition2d.x();
         double deltaY = initialPosition2d.y() - endingPosition2d.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);

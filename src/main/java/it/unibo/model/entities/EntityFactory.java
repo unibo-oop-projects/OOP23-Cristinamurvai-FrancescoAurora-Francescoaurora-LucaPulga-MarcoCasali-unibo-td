@@ -21,7 +21,7 @@ public interface EntityFactory {
      * {@link IEntity}'s @param entityType
      * @return parsed {@link IEntity}. 
      */
-    <T> T loadEntity(String jsonFilePath, Position2D position2d, Vector2D direction, Class<T> entityType);
+    <T> T loadEntity(final String jsonFilePath, final Position2D position2d, final Vector2D direction, final Class<T> entityType);
 
     /**
      * Load all {@link Tower}s from JSON.

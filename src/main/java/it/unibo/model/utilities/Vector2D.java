@@ -87,7 +87,7 @@ public class Vector2D {
      * @param endingPosition2d Ending position.
      * @return Normalized direction vector.
      */
-    public static Vector2D calculateDirection(Position2D initiPosition2d, Position2D endingPosition2d) {
+    public static Vector2D calculateDirection(final Position2D initiPosition2d, final Position2D endingPosition2d) {
         double dx = endingPosition2d.x() - initiPosition2d.x();
         double dy = endingPosition2d.y() - initiPosition2d.y();
         return new Vector2D(dx, dy).normalize();

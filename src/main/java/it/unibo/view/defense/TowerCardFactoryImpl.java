@@ -32,7 +32,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      * @param tower card representing the tower's info.
      * @return JPanel representing the tower's info.
      */
-    private JPanel createTowerCard(Tower tower) {
+    private JPanel createTowerCard(final Tower tower) {
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         String tooltipText = "<html><b>Name:</b> " + tower.getName()
@@ -87,7 +87,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      * @return JPanel with all the towers.
      */
     @Override
-    public JPanel createDefensePanel(Set<Tower> towers) {
+    public JPanel createDefensePanel(final Set<Tower> towers) {
         JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         towers.forEach(tower -> towerPanel.add(createTowerCard(tower)));
         return towerPanel;
@@ -98,7 +98,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      * @param tower's weapons do be displayed.
      */
     @Override
-    public void showWeaponDialog(Tower tower) {
+    public void showWeaponDialog(final Tower tower) {
         JPanel weaponPanel = new JPanel();
         weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
 

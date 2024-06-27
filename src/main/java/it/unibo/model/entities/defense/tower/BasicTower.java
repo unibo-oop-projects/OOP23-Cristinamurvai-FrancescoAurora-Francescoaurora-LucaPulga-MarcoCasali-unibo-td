@@ -39,7 +39,7 @@ public class BasicTower extends AbstractTower {
      * Target @param enemies available on the map.
      */
     @Override
-    public Optional<Enemy> target(Set<Enemy> enemies) {
+    public Optional<Enemy> target(final Set<Enemy> enemies) {
         return this.targetSelectionStrategy.selectTarget(this, enemies);
     }
 
@@ -49,7 +49,7 @@ public class BasicTower extends AbstractTower {
      * @param enemies available on the map.
      */
     @Override
-    public void attack(Set<Enemy> enemies) {
+    public void attack(final Set<Enemy> enemies) {
         if (!enemies.isEmpty()) {
             Optional<Enemy> chosenEnemy = this.target(enemies);
             chosenEnemy.ifPresent(enemy -> {

@@ -19,7 +19,7 @@ public class DistanceBasedTargetSelection implements TargetSelectionStrategy {
      * @return {@code Optional} {@link Enemy} chosen based on the {@link Tower}'s' target strategy. 
      */
     @Override
-    public Optional<Enemy> selectTarget(Tower tower, Set<Enemy> enemies) {
+    public Optional<Enemy> selectTarget(final Tower tower, final Set<Enemy> enemies) {
         for (Enemy enemy : enemies) {
             double distance = Position2D.calculateDistance(tower.getPosition(), enemy.getPosition());
             if (distance <= tower.getRange()) {

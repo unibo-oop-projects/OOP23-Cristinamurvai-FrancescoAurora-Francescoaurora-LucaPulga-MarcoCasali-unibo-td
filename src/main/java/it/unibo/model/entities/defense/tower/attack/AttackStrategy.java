@@ -16,5 +16,5 @@ public interface AttackStrategy {
      * Attacking @param tower.
      * Target @param enemy chosen by the {@link Tower} depending on the {@link TargetSelectionStrategy}.
      */
-    void attack(Tower tower, Optional<Enemy> enemy);
+    void attack(final Tower tower, final Optional<Enemy> enemy);
 }

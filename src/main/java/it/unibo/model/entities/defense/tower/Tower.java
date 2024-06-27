@@ -46,14 +46,14 @@ public interface Tower extends IMovableEntity {
     int getCost();
 
 
-    Optional<Enemy> target(Set<Enemy> enemies);
+    Optional<Enemy> target(final Set<Enemy> enemies);
 
     /**
      * {@link Tower}'s attack method to attack target {@link Enemy}.
      * Attacking @param tower.
      * Target @param enemy chosen by the {@link Tower} depending on the {@link TargetSelectionStrategy}.
      */
-    void attack(Set<Enemy> enemies);
+    void attack(final Set<Enemy> enemies);
 
     /**
      * Get {@link Tower}'s Target Selection Strategy.
@@ -71,13 +71,13 @@ public interface Tower extends IMovableEntity {
      * Set {@link Tower}'s setTargetSelectionStrategy.
      * {@link Tower}'s @param targetSelectionStrategy type of target strategy.
      */    
-    void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy);
+    void setTargetSelectionStrategy(final TargetSelectionStrategy targetSelectionStrategy);
 
     /**
      * Set {@link Tower}'s AttackStrategy.
      * {@link Tower}'s @param targetSelectionStrategy type of attack strategy.
      */ 
-    void setAttackStrategy(AttackStrategy attackStrategy);
+    void setAttackStrategy(final AttackStrategy attackStrategy);
 
     /**
      * Clear all the {@link Tower}'s {@link Bullet}s fired.

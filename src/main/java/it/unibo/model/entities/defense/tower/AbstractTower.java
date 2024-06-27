@@ -21,19 +21,19 @@ import it.unibo.model.utilities.Vector2D;
 public abstract class AbstractTower extends AbstractMovableEntity implements Tower {
 
     @JsonProperty("cost")
-    private int cost;
+    final private int cost;
 
     @JsonProperty("level")
-    private int level;
+    final private int level;
 
     @JsonProperty("range")
-    private int range;
+    final private int range;
 
     @JsonProperty("weapons")
     private Set<WeaponImpl> weapons;
 
     @JsonProperty("currentWeapon")
-    private Weapon currentWeapon;
+    final private Weapon currentWeapon;
 
     @JsonProperty("attackStrategy")
     protected AttackStrategy attackStrategy;
@@ -152,7 +152,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * {@link Tower}'s @param targetSelectionStrategy type of target strategy.
      */    
     @Override
-    public void setTargetSelectionStrategy(TargetSelectionStrategy targetSelectionStrategy) {
+    public void setTargetSelectionStrategy(final TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;
     }
 
@@ -161,7 +161,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * {@link Tower}'s @param targetSelectionStrategy type of attack strategy.
      */    
     @Override
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
+    public void setAttackStrategy(final AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 

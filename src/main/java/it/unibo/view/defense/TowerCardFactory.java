@@ -18,13 +18,13 @@ public interface TowerCardFactory {
      * @param towers panel to display.
      * @return JPanel with all the towers.
      */
-    JPanel createDefensePanel(Set<Tower> towers);
+    JPanel createDefensePanel(final Set<Tower> towers);
 
     /**
      * Dialog to display all the {@link Weapon}s owned by a tower.
      * @param tower's weapons do be displayed.
      */
-    void showWeaponDialog(Tower tower);
+    void showWeaponDialog(final Tower tower);
 
     /**
      * Selected tower's card to be positioned on the {@link GameMap}.

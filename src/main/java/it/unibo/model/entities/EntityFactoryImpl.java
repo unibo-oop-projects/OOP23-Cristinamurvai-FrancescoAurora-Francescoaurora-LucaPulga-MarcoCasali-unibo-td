@@ -24,8 +24,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 public class EntityFactoryImpl implements EntityFactory {
 
-    private static final String JSON_EXTENSION = ".json";
-    private static final String TOWERS_RESOURCES = "towers/json/";
+    private final String JSON_EXTENSION = ".json";
+    private final String TOWERS_RESOURCES = "towers/json/";
 
     /**
      * Base constructor.

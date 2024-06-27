@@ -16,7 +16,7 @@ public interface DefenseManager extends GameObserver {
     /**
      * Selected @param tower to be built, chosen by the {@link Player}.
      */
-    void buildTower(Tower tower);
+    void buildTower(final Tower tower);
 
     /**
      * Represents the towers.
@@ -34,7 +34,7 @@ public interface DefenseManager extends GameObserver {
      * Set the actual map.
      * @param gameMap actual {@link GameMap}
      */
-    void setMap(GameMap gameMap);
+    void setMap(final GameMap gameMap);
 
     /**
      * Represents the Bullets fired by a specific {@link Tower}.
