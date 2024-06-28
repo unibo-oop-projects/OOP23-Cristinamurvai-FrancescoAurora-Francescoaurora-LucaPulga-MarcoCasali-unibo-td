@@ -10,25 +10,31 @@ public interface IMovableEntity extends IEntity {
 
     /**
      * {@link AbstractMovableEntity}'s {@link Vector2D}.
+     *
      * @return {@link AbstractMovableEntity}'s {@link Vector2D}.
      */
     Vector2D getDirection();
 
     /**
      * Modify {@link AbstractMovableEntity}'s {@link Vector2D}.
-     * @param direction2d {@link AbstractMovableEntity}'s {@link Vector2D} to be set.
+     *
+     * @param direction2d {@link AbstractMovableEntity}'s {@link Vector2D} to be
+     * set.
      */
-    void setDirection(final Vector2D direction2d);
+    void setDirection(Vector2D direction2d);
 
     /**
      * {@link AbstractMovableEntity}'s {@link Position2D}.
+     *
      * @return {@link AbstractMovableEntity}'s {@link Position2D}.
      */
     Position2D getPosition();
 
     /**
      * Modify {@link AbstractMovableEntity}'s {@link Position2D}.
-     * @param position2d {@link AbstractMovableEntity}'s {@link Position2D} to be set.
+     *
+     * @param position2d {@link AbstractMovableEntity}'s {@link Position2D} to
+     * be set.
      */
-    void setPosition(final Position2D position2d);
+    void setPosition(Position2D position2d);
 }

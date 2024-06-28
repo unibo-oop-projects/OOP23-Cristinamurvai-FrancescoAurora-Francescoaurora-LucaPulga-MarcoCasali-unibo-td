@@ -56,7 +56,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
      */
     @Override
     public boolean hasReachedTarget() {
-        return this.position2d.distanceTo(targetEnemy.getPosition()) < BULLET_DISTANCE_TOLLERANCE && targetEnemy.isAlive();
+        return this.getPosition().distanceTo(targetEnemy.getPosition()) < BULLET_DISTANCE_TOLLERANCE && targetEnemy.isAlive();
     }
 
     /**
@@ -67,7 +67,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
     @Override
     public void update(final GameState gameState) {
         // Move bullet towards the target enemy updating its position.
-        this.position2d = this.position2d.add(this.direction2d.scale(this.speed));
+        this.setPosition(this.getPosition().add(this.getDirection().scale(this.speed)));
 
         // Check if bullet has hit the target enemy.
         if (hasReachedTarget()) {
@@ -104,7 +104,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
      */
     @Override
     public boolean isOutOfBounds() {
-        return this.position2d.x() < MAP_MIN || this.position2d.x() > MAP_MAX || this.position2d.y() < MAP_MIN
-                || this.position2d.y() > MAP_MAX;
+        return this.getPosition().x() < MAP_MIN || this.getPosition().x() > MAP_MAX || this.getPosition().y() < MAP_MIN
+                || this.getPosition().y() > MAP_MAX;
     }
 }

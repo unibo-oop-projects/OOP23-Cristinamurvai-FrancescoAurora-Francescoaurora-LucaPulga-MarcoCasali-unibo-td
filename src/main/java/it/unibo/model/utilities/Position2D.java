@@ -13,6 +13,7 @@ public class Position2D {
 
     /**
      * Position's coordinates.
+     *
      * @param x coordinate.
      * @param y coordinate.
      */
@@ -24,6 +25,7 @@ public class Position2D {
 
     /**
      * X coordinate.
+     *
      * @return X coordinate.
      */
     public double x() {
@@ -32,6 +34,7 @@ public class Position2D {
 
     /**
      * X coordinate int.
+     *
      * @return X coordinate.
      */
     public int xInt() {
@@ -40,6 +43,7 @@ public class Position2D {
 
     /**
      * Y coordinate.
+     *
      * @return Y coordinate.
      */
     public double y() {
@@ -48,6 +52,7 @@ public class Position2D {
 
     /**
      * Y coordinate int.
+     *
      * @return Y coordinate.
      */
     public int yInt() {
@@ -56,22 +61,29 @@ public class Position2D {
 
     /**
      * Index to {@link Position2D}.
+     *
+     * @param i index
+     * @param columns
      * @return Index converted.
      */
-    public static Position2D IntToPos2D(final double i, final double columns) {
+    public static Position2D intToPos2D(final double i, final double columns) {
         return new Position2D(i % columns, i / columns);
     }
 
     /**
      * {@link Position2D} to index.
+     *
+     * @param pos position
+     * @param columns
      * @return Position2d converted.
      */
-    public static int Pos2DtoInt(final Position2D pos, final double columns) {
+    public static int pos2DtoInt(final Position2D pos, final double columns) {
         return (int) (pos.x() + pos.y() * columns);
     }
 
     /**
      * Adds a vector to this position.
+     *
      * @param vec Vector to add.
      * @return New Position2D after addition.
      */
@@ -81,6 +93,7 @@ public class Position2D {
 
     /**
      * Subtracts another position from this position.
+     *
      * @param other Position to subtract.
      * @return New Vector2D representing the difference.
      */
@@ -90,6 +103,7 @@ public class Position2D {
 
     /**
      * Calculates the distance to another position.
+     *
      * @param other Position to which distance is calculated.
      * @return Distance to the other position.
      */
@@ -99,6 +113,7 @@ public class Position2D {
 
     /**
      * Calculates the distance between two positions.
+     *
      * @param initialPosition2d Starting position.
      * @param endingPosition2d Ending position.
      * @return Distance between the two positions.
