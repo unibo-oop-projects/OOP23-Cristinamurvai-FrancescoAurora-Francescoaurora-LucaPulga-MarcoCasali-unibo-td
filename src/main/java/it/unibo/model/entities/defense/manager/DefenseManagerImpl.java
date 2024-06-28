@@ -15,18 +15,20 @@ import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
 
 /**
- * Represents the defense manager implementation to manage all the defense entities such as {@link Tower} and {@link Bullet}.
+ * Represents the defense manager implementation to manage all the defense
+ * entities such as {@link Tower} and {@link Bullet}.
  */
 public class DefenseManagerImpl implements DefenseManager {
 
-    private Set<Tower> towers = new HashSet<>();
-    private EntityFactory towerFactory = new EntityFactoryImpl();
-    private Optional<GameMap> map;
+    private final Set<Tower> towers = new HashSet<>();
+    private final EntityFactory towerFactory = new EntityFactoryImpl();
+    private Optional<GameMap> map = Optional.empty();  // Initialize with empty Optional
 
     /**
      * Base Costructor.
      */
-    public DefenseManagerImpl() { }
+    public DefenseManagerImpl() {
+    }
 
     /**
      * Selected @param tower to be built, chosen by the {@link Player}.
@@ -56,6 +58,7 @@ public class DefenseManagerImpl implements DefenseManager {
 
     /**
      * Represents the towers.
+     *
      * @return a set of all the active towers.
      */
     @Override
@@ -65,6 +68,7 @@ public class DefenseManagerImpl implements DefenseManager {
 
     /**
      * Represents the number of towers.
+     *
      * @return The number of all the active towers.
      */
     @Override
@@ -74,6 +78,7 @@ public class DefenseManagerImpl implements DefenseManager {
 
     /**
      * Set the actual map.
+     *
      * @param gameMap actual map.
      */
     @Override
@@ -83,8 +88,10 @@ public class DefenseManagerImpl implements DefenseManager {
 
     /**
      * Represents the Bullets fired by a specific {@link Tower}.
+     *
      * @return a set of all the active bullets fired by a {@link Tower}.
      */
+    @Override
     public Set<Bullet> getBullets() {
         return towers.stream()
                 .flatMap(tower -> tower.getBullets().stream())
