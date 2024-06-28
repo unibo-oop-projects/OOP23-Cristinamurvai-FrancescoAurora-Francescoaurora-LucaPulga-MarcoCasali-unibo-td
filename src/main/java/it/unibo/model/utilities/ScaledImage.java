@@ -10,14 +10,18 @@ import javax.swing.ImageIcon;
 /**
  * Class to scale images.
  */
-public class ScaledImage {
+public final class ScaledImage {
 
     /**
-     * TODO reference https://stackoverflow.com/a/6714381 .
+     *
+     * Scalted Image. TODO reference https://stackoverflow.com/a/6714381 .
+     *
+     *
      *
      * @param srcImg source Image
      * @param width
      * @param height
+     * @return Return ImageIcon scaled
      */
     public static ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
         BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -28,5 +32,12 @@ public class ScaledImage {
         g2.dispose();
 
         return new ImageIcon(resizedImg);
+    }
+
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private ScaledImage() {
+        throw new UnsupportedOperationException("Utility class");
     }
 }

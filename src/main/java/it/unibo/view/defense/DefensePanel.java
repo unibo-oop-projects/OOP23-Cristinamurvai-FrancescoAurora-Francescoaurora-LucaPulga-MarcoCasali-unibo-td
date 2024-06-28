@@ -27,7 +27,9 @@ public class DefensePanel extends JPanel {
 
     /**
      * Base Constructor.
-     * @param enemies
+     *
+     * @param bullets
+     * @param towers
      * @param xCellSize
      * @param yCellSize
      */
@@ -47,7 +49,8 @@ public class DefensePanel extends JPanel {
         for (Tower entity : this.towers) {
             try {
                 BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), (int) (entity.getPosition().x() * this.xCellSize), (int) (entity.getPosition().y() * this.yCellSize), this);
+                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), (int) (entity.getPosition().x()
+                        * this.xCellSize), (int) (entity.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -55,7 +58,8 @@ public class DefensePanel extends JPanel {
         for (Bullet bullet : this.bullets) {
             try {
                 BufferedImage bulletImage = ImageIO.read(ClassLoader.getSystemResource(bullet.getPath()));
-                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), (int) (bullet.getPosition().x() * this.xCellSize), (int) (bullet.getPosition().y() * this.yCellSize), this);
+                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), (int) (bullet.getPosition().x()
+                        * this.xCellSize), (int) (bullet.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,6 +68,7 @@ public class DefensePanel extends JPanel {
 
     /**
      * Update view components.
+     *
      * @param gameState
      * @param xCellSize
      * @param yCellSize
@@ -79,6 +84,7 @@ public class DefensePanel extends JPanel {
 
     /**
      * Scale images.
+     *
      * @param srcImg
      * @param width
      * @param height

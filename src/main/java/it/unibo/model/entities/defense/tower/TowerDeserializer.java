@@ -26,11 +26,12 @@ import java.util.Set;
  */
 public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
-    private Class<T> towerClass;
-    private ObjectMapper mapper;
+    private final Class<T> towerClass;
+    private final ObjectMapper mapper;
 
     /**
      * Constructor.
+     *
      * @param towerClass (generally BasicTower)
      */
     public TowerDeserializer(final Class<T> towerClass) {
