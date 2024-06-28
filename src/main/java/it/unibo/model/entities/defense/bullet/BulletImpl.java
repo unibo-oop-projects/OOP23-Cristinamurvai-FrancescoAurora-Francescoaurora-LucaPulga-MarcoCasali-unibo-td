@@ -14,33 +14,33 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
     private final int damage;
     private final double speed;
     private final Enemy targetEnemy;
-    private final int MAP_MIN = 0;
-    private final int MAP_MAX = 50;
-    private final double BULLET_DISTANCE_TOLLERANCE = 0.5;
+    private static final int MAP_MIN = 0;
+    private static final int MAP_MAX = 50;
+    private static final double BULLET_DISTANCE_TOLLERANCE = 0.5;
 
     /**
      * BulletImpl Constructor.
      *
-     * {@link Bullet}'s @param id.
-     * {@link Bullet}'s @param name.
-     * {@link Bullet}'s @param type.
-     * {@link Bullet}'s @param imgPath.
-     * {@link Bullet}'s @param initialPosition.
-     * {@link Bullet}'s @param direction2d.
-     * {@link Bullet}'s @param speed.
-     * {@link Bullet}'s @param damage.
-     * {@link Bullet}'s @param enemy.
+     * @param id {@link Bullet}'s
+     * @param name {@link Bullet}'s
+     * @param type {@link Bullet}'s
+     * @param imgPath {@link Bullet}'s
+     * @param initialPosition {@link Bullet}'s
+     * @param direction2d {@link Bullet}'s
+     * @param speed {@link Bullet}'s
+     * @param damage {@link Bullet}'s
+     * @param enemy {@link Bullet}'s
      */
     public BulletImpl(
-                    final int id,
-                    final String name,
-                    final String type,
-                    final String imgPath,
-                    final Position2D initialPosition,
-                    final Vector2D direction2d,
-                    final double speed,
-                    final int damage,
-                    final Enemy enemy) {
+            final int id,
+            final String name,
+            final String type,
+            final String imgPath,
+            final Position2D initialPosition,
+            final Vector2D direction2d,
+            final double speed,
+            final int damage,
+            final Enemy enemy) {
         super(id, name, type, imgPath, initialPosition, direction2d);
         this.speed = speed;
         this.targetEnemy = enemy;
@@ -48,8 +48,11 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
     }
 
     /**
-     * Determines whether the {@link Bullet} has reached the position of the target {@link Enemy}.
-     * @return {@code True} if target enemy's position reached, otherwise {@code False}.
+     * Determines whether the {@link Bullet} has reached the position of the
+     * target {@link Enemy}.
+     *
+     * @return {@code True} if target enemy's position reached, otherwise
+     * {@code False}.
      */
     @Override
     public boolean hasReachedTarget() {
@@ -58,6 +61,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     /**
      * Implement {@link Bullet}'s observer.
+     *
      * @param gameState current gameState.
      */
     @Override
@@ -74,6 +78,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     /**
      * Represents the damage dealt to the target {@link Enemy}.
+     *
      * @return the damage dealt to the target {@link Enemy}.
      */
     @Override
@@ -83,6 +88,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     /**
      * Represents the speed {@link Bullet}.
+     *
      * @return the speed {@link Bullet}.
      */
     @Override
@@ -92,10 +98,13 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
 
     /**
      * Determines if {@link Bullet} is out of bound or not.
-     * @return {@code True} if {@link Bullet} is out of bound, otherwise {@code False}.
+     *
+     * @return {@code True} if {@link Bullet} is out of bound, otherwise
+     * {@code False}.
      */
     @Override
     public boolean isOutOfBounds() {
-        return this.position2d.x() < MAP_MIN || this.position2d.x() > MAP_MAX || this.position2d.y() < MAP_MIN || this.position2d.y() > MAP_MAX;
+        return this.position2d.x() < MAP_MIN || this.position2d.x() > MAP_MAX || this.position2d.y() < MAP_MIN
+                || this.position2d.y() > MAP_MAX;
     }
 }
