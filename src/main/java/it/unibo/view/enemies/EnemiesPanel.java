@@ -36,14 +36,15 @@ public class EnemiesPanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(final Graphics g) {
+    protected final void paintComponent(final Graphics g) {
         super.paintComponent(g);
 
         for (Enemy enemy : this.enemies) {
             if (enemy.getState().equals(EnemyState.MOVING)) {
                 try {
                     BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
-                    g.drawImage(enemyImage, (int) (enemy.getPosition().xInt() * this.xCellSize), (int) (enemy.getPosition().yInt() * this.yCellSize), this);
+                    g.drawImage(enemyImage, (int) (enemy.getPosition().xInt() * this.xCellSize),
+                            (int) (enemy.getPosition().yInt() * this.yCellSize), this);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -1,18 +1,30 @@
 package it.unibo.view.defense;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.map.GameMap;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Set;
-import java.awt.event.ActionListener;
-
 /**
- * Factory implementation of {@link TowerCardFactory} that creates tower cards selectable on the panel located on the right side of the screen.
+ * Factory implementation of {@link TowerCardFactory} that creates tower cards
+ * selectable on the panel located on the right side of the screen.
  */
 public class TowerCardFactoryImpl implements TowerCardFactory {
 
@@ -25,10 +37,12 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
     /**
      * Constructor.
      */
-    public TowerCardFactoryImpl() { }
+    public TowerCardFactoryImpl() {
+    }
 
     /**
      * Creates the defense panel positioned on the right side of the screen.
+     *
      * @param tower card representing the tower's info.
      * @return JPanel representing the tower's info.
      */
@@ -36,11 +50,11 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         String tooltipText = "<html><b>Name:</b> " + tower.getName()
-                            + "<br><b>Type:</b> " + tower.getType()
-                            + "<br><b>Range:</b> " + tower.getRange()
-                            + "<br><b>Cost:</b> " + tower.getCost()
-                            + "<br><b>Level:</b> " + tower.getLevel()
-                            + "</html>";
+                + "<br><b>Type:</b> " + tower.getType()
+                + "<br><b>Range:</b> " + tower.getRange()
+                + "<br><b>Cost:</b> " + tower.getCost()
+                + "<br><b>Level:</b> " + tower.getLevel()
+                + "</html>";
 
         card.setToolTipText(tooltipText);
         JPanel imgPanel = new JPanel(new BorderLayout());
@@ -64,7 +78,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton weaponButton = new JButton("Weapons");
         weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 System.out.println("Weapon button clicked");
                 showWeaponDialog(tower);
             }
@@ -73,7 +87,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         card.add(buttonPanel, BorderLayout.SOUTH);
 
         card.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(final java.awt.event.MouseEvent evt) {
                 selectedTower = tower;
                 System.out.println("Selected tower: " + tower.getName());
             }
@@ -83,6 +97,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
     /**
      * Creates the defense panel positioned on the right side of the screen.
+     *
      * @param towers panel to display.
      * @return JPanel with all the towers.
      */
@@ -95,7 +110,8 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
     /**
      * Dialog to display all the {@link Weapon}s owned by a tower.
-     * @param tower's weapons do be displayed.
+     *
+     * @param tower 's weapons do be displayed.
      */
     @Override
     public void showWeaponDialog(final Tower tower) {
@@ -127,13 +143,14 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
         JDialog dialog = new JDialog((Frame) null, "Weapon Information", true);
         dialog.setContentPane(weaponPanel);
-        dialog.setSize(DIALOG_WIDTH, DIALOG_HEIGHT); 
+        dialog.setSize(DIALOG_WIDTH, DIALOG_HEIGHT);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 
     /**
      * Selected tower's card to be positioned on the {@link GameMap}.
+     *
      * @return tower's panel.
      */
     @Override

@@ -21,8 +21,9 @@ public class WeaponDialog extends JDialog {
 
     /**
      * Constructor.
+     *
      * @param parent {@link Tower} card.
-     * @param tower's info.
+     * @param tower info.
      */
     public WeaponDialog(final JFrame parent, final Tower tower) {
         super(parent, "Weapons for " + tower.getName(), true);

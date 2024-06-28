@@ -42,7 +42,12 @@ public class IconsPanel extends JPanel {
         this.setPreferredSize(new Dimension(width, height)); // Set preferred height to 100px
     }
 
-    public void update(GameState gameState) {
+    /**
+     * Update view elements.
+     *
+     * @param gameState contains the updated values
+     */
+    public void update(final GameState gameState) {
         this.setLifeText("Lives: " + gameState.getLives());
         this.setMoneyText("Money: " + gameState.getMoney());
         this.setTimeText("Time: " + gameState.getRoundTime());

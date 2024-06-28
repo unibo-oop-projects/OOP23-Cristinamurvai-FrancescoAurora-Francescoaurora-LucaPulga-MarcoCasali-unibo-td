@@ -49,7 +49,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private static final int ICON_DEFAULT_SIZE = 20;
     private static final int ICON_PANEL_SIZE = 50;
     private static final int ICON_BUTTON_SIZE = 80;
-    private Tower selectedTower = null;
+    private transient Tower selectedTower = null;
     private JPanel mapPanel;
     private JPanel layeredPane;
     private JScrollPane scrollPane;
@@ -59,8 +59,10 @@ public class GuiGameStart extends JFrame implements GameView {
     private transient Image icon = null;
     private boolean pause = false;
     private JLabel pauseButton = null;
-    EntityFactory entityFactory;
-    TowerCardFactory towerCardFactory;
+    private transient EntityFactory entityFactory;
+    private transient TowerCardFactory towerCardFactory;
+    private static final int WIDTH_SCROLL_PANE = 300;
+    private static final int HGAP_BUTTON_GUI = 5;
 
     // Add for enemies test
     private DefensePanel defensePanel;
@@ -81,7 +83,7 @@ public class GuiGameStart extends JFrame implements GameView {
         oldGui.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
-        JPanel buttonGui = new JPanel(new GridLayout(1, 2, 5, 0));
+        JPanel buttonGui = new JPanel(new GridLayout(1, 2, HGAP_BUTTON_GUI, 0));
 
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("buttons/pause.png"));
@@ -136,11 +138,13 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(),
+                mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
 
-        this.defensePanel = new DefensePanel(new HashSet<>(), new HashSet<>(), mapPanel.getWidth() / map.getColumns(), mapPanel.getHeight() / map.getRows());
+        this.defensePanel = new DefensePanel(new HashSet<>(), new HashSet<>(), mapPanel.getWidth() / map.getColumns(),
+                mapPanel.getHeight() / map.getRows());
         this.defensePanel.setOpaque(false);
         this.layeredPane.add(this.defensePanel);
 
@@ -154,7 +158,7 @@ public class GuiGameStart extends JFrame implements GameView {
             JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
             towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
             scrollPane = new JScrollPane(towerPanel);
-            scrollPane.setPreferredSize(new Dimension(300, 0));
+            scrollPane.setPreferredSize(new Dimension(WIDTH_SCROLL_PANE, 0));
             oldGui.add(scrollPane, BorderLayout.EAST);
         } catch (IOException e1) {
             System.err.println(e1.getMessage());
@@ -182,7 +186,7 @@ public class GuiGameStart extends JFrame implements GameView {
     }
 
     @Override
-    public void update(final GameState gameState) {
+    public final void update(final GameState gameState) {
         iconLabelPanel.update(gameState);
         if (gameState.isGameOver()) {
             showGameOver(gameState.getRoundNumber());
@@ -192,8 +196,10 @@ public class GuiGameStart extends JFrame implements GameView {
         }
 
         //Updating enemy layer
-        this.defensePanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
-        this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(), mapPanel.getHeight() / gameState.getGameMap().getRows());
+        this.defensePanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(),
+                mapPanel.getHeight() / gameState.getGameMap().getRows());
+        this.enemiesPanel.updateView(gameState, mapPanel.getWidth() / gameState.getGameMap().getColumns(),
+                mapPanel.getHeight() / gameState.getGameMap().getRows());
     }
 
     /**
@@ -219,7 +225,8 @@ public class GuiGameStart extends JFrame implements GameView {
         map.getTiles().forEach(t -> {
             final JButton cell = new JButton();
             cell.setBorderPainted(false);
-            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(), this.mapPanel.getHeight() / map.getRows());
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
+                    this.mapPanel.getHeight() / map.getRows());
             cell.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -314,7 +321,7 @@ public class GuiGameStart extends JFrame implements GameView {
 
         exitButton.addActionListener((final ActionEvent e) -> {
             dialog.dispose();
-            System.exit(0);
+            closeGame();
         });
     }
 
@@ -363,7 +370,15 @@ public class GuiGameStart extends JFrame implements GameView {
 
         exitButton.addActionListener((final ActionEvent e) -> {
             dialog.dispose();
-            System.exit(0);
+            closeGame();
         });
+    }
+
+    /**
+     * Closes the game.
+     */
+    private static void closeGame() {
+        // Effettua eventuali pulizie necessarie qui
+        System.exit(0);
     }
 }
