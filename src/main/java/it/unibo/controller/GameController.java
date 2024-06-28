@@ -30,8 +30,7 @@ public interface GameController extends GameObserver {
     /**
      * Builds the specified {@link Tower} in the specified position if allowed.
      *
-     * @param id The id of the tower
-     * @param pos The position where to build
+     * @param tower to build
      */
     void buildTower(Tower tower);
 
