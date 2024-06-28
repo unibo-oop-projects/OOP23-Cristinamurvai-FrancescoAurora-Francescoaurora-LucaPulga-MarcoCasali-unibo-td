@@ -1,7 +1,6 @@
 package it.unibo.model.core;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import it.unibo.model.entities.defense.bullet.Bullet;
