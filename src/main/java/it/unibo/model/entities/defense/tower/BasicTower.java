@@ -14,8 +14,28 @@ import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
+/**
+ * Basic Tower class extending {@link AbstractTower} implementing {@link Tower}.
+ */
 public class BasicTower extends AbstractTower {
 
+    /**
+     * Constructor.
+     *
+     * @param id
+     * @param name
+     * @param type
+     * @param imgPath
+     * @param position2d
+     * @param direction2d
+     * @param cost
+     * @param level
+     * @param range
+     * @param weapons
+     * @param currentWeapon
+     * @param attackStrategy
+     * @param targetSelectionStrategy
+     */
     @JsonCreator
     public BasicTower(@JsonProperty("id") final int id,
             @JsonProperty("name") final String name,
