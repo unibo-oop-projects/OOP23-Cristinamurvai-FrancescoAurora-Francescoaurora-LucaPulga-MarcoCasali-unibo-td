@@ -132,4 +132,12 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
     public void deactivate() {
         this.enemyState = EnemyState.INACTIVE;
     }
+
+    public void pause() {
+        this.enemyState = EnemyState.PAUSED;
+    }
+
+    public void resume() {
+        this.enemyState = EnemyState.MOVING;
+    }
 }

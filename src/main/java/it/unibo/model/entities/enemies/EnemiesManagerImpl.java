@@ -22,12 +22,15 @@ public class EnemiesManagerImpl implements EnemiesManager {
     private long lastNewEnemyStartingTime;
     private static final int DAMAGE_DIVIDER = 50;
 
+    private boolean pause;
+
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
         this.enemies = new ArrayList<>();
         this.enemiesThreads = new ArrayList<>();
         this.gameMap = Optional.empty();
         this.lastNewEnemyStartingTime = 0;
+        this.pause = false;
     }
 
     /*
@@ -132,5 +135,15 @@ public class EnemiesManagerImpl implements EnemiesManager {
     @Override
     public int getNEnemyTypes() {
         return this.enemiesConfigFactory.getNEnemyTypes();
+    }
+
+    @Override
+    public void togglePause() {
+        if (this.pause) {
+            this.enemies.stream().filter(e -> e.getState().equals(EnemyState.PAUSED)).forEach(e -> e.resume());
+        } else {
+            this.enemies.stream().filter(e -> e.getState().equals(EnemyState.MOVING)).forEach(e -> e.pause());
+        }
+        this.pause = !this.pause;
     }
 }

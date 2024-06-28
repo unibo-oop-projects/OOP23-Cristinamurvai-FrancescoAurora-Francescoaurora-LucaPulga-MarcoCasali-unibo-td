@@ -71,4 +71,9 @@ public interface EnemiesManager {
      * @return the number of different enemy types.
      */
     int getNEnemyTypes();
+
+    /*
+     * toggle pause by pasusing/resuming enemies
+     */
+    void togglePause();
 }

@@ -61,7 +61,17 @@ public interface Enemy extends IMovableEntity {
     void startMoving();
 
     /**
-     * Deactivate an enemy when its damage has already been taken into account.
+     * Deactivate the enemy when its damage has already been taken into account.
      */
     void deactivate();
+
+    /*
+     * Pause the enemy.
+     */
+    void pause();
+
+    /*
+     * Resume the enemy from pause.
+     */
+    void resume();
 }

@@ -57,6 +57,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     @Override
     public void togglePause() {
         this.isRunning = !this.isRunning;
+        this.enemiesManager.togglePause();
         this.roudManager.togglePause();
     }
 

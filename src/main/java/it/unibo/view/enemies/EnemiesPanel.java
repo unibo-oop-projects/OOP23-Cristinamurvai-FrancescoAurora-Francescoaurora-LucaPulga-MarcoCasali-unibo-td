@@ -40,7 +40,7 @@ public class EnemiesPanel extends JPanel {
         super.paintComponent(g);
 
         for (Enemy enemy : this.enemies) {
-            if (enemy.getState().equals(EnemyState.MOVING)) {
+            if (enemy.getState().equals(EnemyState.MOVING) || enemy.getState().equals(EnemyState.PAUSED)) {
                 try {
                     BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
                     g.drawImage(enemyImage, (int) (enemy.getPosition().xInt() * this.xCellSize),
