@@ -33,7 +33,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
             final Vector2D direction2d, final Position2D pathEndPosition2d, final int lp, final int reward) {
         super(id, name, type, imgPath, position2d, direction2d);
         this.pathEndPosition2d = pathEndPosition2d;
-        this.position2d = position2d;
+
         this.lp = lp;
         this.reward = reward;
         this.imgPath = imgPath;

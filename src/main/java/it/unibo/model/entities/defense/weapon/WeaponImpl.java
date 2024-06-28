@@ -11,9 +11,18 @@ import it.unibo.model.entities.defense.bullet.Bullet;
  */
 public class WeaponImpl extends AbstractEntity implements Weapon {
 
-    final private int frequency;
+    private final int frequency;
     private long lastShotTime;
 
+    /**
+     * Constructor.
+     *
+     * @param id
+     * @param name
+     * @param type
+     * @param imgPath
+     * @param frequency
+     */
     @JsonCreator
     public WeaponImpl(@JsonProperty("id") final int id,
             @JsonProperty("name") final String name,
@@ -26,7 +35,9 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
     }
 
     /**
-     * Represents the frequency with which the {@link Weapon} can fire a {@link Bullet}.
+     * Represents the frequency with which the {@link Weapon} can fire a
+     * {@link Bullet}.
+     *
      * @return the frequency with which the weapon can fire a {@link Bullet}.
      */
     @Override
@@ -36,7 +47,9 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
 
     /**
      * Represents the last {@link Bullet}'s time fired by the {@link Weapon}.
-     * @return the last {@link Bullet}'s time fired by the {@link Weapon} in millis.
+     *
+     * @return the last {@link Bullet}'s time fired by the {@link Weapon} in
+     * millis.
      */
     @Override
     public long getLastShotTime() {
@@ -45,7 +58,9 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
 
     /**
      * Sets the last {@link Bullet}'s time fired by the {@link Weapon}.
-     * @param lastShotTime sets the last {@link Bullet}'s time fired by the {@link Weapon} in millis.
+     *
+     * @param lastShotTime sets the last {@link Bullet}'s time fired by the
+     * {@link Weapon} in millis.
      */
     @Override
     public void setLastShotTime(final long lastShotTime) {
