@@ -1,6 +1,5 @@
 package it.unibo.model.entities.enemies;
 
-import it.unibo.model.core.GameState;
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -59,9 +58,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
 
     @Override
     public int getDamage(final int damage) {
-        if (this.alive == false) {
-            return this.lp;
-        }
         if (this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;
@@ -92,7 +88,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
 
     @Override
     public void deactivate() {
-        System.out.println("aaa");
         this.enemyState = EnemyState.INACTIVE;
     }
 
@@ -105,7 +100,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     }
 
     @Override
-    public void update(GameState gameState) {
+    public void move() {
         if (this.enemyState.equals(EnemyState.MOVING)) {
             final double x = (this.position2d.x() + this.direction2d.x());
             final double y = (this.position2d.y() - this.direction2d.y());
@@ -113,8 +108,8 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
             // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
             // 							+ ") to position (" + x + ", " + y + ")");
             this.position2d = new Position2D(x, y);
-            System.out.println("gli sommo: " + x + " " + y);
-            System.out.println("diventa pos: (" + this.position2d.x() + ", " + this.position2d.y() + ")");
+            //System.out.println("gli sommo: " + x + " " + y);
+            //System.out.println("diventa pos: (" + this.position2d.x() + ", " + this.position2d.y() + ")");
             if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
                 this.enemyState = EnemyState.FINISHED;
                 this.alive = false;

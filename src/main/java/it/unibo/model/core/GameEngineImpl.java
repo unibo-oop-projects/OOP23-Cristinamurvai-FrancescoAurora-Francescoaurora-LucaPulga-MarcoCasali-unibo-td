@@ -168,9 +168,11 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     }
 
     private void setDamageAndRewards() {
-        List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
-        player.setMoney(damageAndRewards.get(1));
-        player.loseLives(damageAndRewards.get(0));
+        //List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
+        //player.setMoney(damageAndRewards.get(1));
+        //player.loseLives(damageAndRewards.get(0));
+        player.setMoney(this.enemiesManager.getPLayerReward());
+        player.loseLives(this.enemiesManager.getNumberOfPlayerLivesLost());
     }
 
     private void updateObservers() {

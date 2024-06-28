@@ -1,12 +1,11 @@
 package it.unibo.model.entities.enemies;
 
-import it.unibo.model.core.GameObserver;
 import it.unibo.model.entities.IMovableEntity;
 
 /**
  * Represents the enemy entity.
  */
-public interface Enemy extends IMovableEntity, GameObserver {
+public interface Enemy extends IMovableEntity {
 
     /**
      * Represents the actual state of the enemy.
@@ -71,5 +70,8 @@ public interface Enemy extends IMovableEntity, GameObserver {
      */
     void resume();
 
-    void setState(EnemyState newState);
+    /*
+     * Move the enemy of a scalded Vector2D.
+     */
+    void move();
 }

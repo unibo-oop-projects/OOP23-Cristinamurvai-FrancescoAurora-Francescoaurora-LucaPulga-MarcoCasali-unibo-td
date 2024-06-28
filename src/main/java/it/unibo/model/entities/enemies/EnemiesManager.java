@@ -57,11 +57,6 @@ public interface EnemiesManager extends GameObserver {
     long getEnemiesAlive(ArrayList<Enemy> enemies);
 
     /* 
-     * @return the damage and rewards caused by enemies that reached the end of the path.
-     */
-    List<Integer> getDamageAndRewardsFromFinishedEnemies();
-
-    /* 
      * @return the number of different enemy types.
      */
     int getNEnemyTypes();
@@ -71,5 +66,13 @@ public interface EnemiesManager extends GameObserver {
      */
     void togglePause();
 
-    int getDamageToPlayerLife();
+    /*
+     * @return the number of lives lost from the last calling
+     */
+    int getNumberOfPlayerLivesLost();
+
+    /*
+     * @return the reward for player from the last calling
+     */
+    int getPLayerReward();
 }
