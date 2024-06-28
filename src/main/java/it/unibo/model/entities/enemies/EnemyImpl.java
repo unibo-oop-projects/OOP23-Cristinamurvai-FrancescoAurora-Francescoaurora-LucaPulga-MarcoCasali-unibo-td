@@ -78,10 +78,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
         return this.alive;
     }
 
-    public void setDirection(final Vector2D direction2d) {
-        this.direction2d = direction2d;
-    }
-
     public void startMoving() {
         this.enemyState = EnemyState.MOVING;
     }
@@ -102,12 +98,12 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     @Override
     public void move() {
         if (this.enemyState.equals(EnemyState.MOVING)) {
-            final double x = (this.position2d.x() + this.direction2d.x());
-            final double y = (this.position2d.y() - this.direction2d.y());
+            final double x = (this.getPosition().x() + this.getDirection().x());
+            final double y = (this.getPosition().y() - this.getDirection().y());
             final Position2D newPosition2d = new Position2D(x, y);
             // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
             // 							+ ") to position (" + x + ", " + y + ")");
-            this.position2d = new Position2D(x, y);
+            this.setPosition(new Position2D(x, y));
             //System.out.println("gli sommo: " + x + " " + y);
             //System.out.println("diventa pos: (" + this.position2d.x() + ", " + this.position2d.y() + ")");
             if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
