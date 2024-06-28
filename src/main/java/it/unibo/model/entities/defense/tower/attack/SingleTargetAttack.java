@@ -16,7 +16,7 @@ public class SingleTargetAttack implements AttackStrategy {
 
     private static final int SLOW_FREQ = 5000;
     private static final double BULLET_SPEED = 0.15;
-    private static final int BULLET_DAMAGE = 5000;
+    private static final int BULLET_DAMAGE = 25;
 
     /**
      * {@link Tower}'s attack method to attack target {@link Enemy}. Attacking
