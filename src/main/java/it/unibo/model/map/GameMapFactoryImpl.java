@@ -136,7 +136,8 @@ public class GameMapFactoryImpl implements GameMapFactory {
 
             @Override
             public Vector2D getPathDirection(final Position2D position) {
-                final Set<TileFeature> directions = this.tiles.get(Position2D.pos2DtoInt(position, this.columns)).getTileFeatures();
+                final Set<TileFeature> directions = this.tiles.get(Position2D.pos2DtoInt(position,
+                        this.columns)).getTileFeatures();
                 if (directions.contains(TileFeature.MOVE_DOWN)) {
                     return new Vector2D(0, -1);
                 } else if (directions.contains(TileFeature.MOVE_UP)) {
@@ -151,7 +152,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
             }
 
             @Override
-            public void buildTower(Tower tower) {
+            public void buildTower(final Tower tower) {
                 this.tiles.get(Position2D.pos2DtoInt(tower.getPosition(), this.columns)).buildTower(tower);
             }
         };
@@ -184,7 +185,14 @@ public class GameMapFactoryImpl implements GameMapFactory {
         return map;
     }
 
-    private void createTile(int index, String name, Map<Integer, Tile> map) {
+    /**
+     * Create tile.
+     *
+     * @param index
+     * @param name
+     * @param map
+     */
+    private void createTile(final int index, final String name, final Map<Integer, Tile> map) {
         final TileFactory tileFactory = new TileFactoryImpl();
         Tile t = tileFactory.fromName(name);
         t.setPosition(Position2D.intToPos2D(index, this.columns));
