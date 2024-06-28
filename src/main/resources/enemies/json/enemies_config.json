@@ -14,7 +14,7 @@
             "type": "medium",
             "imgPath": "src/main/resources/enemies/img/gobby_move.gif",
             "lp": 200,
-            "reward": 20,
+            "reward": 25,
             "quantity": 5
         },
     
@@ -23,7 +23,7 @@
             "type": "advanced",
             "imgPath": "src/main/resources/enemies/img/knight_move.gif",
             "lp": 300,
-            "reward": 30,
+            "reward": 50,
             "quantity": 2
         }
     ]

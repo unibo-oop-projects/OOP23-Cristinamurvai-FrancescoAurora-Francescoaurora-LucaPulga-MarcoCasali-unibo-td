@@ -1,7 +1,6 @@
 package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -13,15 +12,15 @@ import it.unibo.model.utilities.Vector2D;
 
 public class EnemiesManagerImpl implements EnemiesManager {
 
-    private final static double MAX_DISTANCE = 100;
     private final static long ENEMIES_MAP_ENTERING_SEPARATION = 1000;
 
-    private EnemiesConfigFactoryImpl enemiesConfigFactory;
-    private ArrayList<Enemy> enemies;
-    private ArrayList<Thread> enemiesThreads;
+    private final EnemiesConfigFactoryImpl enemiesConfigFactory;
+    private final ArrayList<Enemy> enemies;
+    private final ArrayList<Thread> enemiesThreads;
 
     private Optional<GameMap> gameMap;
     private long lastNewEnemyStartingTime;
+    private static final int DAMAGE_DIVIDER = 50;
 
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
@@ -80,7 +79,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
             }
         }
         List<Integer> damageAndRewards = new ArrayList<>();
-        damageAndRewards.add(damage);
+        damageAndRewards.add((int) damage / DAMAGE_DIVIDER);
         damageAndRewards.add(rewards);
         return damageAndRewards;
     }
@@ -124,7 +123,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
                 newEnemyEntered = true;
                 this.lastNewEnemyStartingTime = currentTimeMillis;
             }
-            if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
+            if (!(enemy.getPosition().xInt() >= this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() >= this.gameMap.get().getPathEndPosition().yInt())) {
                 enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
             }
         }
