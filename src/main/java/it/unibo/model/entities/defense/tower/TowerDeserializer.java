@@ -23,6 +23,8 @@ import java.util.Set;
 
 /**
  * Custom {@link Tower}'s JSON deserializer.
+ *
+ * @param <T> type of tower
  */
 public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
 
@@ -40,6 +42,9 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         this.mapper = new ObjectMapper();
     }
 
+    /**
+     * Custom deserialize for tower.
+     */
     @SuppressWarnings("unchecked")
     @Override
     public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {

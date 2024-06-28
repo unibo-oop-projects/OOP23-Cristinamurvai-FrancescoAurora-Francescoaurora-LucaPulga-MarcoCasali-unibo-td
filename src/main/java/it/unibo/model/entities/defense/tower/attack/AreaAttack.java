@@ -15,8 +15,9 @@ public class AreaAttack implements AttackStrategy {
     /**
      * {@link Tower}'s attack method to attack target {@link Enemy}. Attacking
      *
-     * @param tower. Target @param enemy chosen by the {@link Tower} depending
-     * on the {@link TargetSelectionStrategy}.
+     * @param tower . Target
+     * @param enemy chosen by the {@link Tower} depending on the
+     * {@link TargetSelectionStrategy}.
      */
     @Override
     public void attack(final Tower tower, final Optional<Enemy> enemy) {
