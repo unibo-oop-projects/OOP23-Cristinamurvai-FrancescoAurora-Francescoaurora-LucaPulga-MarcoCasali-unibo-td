@@ -19,7 +19,7 @@ import it.unibo.model.round.RoundManagerImpl;
 /**
  * Implementation of {@link GameEngine}.
  */
-public class GameEngineImpl implements GameEngine, Runnable {
+public final class GameEngineImpl implements GameEngine, Runnable {
 
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
     private GameMap map = null;
@@ -90,7 +90,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
                 this.updateGameState();
                 this.updateObservers();
                 this.setDamageAndRewards();
-                if (this.gameState.getLastRound() == true) {
+                if (this.gameState.getLastRound()) {
                     return;
                 }
                 long delta = System.currentTimeMillis() - start;
@@ -179,7 +179,7 @@ public class GameEngineImpl implements GameEngine, Runnable {
     }
 
     @Override
-    public void buildTower(Tower tower) {
+    public void buildTower(final Tower tower) {
         if (player.getMoney() >= tower.getCost()) {
             defenseManager.buildTower(tower);
             player.setMoney(-tower.getCost());
