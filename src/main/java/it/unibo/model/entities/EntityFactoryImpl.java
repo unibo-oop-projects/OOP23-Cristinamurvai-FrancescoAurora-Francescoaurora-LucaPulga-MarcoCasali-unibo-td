@@ -1,14 +1,8 @@
 package it.unibo.model.entities;
 
-import it.unibo.model.entities.defense.tower.BasicTower;
-import it.unibo.model.entities.defense.tower.Tower;
-import it.unibo.model.entities.defense.tower.TowerDeserializer;
-import it.unibo.model.utilities.Position2D;
-import it.unibo.model.utilities.Vector2D;
-
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +13,19 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import it.unibo.model.entities.defense.tower.BasicTower;
+import it.unibo.model.entities.defense.tower.Tower;
+import it.unibo.model.entities.defense.tower.TowerDeserializer;
+import it.unibo.model.utilities.Position2D;
+import it.unibo.model.utilities.Vector2D;
+
 /**
  * Entity factory template.
  */
 public class EntityFactoryImpl implements EntityFactory {
 
-    private final String JSON_EXTENSION = ".json";
-    private final String TOWERS_RESOURCES = "towers/json/";
+    private static final String JSON_EXTENSION = ".json";
+    private static final String TOWERS_RESOURCES = "towers/json/";
 
     /**
      * Base constructor.
@@ -35,15 +35,15 @@ public class EntityFactoryImpl implements EntityFactory {
 
     /**
      * Load a generic {@link IEntity}.
-     * @param <T> generic type.
-     * {@link IEntity}'s @param jsonFilePath
-     * {@link IEntity}'s @param position2d
-     * {@link IEntity}'s @param direction
+     *
+     * @param <T> generic type. {@link IEntity}'s @param jsonFilePath
+     * {@link IEntity}'s @param position2d {@link IEntity}'s @param direction
      * {@link IEntity}'s @param entityType
-     * @return parsed {@link IEntity}. 
+     * @return parsed {@link IEntity}.
      */
     @Override
-    public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d, Class<T> entityType) {
+    public <T> T loadEntity(final String filePath, final Position2D position2d, final Vector2D direction2d,
+            final Class<T> entityType) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonString = readFileFromResources(filePath);
@@ -57,10 +57,12 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     /**
-     * Load a specific {@link Tower}.
-     * {@link Tower}'s @param jsonFilePath to know which file to read.
+     * Load a specific {@link Tower}. {@link Tower}'s @param jsonFilePath to
+     * know which file to read.
+     *
      * @return parsed {@link IEntity}.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws IOException signals that an I/O exception of some sort has
+     * occurred.
      */
     @Override
     public Tower loadTower(final String jsonFilePath) throws IOException {
@@ -82,8 +84,10 @@ public class EntityFactoryImpl implements EntityFactory {
 
     /**
      * Load all {@link Tower}s from JSON.
+     *
      * @return all the {@link Tower}s istances available.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws IOException signals that an I/O exception of some sort has
+     * occurred.
      */
     @Override
     public Set<Tower> loadAllTowers() throws IOException {
@@ -114,10 +118,12 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     /**
-     * Utility method to read from files.
-     * File's @param filePath to load.
+     * Utility method to read from files. File's
+     *
+     * @param filePath to load.
      * @return the file's content.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws IOException signals that an I/O exception of some sort has
+     * occurred.
      */
     private String readFileFromResources(final String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(
