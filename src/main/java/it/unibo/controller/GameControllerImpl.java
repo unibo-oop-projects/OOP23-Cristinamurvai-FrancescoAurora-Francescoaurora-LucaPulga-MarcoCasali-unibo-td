@@ -16,7 +16,7 @@ import it.unibo.view.GameView;
 /**
  * Implementation of {@link GameController}.
  */
-public class GameControllerImpl implements GameController {
+public final class GameControllerImpl implements GameController {
 
     private final GameMapFactory mapFactory = new GameMapFactoryImpl();
     private final GameEngine engine = new GameEngineImpl();
@@ -62,7 +62,7 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void buildTower(Tower tower) {
+    public void buildTower(final Tower tower) {
         this.engine.buildTower(tower);
     }
 }
