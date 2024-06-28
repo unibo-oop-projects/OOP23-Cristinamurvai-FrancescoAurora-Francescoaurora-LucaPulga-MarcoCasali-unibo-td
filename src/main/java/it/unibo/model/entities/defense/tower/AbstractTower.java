@@ -16,48 +16,50 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * Abstract Tower class extending {@link AbstractMovableEntity} implementing {@link Tower}.
+ * Abstract Tower class extending {@link AbstractMovableEntity} implementing
+ * {@link Tower}.
  */
 public abstract class AbstractTower extends AbstractMovableEntity implements Tower {
 
     @JsonProperty("cost")
-    final private int cost;
+    private final int cost;
 
     @JsonProperty("level")
-    final private int level;
+    private final int level;
 
     @JsonProperty("range")
-    final private int range;
+    private final int range;
 
     @JsonProperty("weapons")
     private Set<WeaponImpl> weapons;
 
     @JsonProperty("currentWeapon")
-    final private Weapon currentWeapon;
+    private final Weapon currentWeapon;
 
     @JsonProperty("attackStrategy")
-    protected AttackStrategy attackStrategy;
+    private AttackStrategy attackStrategy;
 
     @JsonProperty("targetSelectionStrategy")
-    protected TargetSelectionStrategy targetSelectionStrategy;
+    private TargetSelectionStrategy targetSelectionStrategy;
 
-    private Set<Bullet> bullets;
+    private final Set<Bullet> bullets;
 
     /**
      * Constructor.
-     * {@link Tower}'s @param id
-     * {@link Tower}'s @param name
-     * {@link Tower}'s @param type
-     * {@link Tower}'s @param imgPath
-     * {@link Tower}'s @param position2d
-     * {@link Tower}'s @param direction2d
-     * {@link Tower}'s @param cost
-     * {@link Tower}'s @param level
-     * {@link Tower}'s @param range
-     * {@link Tower}'s @param weapons
-     * {@link Tower}'s @param currentWeapon
-     * {@link Tower}'s @param attackStrategy
-     * {@link Tower}'s @param targetSelectionStrategy
+     *
+     * @param id {@link Tower}'s
+     * @param name {@link Tower}'s
+     * @param type {@link Tower}'s
+     * @param imgPath {@link Tower}'s
+     * @param position2d {@link Tower}'s
+     * @param direction2d {@link Tower}'s
+     * @param cost {@link Tower}'s
+     * @param level {@link Tower}'s
+     * @param range {@link Tower}'s
+     * @param weapons {@link Tower}'s
+     * @param currentWeapon {@link Tower}'s
+     * @param attackStrategy {@link Tower}'s
+     * @param targetSelectionStrategy {@link Tower}'s
      */
     @JsonCreator
     public AbstractTower(@JsonProperty("id") final int id,
@@ -86,6 +88,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s level.
+     *
      * @return {@link Tower}'s level.
      */
     @Override
@@ -95,6 +98,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Represents the attackable range from the {@link Tower}.
+     *
      * @return the attackable range from the {@link Tower}.
      */
     @Override
@@ -104,6 +108,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s associated weapons.
+     *
      * @return {@link Tower}'s associated weapons.
      */
     @Override
@@ -113,6 +118,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s current {@link Weapon}.
+     *
      * @return {@link Tower}'s current {@link Weapon}.
      */
     @Override
@@ -122,6 +128,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s cost.
+     *
      * @return {@link Tower}'s cost.
      */
     @Override
@@ -131,6 +138,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s Target Selection Strategy.
+     *
      * @return {@link Tower}'s Target Selection Strategy.
      */
     @Override
@@ -140,6 +148,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get {@link Tower}'s AttackStrategy.
+     *
      * @return {@link Tower}'s AttackStrategy.
      */
     @Override
@@ -148,18 +157,18 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     }
 
     /**
-     * Set {@link Tower}'s setTargetSelectionStrategy.
-     * {@link Tower}'s @param targetSelectionStrategy type of target strategy.
-     */    
+     * Set {@link Tower}'s setTargetSelectionStrategy. {@link Tower}'s @param
+     * targetSelectionStrategy type of target strategy.
+     */
     @Override
     public void setTargetSelectionStrategy(final TargetSelectionStrategy targetSelectionStrategy) {
         this.targetSelectionStrategy = targetSelectionStrategy;
     }
 
     /**
-     * Set {@link Tower}'s AttackStrategy.
-     * {@link Tower}'s @param targetSelectionStrategy type of attack strategy.
-     */    
+     * Set {@link Tower}'s AttackStrategy. {@link Tower}'s @param
+     * targetSelectionStrategy type of attack strategy.
+     */
     @Override
     public void setAttackStrategy(final AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
@@ -167,6 +176,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Get all active {@link Bullet}s fired from a {@link Tower}.
+     *
      * @return active {@link Bullet}s fired from a {@link Tower}.
      */
     @Override
@@ -181,7 +191,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public void clearBullets() {
         this.bullets.clear();
     }
-    
+
     /**
      * Update all the {@link Tower}'s {@link Bullet}s position.
      */
