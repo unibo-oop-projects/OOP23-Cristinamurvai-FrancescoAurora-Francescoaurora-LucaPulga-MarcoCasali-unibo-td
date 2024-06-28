@@ -12,10 +12,11 @@ import it.unibo.model.entities.enemies.Enemy;
 public interface TargetSelectionStrategy {
 
     /**
-     * {@link Tower}'s target method to target {@link Enemy}.
-     * Attacking @param tower.
-     * All the @param enemies alive.
-     * @return {@code Optional} {@link Enemy} chosen based on the {@link Tower}'s' target strategy. 
+     * {@link Tower}'s target method to target {@link Enemy}. Attacking @param
+     * tower. All the @param enemies alive.
+     *
+     * @return {@code Optional} {@link Enemy} chosen based on the
+     * {@link Tower}'s' target strategy.
      */
     Optional<Enemy> selectTarget(final Tower tower, final Set<Enemy> enemies);
 }
