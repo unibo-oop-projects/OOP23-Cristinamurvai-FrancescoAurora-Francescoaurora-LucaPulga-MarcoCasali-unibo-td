@@ -50,7 +50,6 @@ public interface GameMap {
 
     /**
      * @param tower The {@link Tower} to build
-     * @param position The tower's {@link Position2D}
      */
     void buildTower(Tower tower);
 }
