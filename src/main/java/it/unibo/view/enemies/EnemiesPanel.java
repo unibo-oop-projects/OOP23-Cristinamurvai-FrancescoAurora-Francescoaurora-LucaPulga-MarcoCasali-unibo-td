@@ -43,8 +43,8 @@ public class EnemiesPanel extends JPanel {
             if (enemy.getState().equals(EnemyState.MOVING) || enemy.getState().equals(EnemyState.PAUSED)) {
                 try {
                     BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
-                    g.drawImage(enemyImage, (int) (enemy.getPosition().xInt() * this.xCellSize),
-                            (int) (enemy.getPosition().yInt() * this.yCellSize), this);
+                    g.drawImage(enemyImage, (int) (enemy.getPosition().x() * this.xCellSize),
+                            (int) (enemy.getPosition().y() * this.yCellSize), this);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

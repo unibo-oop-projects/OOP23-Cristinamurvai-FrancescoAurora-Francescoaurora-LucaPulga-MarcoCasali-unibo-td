@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import it.unibo.model.core.GameObserver;
 import it.unibo.model.map.GameMap;
 
-public interface EnemiesManager {
+public interface EnemiesManager extends GameObserver {
 
     /**
      * Set the actual map.
@@ -31,13 +32,6 @@ public interface EnemiesManager {
      * @param reward
      */
     void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward);
-
-    /**
-     * Uptate directions of all the currently alive enemies.
-     *
-     * @param currenTimeMillis
-     */
-    void updateEnemiesDirections(long currentTimeMillis);
 
     /**
      * Represents the enemies.
@@ -76,4 +70,6 @@ public interface EnemiesManager {
      * toggle pause by pasusing/resuming enemies
      */
     void togglePause();
+
+    int getDamageToPlayerLife();
 }

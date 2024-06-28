@@ -1,11 +1,12 @@
 package it.unibo.model.entities.enemies;
 
+import it.unibo.model.core.GameObserver;
 import it.unibo.model.entities.IMovableEntity;
 
 /**
  * Represents the enemy entity.
  */
-public interface Enemy extends IMovableEntity {
+public interface Enemy extends IMovableEntity, GameObserver {
 
     /**
      * Represents the actual state of the enemy.
@@ -51,11 +52,6 @@ public interface Enemy extends IMovableEntity {
     boolean isAlive();
 
     /**
-     * Move the enemy of vect2d from pos2d.
-     */
-    void move();
-
-    /**
      * Run enemy thread.
      */
     void startMoving();
@@ -74,4 +70,6 @@ public interface Enemy extends IMovableEntity {
      * Resume the enemy from pause.
      */
     void resume();
+
+    void setState(EnemyState newState);
 }
