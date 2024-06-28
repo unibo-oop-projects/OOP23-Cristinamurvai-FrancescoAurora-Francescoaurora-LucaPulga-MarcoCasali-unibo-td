@@ -23,12 +23,13 @@ import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.map.GameMap;
 
 /**
- * Factory implementation of {@link TowerCardFactory} that creates tower cards
+ * Factory implementation of {@link TowerCardFactory} that creates tower cards.
  * selectable on the panel located on the right side of the screen.
  */
 public class TowerCardFactoryImpl implements TowerCardFactory {
 
     public Tower selectedTower;
+    private JPanel selectedCard;
     private final int DIALOG_WIDTH = 400;
     private final int DIALOG_HEIGHT = 300;
     private final int WEAPON_IMG_WIDTH = 150;
@@ -37,8 +38,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
     /**
      * Constructor.
      */
-    public TowerCardFactoryImpl() {
-    }
+    public TowerCardFactoryImpl() { }
 
     /**
      * Creates the defense panel positioned on the right side of the screen.
@@ -90,6 +90,11 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
             public void mouseClicked(final java.awt.event.MouseEvent evt) {
                 selectedTower = tower;
                 System.out.println("Selected tower: " + tower.getName());
+                if (selectedCard != null) {
+                    selectedCard.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                }
+                card.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                selectedCard = card;
             }
         });
         return card;

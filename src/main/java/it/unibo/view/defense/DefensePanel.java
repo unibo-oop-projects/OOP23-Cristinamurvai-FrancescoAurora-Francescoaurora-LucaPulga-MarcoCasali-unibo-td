@@ -16,7 +16,7 @@ import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.tower.Tower;
 
 /**
- * .
+ * Defense panel displayed on the right side of the screen.
  */
 public class DefensePanel extends JPanel {
 
@@ -26,7 +26,7 @@ public class DefensePanel extends JPanel {
     private int yCellSize;
 
     /**
-     * .
+     * Base Constructor.
      * @param enemies
      * @param xCellSize
      * @param yCellSize
@@ -38,6 +38,9 @@ public class DefensePanel extends JPanel {
         this.yCellSize = yCellSize;
     }
 
+    /**
+     * Painting components such as {@link Tower} and {@link Bullet} on screen.
+     */
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
@@ -60,7 +63,7 @@ public class DefensePanel extends JPanel {
     }
 
     /**
-     * .
+     * Update view components.
      * @param gameState
      * @param xCellSize
      * @param yCellSize
@@ -74,6 +77,13 @@ public class DefensePanel extends JPanel {
         this.repaint();
     }
 
+    /**
+     * Scale images.
+     * @param srcImg
+     * @param width
+     * @param height
+     * @return a new scaled image.
+     */
     private BufferedImage getScaledImage(final Image srcImg, final int width, final int height) {
         BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
