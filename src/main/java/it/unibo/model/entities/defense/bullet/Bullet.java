@@ -7,31 +7,39 @@ import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.enemies.Enemy;
 
 /**
- * Represents the {@link Bullet} as a {@link IMovableEntity} managed with {@link GameObserver} fired from the defensive {@link Tower}'s {@link Weapon}.
+ * Represents the {@link Bullet} as a {@link IMovableEntity} managed with
+ * {@link GameObserver} fired from the defensive {@link Tower}'s {@link Weapon}.
  */
 public interface Bullet extends IMovableEntity, GameObserver {
 
     /**
      * Represents the damage dealt to the target {@link Enemy}.
+     *
      * @return the damage dealt to the target {@link Enemy}.
      */
     int getDamage();
 
     /**
      * Represents the speed {@link Bullet}.
+     *
      * @return the speed {@link Bullet}.
      */
     double getSpeed();
 
     /**
-     * Determines whether the {@link Bullet} has reached the position of the target {@link Enemy}.
-     * @return {@code True} if target enemy's position reached, otherwise {@code False}.
+     * Determines whether the {@link Bullet} has reached the position of the
+     * target {@link Enemy}.
+     *
+     * @return {@code True} if target enemy's position reached, otherwise
+     * {@code False}.
      */
     boolean hasReachedTarget();
 
     /**
      * Determines if {@link Bullet} is out of bound or not.
-     * @return {@code True} if {@link Bullet} is out of bound, otherwise {@code False}.
+     *
+     * @return {@code True} if {@link Bullet} is out of bound, otherwise
+     * {@code False}.
      */
     boolean isOutOfBounds();
 }
