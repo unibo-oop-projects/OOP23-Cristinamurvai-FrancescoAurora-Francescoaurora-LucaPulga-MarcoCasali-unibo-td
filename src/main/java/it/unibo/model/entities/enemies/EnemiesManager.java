@@ -1,12 +1,12 @@
 package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
+import it.unibo.model.core.GameObserver;
 import it.unibo.model.map.GameMap;
 
-public interface EnemiesManager {
+public interface EnemiesManager extends GameObserver {
 
     /**
      * Set the actual map.
@@ -33,13 +33,6 @@ public interface EnemiesManager {
     void buildEnemy(GameMap gameMap, String enemyName, String type, String imgPath, int lp, int reward);
 
     /**
-     * Uptate directions of all the currently alive enemies.
-     *
-     * @param currenTimeMillis
-     */
-    void updateEnemiesDirections(long currentTimeMillis);
-
-    /**
      * Represents the enemies.
      *
      * @return the set of currently alive enemies.
@@ -63,11 +56,6 @@ public interface EnemiesManager {
     long getEnemiesAlive(ArrayList<Enemy> enemies);
 
     /* 
-     * @return the damage and rewards caused by enemies that reached the end of the path.
-     */
-    List<Integer> getDamageAndRewardsFromFinishedEnemies();
-
-    /* 
      * @return the number of different enemy types.
      */
     int getNEnemyTypes();
@@ -76,4 +64,14 @@ public interface EnemiesManager {
      * toggle pause by pasusing/resuming enemies
      */
     void togglePause();
+
+    /*
+     * @return the number of lives lost from the last calling
+     */
+    int getNumberOfPlayerLivesLost();
+
+    /*
+     * @return the reward for player from the last calling
+     */
+    int getPLayerReward();
 }

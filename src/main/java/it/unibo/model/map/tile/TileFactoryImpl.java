@@ -102,7 +102,7 @@ public class TileFactoryImpl implements TileFactory {
             }
 
             @Override
-            public void setPosition(Position2D position2D) {
+            public void setPosition(final Position2D position2D) {
                 this.position2D = position2D;
             }
         };

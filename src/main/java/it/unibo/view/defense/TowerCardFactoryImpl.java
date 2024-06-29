@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -28,17 +27,20 @@ import it.unibo.model.map.GameMap;
  */
 public class TowerCardFactoryImpl implements TowerCardFactory {
 
-    public Tower selectedTower;
+    private Tower selectedTower;
     private JPanel selectedCard;
-    private final int DIALOG_WIDTH = 400;
-    private final int DIALOG_HEIGHT = 300;
-    private final int WEAPON_IMG_WIDTH = 150;
-    private final int WEAPON_IMG_HEIGHT = 100;
+    private static final int DIALOG_WIDTH = 400;
+    private static final int DIALOG_HEIGHT = 300;
+    private static final int WEAPON_IMG_WIDTH = 150;
+    private static final int WEAPON_IMG_HEIGHT = 100;
+    private static final int LABEL_IMG_WIDTH = 250;
+    private static final int LABEL_IMG_HEIGHT = 200;
 
     /**
      * Constructor.
      */
-    public TowerCardFactoryImpl() { }
+    public TowerCardFactoryImpl() {
+    }
 
     /**
      * Creates the defense panel positioned on the right side of the screen.
@@ -60,7 +62,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
         JPanel imgPanel = new JPanel(new BorderLayout());
         imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(tower.getPath())));
-        imgLabel.setPreferredSize(new Dimension(250, 200));
+        imgLabel.setPreferredSize(new Dimension(LABEL_IMG_WIDTH, LABEL_IMG_HEIGHT));
         imgPanel.add(imgLabel, BorderLayout.NORTH);
         card.add(imgPanel, BorderLayout.NORTH);
 
@@ -77,16 +79,15 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton weaponButton = new JButton("Weapons");
-        weaponButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                System.out.println("Weapon button clicked");
-                showWeaponDialog(tower);
-            }
+        weaponButton.addActionListener((final ActionEvent e) -> {
+            System.out.println("Weapon button clicked");
+            showWeaponDialog(tower);
         });
         buttonPanel.add(weaponButton);
         card.add(buttonPanel, BorderLayout.SOUTH);
 
         card.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(final java.awt.event.MouseEvent evt) {
                 selectedTower = tower;
                 System.out.println("Selected tower: " + tower.getName());
@@ -161,5 +162,10 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
     @Override
     public Tower getSelectedTower() {
         return this.selectedTower;
+        /*if (this.selectedTower == null) {
+        return null;
+        } else {
+            return new Tower(this.selectedTower);
+        }*/
     }
 }

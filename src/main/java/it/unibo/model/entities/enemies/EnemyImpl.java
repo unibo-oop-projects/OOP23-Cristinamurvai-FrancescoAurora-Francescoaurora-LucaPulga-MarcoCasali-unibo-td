@@ -7,7 +7,7 @@ import it.unibo.model.utilities.Vector2D;
 /**
  * .
  */
-public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable {
+public class EnemyImpl extends AbstractMovableEntity implements Enemy {
 
     private Position2D pathEndPosition2d;
     private int lp;
@@ -33,7 +33,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
             final Vector2D direction2d, final Position2D pathEndPosition2d, final int lp, final int reward) {
         super(id, name, type, imgPath, position2d, direction2d);
         this.pathEndPosition2d = pathEndPosition2d;
-        this.position2d = position2d;
+
         this.lp = lp;
         this.reward = reward;
         this.imgPath = imgPath;
@@ -58,9 +58,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 
     @Override
     public int getDamage(final int damage) {
-        if (this.alive == false) {
-            return this.lp;
-        }
         if (this.lp - damage <= 0) {
             this.lp = 0;
             this.alive = false;
@@ -81,49 +78,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
         return this.alive;
     }
 
-    @Override
-    public void move() {
-        final int x = (int) (this.position2d.xInt() + this.direction2d.xInt());
-        final int y = (int) (this.position2d.yInt() - this.direction2d.yInt());
-        final Position2D newPosition2d = new Position2D(x, y);
-        // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
-        // 							+ ") to position (" + x + ", " + y + ")");
-        this.position2d = new Position2D(x, y);
-        if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
-            // TO-DO: see if it is possible to retard without breaking threads
-            /*try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
-            this.enemyState = EnemyState.FINISHED;
-            this.alive = false;
-        } else {
-            // Added only for debug purposes
-            /*System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
-									+ ") to position (" + x + ", " + y + ")");
-			this.position2d = new Position2D(x, y);*/
-        }
-    }
-
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            if (this.enemyState.equals(EnemyState.MOVING)) {
-                move();
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void setDirection(final Vector2D direction2d) {
-        this.direction2d = direction2d;
-    }
-
     public void startMoving() {
         this.enemyState = EnemyState.MOVING;
     }
@@ -139,5 +93,27 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy, Runnable 
 
     public void resume() {
         this.enemyState = EnemyState.MOVING;
+    }
+
+    @Override
+    public void move() {
+        if (this.enemyState.equals(EnemyState.MOVING)) {
+            final double x = (this.getPosition().x() + this.getDirection().x());
+            final double y = (this.getPosition().y() - this.getDirection().y());
+            final Position2D newPosition2d = new Position2D(x, y);
+            // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
+            // 							+ ") to position (" + x + ", " + y + ")");
+            this.setPosition(new Position2D(x, y));
+            //System.out.println("gli sommo: " + x + " " + y);
+            //System.out.println("diventa pos: (" + this.position2d.x() + ", " + this.position2d.y() + ")");
+            if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
+                this.enemyState = EnemyState.FINISHED;
+                this.alive = false;
+            }
+        }
+    }
+
+    public void setState(EnemyState newState) {
+        this.enemyState = newState;
     }
 }

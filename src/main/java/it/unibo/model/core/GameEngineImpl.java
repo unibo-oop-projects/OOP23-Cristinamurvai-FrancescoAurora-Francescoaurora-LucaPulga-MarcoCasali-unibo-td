@@ -1,7 +1,6 @@
 package it.unibo.model.core;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import it.unibo.model.entities.defense.bullet.Bullet;
@@ -41,10 +40,10 @@ public final class GameEngineImpl implements GameEngine, Runnable {
             throw new IllegalStateException("No map selected");
         }
         this.isRunning = true;
-        //added here for enemy test
         this.enemiesManager.setMap(this.map);
         this.defenseManager.setMap(this.map);
         this.registerObserver(defenseManager);
+        this.registerObserver(enemiesManager);
 
         this.updateGameState();
         final Thread t = new Thread(this);
@@ -86,8 +85,6 @@ public final class GameEngineImpl implements GameEngine, Runnable {
         while (!this.gameState.isGameOver()) {
             try {
                 long start = System.currentTimeMillis();
-                // Temporary added here to test enemies
-                this.enemiesManager.updateEnemiesDirections(start);
                 this.updateGameState();
                 this.updateObservers();
                 this.setDamageAndRewards();
@@ -170,9 +167,11 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     }
 
     private void setDamageAndRewards() {
-        List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
-        player.setMoney(damageAndRewards.get(1));
-        player.loseLives(damageAndRewards.get(0));
+        //List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
+        //player.setMoney(damageAndRewards.get(1));
+        //player.loseLives(damageAndRewards.get(0));
+        player.setMoney(this.enemiesManager.getPLayerReward());
+        player.loseLives(this.enemiesManager.getNumberOfPlayerLivesLost());
     }
 
     private void updateObservers() {

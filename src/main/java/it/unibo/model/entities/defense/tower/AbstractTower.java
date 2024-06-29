@@ -31,7 +31,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     private final int range;
 
     @JsonProperty("weapons")
-    private Set<WeaponImpl> weapons;
+    private final Set<WeaponImpl> weapons;
 
     @JsonProperty("currentWeapon")
     private final Weapon currentWeapon;

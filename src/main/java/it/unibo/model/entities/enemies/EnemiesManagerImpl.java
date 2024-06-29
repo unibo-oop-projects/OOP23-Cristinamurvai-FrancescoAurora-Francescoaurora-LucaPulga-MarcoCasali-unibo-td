@@ -1,35 +1,30 @@
 package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import it.unibo.model.core.GameState;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 public class EnemiesManagerImpl implements EnemiesManager {
 
-    private final static long ENEMIES_MAP_ENTERING_SEPARATION = 1000;
-
     private final EnemiesConfigFactoryImpl enemiesConfigFactory;
     private final ArrayList<Enemy> enemies;
-    private final ArrayList<Thread> enemiesThreads;
 
     private Optional<GameMap> gameMap;
-    private long lastNewEnemyStartingTime;
-    private static final int DAMAGE_DIVIDER = 50;
+
+    private static final double ENEMY_SPEED_SCALER = 0.05;
 
     private boolean pause;
 
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
         this.enemies = new ArrayList<>();
-        this.enemiesThreads = new ArrayList<>();
         this.gameMap = Optional.empty();
-        this.lastNewEnemyStartingTime = 0;
         this.pause = false;
     }
 
@@ -63,29 +58,24 @@ public class EnemiesManagerImpl implements EnemiesManager {
     }
 
     @Override
-    public List<Integer> getDamageAndRewardsFromFinishedEnemies() {
-        int damage = 0;
-        int rewards = 0;
-        for (Enemy enemy : enemies) {
-            if (enemy.getState().equals(EnemyState.DEAD)) {
-                rewards += enemy.getReward();
-                enemy.deactivate();
-            }
-            if (enemy.getState().equals(EnemyState.FINISHED)) {
-                damage += enemy.getDamage(0);
-                enemy.deactivate();
-            }
-        }
-        for (int i = enemies.size() - 1; i >= 0; i--) {
-            if (enemies.get(i).getState().equals(EnemyState.FINISHED)) {
-                enemies.remove(i);
-            }
-        }
-        List<Integer> damageAndRewards = new ArrayList<>();
-        damageAndRewards.add((int) damage / DAMAGE_DIVIDER);
-        damageAndRewards.add(rewards);
-        return damageAndRewards;
-    }
+	public int getNumberOfPlayerLivesLost() {
+		final int livesLost = (int) this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED)).count();
+        this.enemies.stream()
+                    .filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
+                    .forEach(enemy -> enemy.deactivate());
+		return livesLost;
+	}
+
+    @Override
+    public int getPLayerReward() {
+		final int playerReward = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
+									.mapToInt(Enemy::getReward)
+									.sum();
+        this.enemies.stream()
+                    .filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
+                    .forEach(enemy -> enemy.deactivate());
+		return playerReward;
+	}
 
     @Override
     public void buildEnemy(final GameMap gameMap, final String enemyName, final String type, final String imgPath,
@@ -95,13 +85,8 @@ public class EnemiesManagerImpl implements EnemiesManager {
         Position2D pathEndPosition = gameMap.getPathEndPosition();
         EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
                 direction, pathEndPosition, lp, reward);
-        Thread newEnemyThread = new Thread(newEnemy);
-
-        newEnemyThread.start();
 
         this.enemies.add(newEnemy);
-        this.enemiesThreads.add(newEnemyThread);
-
     }
 
     @Override
@@ -113,23 +98,6 @@ public class EnemiesManagerImpl implements EnemiesManager {
     @Override
     public void setMap(final GameMap gameMap) {
         this.gameMap = Optional.of(gameMap);
-    }
-
-    @Override
-    // TO-DO: raise exception if the optional map is empty
-    public void updateEnemiesDirections(final long currentTimeMillis) {
-        boolean newEnemyEntered = false;
-        for (Enemy enemy : enemies) {
-            if (enemy.getState().equals(EnemyState.READY) && !newEnemyEntered
-                    && (currentTimeMillis - this.lastNewEnemyStartingTime) >= ENEMIES_MAP_ENTERING_SEPARATION) {
-                enemy.startMoving();
-                newEnemyEntered = true;
-                this.lastNewEnemyStartingTime = currentTimeMillis;
-            }
-            if (!(enemy.getPosition().xInt() >= this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() >= this.gameMap.get().getPathEndPosition().yInt())) {
-                enemy.setDirection(this.gameMap.get().getPathDirection(enemy.getPosition()));
-            }
-        }
     }
 
     @Override
@@ -145,5 +113,18 @@ public class EnemiesManagerImpl implements EnemiesManager {
             this.enemies.stream().filter(e -> e.getState().equals(EnemyState.MOVING)).forEach(e -> e.pause());
         }
         this.pause = !this.pause;
+    }
+
+    @Override
+    public void update(GameState gameState) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getState().equals(EnemyState.READY)) {
+                enemy.startMoving();
+            }
+            if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
+                enemy.setDirection(this.gameMap.get().getPathDirection(new Position2D(enemy.getPosition().xInt(), enemy.getPosition().yInt())).scale(ENEMY_SPEED_SCALER));
+            }
+            enemy.move();
+        }
     }
 }

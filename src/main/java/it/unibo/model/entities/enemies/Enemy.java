@@ -51,11 +51,6 @@ public interface Enemy extends IMovableEntity {
     boolean isAlive();
 
     /**
-     * Move the enemy of vect2d from pos2d.
-     */
-    void move();
-
-    /**
      * Run enemy thread.
      */
     void startMoving();
@@ -74,4 +69,9 @@ public interface Enemy extends IMovableEntity {
      * Resume the enemy from pause.
      */
     void resume();
+
+    /*
+     * Move the enemy of a scalded Vector2D.
+     */
+    void move();
 }
