@@ -97,12 +97,17 @@ public class Vector2D {
 
     /**
      * Equals method.
+     * @param o Object to compare.
      * @return {@code True} if corresponding, otherwise {@code False}.
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Vector2D that = (Vector2D) o;
         return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
     }
@@ -122,9 +127,9 @@ public class Vector2D {
      */
     @Override
     public String toString() {
-        return "Vector2D{" +
-               "x=" + x +
-               ", y=" + y +
-               '}';
+        return "Vector2D{"
+               + "x=" + x
+               + ", y=" + y
+               + '}';
     }
 }
