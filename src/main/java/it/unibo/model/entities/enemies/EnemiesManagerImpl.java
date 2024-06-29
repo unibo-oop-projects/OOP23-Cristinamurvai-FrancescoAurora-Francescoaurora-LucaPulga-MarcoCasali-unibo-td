@@ -117,7 +117,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
     public void update(GameState gameState) {
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : gameState.getEnemies()) {
             if (enemy.getState().equals(EnemyState.READY)) {
                 enemy.startMoving();
             }

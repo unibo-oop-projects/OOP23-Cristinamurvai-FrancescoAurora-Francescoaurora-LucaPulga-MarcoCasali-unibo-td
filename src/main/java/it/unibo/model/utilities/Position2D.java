@@ -1,5 +1,7 @@
 package it.unibo.model.utilities;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -122,5 +124,38 @@ public class Position2D {
         double deltaX = initialPosition2d.x() - endingPosition2d.x();
         double deltaY = initialPosition2d.y() - endingPosition2d.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    /**
+     * Equals method.
+     * @return {@code True} if corresponding, otherwise {@code False}.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position2D that = (Position2D) o;
+        return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
+    }
+
+    /**
+     * HashCode method.
+     * @return hash.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    /**
+     * ToString method.
+     * @return Position2d representation.
+     */
+    @Override
+    public String toString() {
+        return "Position2D{" +
+               "x=" + x +
+               ", y=" + y +
+               '}';
     }
 }

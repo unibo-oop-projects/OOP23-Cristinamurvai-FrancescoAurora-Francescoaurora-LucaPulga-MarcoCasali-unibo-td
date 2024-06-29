@@ -1,5 +1,7 @@
 package it.unibo.model.utilities;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -91,5 +93,38 @@ public class Vector2D {
         double dx = endingPosition2d.x() - initiPosition2d.x();
         double dy = endingPosition2d.y() - initiPosition2d.y();
         return new Vector2D(dx, dy).normalize();
+    }
+
+    /**
+     * Equals method.
+     * @return {@code True} if corresponding, otherwise {@code False}.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector2D that = (Vector2D) o;
+        return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
+    }
+
+    /**
+     * HashCode method.
+     * @return hash.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    /**
+     * ToString method.
+     * @return Position2d representation.
+     */
+    @Override
+    public String toString() {
+        return "Vector2D{" +
+               "x=" + x +
+               ", y=" + y +
+               '}';
     }
 }
