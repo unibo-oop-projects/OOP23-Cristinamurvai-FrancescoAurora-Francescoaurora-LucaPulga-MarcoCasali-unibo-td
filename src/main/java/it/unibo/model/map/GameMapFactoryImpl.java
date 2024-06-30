@@ -36,7 +36,6 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private static final String JSON_FILLER_KEY = "filler";
     private static final String RANGE_SEPARATOR = "-";
     private static final String COLUMN_SEPARATOR = "/";
-    private int rows;
     private int columns;
 
     /**
@@ -48,9 +47,9 @@ public class GameMapFactoryImpl implements GameMapFactory {
         final Map<Integer, Tile> tiles = new HashMap<>();
         final TileFactory tileFactory = new TileFactoryImpl();
 
-        this.rows = json.getInt(JSON_ROWS_KEY);
+        final int rows = json.getInt(JSON_ROWS_KEY);
         this.columns = json.getInt(JSON_COLUMNS_KEY);
-        for (Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
+        for (final Object tileSet : json.getJSONArray(JSON_TILES_KEY)) {
             tiles.putAll(unpackSet((JSONObject) tileSet, columns));
         }
 
@@ -77,9 +76,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.err.println("Error when retrieving json file for map : " + fileName);
+            //logger TODO
         }
 
         return fromJSON(fileContent);
@@ -96,12 +93,11 @@ public class GameMapFactoryImpl implements GameMapFactory {
     private GameMap generic(final int nRows, final int nColumns, final Map<Integer, Tile> tilesMap) {
         return new GameMap() {
             private final Map<Integer, Tile> tiles = tilesMap;
-            private final int rows = nRows;
             private final int columns = nColumns;
 
             @Override
             public int getRows() {
-                return this.rows;
+                return nRows;
             }
 
             @Override
@@ -168,7 +164,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
          * range x/y.
          */
         for (int i = 0; i < posArray.length(); i++) {
-            String tmp = posArray.getString(i);
+            final String tmp = posArray.getString(i);
             if (tmp.contains(RANGE_SEPARATOR)) {
                 IntStream.rangeClosed(Integer.parseInt(tmp.split(RANGE_SEPARATOR)[0]),
                         Integer.parseInt(tmp.split(RANGE_SEPARATOR)[1]))
@@ -194,7 +190,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
      */
     private void createTile(final int index, final String name, final Map<Integer, Tile> map) {
         final TileFactory tileFactory = new TileFactoryImpl();
-        Tile t = tileFactory.fromName(name);
+        final Tile t = tileFactory.fromName(name);
         t.setPosition(Position2D.intToPos2D(index, this.columns));
         map.put(index, t);
     }

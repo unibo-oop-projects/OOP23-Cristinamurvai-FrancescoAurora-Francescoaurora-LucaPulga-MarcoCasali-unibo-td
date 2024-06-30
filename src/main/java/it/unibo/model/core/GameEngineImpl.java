@@ -21,15 +21,15 @@ import it.unibo.model.round.RoundManagerImpl;
 public final class GameEngineImpl implements GameEngine, Runnable {
 
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
-    private GameMap map = null;
-    private GameState gameState = null;
+    private GameMap map;
+    private GameState gameState;
     private final Player player = new PlayerImpl();
     private final DefenseManager defenseManager = new DefenseManagerImpl();
     private final EnemiesManager enemiesManager = new EnemiesManagerImpl();
     private final RoundManagerImpl roudManager = new RoundManagerImpl(enemiesManager);
     private final Set<GameObserver> observers = new HashSet<>();
-    private boolean isRunning = false;
-    private boolean isGameOver = false;
+    private boolean isRunning;
+    private boolean isGameOver;
 
     /**
      * {@inheritDoc}
@@ -81,22 +81,22 @@ public final class GameEngineImpl implements GameEngine, Runnable {
      */
     @Override
     public void run() {
+        long start;
         roudManager.startGame(enemiesManager);
         while (!this.gameState.isGameOver()) {
             try {
-                long start = System.currentTimeMillis();
+                start = System.currentTimeMillis();
                 this.updateGameState();
                 this.updateObservers();
                 this.setDamageAndRewards();
                 if (this.gameState.getLastRound()) {
                     return;
                 }
-                long delta = System.currentTimeMillis() - start;
+                final long delta = System.currentTimeMillis() - start;
                 if (delta < FRAME_LIMIT) {
                     Thread.sleep(FRAME_LIMIT - delta);
                 }
             } catch (final InterruptedException e) {
-                System.err.println("engine interrupt");
                 System.exit(0);
             }
         }
@@ -131,7 +131,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
 
             @Override
             public int getLives() {
-                int tmp = player.getRemainingLives();
+                final int tmp = player.getRemainingLives();
                 if (tmp <= 0) {
                     isGameOver = true;
                 }

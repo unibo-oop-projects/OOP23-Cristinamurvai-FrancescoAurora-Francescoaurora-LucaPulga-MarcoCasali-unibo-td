@@ -32,9 +32,7 @@ public class TileFactoryImpl implements TileFactory {
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.err.println("Error when retrieving json file for tile: " + file);
+            //TODO logger
         }
         return fromJSON(fileContent);
     }
