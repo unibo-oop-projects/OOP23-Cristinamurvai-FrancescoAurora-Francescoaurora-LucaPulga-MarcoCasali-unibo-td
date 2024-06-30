@@ -68,6 +68,6 @@ public interface GameState {
     /**
      * @return if is last round.
      */
-    boolean getLastRound();
+    boolean isLastRound();
 
 }
