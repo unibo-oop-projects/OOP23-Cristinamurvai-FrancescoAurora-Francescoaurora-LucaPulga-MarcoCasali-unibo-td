@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.utilities.Position2D;
@@ -16,7 +18,7 @@ import it.unibo.model.utilities.Position2D;
  * Implementation of a {@link TileFactory}.
  */
 public class TileFactoryImpl implements TileFactory {
-
+    private final Logger logger = LoggerFactory.getLogger(TileFactoryImpl.class);
     private static final String JSON_EXTENSION = ".json";
     private static final String TILE_RESOURCES = "tiles/";
     private static final String JSON_SPRITE_KEY = "sprite";
@@ -32,7 +34,7 @@ public class TileFactoryImpl implements TileFactory {
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
-            //TODO logger
+            logger.error("Error when retrieving file: {}\n", file, e);
         }
         return fromJSON(fileContent);
     }

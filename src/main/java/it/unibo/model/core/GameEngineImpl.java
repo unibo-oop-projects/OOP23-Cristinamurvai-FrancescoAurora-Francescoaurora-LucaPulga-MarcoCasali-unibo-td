@@ -3,6 +3,9 @@ package it.unibo.model.core;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
@@ -19,7 +22,7 @@ import it.unibo.model.round.RoundManagerImpl;
  * Implementation of {@link GameEngine}.
  */
 public final class GameEngineImpl implements GameEngine, Runnable {
-
+    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
     private GameMap map;
     private GameState gameState;
@@ -97,6 +100,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
                     Thread.sleep(FRAME_LIMIT - delta);
                 }
             } catch (final InterruptedException e) {
+                logger.error("Engine interrupted\n", e);
                 System.exit(0);
             }
         }

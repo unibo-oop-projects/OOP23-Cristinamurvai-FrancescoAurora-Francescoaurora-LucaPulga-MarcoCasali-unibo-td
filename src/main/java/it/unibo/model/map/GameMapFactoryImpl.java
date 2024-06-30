@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.tile.Tile;
@@ -25,7 +27,7 @@ import it.unibo.model.utilities.Vector2D;
  * Implementation of {@link GameMapFactory}.
  */
 public class GameMapFactoryImpl implements GameMapFactory {
-
+    private final Logger logger = LoggerFactory.getLogger(GameMapFactoryImpl.class);
     private static final String JSON_EXTENSION = ".json";
     private static final String MAP_RESOURCES = "maps/";
     private static final String JSON_ROWS_KEY = "rows";
@@ -76,7 +78,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
-            //logger TODO
+            logger.error("Error when retrieving file: {}\n", fileName, e);
         }
 
         return fromJSON(fileContent);
