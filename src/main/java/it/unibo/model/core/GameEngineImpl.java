@@ -164,6 +164,16 @@ public final class GameEngineImpl implements GameEngine, Runnable {
             }
 
             @Override
+            public int getPLayerReward() {
+                return enemiesManager.getPLayerReward();
+            }
+
+            @Override
+            public int getNumberOfPlayerLivesLost() {
+                return enemiesManager.getNumberOfPlayerLivesLost();
+            }
+
+            @Override
             public String getRoundTime() {
                 return roudManager.getTime();
             }
@@ -186,11 +196,8 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     }
 
     private void setDamageAndRewards() {
-        //List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
-        //player.setMoney(damageAndRewards.get(1));
-        //player.loseLives(damageAndRewards.get(0));
-        player.setMoney(this.enemiesManager.getPLayerReward());
-        player.loseLives(this.enemiesManager.getNumberOfPlayerLivesLost());
+        player.setMoney(this.gameState.getPLayerReward());
+        player.loseLives(this.gameState.getNumberOfPlayerLivesLost());
     }
 
     private void updateObservers() {

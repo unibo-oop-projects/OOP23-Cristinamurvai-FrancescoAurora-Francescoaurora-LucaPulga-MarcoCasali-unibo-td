@@ -1,19 +1,22 @@
 package it.unibo.model.entities.enemies;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import it.unibo.model.core.GameState;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EnemiesManagerImpl implements EnemiesManager {
 
     private final EnemiesConfigFactoryImpl enemiesConfigFactory;
-    private final ArrayList<Enemy> enemies;
+    private final List<Enemy> enemies;
 
     private Optional<GameMap> gameMap;
 
@@ -21,11 +24,16 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     private boolean pause;
 
+    private int playerReward;
+    private int playerLivesLost;
+
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
-        this.enemies = new ArrayList<>();
+        this.enemies = new ArrayList<>();//new CopyOnWriteArrayList();//new ArrayList<>();
         this.gameMap = Optional.empty();
         this.pause = false;
+        this.playerReward = 0;
+        this.playerLivesLost = 0;
     }
 
     /*
@@ -59,23 +67,31 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
 	public int getNumberOfPlayerLivesLost() {
-		final int livesLost = (int) this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED)).count();
+		return this.playerLivesLost;
+	}
+
+    private int computeNumberOfPlayerLivesLost() {
+        final int livesLost = (int) this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED)).count();
         this.enemies.stream()
                     .filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
                     .forEach(enemy -> enemy.deactivate());
 		return livesLost;
-	}
+    }
 
     @Override
     public int getPLayerReward() {
-		final int playerReward = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
+		return this.playerReward;
+	}
+
+    private int computePlayerReward() {
+        final int playerReward = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
 									.mapToInt(Enemy::getReward)
 									.sum();
         this.enemies.stream()
                     .filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
                     .forEach(enemy -> enemy.deactivate());
 		return playerReward;
-	}
+    }
 
     @Override
     public void buildEnemy(final GameMap gameMap, final String enemyName, final String type, final String imgPath,
@@ -91,7 +107,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
     public Set<Enemy> getCurrentEnemies() {
-        return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet());
+        return Set.copyOf(this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()));
     }
 
     @Override
@@ -116,11 +132,15 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
     public void update(GameState gameState) {
+        this.playerLivesLost = this.computeNumberOfPlayerLivesLost();
+        this.playerReward = this.computePlayerReward();
+        
         for (Enemy enemy : gameState.getEnemies()) {
             if (enemy.getState().equals(EnemyState.READY)) {
                 enemy.startMoving();
             }
             if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt() && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
+                //System.out.println("Cosa mi fa esplodere? " + enemy.getId() + " " + enemy.getPosition().x() + " " + enemy.getPosition().y());
                 enemy.setDirection(this.gameMap.get().getPathDirection(new Position2D(enemy.getPosition().xInt(), enemy.getPosition().yInt())).scale(ENEMY_SPEED_SCALER));
             }
             enemy.move();

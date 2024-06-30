@@ -55,6 +55,16 @@ public interface GameState {
     Set<Enemy> getEnemies();
 
     /**
+     * @return The reward collected from last calling
+     */
+    int getPLayerReward();
+
+    /**
+     * @return The number of lives lost from last calling
+     */
+    int getNumberOfPlayerLivesLost();
+
+    /**
      *
      * @return Return time of roud.
      */

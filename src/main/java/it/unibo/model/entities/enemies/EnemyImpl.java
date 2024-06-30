@@ -1,5 +1,7 @@
 package it.unibo.model.entities.enemies;
 
+import java.math.BigDecimal;
+
 import it.unibo.model.entities.AbstractMovableEntity;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
@@ -98,14 +100,14 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     @Override
     public void move() {
         if (this.enemyState.equals(EnemyState.MOVING)) {
-            final double x = (this.getPosition().x() + this.getDirection().x());
-            final double y = (this.getPosition().y() - this.getDirection().y());
-            final Position2D newPosition2d = new Position2D(x, y);
+            final BigDecimal x = BigDecimal.valueOf(this.getPosition().x()).add(BigDecimal.valueOf(this.getDirection().x()));
+            final BigDecimal y = BigDecimal.valueOf(this.getPosition().y()).subtract(BigDecimal.valueOf(this.getDirection().y()));
+            final Position2D newPosition2d = new Position2D(x.doubleValue(), y.doubleValue());
             // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
             // 							+ ") to position (" + x + ", " + y + ")");
-            this.setPosition(new Position2D(x, y));
+            this.setPosition(new Position2D(x.doubleValue(), y.doubleValue()));
             //System.out.println("gli sommo: " + x + " " + y);
-            //System.out.println("diventa pos: (" + this.position2d.x() + ", " + this.position2d.y() + ")");
+            //System.out.println("diventa pos: (" + newPosition2d.x() + ", " + newPosition2d.y() + ")");
             if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
                 this.enemyState = EnemyState.FINISHED;
                 this.alive = false;
