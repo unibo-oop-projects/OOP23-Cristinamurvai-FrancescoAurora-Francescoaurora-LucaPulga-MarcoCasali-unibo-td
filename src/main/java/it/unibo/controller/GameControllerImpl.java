@@ -3,7 +3,6 @@ package it.unibo.controller;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import it.unibo.model.core.GameEngine;
 import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
@@ -50,10 +49,13 @@ public final class GameControllerImpl implements GameController {
     }
 
     @Override
-    public GameMap setGameMap(final String name) {
-        final GameMap map = mapFactory.fromName(name);
-        this.engine.setGameMap(map);
-        return map;
+    public void setGameMap(final String name) {
+        this.engine.setGameMap(mapFactory.fromName(name));
+    }
+
+    @Override
+    public GameMap getGameMap() {
+        return this.engine.getGameMap();
     }
 
     @Override

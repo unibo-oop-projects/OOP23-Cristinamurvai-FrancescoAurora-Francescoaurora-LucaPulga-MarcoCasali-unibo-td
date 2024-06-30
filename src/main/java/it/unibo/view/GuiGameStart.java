@@ -75,7 +75,8 @@ public class GuiGameStart extends JFrame implements GameView {
      * @param oldGui screen where to upload
      */
     public GuiGameStart(final String mapName, final JPanel oldGui) {
-        final GameMap map = controller.setGameMap(mapName);
+        controller.setGameMap(mapName);
+        final GameMap map = controller.getGameMap();
         oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.

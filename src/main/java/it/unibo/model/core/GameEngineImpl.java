@@ -102,6 +102,21 @@ public final class GameEngineImpl implements GameEngine, Runnable {
         }
     }
 
+    @Override
+    public GameMap getGameMap() {
+        return this.map;
+    }
+
+    @Override
+    public void buildTower(final Tower tower) {
+        if (player.getMoney() >= tower.getCost()) {
+            defenseManager.buildTower(tower);
+            player.setMoney(-tower.getCost());
+        } else {
+            tower.setPosition(null);
+        }
+    }
+
     private void updateGameState() {
         this.gameState = new GameState() {
             @Override
@@ -176,15 +191,5 @@ public final class GameEngineImpl implements GameEngine, Runnable {
 
     private void updateObservers() {
         this.observers.forEach(obs -> obs.update(this.gameState));
-    }
-
-    @Override
-    public void buildTower(final Tower tower) {
-        if (player.getMoney() >= tower.getCost()) {
-            defenseManager.buildTower(tower);
-            player.setMoney(-tower.getCost());
-        } else {
-            tower.setPosition(null);
-        }
     }
 }

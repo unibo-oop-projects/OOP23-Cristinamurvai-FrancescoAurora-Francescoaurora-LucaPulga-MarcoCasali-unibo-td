@@ -24,6 +24,11 @@ public interface GameEngine {
     void setGameMap(GameMap map);
 
     /**
+     * @return The currently set {@link GameMap} 
+     */
+    GameMap getGameMap();
+
+    /**
      * Builds the specified {@link Tower} in the specified position if allowed.
      *
      * @param tower Tower to build
