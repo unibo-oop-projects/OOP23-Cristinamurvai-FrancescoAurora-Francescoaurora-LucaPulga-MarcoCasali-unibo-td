@@ -139,7 +139,7 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(),
+        this.enemiesPanel = new EnemiesPanel(mapPanel.getWidth() / map.getColumns(),
                 mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);

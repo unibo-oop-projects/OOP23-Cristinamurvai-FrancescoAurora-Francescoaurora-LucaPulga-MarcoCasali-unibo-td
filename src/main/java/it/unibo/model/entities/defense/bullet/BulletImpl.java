@@ -72,7 +72,7 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
         // Check if bullet has hit the target enemy.
         if (hasReachedTarget()) {
             this.targetEnemy.getDamage(this.damage);
-            System.out.println("this.targetEnemy.getLP()): " + this.targetEnemy.getLP());
+            System.out.println("this.targetEnemy.getLP()): " + this.targetEnemy.getCurrentLP());
         }
     }
 

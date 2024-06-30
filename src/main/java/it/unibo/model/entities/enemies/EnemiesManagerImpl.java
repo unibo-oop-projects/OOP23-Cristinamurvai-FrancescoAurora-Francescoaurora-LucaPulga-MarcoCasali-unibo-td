@@ -91,7 +91,6 @@ public class EnemiesManagerImpl implements EnemiesManager {
 
     @Override
     public Set<Enemy> getCurrentEnemies() {
-        //return this.enemies.stream().collect(Collectors.toSet());
         return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet());
     }
 

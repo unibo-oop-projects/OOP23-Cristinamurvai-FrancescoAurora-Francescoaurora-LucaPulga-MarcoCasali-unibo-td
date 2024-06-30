@@ -47,7 +47,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     }
 
     @Override
-    public int getLP() {
+    public int getCurrentLP() {
         return this.lp;
     }
 
