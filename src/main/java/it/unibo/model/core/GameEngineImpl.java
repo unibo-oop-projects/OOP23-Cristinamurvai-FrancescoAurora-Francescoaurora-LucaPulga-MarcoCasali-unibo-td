@@ -92,7 +92,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
                 this.updateGameState();
                 this.updateObservers();
                 this.setDamageAndRewards();
-                if (this.gameState.getLastRound()) {
+                if (this.gameState.isLastRound()) {
                     return;
                 }
                 final long delta = System.currentTimeMillis() - start;
@@ -174,7 +174,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
             }
 
             @Override
-            public boolean getLastRound() {
+            public boolean isLastRound() {
                 return roudManager.getLastRound();
             }
 
