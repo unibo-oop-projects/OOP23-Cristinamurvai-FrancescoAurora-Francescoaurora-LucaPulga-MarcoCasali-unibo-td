@@ -8,10 +8,14 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link TileFactory}.
  */
-public class TestTileFactory {
+class TestTileFactory {
 
-    private static final String JSON_MISSING_FEATURES = "{ sprite: \"1\"}";
-    private static final String JSON_OK = "{ sprite: \"defense.png\", features: [\"DEFENSE\"]}";
+    private static final String JSON_MISSING_FEATURES = """
+            { sprite: "1"}
+            """;
+    private static final String JSON_OK = """
+            { sprite: "defense.png", features: ["DEFENSE"]}
+            """;
     private final TileFactory factory = new TileFactoryImpl();
 
     @Test
