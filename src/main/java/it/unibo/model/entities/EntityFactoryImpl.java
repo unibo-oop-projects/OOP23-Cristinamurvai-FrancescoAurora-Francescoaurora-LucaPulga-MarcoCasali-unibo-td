@@ -3,6 +3,7 @@ package it.unibo.model.entities;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -102,7 +103,7 @@ public class EntityFactoryImpl implements EntityFactory {
                     .filter(path -> path.toString().endsWith(JSON_EXTENSION))
                     .map(path -> {
                         try {
-                            String jsonString = new String(Files.readAllBytes(path));
+                            String jsonString = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
                             return objectMapper.readValue(jsonString, BasicTower.class);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -127,7 +128,7 @@ public class EntityFactoryImpl implements EntityFactory {
      */
     private String readFileFromResources(final String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath), StandardCharsets.UTF_8))) {
             return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-    private static final int ROUND_TIME = 1; // tempo del conto alla rovescia in secondi
+    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
     private boolean interrupted = false;
