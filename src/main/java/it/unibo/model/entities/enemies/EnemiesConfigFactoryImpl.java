@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Implementation of the EnemiesConfigFactory interface.
+ * Provides methods to load enemy configurations from JSON files or strings.
+ */
 public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
 
     private static final String FILE_PATH = "enemies/json/enemies_config.json";
@@ -24,10 +28,20 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     private HashMap<Integer, EnemyConfig> enemiesConfig;
     private int nEnemyTypes;
 
+    /**
+     * Constructor.
+     */
     public EnemiesConfigFactoryImpl() {
         this.enemiesConfig = fromJSONFile(FILE_PATH);
     }
 
+    /**
+     * Loads enemy configurations from a JSON file.
+     * 
+     * @param file the path to the JSON file containing enemy configurations.
+     * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
+     */
+    @Override
     public HashMap<Integer, EnemyConfig> fromJSONFile(final String file) {
         String fileContent;
         try (BufferedReader reader = new BufferedReader(
@@ -42,6 +56,13 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         return fromJSON(fileContent);
     }
 
+    /**
+     * Loads enemy configurations from a JSON string.
+     * 
+     * @param jsonString the JSON string containing enemy configurations.
+     * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
+     */
+    @Override
     public HashMap<Integer, EnemyConfig> fromJSON(final String jsonString) {
         final JSONObject source = new JSONObject(jsonString);
         final JSONArray enemiesArray = source.getJSONArray(ENEMIES);
@@ -62,7 +83,20 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         return enemiesConfig;
     }
 
-    private EnemyConfig buildEnemyConfig(final String name, final String type, final String imgPath, final int lp, final int reward, final int quantity) {
+    /**
+     * Builds an EnemyConfig object.
+     * 
+     * @param name the name of the enemy.
+     * @param type the type of the enemy.
+     * @param imgPath the image path of the enemy.
+     * @param lp the life points of the enemy.
+     * @param reward the reward for defeating the enemy.
+     * @param quantity the quantity of this type of enemy.
+     * @return an EnemyConfig object.
+     */
+    private EnemyConfig buildEnemyConfig(final String name, final String type, 
+                                         final String imgPath, final int lp, 
+                                         final int reward, final int quantity) {
         return new EnemyConfig() {
             private final String enemyName = name;
             private final String enemyType = type;
@@ -104,11 +138,21 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         };
     }
 
+    /**
+     * Get the enemy configurations.
+     * 
+     * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
+     */
     @Override
     public HashMap<Integer, EnemyConfig> getEnemiesConfig() {
         return new HashMap<Integer, EnemyConfig>(this.enemiesConfig);
     }
 
+    /**
+     * Retrieves the number of different enemy types loaded.
+     * 
+     * @return the number of enemy types.
+     */
     public int getNEnemyTypes() {
         return this.nEnemyTypes;
     }
