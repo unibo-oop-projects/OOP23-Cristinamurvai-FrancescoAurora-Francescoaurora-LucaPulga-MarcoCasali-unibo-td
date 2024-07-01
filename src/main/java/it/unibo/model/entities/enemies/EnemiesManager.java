@@ -40,6 +40,13 @@ public interface EnemiesManager extends GameObserver {
     Set<Enemy> getCurrentEnemies();
 
     /**
+     * Represents if there are no enemies alive.
+     *
+     * @return if there are no enemies alive.
+     */
+    boolean noMoreRunningEnemies();
+
+    /**
      * Push the enemies.
      *
      * @param id

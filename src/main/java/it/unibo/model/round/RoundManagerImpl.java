@@ -10,7 +10,7 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-    private static final int ROUND_TIME = 1; // tempo del conto alla rovescia in secondi
+    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
     private boolean interrupted = false;
@@ -141,7 +141,7 @@ public class RoundManagerImpl {
             } else {
                 // check if round finished to spawn and enemies are not alive
                 if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0
-                        && enemiesManager.getCurrentEnemies().isEmpty()) {
+                        && enemiesManager.noMoreRunningEnemies()) {
                     interrupted = true;
                 }
             }

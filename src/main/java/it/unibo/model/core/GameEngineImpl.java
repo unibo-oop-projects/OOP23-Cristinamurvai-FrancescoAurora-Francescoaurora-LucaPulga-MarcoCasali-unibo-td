@@ -157,7 +157,6 @@ public final class GameEngineImpl implements GameEngine, Runnable {
                 return !isRunning;
             }
 
-            //added here for enemy test
             @Override
             public Set<Enemy> getEnemies() {
                 return enemiesManager.getCurrentEnemies();

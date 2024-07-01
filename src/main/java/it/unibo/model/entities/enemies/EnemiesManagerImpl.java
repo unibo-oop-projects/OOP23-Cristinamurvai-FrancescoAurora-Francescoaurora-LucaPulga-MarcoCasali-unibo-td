@@ -4,34 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-
 import it.unibo.model.core.GameState;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EnemiesManagerImpl implements EnemiesManager {
 
-    private final EnemiesConfigFactoryImpl enemiesConfigFactory;
-    private final List<Enemy> enemies;
-
-    private Optional<GameMap> gameMap;
-
     private static final double ENEMY_SPEED_SCALER = 0.05;
 
+    private final EnemiesConfigFactoryImpl enemiesConfigFactory;
+    private final List<Enemy> enemies;
+    private final List<Enemy> enemiesToPush;
+    private Optional<GameMap> gameMap;
     private boolean pause;
-
+    private boolean no_running_enemies;
     private int playerReward;
     private int playerLivesLost;
 
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
-        this.enemies = new ArrayList<>();//new CopyOnWriteArrayList();//new ArrayList<>();
+        this.enemies = new ArrayList<>();
+        this.enemiesToPush = new ArrayList<>();
         this.gameMap = Optional.empty();
         this.pause = false;
+        this.no_running_enemies = true;
         this.playerReward = 0;
         this.playerLivesLost = 0;
     }
@@ -102,12 +100,21 @@ public class EnemiesManagerImpl implements EnemiesManager {
         EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
                 direction, pathEndPosition, lp, reward);
 
-        this.enemies.add(newEnemy);
+        this.enemiesToPush.add(newEnemy);
     }
 
     @Override
     public Set<Enemy> getCurrentEnemies() {
         return Set.copyOf(this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()));
+    }
+
+    private boolean checkIfNoEnemiesAlive() {
+        return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()).isEmpty();
+    }
+
+    @Override
+    public boolean noMoreRunningEnemies() {
+        return this.no_running_enemies;
     }
 
     @Override
@@ -134,6 +141,10 @@ public class EnemiesManagerImpl implements EnemiesManager {
     public void update(GameState gameState) {
         this.playerLivesLost = this.computeNumberOfPlayerLivesLost();
         this.playerReward = this.computePlayerReward();
+        this.no_running_enemies = this.checkIfNoEnemiesAlive() ? true : false;
+
+        this.enemies.addAll(this.enemiesToPush);
+        this.enemiesToPush.clear();
         
         for (Enemy enemy : gameState.getEnemies()) {
             if (enemy.getState().equals(EnemyState.READY)) {
