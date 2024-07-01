@@ -191,7 +191,7 @@ public class GuiGameStart extends JFrame implements GameView {
         if (gameState.isGameOver()) {
             showGameOver(gameState.getRoundNumber());
         }
-        if (gameState.getLastRound()) {
+        if (gameState.isLastRound()) {
             showGameWin(gameState.getRoundNumber());
         }
 
