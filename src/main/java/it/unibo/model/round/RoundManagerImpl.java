@@ -10,11 +10,11 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-    private static final int ROUND_TIME = 30; // tempo del conto alla rovescia in secondi
+    private static final int ROUND_TIME = 10; //countdown time in seconds
     private Thread countdownThread = null;
     private Thread sequentialThread = null;
     private boolean interrupted = false;
-    private int currentTime; // tempo corrente in secondi
+    private int currentTime; // current time in seconds
     private final Object lock = new Object();
     private final Round round;
     private double timeSpawn;
@@ -128,7 +128,6 @@ public class RoundManagerImpl {
                 boolean spawn = false;
                 while (!spawn) {
                     if (listEnemies.get(enemyIndex) != 0) {
-                        // Inserire qui il costruttore del nemico
                         enemiesManager.pushEnemy(enemyIndex);
                         spawn = true;
                         listEnemies.set(enemyIndex, listEnemies.get(enemyIndex) - 1);

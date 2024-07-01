@@ -15,7 +15,8 @@ public class RoundImpl implements Round {
     private static final int DEFAULT_NUMBER_ENEMIES = 3;
     private int rounds;
     private final List<Integer> enemiesSpawn;
-    private static final int BOSS_ROUND = 9;
+    private static final int BOSS_ROUND = 4;
+    private static final int ROUND = 5;
     private static final double TIME_BOSS_ROUND = 3.5;
     private boolean lastRound = false;
 
@@ -37,11 +38,11 @@ public class RoundImpl implements Round {
     @Override
     public final void increaseRoud() {
         rounds++;
-        int tmp = rounds / 10;
+        int tmp = rounds / ROUND;
         //I can increase by a constant value determined by the level/something, e.g. +2 per active type
         //if the type ends then I activate a multiplier which first has a value of 1 so instead of adding 2 it adds 4 then 8 etc.
-        if (rounds < numberEnemies * 10) {
-            if (rounds % 10 == 0) {
+        if (rounds < numberEnemies * ROUND) {
+            if (rounds % ROUND == 0) {
                 for (int i = 0; i <= tmp; i++) {
                     enemiesSpawn.set(i, DEFAULT_NUMBER_ENEMIES);
                 }
@@ -50,7 +51,7 @@ public class RoundImpl implements Round {
                 for (int i = 0; i <= tmp; i++) {
                     enemiesSpawn.set(i, enemiesSpawn.get(i) + 2);
                 }
-                if (rounds % 10 == BOSS_ROUND) {
+                if (rounds % ROUND == BOSS_ROUND) {
                     timeSpawn = TIME_BOSS_ROUND;
                 }
             }

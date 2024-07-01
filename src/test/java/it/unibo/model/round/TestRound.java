@@ -14,17 +14,18 @@ import org.junit.jupiter.api.Test;
 public class TestRound {
 
     private RoundImpl round;
-    private static final int ENEMIES_BOSS = 21;
+    private static final int ENEMIES_BOSS = 11;
     private static final int ENEMIES_SIZE = 5;
     private static final int ENEMIES_NOTE_SPAWN = 0;
-    private static final int MAX_ROUND = 67;
+    private static final int MAX_ROUND = 42;
     private static final Double TIME_SPAWN = 4.0;
     private static final Double TIME_SPAWN_BOSS = 3.5;
     private static final int ENEMIES_SPAWN_ROUND_2 = 5;
     private static final int ENEMIES_SPAWN_ROUND_1 = 3;
     private static final int ENEMIES_SPAWN_NO = 0;
     private static final int ROUND_1 = 1;
-    private static final int LIVEL_BOSS_30 = 30;
+    private static final int LIVEL_BOSS_15 = 15;
+    private static final int ROUND = 5;
 
     /**
      * Sets up a new instance of {@link RoundImpl} before each test.
@@ -68,7 +69,7 @@ public class TestRound {
         assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
         assertEquals(ENEMIES_SPAWN_ROUND_2, enemiesSpawn.get(0));
         assertEquals(ENEMIES_SPAWN_NO, enemiesSpawn.get(1));
-        for (int i = 0; i < 10; i++) { // Rounds 3 to 12
+        for (int i = 0; i < ROUND; i++) { // Rounds 3 to 12
             round.increaseRoud();
         }
         enemiesSpawn = round.getEnemiesSpawn();
@@ -84,10 +85,10 @@ public class TestRound {
      */
     @Test
     public void testIncreaseRoundBossRound() {
-        for (int i = 0; i < LIVEL_BOSS_30 - 1; i++) {
+        for (int i = 0; i < LIVEL_BOSS_15 - 1; i++) {
             round.increaseRoud();
         }
-        round.increaseRoud(); // Round 30 (boss round)
+        round.increaseRoud(); // Round 15 (boss round)
         assertEquals(TIME_SPAWN_BOSS, round.getTimeSpawn());
         List<Integer> enemiesSpawn = round.getEnemiesSpawn();
         assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
