@@ -3,6 +3,7 @@ package it.unibo.model.entities.enemies;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     public HashMap<Integer, EnemyConfig> fromJSONFile(final String file) {
         String fileContent;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(file), StandardCharsets.UTF_8))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             fileContent = "";
@@ -103,8 +104,9 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         };
     }
 
+    @Override
     public HashMap<Integer, EnemyConfig> getEnemiesConfig() {
-        return this.enemiesConfig;
+        return new HashMap<Integer, EnemyConfig>(this.enemiesConfig);
     }
 
     public int getNEnemyTypes() {

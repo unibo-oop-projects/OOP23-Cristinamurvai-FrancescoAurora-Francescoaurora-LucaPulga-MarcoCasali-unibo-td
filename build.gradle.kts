@@ -29,6 +29,14 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
     implementation("org.json:json:20201115")
+    /*
+     * Simple Logging Facade for Java (SLF4J) with Apache Log4j
+     * See: http://www.slf4j.org/
+     */
+    val slf4jVersion = "2.0.13"
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    // Logback backend for SLF4J
+    runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
 }
 
 application {

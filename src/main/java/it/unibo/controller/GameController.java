@@ -37,9 +37,13 @@ public interface GameController extends GameObserver {
     /**
      * @param name The name of the map to play, chosen from the list in
      * {@link #getAvailableMaps}
-     * @return The instantiated {@link GameMap}
      */
-    GameMap setGameMap(String name);
+    void setGameMap(String name);
+
+    /**
+     * @return The currently set {@link GameMap} 
+     */
+    GameMap getGameMap();
 
     /**
      * Registers a view.

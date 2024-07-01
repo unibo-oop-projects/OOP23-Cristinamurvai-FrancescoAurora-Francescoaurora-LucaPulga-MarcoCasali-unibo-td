@@ -50,10 +50,12 @@ public class DefenseManagerImpl implements DefenseManager {
      */
     @Override
     public void update(final GameState gameState) {
-        towers.forEach(tower -> {
-            tower.attack(gameState.getEnemies());
-            tower.getBullets().forEach(b -> b.update(gameState));
-        });
+        if (!gameState.isPaused()) {
+            towers.forEach(tower -> {
+                tower.attack(gameState.getEnemies());
+                tower.getBullets().forEach(b -> b.update(gameState));
+            });
+        }
     }
 
     /**

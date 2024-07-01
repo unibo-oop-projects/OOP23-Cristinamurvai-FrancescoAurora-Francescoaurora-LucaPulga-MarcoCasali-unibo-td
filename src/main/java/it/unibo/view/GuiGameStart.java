@@ -11,7 +11,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -75,7 +74,8 @@ public class GuiGameStart extends JFrame implements GameView {
      * @param oldGui screen where to upload
      */
     public GuiGameStart(final String mapName, final JPanel oldGui) {
-        final GameMap map = controller.setGameMap(mapName);
+        controller.setGameMap(mapName);
+        final GameMap map = controller.getGameMap();
         oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
 
         // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
@@ -138,7 +138,7 @@ public class GuiGameStart extends JFrame implements GameView {
         // Adding enemies layer and map layer overlapped
         this.layeredPane = new JPanel();
         this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
-        this.enemiesPanel = new EnemiesPanel(new ArrayList<>(), mapPanel.getWidth() / map.getColumns(),
+        this.enemiesPanel = new EnemiesPanel(mapPanel.getWidth() / map.getColumns(),
                 mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
         this.layeredPane.add(this.enemiesPanel);
@@ -191,7 +191,7 @@ public class GuiGameStart extends JFrame implements GameView {
         if (gameState.isGameOver()) {
             showGameOver(gameState.getRoundNumber());
         }
-        if (gameState.getLastRound()) {
+        if (gameState.isLastRound()) {
             showGameWin(gameState.getRoundNumber());
         }
 

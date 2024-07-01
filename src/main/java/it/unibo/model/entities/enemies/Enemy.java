@@ -19,7 +19,7 @@ public interface Enemy extends IMovableEntity {
      *
      * @return the enemy's life points.
      */
-    int getLP();
+    int getCurrentLP();
 
     /**
      * Represents the reward received after killing an enemy.

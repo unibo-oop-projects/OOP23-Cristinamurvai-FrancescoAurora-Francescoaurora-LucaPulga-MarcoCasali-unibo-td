@@ -79,7 +79,7 @@ public class Vector2D {
      * @return New normalized vector.
      */
     public Vector2D normalize() {
-        double length = Math.sqrt(x * x + y * y);
+        final double length = Math.sqrt(x * x + y * y);
         return new Vector2D(this.x / length, this.y / length);
     }
 
@@ -90,8 +90,8 @@ public class Vector2D {
      * @return Normalized direction vector.
      */
     public static Vector2D calculateDirection(final Position2D initiPosition2d, final Position2D endingPosition2d) {
-        double dx = endingPosition2d.x() - initiPosition2d.x();
-        double dy = endingPosition2d.y() - initiPosition2d.y();
+        final double dx = endingPosition2d.x() - initiPosition2d.x();
+        final double dy = endingPosition2d.y() - initiPosition2d.y();
         return new Vector2D(dx, dy).normalize();
     }
 
@@ -108,7 +108,7 @@ public class Vector2D {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Vector2D that = (Vector2D) o;
+        final Vector2D that = (Vector2D) o;
         return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
     }
 

@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -19,7 +19,7 @@ import it.unibo.model.entities.enemies.EnemyState;
  */
 public class EnemiesPanel extends JPanel {
 
-    private ArrayList<Enemy> enemies;
+    private Set<Enemy> enemies;
     private int xCellSize;
     private int yCellSize;
 
@@ -29,8 +29,8 @@ public class EnemiesPanel extends JPanel {
      * @param xCellSize
      * @param yCellSize
      */
-    public EnemiesPanel(final ArrayList<Enemy> enemies, final int xCellSize, final int yCellSize) {
-        this.enemies = enemies;
+    public EnemiesPanel(final int xCellSize, final int yCellSize) {
+        this.enemies = new HashSet<>();
         this.xCellSize = xCellSize;
         this.yCellSize = yCellSize;
     }
@@ -60,7 +60,7 @@ public class EnemiesPanel extends JPanel {
      * @param yCellSize
      */
     public void updateView(final GameState gameState, final int xCellSize, final int yCellSize) {
-        this.enemies = (ArrayList<Enemy>) gameState.getEnemies().stream().collect(Collectors.toList());
+        this.enemies = gameState.getEnemies();
         this.xCellSize = xCellSize;
         this.yCellSize = yCellSize;
         this.revalidate();

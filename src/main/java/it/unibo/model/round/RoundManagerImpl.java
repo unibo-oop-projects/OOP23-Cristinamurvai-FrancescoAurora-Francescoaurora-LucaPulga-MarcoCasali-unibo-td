@@ -141,7 +141,7 @@ public class RoundManagerImpl {
             } else {
                 // check if round finished to spawn and enemies are not alive
                 if (listEnemies.stream().mapToInt(Integer::intValue).sum() == 0
-                        && enemiesManager.getCurrentEnemies().isEmpty()) {
+                        && enemiesManager.noMoreRunningEnemies()) {
                     interrupted = true;
                 }
             }

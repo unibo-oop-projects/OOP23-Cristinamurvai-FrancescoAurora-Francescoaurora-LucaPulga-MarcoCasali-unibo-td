@@ -121,8 +121,8 @@ public class Position2D {
      * @return Distance between the two positions.
      */
     public static double calculateDistance(final Position2D initialPosition2d, final Position2D endingPosition2d) {
-        double deltaX = initialPosition2d.x() - endingPosition2d.x();
-        double deltaY = initialPosition2d.y() - endingPosition2d.y();
+        final double deltaX = initialPosition2d.x() - endingPosition2d.x();
+        final double deltaY = initialPosition2d.y() - endingPosition2d.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
@@ -139,7 +139,7 @@ public class Position2D {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Position2D that = (Position2D) o;
+        final Position2D that = (Position2D) o;
         return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
     }
 

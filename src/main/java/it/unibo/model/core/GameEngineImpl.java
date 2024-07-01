@@ -3,6 +3,9 @@ package it.unibo.model.core;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.model.entities.defense.bullet.Bullet;
 import it.unibo.model.entities.defense.manager.DefenseManager;
 import it.unibo.model.entities.defense.manager.DefenseManagerImpl;
@@ -19,17 +22,17 @@ import it.unibo.model.round.RoundManagerImpl;
  * Implementation of {@link GameEngine}.
  */
 public final class GameEngineImpl implements GameEngine, Runnable {
-
+    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
-    private GameMap map = null;
-    private GameState gameState = null;
+    private GameMap map;
+    private GameState gameState;
     private final Player player = new PlayerImpl();
     private final DefenseManager defenseManager = new DefenseManagerImpl();
     private final EnemiesManager enemiesManager = new EnemiesManagerImpl();
     private final RoundManagerImpl roudManager = new RoundManagerImpl(enemiesManager);
     private final Set<GameObserver> observers = new HashSet<>();
-    private boolean isRunning = false;
-    private boolean isGameOver = false;
+    private boolean isRunning;
+    private boolean isGameOver;
 
     /**
      * {@inheritDoc}
@@ -81,24 +84,40 @@ public final class GameEngineImpl implements GameEngine, Runnable {
      */
     @Override
     public void run() {
+        long start;
         roudManager.startGame(enemiesManager);
         while (!this.gameState.isGameOver()) {
             try {
-                long start = System.currentTimeMillis();
+                start = System.currentTimeMillis();
                 this.updateGameState();
                 this.updateObservers();
                 this.setDamageAndRewards();
-                if (this.gameState.getLastRound()) {
+                if (this.gameState.isLastRound()) {
                     return;
                 }
-                long delta = System.currentTimeMillis() - start;
+                final long delta = System.currentTimeMillis() - start;
                 if (delta < FRAME_LIMIT) {
                     Thread.sleep(FRAME_LIMIT - delta);
                 }
             } catch (final InterruptedException e) {
-                System.err.println("engine interrupt");
+                logger.error("Engine interrupted\n", e);
                 System.exit(0);
             }
+        }
+    }
+
+    @Override
+    public GameMap getGameMap() {
+        return this.map;
+    }
+
+    @Override
+    public void buildTower(final Tower tower) {
+        if (player.getMoney() >= tower.getCost()) {
+            defenseManager.buildTower(tower);
+            player.setMoney(-tower.getCost());
+        } else {
+            tower.setPosition(null);
         }
     }
 
@@ -116,7 +135,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
 
             @Override
             public int getLives() {
-                int tmp = player.getRemainingLives();
+                final int tmp = player.getRemainingLives();
                 if (tmp <= 0) {
                     isGameOver = true;
                 }
@@ -138,10 +157,19 @@ public final class GameEngineImpl implements GameEngine, Runnable {
                 return !isRunning;
             }
 
-            //added here for enemy test
             @Override
             public Set<Enemy> getEnemies() {
                 return enemiesManager.getCurrentEnemies();
+            }
+
+            @Override
+            public int getPLayerReward() {
+                return enemiesManager.getPLayerReward();
+            }
+
+            @Override
+            public int getNumberOfPlayerLivesLost() {
+                return enemiesManager.getNumberOfPlayerLivesLost();
             }
 
             @Override
@@ -155,7 +183,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
             }
 
             @Override
-            public boolean getLastRound() {
+            public boolean isLastRound() {
                 return roudManager.getLastRound();
             }
 
@@ -167,24 +195,11 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     }
 
     private void setDamageAndRewards() {
-        //List<Integer> damageAndRewards = enemiesManager.getDamageAndRewardsFromFinishedEnemies();
-        //player.setMoney(damageAndRewards.get(1));
-        //player.loseLives(damageAndRewards.get(0));
-        player.setMoney(this.enemiesManager.getPLayerReward());
-        player.loseLives(this.enemiesManager.getNumberOfPlayerLivesLost());
+        player.setMoney(this.gameState.getPLayerReward());
+        player.loseLives(this.gameState.getNumberOfPlayerLivesLost());
     }
 
     private void updateObservers() {
         this.observers.forEach(obs -> obs.update(this.gameState));
-    }
-
-    @Override
-    public void buildTower(final Tower tower) {
-        if (player.getMoney() >= tower.getCost()) {
-            defenseManager.buildTower(tower);
-            player.setMoney(-tower.getCost());
-        } else {
-            tower.setPosition(null);
-        }
     }
 }
