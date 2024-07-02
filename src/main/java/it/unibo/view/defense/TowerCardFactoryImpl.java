@@ -37,21 +37,15 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
     private static final int LABEL_IMG_HEIGHT = 200;
 
     /**
-     * Constructor.
-     */
-    public TowerCardFactoryImpl() {
-    }
-
-    /**
      * Creates the defense panel positioned on the right side of the screen.
      *
      * @param tower card representing the tower's info.
      * @return JPanel representing the tower's info.
      */
     private JPanel createTowerCard(final Tower tower) {
-        JPanel card = new JPanel(new BorderLayout());
+        final JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        String tooltipText = "<html><b>Name:</b> " + tower.getName()
+        final String tooltipText = "<html><b>Name:</b> " + tower.getName()
                 + "<br><b>Type:</b> " + tower.getType()
                 + "<br><b>Range:</b> " + tower.getRange()
                 + "<br><b>Cost:</b> " + tower.getCost()
@@ -59,28 +53,27 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
                 + "</html>";
 
         card.setToolTipText(tooltipText);
-        JPanel imgPanel = new JPanel(new BorderLayout());
+        final JPanel imgPanel = new JPanel(new BorderLayout());
         imgPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(tower.getPath())));
+        final JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(tower.getPath())));
         imgLabel.setPreferredSize(new Dimension(LABEL_IMG_WIDTH, LABEL_IMG_HEIGHT));
         imgPanel.add(imgLabel, BorderLayout.NORTH);
         card.add(imgPanel, BorderLayout.NORTH);
 
-        JPanel statsPanel = new JPanel();
+        final JPanel statsPanel = new JPanel();
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        JLabel nameLabel = new JLabel("Name: " + tower.getName());
+        final JLabel nameLabel = new JLabel("Name: " + tower.getName());
         statsPanel.add(nameLabel);
-        JLabel typeLabel = new JLabel("Cost: " + tower.getCost());
+        final JLabel typeLabel = new JLabel("Cost: " + tower.getCost());
         statsPanel.add(typeLabel);
 
         card.add(statsPanel, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton weaponButton = new JButton("Weapons");
+        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        final JButton weaponButton = new JButton("Weapons");
         weaponButton.addActionListener((final ActionEvent e) -> {
-            System.out.println("Weapon button clicked");
             showWeaponDialog(tower);
         });
         buttonPanel.add(weaponButton);
@@ -90,7 +83,6 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
             @Override
             public void mouseClicked(final java.awt.event.MouseEvent evt) {
                 selectedTower = tower;
-                System.out.println("Selected tower: " + tower.getName());
                 if (selectedCard != null) {
                     selectedCard.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 }
@@ -109,7 +101,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      */
     @Override
     public JPanel createDefensePanel(final Set<Tower> towers) {
-        JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        final JPanel towerPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         towers.forEach(tower -> towerPanel.add(createTowerCard(tower)));
         return towerPanel;
     }
@@ -121,33 +113,33 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      */
     @Override
     public void showWeaponDialog(final Tower tower) {
-        JPanel weaponPanel = new JPanel();
+        final JPanel weaponPanel = new JPanel();
         weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.Y_AXIS));
 
-        Set<Weapon> weapons = tower.getWeapons();
-        for (Weapon weapon : weapons) {
-            JPanel weaponInfoPanel = new JPanel(new BorderLayout());
+        final Set<Weapon> weapons = tower.getWeapons();
+        for (final Weapon weapon : weapons) {
+            final JPanel weaponInfoPanel = new JPanel(new BorderLayout());
 
             if (weapon.getPath() != null) {
-                JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(weapon.getPath())));
+                final JLabel imgLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(weapon.getPath())));
                 imgLabel.setPreferredSize(new Dimension(WEAPON_IMG_WIDTH, WEAPON_IMG_HEIGHT));
                 weaponInfoPanel.add(imgLabel, BorderLayout.WEST);
             }
 
-            JPanel specsPanel = new JPanel();
+            final JPanel specsPanel = new JPanel();
             specsPanel.setLayout(new BoxLayout(specsPanel, BoxLayout.Y_AXIS));
 
-            JLabel nameLabel = new JLabel("Name: " + weapon.getName());
+            final JLabel nameLabel = new JLabel("Name: " + weapon.getName());
             specsPanel.add(nameLabel);
 
-            JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
+            final JLabel damageLabel = new JLabel("Frequency: " + weapon.getFrequency());
             specsPanel.add(damageLabel);
 
             weaponInfoPanel.add(specsPanel, BorderLayout.CENTER);
             weaponPanel.add(weaponInfoPanel);
         }
 
-        JDialog dialog = new JDialog((Frame) null, "Weapon Information", true);
+        final JDialog dialog = new JDialog((Frame) null, "Weapon Information", true);
         dialog.setContentPane(weaponPanel);
         dialog.setSize(DIALOG_WIDTH, DIALOG_HEIGHT);
         dialog.setLocationRelativeTo(null);
@@ -162,10 +154,5 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
     @Override
     public Tower getSelectedTower() {
         return this.selectedTower;
-        /*if (this.selectedTower == null) {
-        return null;
-        } else {
-            return new Tower(this.selectedTower);
-        }*/
     }
 }

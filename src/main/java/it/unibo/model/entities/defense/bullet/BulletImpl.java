@@ -72,7 +72,6 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
         // Check if bullet has hit the target enemy.
         if (hasReachedTarget()) {
             this.targetEnemy.getDamage(this.damage);
-            System.out.println("this.targetEnemy.getLP()): " + this.targetEnemy.getCurrentLP());
         }
     }
 
@@ -104,7 +103,9 @@ public class BulletImpl extends AbstractMovableEntity implements Bullet {
      */
     @Override
     public boolean isOutOfBounds() {
-        return this.getPosition().x() < MAP_MIN || this.getPosition().x() > MAP_MAX || this.getPosition().y() < MAP_MIN
-                || this.getPosition().y() > MAP_MAX;
+        return this.getPosition().x() < MAP_MIN 
+        || this.getPosition().x() > MAP_MAX 
+        || this.getPosition().y() < MAP_MIN
+        || this.getPosition().y() > MAP_MAX;
     }
 }

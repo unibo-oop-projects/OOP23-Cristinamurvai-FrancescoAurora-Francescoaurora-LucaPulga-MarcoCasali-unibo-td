@@ -56,6 +56,7 @@ public class BasicTower extends AbstractTower {
 
     /**
      * {@link Tower}'s target method to identify the target {@link Enemy}.
+     * 
      * Target @param enemies available on the map.
      */
     @Override
@@ -71,7 +72,7 @@ public class BasicTower extends AbstractTower {
     @Override
     public void attack(final Set<Enemy> enemies) {
         if (!enemies.isEmpty()) {
-            Optional<Enemy> chosenEnemy = this.target(enemies);
+            final Optional<Enemy> chosenEnemy = this.target(enemies);
             chosenEnemy.ifPresent(enemy -> {
                 this.getAttackStrategy().attack(this, chosenEnemy);
             });

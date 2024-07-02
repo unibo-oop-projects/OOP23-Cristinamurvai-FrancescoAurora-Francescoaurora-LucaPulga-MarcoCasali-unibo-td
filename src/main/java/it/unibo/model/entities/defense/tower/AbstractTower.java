@@ -1,6 +1,7 @@
 package it.unibo.model.entities.defense.tower;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -12,6 +13,7 @@ import it.unibo.model.entities.defense.tower.attack.AttackStrategy;
 import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.defense.weapon.WeaponImpl;
+import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
@@ -85,7 +87,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
         this.targetSelectionStrategy = targetSelectionStrategy;
         this.bullets = new HashSet<>();
     }
-
     /**
      * Get {@link Tower}'s level.
      *
@@ -95,7 +96,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public int getLevel() {
         return this.level;
     }
-
     /**
      * Represents the attackable range from the {@link Tower}.
      *
@@ -105,7 +105,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public double getRange() {
         return this.range;
     }
-
     /**
      * Get {@link Tower}'s associated weapons.
      *
@@ -115,7 +114,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public Set<Weapon> getWeapons() {
         return Set.copyOf(weapons);
     }
-
     /**
      * Get {@link Tower}'s current {@link Weapon}.
      *
@@ -125,7 +123,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public Weapon getCurrentWeapon() {
         return this.currentWeapon;
     }
-
     /**
      * Get {@link Tower}'s cost.
      *
@@ -191,13 +188,26 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public void clearBullets() {
         this.bullets.clear();
     }
-
     /**
      * Update all the {@link Tower}'s {@link Bullet}s position.
      */
     @Override
     public void updateBullets() {
         this.bullets.forEach(b -> b.update(null));
-        bullets.removeIf(bullet -> (bullet.hasReachedTarget() || bullet.isOutOfBounds()));
+        bullets.removeIf(bullet -> bullet.hasReachedTarget() || bullet.isOutOfBounds());
     }
+    /**
+     * {@link Tower}'s target method to identify the target {@link Enemy}.
+     * 
+     * Target @param enemies available on the map.
+     */
+    @Override
+    public abstract Optional<Enemy> target(Set<Enemy> enemies);
+    /**
+     * {@link Tower}'s attack method to attack {@link Enemy}.
+     *
+     * @param enemies available on the map.
+     */
+    @Override
+    public abstract void attack(Set<Enemy> enemies);
 }
