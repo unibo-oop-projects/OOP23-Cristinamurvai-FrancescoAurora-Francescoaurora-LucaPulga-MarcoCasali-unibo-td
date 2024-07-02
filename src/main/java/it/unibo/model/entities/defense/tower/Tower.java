@@ -95,7 +95,6 @@ public interface Tower extends IMovableEntity {
      * @param bullet to add.
      */
     void addBullet(Bullet bullet);
-
     /**
      * Get all active {@link Bullet}s fired from a {@link Tower}.
      *
