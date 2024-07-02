@@ -57,78 +57,6 @@ public class EnemiesManagerImpl implements EnemiesManager {
         buildEnemy(this.gameMap.get(), name, type, imgPath, lp, reward);
     }
 
-     /**
-     * Parses enemies configuration and spawns them in the game.
-     * Used primarily for testing enemy spawning.
-     */
-    @Override
-    public void parseEnemies() {
-        for (Integer key : this.enemiesConfigFactory.getEnemiesConfig().keySet()) {
-            for (int i = 0; i < this.enemiesConfigFactory.getEnemiesConfig().get(key).getQuantity(); i++) {
-                pushEnemy(key);
-            }
-        }
-    }
-
-    /**
-     * Retrieves the number of enemies currently alive and moving.
-     *
-     * @param enemies The list of enemies to check.
-     * @return The number of enemies alive and moving.
-     */
-    @Override
-    public long getEnemiesAlive(final ArrayList<Enemy> enemies) {
-        return this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.MOVING)).count();
-    }
-
-    /**
-     * Retrieves the total number of player lives lost in the game.
-     *
-     * @return The number of player lives lost.
-     */
-    @Override
-    public int getNumberOfPlayerLivesLost() {
-        return this.playerLivesLost;
-    }
-
-    /**
-     * Computes and updates the number of player lives lost based on enemies that have finished their path.
-     *
-     * @return The computed number of player lives lost.
-     */
-    private int computeNumberOfPlayerLivesLost() {
-        final int livesLost = (int) this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED)).count();
-        this.enemies.stream()
-                    .filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
-                    .forEach(enemy -> enemy.deactivate());
-        return livesLost;
-    }
-
-    /**
-     * Retrieves the total reward accumulated by the player.
-     *
-     * @return The total reward accumulated.
-     */
-    @Override
-    public int getPLayerReward() {
-        return this.playerReward;
-    }
-
-    /**
-     * Computes and updates the total reward accumulated by the player based on defeated enemies.
-     *
-     * @return The computed total reward.
-     */
-    private int computePlayerReward() {
-        final int playerReward = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
-                                .mapToInt(Enemy::getReward)
-                                .sum();
-        this.enemies.stream()
-                    .filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
-                    .forEach(enemy -> enemy.deactivate());
-        return playerReward;
-    }
-
     /**
      * Builds a new enemy entity and adds it to the list of enemies to be spawned.
      *
@@ -152,52 +80,29 @@ public class EnemiesManagerImpl implements EnemiesManager {
     }
 
     /**
-     * Retrieves the set of currently active enemies.
+     * Update the state of the game based on the current game state.
+     * Update player lives lost, player reward, and check if there are running enemies.
      *
-     * @return The set of currently active enemies.
+     * @param gameState the current state of the game.
      */
     @Override
-    public Set<Enemy> getCurrentEnemies() {
-        return Set.copyOf(this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()));
-    }
+    public void update(final GameState gameState) {
+        this.playerLivesLost = this.computeNumberOfPlayerLivesLost();
+        this.playerReward = this.computePlayerReward();
+        this.noRunningEnemies = this.checkIfNoEnemiesAlive();
+        this.loadEnemiesInPushQueue();
 
-    /**
-     * Checks if there are no enemies currently alive and active.
-     *
-     * @return true if there are no enemies alive, false otherwise.
-     */
-    private boolean checkIfNoEnemiesAlive() {
-        return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()).isEmpty();
-    }
-
-    /**
-     * Checks if there are no more running enemies in the game.
-     *
-     * @return true if there are no more running enemies, false otherwise.
-     */
-    @Override
-    public boolean noMoreRunningEnemies() {
-        return this.noRunningEnemies;
-    }
-
-    /**
-     * Sets the game map for managing enemy positions and paths.
-     *
-     * @param gameMap The game map to set.
-     */
-    @Override
-    public void setMap(final GameMap gameMap) {
-        this.gameMap = Optional.of(gameMap);
-    }
-
-    /**
-     * Retrieves the number of different enemy types available in the game.
-     *
-     * @return The number of different enemy types.
-     */
-    @Override
-    public int getNEnemyTypes() {
-        return this.enemiesConfigFactory.getNEnemyTypes();
+        for (Enemy enemy : gameState.getEnemies()) {
+            if (enemy.getState().equals(EnemyState.READY)) {
+                enemy.startMoving();
+            }
+            if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt()
+                && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
+                enemy.setDirection(this.gameMap.get().getPathDirection(new Position2D(enemy.getPosition().xInt(),
+                                   enemy.getPosition().yInt())).scale(ENEMY_SPEED_SCALER));
+            }
+            enemy.move();
+        }
     }
 
     /**
@@ -214,29 +119,107 @@ public class EnemiesManagerImpl implements EnemiesManager {
     }
 
     /**
-     * Update the state of the game based on the current game state.
-     * Update player lives lost, player reward, and check if there are running enemies.
+     * Retrieves the set of currently active enemies.
      *
-     * @param gameState the current state of the game.
+     * @return The set of currently active enemies.
      */
     @Override
-    public void update(final GameState gameState) {
-        this.playerLivesLost = this.computeNumberOfPlayerLivesLost();
-        this.playerReward = this.computePlayerReward();
-        this.noRunningEnemies = this.checkIfNoEnemiesAlive();
+    public Set<Enemy> getCurrentEnemies() {
+        return Set.copyOf(this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Retrieves the number of different enemy types available in the game.
+     *
+     * @return The number of different enemy types.
+     */
+    @Override
+    public int getNEnemyTypes() {
+        return this.enemiesConfigFactory.getNEnemyTypes();
+    }
+
+    /**
+     * Retrieves the total number of player lives lost in the game.
+     *
+     * @return The number of player lives lost.
+     */
+    @Override
+    public int getNumberOfPlayerLivesLost() {
+        return this.playerLivesLost;
+    }
+
+    /**
+     * Retrieves the total reward accumulated by the player.
+     *
+     * @return The total reward accumulated.
+     */
+    @Override
+    public int getPLayerReward() {
+        return this.playerReward;
+    }
+
+    /**
+     * Sets the game map for managing enemy positions and paths.
+     *
+     * @param gameMap The game map to set.
+     */
+    @Override
+    public void setMap(final GameMap gameMap) {
+        this.gameMap = Optional.of(gameMap);
+    }
+
+    /**
+     * Checks if there are no more running enemies in the game.
+     *
+     * @return true if there are no more running enemies, false otherwise.
+     */
+    @Override
+    public boolean noMoreRunningEnemies() {
+        return this.noRunningEnemies;
+    }
+
+    /**
+     * Computes and updates the total reward accumulated by the player based on defeated enemies.
+     *
+     * @return The computed total reward.
+     */
+    private int computePlayerReward() {
+        final int playerReward = this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
+                                .mapToInt(Enemy::getReward)
+                                .sum();
+        this.enemies.stream()
+                    .filter(enemy -> enemy.getState().equals(EnemyState.DEAD))
+                    .forEach(enemy -> enemy.deactivate());
+        return playerReward;
+    }
+
+    /**
+     * Computes and updates the number of player lives lost based on enemies that have finished their path.
+     *
+     * @return The computed number of player lives lost.
+     */
+    private int computeNumberOfPlayerLivesLost() {
+        final int livesLost = (int) this.enemies.stream().filter(enemy -> enemy.getState().equals(EnemyState.FINISHED)).count();
+        this.enemies.stream()
+                    .filter(enemy -> enemy.getState().equals(EnemyState.FINISHED))
+                    .forEach(enemy -> enemy.deactivate());
+        return livesLost;
+    }
+
+    /**
+     * Checks if there are no enemies currently alive and active.
+     *
+     * @return true if there are no enemies alive, false otherwise.
+     */
+    private boolean checkIfNoEnemiesAlive() {
+        return this.enemies.stream().filter(e -> e.isAlive()).collect(Collectors.toSet()).isEmpty();
+    }
+
+    /**
+     * Load pushed enemies into enemies list.
+     */
+    private void loadEnemiesInPushQueue() {
         this.enemies.addAll(this.enemiesToPush);
         this.enemiesToPush.clear();
-
-        for (Enemy enemy : gameState.getEnemies()) {
-            if (enemy.getState().equals(EnemyState.READY)) {
-                enemy.startMoving();
-            }
-            if (!(enemy.getPosition().xInt() == this.gameMap.get().getPathEndPosition().xInt()
-                && enemy.getPosition().yInt() == this.gameMap.get().getPathEndPosition().yInt())) {
-                enemy.setDirection(this.gameMap.get().getPathDirection(new Position2D(enemy.getPosition().xInt(),
-                                   enemy.getPosition().yInt())).scale(ENEMY_SPEED_SCALER));
-            }
-            enemy.move();
-        }
     }
 }

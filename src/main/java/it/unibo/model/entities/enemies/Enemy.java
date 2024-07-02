@@ -8,6 +8,38 @@ import it.unibo.model.entities.IMovableEntity;
 public interface Enemy extends IMovableEntity {
 
     /**
+     * Move the enemy of a scalded Vector2D.
+     */
+    void move();
+
+    /**
+     * Run enemy thread.
+     */
+    void startMoving();
+
+    /**
+     * Checks if the enemy is currently alive.
+     *
+     * @return True if the enemy is alive, false otherwise.
+     */
+    boolean isAlive();
+
+    /**
+     * Deactivates the enemy, indicating it is no longer active.
+     */
+    void deactivate();
+
+    /**
+     * Pause the enemy.
+     */
+    void pause();
+
+    /**
+     * Resume the enemy from pause.
+     */
+    void resume();
+
+    /**
      * Represents the actual state of the enemy.
      *
      * @return the state of the enemy.
@@ -42,36 +74,4 @@ public interface Enemy extends IMovableEntity {
      * @return the image path of enemy image.
      */
     String getImagePath();
-
-    /**
-     * Checks if the enemy is currently alive.
-     *
-     * @return True if the enemy is alive, false otherwise.
-     */
-    boolean isAlive();
-
-    /**
-     * Run enemy thread.
-     */
-    void startMoving();
-
-    /**
-     * Deactivates the enemy, indicating it is no longer active.
-     */
-    void deactivate();
-
-    /**
-     * Pause the enemy.
-     */
-    void pause();
-
-    /**
-     * Resume the enemy from pause.
-     */
-    void resume();
-
-    /**
-     * Move the enemy of a scalded Vector2D.
-     */
-    void move();
 }
