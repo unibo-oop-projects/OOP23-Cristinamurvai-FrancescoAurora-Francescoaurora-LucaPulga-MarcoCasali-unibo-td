@@ -155,8 +155,6 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
             final BigDecimal x = BigDecimal.valueOf(this.getPosition().x()).add(BigDecimal.valueOf(this.getDirection().x()));
             final BigDecimal y = BigDecimal.valueOf(this.getPosition().y()).subtract(BigDecimal.valueOf(this.getDirection().y()));
             final Position2D newPosition2d = new Position2D(x.doubleValue(), y.doubleValue());
-            // System.out.println("Enemy " + this.id + "moved from position (" + this.position2d.x() + ", " + this.position2d.y() 
-            // 							+ ") to position (" + x + ", " + y + ")");
             this.setPosition(new Position2D(x.doubleValue(), y.doubleValue()));
             //System.out.println("gli sommo: " + x + " " + y);
             //System.out.println("diventa pos: (" + newPosition2d.x() + ", " + newPosition2d.y() + ")");
@@ -172,7 +170,7 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
      *
      * @param newState The new state to set.
      */
-    public void setState(EnemyState newState) {
+    public void setState(final EnemyState newState) {
         this.enemyState = newState;
     }
 }

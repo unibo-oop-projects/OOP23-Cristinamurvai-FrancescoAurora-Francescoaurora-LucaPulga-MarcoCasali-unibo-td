@@ -13,7 +13,7 @@ public interface EnemiesConfigFactory {
      * @param file the path to the JSON file containing enemy configurations.
      * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
      */
-    HashMap<Integer, EnemyConfig> fromJSONFile(final String file);
+    HashMap<Integer, EnemyConfig> fromJSONFile(String file);
 
     /**
      * Loads enemy configurations from a JSON string.
@@ -21,7 +21,7 @@ public interface EnemiesConfigFactory {
      * @param jsonString the JSON string containing enemy configurations.
      * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
      */
-    HashMap<Integer, EnemyConfig> fromJSON(final String jsonString);
+    HashMap<Integer, EnemyConfig> fromJSON(String jsonString);
 
     /**
      * Enemy configurations.

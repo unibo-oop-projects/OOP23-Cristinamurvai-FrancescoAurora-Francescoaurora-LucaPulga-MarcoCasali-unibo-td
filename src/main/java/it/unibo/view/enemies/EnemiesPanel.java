@@ -15,7 +15,7 @@ import it.unibo.model.entities.enemies.Enemy;
 import it.unibo.model.entities.enemies.EnemyState;
 
 /**
- * .
+ * A JPanel subclass responsible for rendering enemies on the game board.
  */
 public class EnemiesPanel extends JPanel {
 
@@ -24,10 +24,10 @@ public class EnemiesPanel extends JPanel {
     private int yCellSize;
 
     /**
-     * .
-     * @param enemies
-     * @param xCellSize
-     * @param yCellSize
+     * Constructs an EnemiesPanel.
+     *
+     * @param xCellSize The width of each cell in the game grid.
+     * @param yCellSize The height of each cell in the game grid.
      */
     public EnemiesPanel(final int xCellSize, final int yCellSize) {
         this.enemies = new HashSet<>();
@@ -35,6 +35,11 @@ public class EnemiesPanel extends JPanel {
         this.yCellSize = yCellSize;
     }
 
+    /**
+     * Custom paint method to draw the enemies on the panel.
+     * 
+     * @param g The graphics context used for drawing.
+     */
     @Override
     protected final void paintComponent(final Graphics g) {
         super.paintComponent(g);
@@ -54,10 +59,11 @@ public class EnemiesPanel extends JPanel {
     }
 
     /**
-     * .
-     * @param gameState
-     * @param xCellSize
-     * @param yCellSize
+     * Updates the view with the latest game state and cell sizes.
+     * 
+     * @param gameState The current game state containing enemy information.
+     * @param xCellSize The width of each cell in the game grid.
+     * @param yCellSize The height of each cell in the game grid.
      */
     public void updateView(final GameState gameState, final int xCellSize, final int yCellSize) {
         this.enemies = gameState.getEnemies();
