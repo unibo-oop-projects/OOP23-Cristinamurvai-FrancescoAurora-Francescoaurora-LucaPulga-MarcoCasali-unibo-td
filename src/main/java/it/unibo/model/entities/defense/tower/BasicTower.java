@@ -20,7 +20,7 @@ import it.unibo.model.utilities.Vector2D;
 public class BasicTower extends AbstractTower {
 
     /**
-     * Constructor.
+     * Basic tower constructor.
      *
      * @param id
      * @param name
@@ -53,7 +53,6 @@ public class BasicTower extends AbstractTower {
         super(id, name, type, imgPath, position2d, direction2d, cost, level, range, weapons, currentWeapon,
                 attackStrategy, targetSelectionStrategy);
     }
-
     /**
      * {@link Tower}'s target method to identify the target {@link Enemy}.
      * 
@@ -63,7 +62,6 @@ public class BasicTower extends AbstractTower {
     public Optional<Enemy> target(final Set<Enemy> enemies) {
         return this.getTargetSelectionStrategy().selectTarget(this, enemies);
     }
-
     /**
      * {@link Tower}'s attack method to attack {@link Enemy}.
      *
