@@ -18,5 +18,5 @@ public interface TargetSelectionStrategy {
      * @return {@code Optional} {@link Enemy} chosen based on the
      * {@link Tower}'s' target strategy.
      */
-    Optional<Enemy> selectTarget(final Tower tower, final Set<Enemy> enemies);
+    Optional<Enemy> selectTarget(Tower tower, Set<Enemy> enemies);
 }

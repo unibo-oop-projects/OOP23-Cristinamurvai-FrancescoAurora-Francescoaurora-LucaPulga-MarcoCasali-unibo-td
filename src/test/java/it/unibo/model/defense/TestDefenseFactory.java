@@ -1,6 +1,7 @@
 package it.unibo.model.defense;
 
 import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -15,39 +16,62 @@ import it.unibo.model.entities.defense.tower.attack.SingleTargetAttack;
 import it.unibo.model.entities.defense.tower.target.DistanceBasedTargetSelection;
 import it.unibo.model.entities.defense.weapon.Weapon;
 
-public class TestDefenseFactory {
+/**
+ * Test class for the DefenseFactory.
+ */
+class TestDefenseFactory {
 
+    private static final String TOWER_JSON_PATH = "towers/json/tower1.json";
+    private static final int EXPECTED_TOWER_ID = 1;
+    private static final String EXPECTED_TOWER_NAME = "Tower1";
+    private static final String EXPECTED_TOWER_TYPE = "Base";
+    private static final String EXPECTED_TOWER_PATH = "towers/img/tower1.png";
+    private static final int EXPECTED_TOWER_COST = 50;
+    private static final int EXPECTED_TOWER_LEVEL = 1;
+    private static final int EXPECTED_TOWER_RANGE = 10;
+    private static final int EXPECTED_WEAPON_ID = 1;
+    private static final String EXPECTED_WEAPON_NAME = "Weapon1";
+    private static final String EXPECTED_WEAPON_TYPE = "Gun";
+    private static final String EXPECTED_WEAPON_PATH = "weapons/bow.png";
+    private static final int EXPECTED_WEAPON_FREQUENCY = 2;
+
+    /**
+     * Tests loading a tower from a JSON file.
+     * 
+     * @throws IOException if an I/O error occurs
+     */
     @Test
-    public void testLoadTowerFromJson() throws IOException {
-        EntityFactory towerFactory = new EntityFactoryImpl();
-        Tower tower = towerFactory.loadTower("towers/json/tower1.json");
+    void testLoadTowerFromJson() throws IOException {
+        final EntityFactory towerFactory = new EntityFactoryImpl();
+        final Tower tower = towerFactory.loadTower(TOWER_JSON_PATH);
+
         assertNotNull(tower);
-        assertEquals(1, tower.getId());
-        assertEquals("Tower1", tower.getName());
-        assertEquals("Base", tower.getType());
-        assertEquals("towers/img/tower1.png", tower.getPath());
+        assertEquals(EXPECTED_TOWER_ID, tower.getId());
+        assertEquals(EXPECTED_TOWER_NAME, tower.getName());
+        assertEquals(EXPECTED_TOWER_TYPE, tower.getType());
+        assertEquals(EXPECTED_TOWER_PATH, tower.getPath());
         assertNull(tower.getPosition());
         assertNull(tower.getDirection());
-        assertEquals(50, tower.getCost());
-        assertEquals(1, tower.getLevel());
-        assertEquals(10, tower.getRange());
+        assertEquals(EXPECTED_TOWER_COST, tower.getCost());
+        assertEquals(EXPECTED_TOWER_LEVEL, tower.getLevel());
+        assertEquals(EXPECTED_TOWER_RANGE, tower.getRange());
         assertNotNull(tower.getWeapons());
         assertEquals(1, tower.getWeapons().size());
 
-        Weapon weapon = tower.getWeapons().iterator().next();
-        assertEquals(1, weapon.getId());
-        assertEquals("Weapon1", weapon.getName());
-        assertEquals("Gun", weapon.getType());
-        assertEquals("weapons/bow.png", weapon.getPath());
-        assertEquals(2, weapon.getFrequency());
-        
-        Weapon currentWeapon = tower.getCurrentWeapon();
+        final Weapon weapon = tower.getWeapons().iterator().next();
+        assertEquals(EXPECTED_WEAPON_ID, weapon.getId());
+        assertEquals(EXPECTED_WEAPON_NAME, weapon.getName());
+        assertEquals(EXPECTED_WEAPON_TYPE, weapon.getType());
+        assertEquals(EXPECTED_WEAPON_PATH, weapon.getPath());
+        assertEquals(EXPECTED_WEAPON_FREQUENCY, weapon.getFrequency());
+
+        final Weapon currentWeapon = tower.getCurrentWeapon();
         assertNotNull(currentWeapon);
-        assertEquals(1, currentWeapon.getId());
-        assertEquals("Weapon1", currentWeapon.getName());
-        assertEquals("Gun", currentWeapon.getType());
-        assertEquals("weapons/bow.png", currentWeapon.getPath());
-        assertEquals(2, currentWeapon.getFrequency());
+        assertEquals(EXPECTED_WEAPON_ID, currentWeapon.getId());
+        assertEquals(EXPECTED_WEAPON_NAME, currentWeapon.getName());
+        assertEquals(EXPECTED_WEAPON_TYPE, currentWeapon.getType());
+        assertEquals(EXPECTED_WEAPON_PATH, currentWeapon.getPath());
+        assertEquals(EXPECTED_WEAPON_FREQUENCY, currentWeapon.getFrequency());
         assertTrue(tower.getAttackStrategy() instanceof SingleTargetAttack);
         assertTrue(tower.getTargetSelectionStrategy() instanceof DistanceBasedTargetSelection);
     }

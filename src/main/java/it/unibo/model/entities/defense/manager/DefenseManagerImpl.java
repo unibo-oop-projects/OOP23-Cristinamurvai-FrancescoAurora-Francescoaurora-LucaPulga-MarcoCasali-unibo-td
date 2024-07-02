@@ -6,10 +6,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.bullet.Bullet;
+import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
@@ -22,13 +26,8 @@ public class DefenseManagerImpl implements DefenseManager {
 
     private final Set<Tower> towers = new HashSet<>();
     private final EntityFactory towerFactory = new EntityFactoryImpl();
-    private Optional<GameMap> map = Optional.empty();  // Initialize with empty Optional
-
-    /**
-     * Base Costructor.
-     */
-    public DefenseManagerImpl() {
-    }
+    private Optional<GameMap> map = Optional.empty();
+    private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
 
     /**
      * Selected @param tower to be built, chosen by the {@link Player}.
@@ -36,12 +35,12 @@ public class DefenseManagerImpl implements DefenseManager {
     @Override
     public void buildTower(final Tower tower) {
         try {
-            Tower newTower = towerFactory.loadTower("towers/json/tower" + tower.getId() + ".json");
+            final Tower newTower = towerFactory.loadTower("towers/json/tower" + tower.getId() + ".json");
             newTower.setPosition(tower.getPosition());
             map.ifPresent(gameMap -> gameMap.buildTower(newTower));
             towers.add(newTower);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("An error occured while trying building a tower from DefenseManager: " + e);
         }
     }
 

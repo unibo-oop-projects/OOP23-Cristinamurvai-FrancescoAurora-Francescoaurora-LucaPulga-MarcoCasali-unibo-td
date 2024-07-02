@@ -6,20 +6,26 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.defense.bullet.Bullet;
+import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 
 /**
  * Defense panel displayed on the right side of the screen.
  */
 public class DefensePanel extends JPanel {
-
+    private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
+    private static final long serialVersionUID = 1L;
     private Set<Tower> towers;
     private Set<Bullet> bullets;
     private int xCellSize;
@@ -28,14 +34,14 @@ public class DefensePanel extends JPanel {
     /**
      * Base Constructor.
      *
-     * @param bullets
-     * @param towers
-     * @param xCellSize
-     * @param yCellSize
+     * @param towers set of towers.
+     * @param bullets set of bullets.
+     * @param xCellSize size of a cell in x direction.
+     * @param yCellSize size of a cell in y direction.
      */
     public DefensePanel(final Set<Tower> towers, final Set<Bullet> bullets, final int xCellSize, final int yCellSize) {
-        this.towers = towers;
-        this.bullets = bullets;
+        this.towers = new HashSet<>(towers);
+        this.bullets = new HashSet<>(bullets);
         this.xCellSize = xCellSize;
         this.yCellSize = yCellSize;
     }
@@ -46,22 +52,24 @@ public class DefensePanel extends JPanel {
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        for (Tower entity : this.towers) {
+        for (final Tower entity : this.towers) {
             try {
-                BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), (int) (entity.getPosition().x()
-                        * this.xCellSize), (int) (entity.getPosition().y() * this.yCellSize), this);
+                final BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
+                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), 
+                        (int) (entity.getPosition().x() * this.xCellSize), 
+                        (int) (entity.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("An error occured while painting TOWER components: " + e);
             }
         }
-        for (Bullet bullet : this.bullets) {
+        for (final Bullet bullet : this.bullets) {
             try {
-                BufferedImage bulletImage = ImageIO.read(ClassLoader.getSystemResource(bullet.getPath()));
-                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), (int) (bullet.getPosition().x()
-                        * this.xCellSize), (int) (bullet.getPosition().y() * this.yCellSize), this);
+                final BufferedImage bulletImage = ImageIO.read(ClassLoader.getSystemResource(bullet.getPath()));
+                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), 
+                        (int) (bullet.getPosition().x() * this.xCellSize), 
+                        (int) (bullet.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("An error occured while painting BULLET components: " + e);
             }
         }
     }
@@ -69,13 +77,13 @@ public class DefensePanel extends JPanel {
     /**
      * Update view components.
      *
-     * @param gameState
-     * @param xCellSize
-     * @param yCellSize
+     * @param gameState current game state.
+     * @param xCellSize size of a cell in x direction.
+     * @param yCellSize size of a cell in y direction.
      */
     public void updateView(final GameState gameState, final int xCellSize, final int yCellSize) {
-        this.towers = gameState.getTowers();
-        this.bullets = gameState.getBullets();
+        this.towers = new HashSet<>(gameState.getTowers());
+        this.bullets = new HashSet<>(gameState.getBullets());
         this.xCellSize = xCellSize;
         this.yCellSize = yCellSize;
         this.revalidate();
@@ -85,14 +93,14 @@ public class DefensePanel extends JPanel {
     /**
      * Scale images.
      *
-     * @param srcImg
-     * @param width
-     * @param height
+     * @param srcImg source image.
+     * @param width target width.
+     * @param height target height.
      * @return a new scaled image.
      */
     private BufferedImage getScaledImage(final Image srcImg, final int width, final int height) {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
+        final BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        final Graphics2D g2 = resizedImg.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(srcImg, 0, 0, width, height, null);

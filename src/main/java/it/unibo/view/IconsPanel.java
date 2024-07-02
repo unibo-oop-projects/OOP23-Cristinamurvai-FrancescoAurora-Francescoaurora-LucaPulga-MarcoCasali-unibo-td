@@ -14,7 +14,7 @@ import it.unibo.model.core.GameState;
  * Class for icon panel construction.
  */
 public class IconsPanel extends JPanel {
-
+    private static final long serialVersionUID = 1L;
     private final IconLabelPanel lifePanel;
     private final IconLabelPanel roundPanel;
     private final IconLabelPanel timePanel;
