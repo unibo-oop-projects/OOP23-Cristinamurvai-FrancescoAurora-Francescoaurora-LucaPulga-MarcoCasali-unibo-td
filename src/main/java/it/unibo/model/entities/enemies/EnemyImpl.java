@@ -45,6 +45,70 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     }
 
     /**
+     * Moves the enemy along its current direction.
+     * Checks if the enemy has reached the path end position and updates its state.
+     */
+    @Override
+    public void move() {
+        if (this.enemyState.equals(EnemyState.MOVING)) {
+            final BigDecimal x = BigDecimal.valueOf(this.getPosition().x()).add(BigDecimal.valueOf(this.getDirection().x()));
+            final BigDecimal y = BigDecimal.valueOf(this.getPosition().y()).subtract(BigDecimal.valueOf(this.getDirection().y()));
+            final Position2D newPosition2d = new Position2D(x.doubleValue(), y.doubleValue());
+            this.setPosition(new Position2D(x.doubleValue(), y.doubleValue()));
+            if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
+                this.enemyState = EnemyState.FINISHED;
+                this.alive = false;
+            }
+        }
+    }
+
+    /**
+     * Starts moving the enemy.
+     * Changes the state of the enemy to MOVING.
+     */
+    @Override
+    public void startMoving() {
+        this.enemyState = EnemyState.MOVING;
+    }
+
+    /**
+     * Checks if the enemy is alive.
+     *
+     * @return true if the enemy is alive, false otherwise.
+     */
+    @Override
+    public boolean isAlive() {
+        return this.alive;
+    }
+
+    /**
+     * Deactivates the enemy.
+     * Changes the state of the enemy to INACTIVE.
+     */
+    @Override
+    public void deactivate() {
+        this.enemyState = EnemyState.INACTIVE;
+    }
+
+    /**
+     * Pauses the enemy.
+     * Changes the state of the enemy to PAUSED.
+     */
+    @Override
+    public void pause() {
+        this.enemyState = EnemyState.PAUSED;
+    }
+
+    /**
+     * Resumes the enemy after it has been paused.
+     * Changes the state of the enemy back to MOVING.
+     */
+    @Override
+    public void resume() {
+        this.enemyState = EnemyState.MOVING;
+    }
+
+    /**
      * Returns the current state of the enemy.
      *
      * @return the current state of the enemy.
@@ -100,77 +164,5 @@ public class EnemyImpl extends AbstractMovableEntity implements Enemy {
     @Override
     public final String getImagePath() {
         return this.imgPath;
-    }
-
-    /**
-     * Checks if the enemy is alive.
-     *
-     * @return true if the enemy is alive, false otherwise.
-     */
-    @Override
-    public boolean isAlive() {
-        return this.alive;
-    }
-
-    /**
-     * Starts moving the enemy.
-     * Changes the state of the enemy to MOVING.
-     */
-    public void startMoving() {
-        this.enemyState = EnemyState.MOVING;
-    }
-
-    /**
-     * Deactivates the enemy.
-     * Changes the state of the enemy to INACTIVE.
-     */
-    @Override
-    public void deactivate() {
-        this.enemyState = EnemyState.INACTIVE;
-    }
-
-    /**
-     * Pauses the enemy.
-     * Changes the state of the enemy to PAUSED.
-     */
-    public void pause() {
-        this.enemyState = EnemyState.PAUSED;
-    }
-
-    /**
-     * Resumes the enemy after it has been paused.
-     * Changes the state of the enemy back to MOVING.
-     */
-    public void resume() {
-        this.enemyState = EnemyState.MOVING;
-    }
-
-    /**
-     * Moves the enemy along its current direction.
-     * Checks if the enemy has reached the path end position and updates its state.
-     */
-    @Override
-    public void move() {
-        if (this.enemyState.equals(EnemyState.MOVING)) {
-            final BigDecimal x = BigDecimal.valueOf(this.getPosition().x()).add(BigDecimal.valueOf(this.getDirection().x()));
-            final BigDecimal y = BigDecimal.valueOf(this.getPosition().y()).subtract(BigDecimal.valueOf(this.getDirection().y()));
-            final Position2D newPosition2d = new Position2D(x.doubleValue(), y.doubleValue());
-            this.setPosition(new Position2D(x.doubleValue(), y.doubleValue()));
-            //System.out.println("gli sommo: " + x + " " + y);
-            //System.out.println("diventa pos: (" + newPosition2d.x() + ", " + newPosition2d.y() + ")");
-            if (newPosition2d.xInt() == this.pathEndPosition2d.xInt() && newPosition2d.yInt() == this.pathEndPosition2d.yInt()) {
-                this.enemyState = EnemyState.FINISHED;
-                this.alive = false;
-            }
-        }
-    }
-
-    /**
-     * Sets the state of the enemy.
-     *
-     * @param newState The new state to set.
-     */
-    public void setState(final EnemyState newState) {
-        this.enemyState = newState;
     }
 }
