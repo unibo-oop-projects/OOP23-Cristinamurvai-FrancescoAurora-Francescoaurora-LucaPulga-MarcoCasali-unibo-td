@@ -78,7 +78,7 @@ public class GuiGameStart extends JFrame implements GameView {
      * @param guiStart for exit from game
      */
     public GuiGameStart(final String mapName, final JPanel oldGui, final GuiStart guiStart) {
-        this.guiStartOld = guiStart;
+        this.guiStartOld = guiStart != null ? guiStart : null;
         controller.setGameMap(mapName);
         final GameMap map = controller.getGameMap();
         oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
