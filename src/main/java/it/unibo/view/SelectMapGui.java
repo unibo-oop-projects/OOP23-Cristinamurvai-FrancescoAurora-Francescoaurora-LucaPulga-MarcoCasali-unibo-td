@@ -47,9 +47,12 @@ public class SelectMapGui extends JFrame {
     private final JLabel textLabel;
 
     /**
+     * Constructor.
+     *
      * @param oldGui switching the gui panel of the old window
+     * @param guiStart for exit from game
      */
-    public SelectMapGui(final JPanel oldGui) {
+    public SelectMapGui(final JPanel oldGui, final GuiStart guiStart) {
 
         oldGui.setLayout(new BorderLayout());
 
@@ -62,7 +65,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex - 1 + maps.size()) % maps.size();
-                updateImages(oldGui);
+                updateImages(oldGui, guiStart);
             }
         });
 
@@ -86,7 +89,7 @@ public class SelectMapGui extends JFrame {
             public void mouseClicked(final MouseEvent e) {
                 // Update the focusIndex and redraw the images
                 focusIndex = (focusIndex + 1) % maps.size();
-                updateImages(oldGui);
+                updateImages(oldGui, guiStart);
             }
         });
 
@@ -125,7 +128,7 @@ public class SelectMapGui extends JFrame {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex), oldGui);
+                changeGui(maps.get(focusIndex), oldGui, guiStart);
             }
         });
 
@@ -152,8 +155,9 @@ public class SelectMapGui extends JFrame {
      * Update the image when an arrow is clicked.
      *
      * @param oldGui for image calculation
+     * @param guiStart for exit from game
      */
-    private void updateImages(final JPanel oldGui) {
+    private void updateImages(final JPanel oldGui, final GuiStart guiStart) {
         textLabel.setText("Select the map for starting the game. This is " + maps.get(this.focusIndex));
         // Remove previous mouse listeners
         for (final MouseListener adapter : imageLabels.getMouseListeners()) {
@@ -164,7 +168,7 @@ public class SelectMapGui extends JFrame {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 // Change GUI for starting game
-                changeGui(maps.get(focusIndex), oldGui);
+                changeGui(maps.get(focusIndex), oldGui, guiStart);
             }
         });
 
@@ -175,11 +179,12 @@ public class SelectMapGui extends JFrame {
      *
      * @param mapSelected Selected map name
      * @param oldGui panel to pass
+     * @param guiStart for exit from game
      */
-    public void changeGui(final String mapSelected, final JPanel oldGui) {
+    public void changeGui(final String mapSelected, final JPanel oldGui, final GuiStart guiStart) {
         oldGui.removeAll();
         if (guiGameStart == null) {
-            guiGameStart = new GuiGameStart(mapSelected, oldGui);
+            guiGameStart = new GuiGameStart(mapSelected, oldGui, guiStart);
         } else {
             // Ensure SelectMapGui is visible if it's already instantiated
             guiGameStart.setVisible(true);

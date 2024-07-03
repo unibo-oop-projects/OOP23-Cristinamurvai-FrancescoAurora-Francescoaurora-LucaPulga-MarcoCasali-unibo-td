@@ -152,8 +152,7 @@ public class TowerCardFactoryImpl implements TowerCardFactory {
      * @return tower's panel.
      */
     @Override
-    @SuppressWarnings("SpotBugs")
     public Tower getSelectedTower() {
-        return this.selectedTower;
+        return this.selectedTower == null ? null : this.selectedTower;
     }
 }

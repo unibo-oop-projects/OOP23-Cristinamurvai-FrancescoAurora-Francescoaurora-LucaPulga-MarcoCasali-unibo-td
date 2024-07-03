@@ -84,11 +84,12 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
         this.level = level;
         this.range = range;
         this.weapons = new HashSet<>(weapons);
-        this.currentWeapon = currentWeapon;
+        this.currentWeapon = currentWeapon != null ? currentWeapon : null;
         this.attackStrategy = attackStrategy;
         this.targetSelectionStrategy = targetSelectionStrategy;
         this.bullets = new HashSet<>();
     }
+
     /**
      * Get {@link Tower}'s level.
      *
@@ -98,6 +99,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public int getLevel() {
         return this.level;
     }
+
     /**
      * Represents the attackable range from the {@link Tower}.
      *
@@ -107,6 +109,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public double getRange() {
         return this.range;
     }
+
     /**
      * Get {@link Tower}'s associated weapons.
      *
@@ -116,16 +119,17 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public Set<Weapon> getWeapons() {
         return Set.copyOf(weapons);
     }
+
     /**
      * Get {@link Tower}'s current {@link Weapon}.
      *
      * @return {@link Tower}'s current {@link Weapon}.
      */
     @Override
-    @SuppressWarnings("SpotBugs")
     public Weapon getCurrentWeapon() {
-        return this.currentWeapon;
+        return this.currentWeapon == null ? null : this.currentWeapon;
     }
+
     /**
      * Get {@link Tower}'s cost.
      *
@@ -186,6 +190,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
 
     /**
      * Add {@link Bullet}s {@link Tower}.
+     *
      * @param bullet to add.
      */
     @Override
@@ -209,13 +214,15 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
         this.bullets.forEach(b -> b.update(null));
         bullets.removeIf(bullet -> bullet.hasReachedTarget() || bullet.isOutOfBounds());
     }
+
     /**
      * {@link Tower}'s target method to identify the target {@link Enemy}.
-     * 
+     *
      * Target @param enemies available on the map.
      */
     @Override
     public abstract Optional<Enemy> target(Set<Enemy> enemies);
+
     /**
      * {@link Tower}'s attack method to attack {@link Enemy}.
      *

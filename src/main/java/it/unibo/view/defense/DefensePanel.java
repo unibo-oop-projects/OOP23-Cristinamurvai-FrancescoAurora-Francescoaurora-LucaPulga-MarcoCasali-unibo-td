@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.defense.bullet.Bullet;
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 
 /**
@@ -26,9 +27,9 @@ import it.unibo.model.entities.defense.tower.Tower;
 public class DefensePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
-    private Set<Tower> towers; // All fields must either be serializable, but towers will not be serialized.
-    private Set<Bullet> bullets; // All fields must either be serializable, but bullets will not be serialized.
+    private final transient Logger logger = LoggerFactory.getLogger(DefensePanel.class);
+    private transient Set<Tower> towers; // All fields must either be serializable, but towers will not be serialized.
+    private transient Set<Bullet> bullets; // All fields must either be serializable, but bullets will not be serialized.
     private int xCellSize;
     private int yCellSize;
 
@@ -108,5 +109,25 @@ public class DefensePanel extends JPanel {
         g2.dispose();
 
         return resizedImg;
+    }
+
+    // Custom serialization methods to handle transient fields
+    private void writeObject(final ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+        oos.writeObject(new HashSet<>(towers));
+        oos.writeObject(new HashSet<>(bullets));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        towers = (Set<Tower>) ois.readObject();
+        bullets = (Set<Bullet>) ois.readObject();
+        if (towers == null) {
+            towers = new HashSet<>();
+        }
+        if (bullets == null) {
+            bullets = new HashSet<>();
+        }
     }
 }

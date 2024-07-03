@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -79,7 +80,7 @@ public class GuiStart extends JFrame {
 
                 // Initialize SelectMapGui if not already instantiated
                 if (selectMapGui == null) {
-                    selectMapGui = new SelectMapGui(contentPanel);
+                    selectMapGui = new SelectMapGui(contentPanel, GuiStart.this);
                 } else {
                     // Ensure SelectMapGui is visible if it's already instantiated
                     selectMapGui.setVisible(true);
@@ -140,5 +141,12 @@ public class GuiStart extends JFrame {
             return size.width / PROP_BUTTON;
         }
         return size.height / PROP_BUTTON;
+    }
+
+    /**
+     * Closes the game.
+     */
+    public void closeGame() {
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 }
