@@ -14,7 +14,7 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
-    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
+    private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final int ROUND_TIME = 10; //countdown time in seconds
     private Thread countdownThread;
     private Thread sequentialThread;

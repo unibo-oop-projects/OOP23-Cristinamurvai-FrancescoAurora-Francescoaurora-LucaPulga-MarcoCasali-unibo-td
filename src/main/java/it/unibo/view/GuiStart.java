@@ -28,7 +28,8 @@ import it.unibo.model.utilities.ScaledImage;
  */
 public class GuiStart extends JFrame {
 
-    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
+    private static final long serialVersionUID = 1L;
+    private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private final JLabel startButton;
     private final JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
@@ -134,7 +135,7 @@ public class GuiStart extends JFrame {
      * @return image size
      */
     private int calculateDimensions() {
-        Dimension size = super.getSize(); // Use super.getSize() to avoid overwritinga
+        final Dimension size = super.getSize(); // Use super.getSize() to avoid overwritinga
         if (size.width < size.height) {
             return size.width / PROP_BUTTON;
         }

@@ -20,7 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.utilities.ScaledImage;
 
 /**
@@ -28,15 +32,16 @@ import it.unibo.model.utilities.ScaledImage;
  */
 public class SelectMapGui extends JFrame {
 
+    private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
+    private static final long serialVersionUID = 1L;
     private final JLabel imageLabels;
     private int focusIndex;
     private final List<String> maps = new GameControllerImpl().getAvailableMaps();
-    //private final JPanel oldGui;
     private GuiGameStart guiGameStart;
-    private JLabel leftButton;
-    private JLabel rightButton;
-    private transient Image left = null;
-    private transient Image right = null;
+    /*private final JLabel leftButton;
+    private final JLabel rightButton;
+    private transient Image left;
+    private transient Image right;*/
     private static final int DIMENSION_BUTTONS = 100;
     private static final int SPACE_TEXT = 25;
     private final JLabel textLabel;
@@ -45,15 +50,13 @@ public class SelectMapGui extends JFrame {
      * @param oldGui switching the gui panel of the old window
      */
     public SelectMapGui(final JPanel oldGui) {
-        //this.oldGui = oldGui;
 
-        // Set the layout of the contentPane to BorderLayout
         oldGui.setLayout(new BorderLayout());
 
         focusIndex = 0; // Index of the central image
 
         // Button to scroll left
-        this.leftButton = new JLabel();
+        final JLabel leftButton = new JLabel();
         leftButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
@@ -63,11 +66,11 @@ public class SelectMapGui extends JFrame {
             }
         });
 
+        Image left = null;
         try {
             left = ImageIO.read(ClassLoader.getSystemResource("buttons/left.png"));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "buttons/left.png");
+            logger.error("error when retrieving buttons/left.png", e);
         }
 
         leftButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
@@ -77,7 +80,7 @@ public class SelectMapGui extends JFrame {
         oldGui.add(leftButton, BorderLayout.WEST);
 
         // Button to scroll right
-        this.rightButton = new JLabel();
+        final JLabel rightButton = new JLabel();
         rightButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
@@ -87,11 +90,11 @@ public class SelectMapGui extends JFrame {
             }
         });
 
+        Image right = null;
         try {
             right = ImageIO.read(ClassLoader.getSystemResource("buttons/right.png"));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "buttons/right.png");
+            logger.error("error when retrieving buttons/right.png", e);
         }
 
         rightButton.setPreferredSize(new Dimension(DIMENSION_BUTTONS, DIMENSION_BUTTONS));
@@ -105,7 +108,7 @@ public class SelectMapGui extends JFrame {
         oldGui.add(textLabel, BorderLayout.NORTH);
 
         // Panel to contain the images
-        JPanel imagePanel = new JPanel(new FlowLayout());
+        final JPanel imagePanel = new JPanel(new FlowLayout());
 
         // Initialize the array of JLabels
         this.imageLabels = new JLabel();
@@ -126,7 +129,7 @@ public class SelectMapGui extends JFrame {
             }
         });
 
-        ComponentAdapter resize = new ComponentAdapter() {
+        final ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
@@ -153,7 +156,7 @@ public class SelectMapGui extends JFrame {
     private void updateImages(final JPanel oldGui) {
         textLabel.setText("Select the map for starting the game. This is " + maps.get(this.focusIndex));
         // Remove previous mouse listeners
-        for (MouseListener adapter : imageLabels.getMouseListeners()) {
+        for (final MouseListener adapter : imageLabels.getMouseListeners()) {
             imageLabels.removeMouseListener(adapter);
         }
         imageLabels.setIcon(getScalated(maps.get(focusIndex), oldGui));
@@ -176,7 +179,7 @@ public class SelectMapGui extends JFrame {
     public void changeGui(final String mapSelected, final JPanel oldGui) {
         oldGui.removeAll();
         if (guiGameStart == null) {
-            guiGameStart = new GuiGameStart((mapSelected), oldGui);
+            guiGameStart = new GuiGameStart(mapSelected, oldGui);
         } else {
             // Ensure SelectMapGui is visible if it's already instantiated
             guiGameStart.setVisible(true);
@@ -191,36 +194,36 @@ public class SelectMapGui extends JFrame {
      * @return the adapted image
      */
     private ImageIcon getScalated(final String image, final JPanel oldGui) {
-        int widthWitchButton = oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
-        int heightWitchText = oldGui.getHeight() - SPACE_TEXT;
         BufferedImage icon;
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("map_preview/" + image + ".png"));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "map_preview/" + image + ".png");
+            logger.error("error when retrieving map_preview/" + image + ".png", e);
             return null;
         }
+
+        final int widthWitchButton = oldGui.getWidth() - (DIMENSION_BUTTONS * 2);
+        final int heightWitchText = oldGui.getHeight() - SPACE_TEXT;
 
         if (heightWitchText <= 0 || widthWitchButton <= 0) {
             return ScaledImage.getScaledImage(icon, DIMENSION_BUTTONS, DIMENSION_BUTTONS);
         }
 
         // Calculates the proportions of the image
-        double iconAspectRatio = (double) icon.getWidth() / icon.getHeight();
-        double panelAspectRatio = (double) widthWitchButton / heightWitchText;
+        final double iconAspectRatio = (double) icon.getWidth() / icon.getHeight();
+        final double panelAspectRatio = (double) widthWitchButton / heightWitchText;
 
         // Check if the image is wider than the available space
         if (icon.getWidth() > widthWitchButton || icon.getHeight() > heightWitchText) {
             if (panelAspectRatio > iconAspectRatio) {
                 // L'altezza è il fattore limitante
-                int newHeight = heightWitchText;
-                int newWidth = (int) (newHeight * iconAspectRatio);
+                final int newHeight = heightWitchText;
+                final int newWidth = (int) (newHeight * iconAspectRatio);
                 return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             } else {
                 // Width is the limiting factor
-                int newWidth = widthWitchButton;
-                int newHeight = (int) (newWidth / iconAspectRatio);
+                final int newWidth = widthWitchButton;
+                final int newHeight = (int) (newWidth / iconAspectRatio);
                 return ScaledImage.getScaledImage(icon, newWidth, newHeight);
             }
         }
