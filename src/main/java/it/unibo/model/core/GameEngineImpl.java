@@ -30,7 +30,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     private final Player player = new PlayerImpl();
     private final DefenseManager defenseManager = new DefenseManagerImpl();
     private final EnemiesManager enemiesManager = new EnemiesManagerImpl();
-    private final RoundManagerImpl roudManager = new RoundManagerImpl(enemiesManager);
+    private final RoundManagerImpl roundManager = new RoundManagerImpl(enemiesManager);
     private final Set<GameObserver> observers = new HashSet<>();
     private boolean isRunning;
     private boolean isGameOver;
@@ -61,7 +61,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     public void togglePause() {
         this.isRunning = !this.isRunning;
         this.enemiesManager.togglePause();
-        this.roudManager.togglePause();
+        this.roundManager.togglePause();
     }
 
     /**
@@ -86,7 +86,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
     @Override
     public void run() {
         long start;
-        roudManager.startGame(enemiesManager);
+        roundManager.startGame(enemiesManager);
         while (!this.gameState.isGameOver()) {
             try {
                 start = System.currentTimeMillis();
@@ -175,17 +175,17 @@ public final class GameEngineImpl implements GameEngine, Runnable {
 
             @Override
             public String getRoundTime() {
-                return roudManager.getTime();
+                return roundManager.getTime();
             }
 
             @Override
             public int getRoundNumber() {
-                return roudManager.getRound();
+                return roundManager.getRound();
             }
 
             @Override
             public boolean isLastRound() {
-                return roudManager.isLastRound();
+                return roundManager.isLastRound();
             }
 
             @Override

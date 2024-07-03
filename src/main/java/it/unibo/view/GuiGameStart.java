@@ -64,6 +64,7 @@ public class GuiGameStart extends JFrame implements GameView {
     private final transient TowerCardFactory towerCardFactory;
     private static final int WIDTH_SCROLL_PANE = 300;
     private static final int HGAP_BUTTON_GUI = 5;
+    private final GuiStart guiStartOld;
 
     // Add for enemies test
     private final DefensePanel defensePanel;
@@ -74,8 +75,10 @@ public class GuiGameStart extends JFrame implements GameView {
      *
      * @param mapName name of the selected map
      * @param oldGui screen where to upload
+     * @param guiStart for exit from game
      */
-    public GuiGameStart(final String mapName, final JPanel oldGui) {
+    public GuiGameStart(final String mapName, final JPanel oldGui, final GuiStart guiStart) {
+        this.guiStartOld = guiStart;
         controller.setGameMap(mapName);
         final GameMap map = controller.getGameMap();
         oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
@@ -273,7 +276,7 @@ public class GuiGameStart extends JFrame implements GameView {
      *
      * @param round number of rounds played
      */
-    private static void showGameWin(final int round) {
+    private void showGameWin(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
         final JDialog winDialog = new JDialog();
@@ -295,7 +298,7 @@ public class GuiGameStart extends JFrame implements GameView {
      * @param dialog to close jdialog
      * @param round number of rounds played
      */
-    private static void placeWinComponents(final JPanel panel, final JDialog dialog, final int round) {
+    private void placeWinComponents(final JPanel panel, final JDialog dialog, final int round) {
         final int alignmentXLabel = 50;
         final int alignmentYLabel = 20;
         final int widthLabel = 400;
@@ -322,7 +325,7 @@ public class GuiGameStart extends JFrame implements GameView {
         });
     }
 
-    private static void showGameOver(final int round) {
+    private void showGameOver(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
         final JDialog gameOverDialog = new JDialog();
@@ -344,7 +347,7 @@ public class GuiGameStart extends JFrame implements GameView {
      * @param dialog JDialog to close
      * @param round number of rounds played
      */
-    private static void placeGameOverComponents(final JPanel panel, final JDialog dialog, final int round) {
+    private void placeGameOverComponents(final JPanel panel, final JDialog dialog, final int round) {
         final int alignmentXLabel = 50;
         final int alignmentYLabel = 20;
         final int widthLabel = 400;
@@ -374,8 +377,7 @@ public class GuiGameStart extends JFrame implements GameView {
     /**
      * Closes the game.
      */
-    private static void closeGame() {
-        // Effettua eventuali pulizie necessarie qui
-        System.exit(0);
+    private void closeGame() {
+        guiStartOld.closeGame();
     }
 }
