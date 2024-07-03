@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
-import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
@@ -49,7 +48,7 @@ import it.unibo.view.enemies.EnemiesPanel;
  */
 public class GuiGameStart extends JFrame implements GameView {
 
-    private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
+    private final transient Logger logger = LoggerFactory.getLogger(GuiGameStart.class);
     private static final long serialVersionUID = 1L;
     private static final int ICON_DEFAULT_SIZE = 20;
     private static final int ICON_PANEL_SIZE = 50;
@@ -58,36 +57,71 @@ public class GuiGameStart extends JFrame implements GameView {
     private JPanel mapPanel;
     private final Map<JButton, String> tiles = new HashMap<>();
     private final transient GameController controller = new GameControllerImpl();
-    private final IconsPanel iconLabelPanel;
+    private IconsPanel iconLabelPanel;
     private boolean pause;
-    private final JLabel pauseButton;
-    private final transient TowerCardFactory towerCardFactory;
+    private JLabel pauseButton;
+    private transient TowerCardFactory towerCardFactory;
     private static final int WIDTH_SCROLL_PANE = 300;
     private static final int HGAP_BUTTON_GUI = 5;
     private final GuiStart guiStartOld;
-
-    // Add for enemies test
-    private final DefensePanel defensePanel;
-    private final EnemiesPanel enemiesPanel;
+    private DefensePanel defensePanel;
+    private EnemiesPanel enemiesPanel;
 
     /**
-     * constructor method.
+     * Constructor of the GuiGameStart class.
      *
      * @param mapName name of the selected map
-     * @param oldGui screen where to upload
-     * @param guiStart for exit from game
+     * @param oldGui panel to update
+     * @param guiStart to get out of the game
      */
     public GuiGameStart(final String mapName, final JPanel oldGui, final GuiStart guiStart) {
         this.guiStartOld = guiStart != null ? guiStart : null;
         controller.setGameMap(mapName);
-        final GameMap map = controller.getGameMap();
-        oldGui.setLayout(new BorderLayout()); // Main layout with BorderLayout
+        initialize(oldGui);
+    }
 
-        // Sub-panel for the labels ‘Screw and screw image’, ‘Time wave’, ‘Available money’.
+    /**
+     * Explicit initialization method. Should be called after the object has
+     * been fully constructed.
+     *
+     * @param oldGui panel to update
+     */
+    private void initialize(final JPanel oldGui) {
+        final GameMap map = controller.getGameMap();
+
+        // Initialize the main panel
+        oldGui.setLayout(new BorderLayout());
+
+        // Initialize the icon panel
         iconLabelPanel = new IconsPanel(oldGui.getWidth(), ICON_PANEL_SIZE);
         oldGui.add(iconLabelPanel, BorderLayout.NORTH);
 
-        //addming botton paused and settings
+        // Initialize the pause and settings buttons panel
+        initializePauseAndSettingsButtons(oldGui);
+
+        // Create the map and add overlapping panels
+        createAndAddLayeredPanels(map, oldGui);
+
+        // Create and add the tower panel
+        createAndAddTowerPanel(oldGui);
+
+        // Add a listener for map resizing
+        addResizeListener(map);
+
+        // Register the view in the controller and start the game
+        registerViewAndStartGame();
+
+        // Request the container to update the GUI
+        oldGui.revalidate();
+        oldGui.repaint();
+    }
+
+    /**
+     * Initializes the pause and settings buttons.
+     *
+     * @param oldGui panel to update
+     */
+    private void initializePauseAndSettingsButtons(final JPanel oldGui) {
         final JPanel buttonGui = new JPanel(new GridLayout(1, 2, HGAP_BUTTON_GUI, 0));
         Image icon = null;
         try {
@@ -134,9 +168,38 @@ public class GuiGameStart extends JFrame implements GameView {
         iconLabelPanel.add(buttonGui);
 
         oldGui.add(iconLabelPanel, BorderLayout.NORTH);
-        this.createMap(map);
+    }
 
-        // Adding enemies layer and map layer overlapped
+    /**
+     * Creates the map and adds overlapping panels.
+     *
+     * @param map map to display
+     * @param oldGui panel to update
+     */
+    private void createAndAddLayeredPanels(final GameMap map, final JPanel oldGui) {
+        this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
+        map.getTiles().forEach(t -> {
+            final JButton cell = new JButton();
+            cell.setBorderPainted(false);
+            setScaledIcon(cell, t.getSprite(), this.mapPanel.getWidth() / map.getColumns(),
+                    this.mapPanel.getHeight() / map.getRows());
+            cell.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    selectedTower = towerCardFactory.getSelectedTower();
+                    if (selectedTower != null) {
+                        selectedTower.setPosition(t.getPosition());
+                        controller.buildTower(selectedTower);
+                        logger.error("Placed " + selectedTower.getName() + " at cell " + cell.getText() + " {}", e);
+                        selectedTower = null;
+                    }
+                }
+            });
+            this.tiles.put(cell, t.getSprite());
+            this.mapPanel.add(cell);
+        });
+
+        // Add overlapping panels
         final JPanel layeredPane = new JPanel();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         this.enemiesPanel = new EnemiesPanel(mapPanel.getWidth() / map.getColumns(),
@@ -151,7 +214,14 @@ public class GuiGameStart extends JFrame implements GameView {
 
         layeredPane.add(mapPanel);
         oldGui.add(layeredPane, BorderLayout.CENTER);
+    }
 
+    /**
+     * Creates and adds the tower panel.
+     *
+     * @param oldGui panel to update
+     */
+    private void createAndAddTowerPanel(final JPanel oldGui) {
         final EntityFactory entityFactory = new EntityFactoryImpl();
         towerCardFactory = new TowerCardFactoryImpl();
 
@@ -164,7 +234,14 @@ public class GuiGameStart extends JFrame implements GameView {
         } catch (IOException e1) {
             logger.error("Error", e1);
         }
+    }
 
+    /**
+     * Adds a listener for resizing the map panel.
+     *
+     * @param map map to resize
+     */
+    private void addResizeListener(final GameMap map) {
         final ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -172,18 +249,16 @@ public class GuiGameStart extends JFrame implements GameView {
             }
         };
 
-        //if you set this the window will not recognize that the jbutton are scaled,
-        //instead putting the map when it goes to occupy all the space it is assigned to will work
         this.mapPanel.addComponentListener(resize);
         Toolkit.getDefaultToolkit().setDynamicLayout(false);
+    }
 
-        this.controller.registerView(this);
-        this.controller.startGame();
-
-        // Request the container to update the GUI
-        oldGui.revalidate();
-        oldGui.repaint();
-
+    /**
+     * Registers the view in the controller and starts the game.
+     */
+    private void registerViewAndStartGame() {
+        controller.registerView(this);
+        controller.startGame();
     }
 
     @Override
@@ -221,6 +296,7 @@ public class GuiGameStart extends JFrame implements GameView {
      *
      * @param map where to upload the map
      */
+    /*
     private void createMap(final GameMap map) {
         this.mapPanel = new JPanel(new GridLayout(map.getRows(), map.getColumns()));
         map.getTiles().forEach(t -> {
@@ -243,8 +319,7 @@ public class GuiGameStart extends JFrame implements GameView {
             this.tiles.put(cell, t.getSprite());
             this.mapPanel.add(cell);
         });
-    }
-
+    }*/
     /**
      * Scale the image.
      *
