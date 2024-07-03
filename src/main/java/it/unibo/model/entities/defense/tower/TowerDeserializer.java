@@ -15,7 +15,6 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 import it.unibo.model.entities.defense.tower.attack.SingleTargetAttack;
 import it.unibo.model.entities.defense.tower.target.DistanceBasedTargetSelection;
-import it.unibo.model.entities.defense.tower.target.TargetSelectionStrategy;
 import it.unibo.model.entities.defense.weapon.Weapon;
 import it.unibo.model.entities.defense.weapon.WeaponImpl;
 import it.unibo.model.entities.defense.tower.attack.AreaAttack;
@@ -56,7 +55,8 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
         final int cost = node.get("cost").asInt();
         final int level = node.get("level").asInt();
         final int range = node.get("range").asInt();
-        final Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), new TypeReference<Set<WeaponImpl>>() { });
+        final Set<WeaponImpl> weapons = mapper.readValue(node.get("weapons").traverse(), 
+                                                        new TypeReference<Set<WeaponImpl>>() { });
         final Weapon currentWeapon = mapper.treeToValue(node.get("currentWeapon"), WeaponImpl.class);
 
         final String attackStrategyName = node.get("attackStrategy").asText();
@@ -68,18 +68,9 @@ public class TowerDeserializer<T extends Tower> extends StdDeserializer<T> {
             attackStrategy = new AreaAttack();
         }
 
-        final String targetSelectionStrategyName = node.get("targetSelectionStrategy").asText();
-        final TargetSelectionStrategy targetSelectionStrategy;
-
-        if ("DistanceBasedTargetSelection".equals(targetSelectionStrategyName)) {
-            targetSelectionStrategy = new DistanceBasedTargetSelection();
-        } else {
-            targetSelectionStrategy = new DistanceBasedTargetSelection();
-        }
-
         if (towerClass.isAssignableFrom(BasicTower.class)) {
             return towerClass.cast(new BasicTower(id, name, type, imgPath, position2d, direction2d, cost, 
-                level, range, weapons, currentWeapon, attackStrategy, targetSelectionStrategy));
+                level, range, weapons, currentWeapon, attackStrategy, new DistanceBasedTargetSelection()));
         }
         return null;
     }

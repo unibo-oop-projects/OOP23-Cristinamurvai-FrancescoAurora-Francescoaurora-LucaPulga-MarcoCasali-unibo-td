@@ -37,7 +37,7 @@ public class SingleTargetAttack implements AttackStrategy {
                 final Bullet bullet = new BulletImpl(1, "bullet", "base", "bullet/img/bullet.png", tower.getPosition(),
                         direction, BULLET_SPEED, BULLET_DAMAGE, e);
 
-                tower.getBullets().add(bullet);
+                tower.addBullet(bullet);
                 tower.getCurrentWeapon().setLastShotTime(currentTime);
             }
         });

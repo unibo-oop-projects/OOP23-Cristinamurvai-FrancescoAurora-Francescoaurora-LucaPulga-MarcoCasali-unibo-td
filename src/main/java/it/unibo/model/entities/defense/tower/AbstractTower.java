@@ -1,5 +1,6 @@
 package it.unibo.model.entities.defense.tower;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -64,6 +65,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @param targetSelectionStrategy {@link Tower}'s
      */
     @JsonCreator
+    @SuppressWarnings("SpotBugs")
     public AbstractTower(@JsonProperty("id") final int id,
             @JsonProperty("name") final String name,
             @JsonProperty("type") final String type,
@@ -81,7 +83,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
         this.cost = cost;
         this.level = level;
         this.range = range;
-        this.weapons = weapons;
+        this.weapons = new HashSet<>(weapons);
         this.currentWeapon = currentWeapon;
         this.attackStrategy = attackStrategy;
         this.targetSelectionStrategy = targetSelectionStrategy;
@@ -120,6 +122,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @return {@link Tower}'s current {@link Weapon}.
      */
     @Override
+    @SuppressWarnings("SpotBugs")
     public Weapon getCurrentWeapon() {
         return this.currentWeapon;
     }
@@ -178,7 +181,16 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      */
     @Override
     public Set<Bullet> getBullets() {
-        return this.bullets;
+        return Collections.unmodifiableSet(new HashSet<>(this.bullets));
+    }
+
+    /**
+     * Add {@link Bullet}s {@link Tower}.
+     * @param bullet to add.
+     */
+    @Override
+    public void addBullet(final Bullet bullet) {
+        this.bullets.add(bullet);
     }
 
     /**
@@ -188,6 +200,7 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
     public void clearBullets() {
         this.bullets.clear();
     }
+
     /**
      * Update all the {@link Tower}'s {@link Bullet}s position.
      */

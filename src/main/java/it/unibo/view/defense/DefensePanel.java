@@ -25,9 +25,8 @@ import it.unibo.model.entities.defense.tower.Tower;
  */
 public class DefensePanel extends JPanel {
     private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
-    private static final long serialVersionUID = 1L;
-    private Set<Tower> towers;
-    private Set<Bullet> bullets;
+    private Set<Tower> towers; // All fields must either be serializable, but towers will not be serialized.
+    private Set<Bullet> bullets; // All fields must either be serializable, but bullets will not be serialized.
     private int xCellSize;
     private int yCellSize;
 
