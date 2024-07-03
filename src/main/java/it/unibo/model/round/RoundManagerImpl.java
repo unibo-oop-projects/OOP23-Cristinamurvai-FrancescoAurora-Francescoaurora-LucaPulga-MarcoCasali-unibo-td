@@ -3,6 +3,10 @@ package it.unibo.model.round;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.entities.enemies.EnemiesManager;
 
 /**
@@ -10,6 +14,7 @@ import it.unibo.model.entities.enemies.EnemiesManager;
  */
 public class RoundManagerImpl {
 
+    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final int ROUND_TIME = 10; //countdown time in seconds
     private Thread countdownThread;
     private Thread sequentialThread;
@@ -208,7 +213,7 @@ public class RoundManagerImpl {
             try {
                 countdownThread.join();
             } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
+                logger.error("Error when interrupting countdown thread: {}", e);
             }
         }
 
@@ -217,7 +222,7 @@ public class RoundManagerImpl {
             try {
                 sequentialThread.join();
             } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
+                logger.error("Error when interrupting countdown thread: {}", e);
             }
         }
     }
