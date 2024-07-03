@@ -11,9 +11,9 @@
 
 \usepackage[italian]{cleveref}
 
-\title{Meta-relazione per\\``Programmazione ad Oggetti''}
+\title{Relazione per \\``Programmazione ad Oggetti'' \\ \\Progetto ''Unibo-td''}
 
-\author{Danilo Pianini}
+\author{Aurora Francesco, Casali Marco, Murvai Cristina, Pulga Luca}
 \date{04 luglio 2024}
 
 
@@ -36,7 +36,7 @@ Questo documento fornisce una panoramica dei requisiti fondamentali per lo svilu
 
 L'obiettivo del presente documento è definire i requisiti dell'applicazione per il gioco di tipo Tower-Defense ispirato a Bloons TD. Questo gioco sarà progettato per offrire un'esperienza coinvolgente simile al gioco di riferimento, adattata alle specifiche del progetto.
 
-\subsection*{Elementi positivi}
+\subsection*{Requisiti funzionali}
 \begin{itemize}
 	\item Un gioco di tipo Tower Defense è un genere in cui i giocatori devono posizionare torri strategiche lungo un percorso per fermare onde di nemici. Le torri, ciascuna con abilità specifiche, devono essere posizionate strategicamente per prevenire che i nemici raggiungano un punto finale, solitamente la base o un obiettivo.
 	\item Deve essere possibile avviare un nuovo gioco e visualizzare informazioni essenziali come punteggi e stato del gioco.
@@ -51,7 +51,7 @@ L'obiettivo del presente documento è definire i requisiti dell'applicazione per
 	\item Implementare un sistema di gestione economica per guadagnare e spendere monete nelle difese.
 \end{itemize}
 
-\subsection*{Elementi negativi}
+\subsection*{Requisiti non funzionali}
 \begin{itemize}
 	\item Garantire fluidità del gioco su diverse piattaforme, con un'attenzione particolare alla velocità di caricamento dei livelli e all'ottimizzazione generale.
 	\item Assicurare che il gioco sia compatibile con dispositivi desktop supportando almeno le versioni recenti dei principali sistemi operativi (windows, linux, macos).
@@ -60,36 +60,12 @@ L'obiettivo del presente documento è definire i requisiti dell'applicazione per
 
 \section{Analisi e modello del dominio}
 
-In questa sezione si descrive il modello del \textit{dominio
-applicativo}, descrivendo le \textit{entità} in gioco ed i rapporti fra loro.
-%
-Si possono sollevare eventuali aspetti particolarmente impegnativi, descrivendo perché lo sono, senza inserire idee circa possibili soluzioni, ovvero sull'organizzazione interna del software.
-%
-Infatti, la fase di analisi va effettuata \textbf{prima} del progetto: né il progetto né il software esistono nel momento in cui si effettua l'analisi.
-%
-La discussione di aspetti propri del software (ossia, della \textit{soluzione} al problema e non del problema stesso) appartengono alla sfera della progettazione, e vanno discussi successivamente.
+Unibo TD avrà più entità che dovranno collaborare tra loro.
 
-È obbligatorio fornire uno schema UML del dominio, che diventerà anche lo scheletro della
-parte ``entity'' del modello dell'applicazione, ovvero degli elementi costitutivi del modello (in ottica MVC - Model View Controller): se l'analisi è ben fatta, dovreste ottenere una gerarchia di concetti che rappresentano le entità che compongono il problema da risolvere.
-%
-Un'analisi ben svolta \textbf{prima} di cimentarsi con lo sviluppo rappresenta un notevole aiuto per
-le fasi successive: è sufficiente descrivere a parole il dominio, quindi estrarre i sostantivi
-utilizzati, capire il loro ruolo all'interno del problema, le relazioni che intercorrono fra loro, e
-reificarli in interfacce.
-
-\subsection*{Elementi positivi}
+\subsection*{Gestione delle difese}
 \begin{itemize}
-	\item Viene descritto accuratamente il modello del dominio.
-	\item Si modella il dominio in forma di UML, descrivendolo appropriatamente.
-\end{itemize}
-
-\subsection*{Elementi negativi}
-\begin{itemize}
-	\item Manca una descrizione a parole del modello del dominio.
-	\item Manca una descrizione UML delle entità del dominio e delle relazioni che intercorrono fra loro.
-	\item Vengono elencate soluzioni ai problemi, invece della descrizione degli stessi.
-	\item Vengono presentati elementi di design, o peggio, aspetti implementativi.
-	\item Viene mostrato uno schema UML che include elementi implementativi o non utili alla descrizione del dominio, ma volti alla soluzione (non devono vedersi, ad esempio, campi o metodi privati, o cose che non siano equivalenti ad interfacce).
+Il gioco sarà costituito da una mappa. All'interno della mappa saranno presenti delle celle edificabili su cui poter posizionare le proprie difese (\textit{torri}). 
+Le difese sono le unità incaricate a proteggere il punto terminale della mappa. Queste saranno quindi in grado di infliggere danni ai nemici attraverso specifiche logiche di targettamento e di attacco. Ogni tipologia difesa possiederà certe statistiche per poter garantire maggiore eterogeneità al gioco. Per costruire una difesa sarà necessaria una certa quantità di denaro, acquisibile tramite l'eliminazione di nemici nei vari round. Ogni difesa oltre ad avere relative speficifiche e caratteristiche, fra queste figurano anche le \textit{armi} a disposizione di ogni torre, le quali gestiscono la \textit{frequenza} di sparo dei \textit{proiettili} per arrecare danno ai nemici. Ogni proiettile sparato da una determinata torre con una determinata arma, dispone di un certo danno. Ogni qualvolta una difesa sconfigge un nemico, verrà accreditato al \textbf{player} il denaro relativo al nemico sconfitto. Due feature interessanti sarebbero la rimozione e il riposizionamento delle difese sulla mappa nei punti permessi. Queste purtroppo non potranno essere effettuate all’interno del monte ore previsto e conseguentemente si rimanda tale feature in futuro.
 \end{itemize}
 
 \subsection*{Esempio}
