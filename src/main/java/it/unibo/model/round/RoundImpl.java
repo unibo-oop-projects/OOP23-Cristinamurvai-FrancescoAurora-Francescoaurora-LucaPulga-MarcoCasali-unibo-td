@@ -18,7 +18,7 @@ public class RoundImpl implements Round {
     private static final int BOSS_ROUND = 4;
     private static final int ROUND = 5;
     private static final double TIME_BOSS_ROUND = 3.5;
-    private boolean lastRound = false;
+    private boolean lastRound;
 
     /**
      * Constructor.

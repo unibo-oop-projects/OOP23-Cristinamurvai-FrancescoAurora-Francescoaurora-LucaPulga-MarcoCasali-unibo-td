@@ -11,9 +11,9 @@ import it.unibo.model.entities.enemies.EnemiesManager;
 public class RoundManagerImpl {
 
     private static final int ROUND_TIME = 10; //countdown time in seconds
-    private Thread countdownThread = null;
-    private Thread sequentialThread = null;
-    private boolean interrupted = false;
+    private Thread countdownThread;
+    private Thread sequentialThread;
+    private boolean interrupted;
     private int currentTime; // current time in seconds
     private final Object lock = new Object();
     private final Round round;
@@ -22,7 +22,7 @@ public class RoundManagerImpl {
     private final Random random;
     private static final int MINUTES_SECONDS_IN_HOURS_MINUTES = 60;
     private static final double ADVANCEMENT_TIME = 0.1;
-    private boolean isPaused = false;
+    private boolean isPaused;
     private static final int TIME_SLEEP_PAUSE = 500;
 
     /**
