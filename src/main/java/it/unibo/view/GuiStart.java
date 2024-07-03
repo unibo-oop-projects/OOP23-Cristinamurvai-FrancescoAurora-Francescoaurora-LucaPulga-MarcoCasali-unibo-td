@@ -17,6 +17,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.utilities.ScaledImage;
 
 /**
@@ -24,11 +28,12 @@ import it.unibo.model.utilities.ScaledImage;
  */
 public class GuiStart extends JFrame {
 
+    private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private final JLabel startButton;
-    private JPanel contentPanel; // Declared as a class field to make it accessible from other methods
+    private final JPanel contentPanel; // Declared as a class field to make it accessible from other methods
     private SelectMapGui selectMapGui; // Store reference to SelectMapGui instance
     private static final int PROP_BUTTON = 3; // Set custom dimensions for the button
-    private transient Image icon = null;
+    private transient Image icon;
 
     /**
      * Load the game gui.
@@ -48,7 +53,7 @@ public class GuiStart extends JFrame {
         contentPanel.setLayout(new GridBagLayout());
 
         // Create a GridBagConstraints to configure the positioning of the button
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Column position
         gbc.gridy = 0; // Row position
         gbc.insets = new Insets(10, 10, 10, 10); // External margin
@@ -84,14 +89,13 @@ public class GuiStart extends JFrame {
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("buttons/Play.png"));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "buttons/Play.png");
+            logger.error("Error when retrieving buttons/Play.png\"", e);
         }
 
         // Make the frame visible
         this.setVisible(true);
 
-        int initialDimension = calculateDimensions();
+        final int initialDimension = calculateDimensions();
 
         startButton.setPreferredSize(new Dimension(initialDimension, initialDimension));
         // Set the alignment of the button to center
@@ -100,7 +104,7 @@ public class GuiStart extends JFrame {
         // Add the button to the panel with GridBagConstraints specifications
         contentPanel.add(startButton, gbc);
         startButton.setIcon(ScaledImage.getScaledImage(icon, calculateDimensions(), calculateDimensions()));
-        ComponentAdapter resize = new ComponentAdapter() {
+        final ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 resizeImages(startButton);
@@ -119,7 +123,7 @@ public class GuiStart extends JFrame {
      * @param panel panel containing the image
      */
     private void resizeImages(final JLabel panel) {
-        int newDimension = calculateDimensions();
+        final int newDimension = calculateDimensions();
         panel.setPreferredSize(new Dimension(newDimension, newDimension));
         panel.setIcon(ScaledImage.getScaledImage(icon, newDimension, newDimension));
     }
