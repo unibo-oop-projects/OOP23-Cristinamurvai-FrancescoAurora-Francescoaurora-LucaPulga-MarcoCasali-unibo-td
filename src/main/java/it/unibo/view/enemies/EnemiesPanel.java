@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,6 +79,31 @@ public class EnemiesPanel extends JPanel {
         this.yCellSize = yCellSize;
         this.revalidate();
         this.repaint();
+    }
+
+    /**
+     * Custom serialization method to save transient fields.
+     *
+     * @param out The ObjectOutputStream to write the object to.
+     * @throws IOException If an I/O error occurs while writing the object.
+     */
+    private void writeObject(final ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        // No need to explicitly write 'enemies', as it is transient
+    }
+
+    /**
+     * Custom deserialization method to initialize transient fields.
+     *
+     * @param in The ObjectInputStream to read the object from.
+     * @throws IOException If an I/O error occurs while reading the object.
+     * @throws ClassNotFoundException If the class of a serialized object cannot
+     * be found.
+     */
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        // Initialize 'enemies' transient field
+        this.enemies = new HashSet<>();
     }
 
 }
