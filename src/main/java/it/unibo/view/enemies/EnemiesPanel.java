@@ -22,6 +22,8 @@ import it.unibo.model.entities.enemies.EnemyState;
  * A JPanel subclass responsible for rendering enemies on the game board.
  */
 public class EnemiesPanel extends JPanel {
+
+    private static final long serialVersionUID = 1L;
     private final Logger logger = LoggerFactory.getLogger(EnemyImpl.class);
     private Set<Enemy> enemies;
     private int xCellSize;
@@ -41,7 +43,7 @@ public class EnemiesPanel extends JPanel {
 
     /**
      * Custom paint method to draw the enemies on the panel.
-     * 
+     *
      * @param g The graphics context used for drawing.
      */
     @Override
@@ -64,7 +66,7 @@ public class EnemiesPanel extends JPanel {
 
     /**
      * Updates the view with the latest game state and cell sizes.
-     * 
+     *
      * @param gameState The current game state containing enemy information.
      * @param xCellSize The width of each cell in the game grid.
      * @param yCellSize The height of each cell in the game grid.

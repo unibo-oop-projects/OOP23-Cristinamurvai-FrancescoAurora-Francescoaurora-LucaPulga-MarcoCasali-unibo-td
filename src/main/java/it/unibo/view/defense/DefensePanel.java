@@ -24,6 +24,8 @@ import it.unibo.model.entities.defense.tower.Tower;
  * Defense panel displayed on the right side of the screen.
  */
 public class DefensePanel extends JPanel {
+
+    private static final long serialVersionUID = 1L;
     private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
     private Set<Tower> towers; // All fields must either be serializable, but towers will not be serialized.
     private Set<Bullet> bullets; // All fields must either be serializable, but bullets will not be serialized.
@@ -54,8 +56,8 @@ public class DefensePanel extends JPanel {
         for (final Tower entity : this.towers) {
             try {
                 final BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
-                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2), 
-                        (int) (entity.getPosition().x() * this.xCellSize), 
+                g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2),
+                        (int) (entity.getPosition().x() * this.xCellSize),
                         (int) (entity.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 logger.error("An error occured while painting TOWER components: " + e);
@@ -64,8 +66,8 @@ public class DefensePanel extends JPanel {
         for (final Bullet bullet : this.bullets) {
             try {
                 final BufferedImage bulletImage = ImageIO.read(ClassLoader.getSystemResource(bullet.getPath()));
-                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2), 
-                        (int) (bullet.getPosition().x() * this.xCellSize), 
+                g.drawImage(getScaledImage(bulletImage, this.xCellSize / 2, this.yCellSize / 2),
+                        (int) (bullet.getPosition().x() * this.xCellSize),
                         (int) (bullet.getPosition().y() * this.yCellSize), this);
             } catch (IOException e) {
                 logger.error("An error occured while painting BULLET components: " + e);

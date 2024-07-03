@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link RoundImpl}.
  */
-public class TestRound {
+class TestRound {
 
     private RoundImpl round;
     private static final int ENEMIES_BOSS = 11;
@@ -40,14 +40,14 @@ public class TestRound {
      * of a RoundImpl object is as expected.
      */
     @Test
-    public void testInitialValues() {
+    void testInitialValues() {
         assertFalse(round.isLastRound());
         assertEquals(TIME_SPAWN, round.getTimeSpawn());
         assertEquals(0, round.getRoud());
         round.increaseRoud();
         assertEquals(TIME_SPAWN, round.getTimeSpawn());
         assertEquals(ROUND_1, round.getRoud());
-        List<Integer> enemiesSpawn = round.getEnemiesSpawn();
+        final List<Integer> enemiesSpawn = round.getEnemiesSpawn();
         assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
         assertEquals(ENEMIES_SPAWN_ROUND_1, enemiesSpawn.stream().reduce(0, Integer::sum));
     }
@@ -57,7 +57,7 @@ public class TestRound {
      * increases round count and updates enemy spawns.
      */
     @Test
-    public void testIncreaseRoundDefault() {
+    void testIncreaseRoundDefault() {
         round.increaseRoud(); // Round 1
         assertEquals(TIME_SPAWN, round.getTimeSpawn());
         List<Integer> enemiesSpawn = round.getEnemiesSpawn();
@@ -84,13 +84,13 @@ public class TestRound {
      * method correctly sets timeSpawn and adds boss enemies.
      */
     @Test
-    public void testIncreaseRoundBossRound() {
+    void testIncreaseRoundBossRound() {
         for (int i = 0; i < LIVEL_BOSS_15 - 1; i++) {
             round.increaseRoud();
         }
         round.increaseRoud(); // Round 15 (boss round)
         assertEquals(TIME_SPAWN_BOSS, round.getTimeSpawn());
-        List<Integer> enemiesSpawn = round.getEnemiesSpawn();
+        final List<Integer> enemiesSpawn = round.getEnemiesSpawn();
         assertEquals(ENEMIES_SIZE, enemiesSpawn.size());
         assertEquals(ENEMIES_BOSS, enemiesSpawn.get(0));
         assertEquals(ENEMIES_BOSS, enemiesSpawn.get(1));
@@ -104,7 +104,7 @@ public class TestRound {
      * increaseRound method correctly identifies and handles the last round.
      */
     @Test
-    public void testIncreaseRoundLastRound() {
+    void testIncreaseRoundLastRound() {
         for (int i = 0; i < MAX_ROUND + 1; i++) { // Simulate rounds until last round
             round.increaseRoud();
         }

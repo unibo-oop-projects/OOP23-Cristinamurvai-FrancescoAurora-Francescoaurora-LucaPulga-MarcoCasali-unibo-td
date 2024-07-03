@@ -10,18 +10,9 @@ import it.unibo.model.entities.enemies.EnemiesManagerImpl;
 /**
  * Tests for {@link RoundManagerImpl}.
  */
-public class TestRoundManagerImpl {
+class TestRoundManagerImpl {
 
     private RoundManagerImpl roundManager;
-
-    /**
-     * Constructor for TestRoundManagerImpl.
-     */
-    public TestRoundManagerImpl() {
-        // Initialize RoundManagerImpl with a mock EnemiesManager having 3 enemy types
-        EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
-        roundManager = new RoundManagerImpl(mockEnemiesManager);
-    }
 
     /**
      * Sets up a new instance of {@link RoundManagerImpl} before each test.
@@ -29,7 +20,7 @@ public class TestRoundManagerImpl {
     @BeforeEach
     public void setUp() {
         // Initialize RoundManagerImpl with a mock EnemiesManager having 3 enemy types
-        EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
+        final EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
         roundManager = new RoundManagerImpl(mockEnemiesManager);
     }
 
@@ -38,8 +29,8 @@ public class TestRoundManagerImpl {
      * that the game starts correctly and the initial round is 1.
      */
     @Test
-    public void testStartGameAndGetRound() {
-        EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
+    void testStartGameAndGetRound() {
+        final EnemiesManager mockEnemiesManager = new EnemiesManagerImpl();
         roundManager.startGame(mockEnemiesManager);
         assertEquals(1, roundManager.getRound());
     }
