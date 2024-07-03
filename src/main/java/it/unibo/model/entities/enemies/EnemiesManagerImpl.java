@@ -16,6 +16,7 @@ import it.unibo.model.utilities.Vector2D;
  */
 public class EnemiesManagerImpl implements EnemiesManager {
 
+    private static final String FILE_PATH = "enemies/json/enemies_config.json";
     private static final double ENEMY_SPEED_SCALER = 0.05;
 
     private final EnemiesConfigFactoryImpl enemiesConfigFactory;
@@ -32,6 +33,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
      */
     public EnemiesManagerImpl() {
         this.enemiesConfigFactory = new EnemiesConfigFactoryImpl();
+        this.enemiesConfigFactory.fromJSONFile(FILE_PATH);
         this.enemies = new ArrayList<>();
         this.enemiesToPush = new ArrayList<>();
         this.gameMap = Optional.empty();
@@ -70,10 +72,10 @@ public class EnemiesManagerImpl implements EnemiesManager {
     @Override
     public void buildEnemy(final GameMap gameMap, final String enemyName, final String type, final String imgPath,
             final int lp, final int reward) {
-        Position2D spawnPosition = gameMap.getSpawnPosition();
-        Vector2D direction = gameMap.getPathDirection(spawnPosition);
-        Position2D pathEndPosition = gameMap.getPathEndPosition();
-        EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
+        final Position2D spawnPosition = gameMap.getSpawnPosition();
+        final Vector2D direction = gameMap.getPathDirection(spawnPosition);
+        final Position2D pathEndPosition = gameMap.getPathEndPosition();
+        final EnemyImpl newEnemy = new EnemyImpl(this.enemies.size(), enemyName, type, imgPath, spawnPosition,
                 direction, pathEndPosition, lp, reward);
 
         this.enemiesToPush.add(newEnemy);
@@ -92,7 +94,7 @@ public class EnemiesManagerImpl implements EnemiesManager {
         this.noRunningEnemies = this.checkIfNoEnemiesAlive();
         this.loadEnemiesInPushQueue();
 
-        for (Enemy enemy : gameState.getEnemies()) {
+        for (final Enemy enemy : gameState.getEnemies()) {
             if (enemy.getState().equals(EnemyState.READY)) {
                 enemy.startMoving();
             }

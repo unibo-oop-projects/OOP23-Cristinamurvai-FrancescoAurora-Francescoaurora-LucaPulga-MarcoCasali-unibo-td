@@ -10,20 +10,22 @@ import it.unibo.model.entities.enemies.EnemiesConfigFactoryImpl;
  * JUnit test class for {@link EnemiesConfigFactoryImpl}.
  * It verifies the functionality of loading enemy configurations from JSON files and strings.
  */
-public class TestEnemiesConfigFactoryImpl {
-    
+class TestEnemiesConfigFactoryImpl {
+
+    private static final String FILE_PATH = "enemies/json/enemies_config.json";
+
     private static final int FIRST_ENEMY_TYPE = 0;
     private static final int SECOND_ENEMY_TYPE = 1;
     private static final int THIRD_ENEMY_TYPE = 2;
-    
-    private EnemiesConfigFactoryImpl enemiesConfigFactory;
+
+    private final EnemiesConfigFactoryImpl enemiesConfigFactory = new EnemiesConfigFactoryImpl();
 
     /**
-     * Initializes an instance of {@link EnemiesConfigFactoryImpl}.
+     * Load a JSON file and build enemies configs.
      */
     @BeforeEach
     void setUp() {
-        enemiesConfigFactory = new EnemiesConfigFactoryImpl();
+        enemiesConfigFactory.fromJSONFile(FILE_PATH);
     }
 
     /**
@@ -36,5 +38,4 @@ public class TestEnemiesConfigFactoryImpl {
         Assertions.assertEquals("gobby", enemiesConfigFactory.getEnemiesConfig().get(SECOND_ENEMY_TYPE).getEnemyName());
         Assertions.assertEquals("knight", enemiesConfigFactory.getEnemiesConfig().get(THIRD_ENEMY_TYPE).getEnemyName());
     }
-    
 }

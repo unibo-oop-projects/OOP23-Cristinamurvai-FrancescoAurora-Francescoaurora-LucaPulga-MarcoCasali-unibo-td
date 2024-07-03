@@ -10,15 +10,19 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.enemies.Enemy;
+import it.unibo.model.entities.enemies.EnemyImpl;
 import it.unibo.model.entities.enemies.EnemyState;
 
 /**
  * A JPanel subclass responsible for rendering enemies on the game board.
  */
 public class EnemiesPanel extends JPanel {
-
+    private final Logger logger = LoggerFactory.getLogger(EnemyImpl.class);
     private Set<Enemy> enemies;
     private int xCellSize;
     private int yCellSize;
@@ -44,14 +48,14 @@ public class EnemiesPanel extends JPanel {
     protected final void paintComponent(final Graphics g) {
         super.paintComponent(g);
 
-        for (Enemy enemy : this.enemies) {
+        for (final Enemy enemy : this.enemies) {
             if (enemy.getState().equals(EnemyState.MOVING) || enemy.getState().equals(EnemyState.PAUSED)) {
                 try {
-                    BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
+                    final BufferedImage enemyImage = ImageIO.read(new File(enemy.getImagePath()));
                     g.drawImage(enemyImage, (int) (enemy.getPosition().x() * this.xCellSize),
                             (int) (enemy.getPosition().y() * this.yCellSize), this);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("An error occured while painting ENEMIES components: " + e);
                 }
             }
 

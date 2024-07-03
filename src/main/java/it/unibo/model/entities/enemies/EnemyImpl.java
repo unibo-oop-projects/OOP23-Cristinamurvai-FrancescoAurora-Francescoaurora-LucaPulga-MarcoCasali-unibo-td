@@ -12,10 +12,10 @@ import it.unibo.model.utilities.Vector2D;
  */
 public class EnemyImpl extends AbstractMovableEntity implements Enemy {
 
-    private Position2D pathEndPosition2d;
+    private final Position2D pathEndPosition2d;
     private int lp;
-    private int reward;
-    private String imgPath;
+    private final int reward;
+    private final String imgPath;
     private boolean alive;
     private EnemyState enemyState;
 

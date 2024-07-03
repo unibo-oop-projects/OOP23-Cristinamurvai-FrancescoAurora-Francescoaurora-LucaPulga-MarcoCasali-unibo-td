@@ -5,10 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the EnemiesConfigFactory interface.
@@ -16,7 +20,7 @@ import org.json.JSONObject;
  */
 public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
 
-    private static final String FILE_PATH = "enemies/json/enemies_config.json";
+    private final Logger logger = LoggerFactory.getLogger(EnemiesConfigFactoryImpl.class);
     private static final String ENEMIES = "enemies";
     private static final String NAME = "name";
     private static final String TYPE = "type";
@@ -25,35 +29,32 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
     private static final String REWARD = "reward";
     private static final String QUANTITY = "quantity";
 
-    private HashMap<Integer, EnemyConfig> enemiesConfig;
+    private Map<Integer, EnemyConfig> enemiesConfig;
     private int nEnemyTypes;
 
     /**
      * Constructor.
      */
     public EnemiesConfigFactoryImpl() {
-        this.enemiesConfig = fromJSONFile(FILE_PATH);
+        this.enemiesConfig = new HashMap<>();
     }
 
     /**
      * Loads enemy configurations from a JSON file.
      * 
      * @param file the path to the JSON file containing enemy configurations.
-     * @return a HashMap where the keys are enemy IDs and the values are EnemyConfig objects.
      */
     @Override
-    public HashMap<Integer, EnemyConfig> fromJSONFile(final String file) {
+    public void fromJSONFile(final String file) {
         String fileContent;
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(ClassLoader.getSystemResourceAsStream(file), StandardCharsets.UTF_8))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             fileContent = "";
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.err.println("Error when retrieving json file for enemies: " + file);
+            logger.error("Error when retrieving file: {}\n", file, e);
         }
-        return fromJSON(fileContent);
+        this.enemiesConfig = fromJSON(fileContent);
     }
 
     /**
@@ -67,12 +68,12 @@ public class EnemiesConfigFactoryImpl implements EnemiesConfigFactory {
         final JSONObject source = new JSONObject(jsonString);
         final JSONArray enemiesArray = source.getJSONArray(ENEMIES);
 
-        HashMap<Integer, EnemyConfig> enemiesConfig = new HashMap<>();
+        final HashMap<Integer, EnemyConfig> enemiesConfig = new HashMap<>();
 
         this.nEnemyTypes = enemiesArray.length();
 
         for (int i = 0; i < enemiesArray.length(); i++) {
-            JSONObject jObj = enemiesArray.getJSONObject(i);
+            final JSONObject jObj = enemiesArray.getJSONObject(i);
             enemiesConfig.put(i, buildEnemyConfig(jObj.getString(NAME),
                     jObj.getString(TYPE),
                     jObj.getString(IMG_PATH),
