@@ -24,8 +24,8 @@ import it.unibo.model.entities.enemies.EnemyState;
 public class EnemiesPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final Logger logger = LoggerFactory.getLogger(EnemyImpl.class);
-    private Set<Enemy> enemies;
+    private final transient Logger logger = LoggerFactory.getLogger(EnemyImpl.class);
+    private transient Set<Enemy> enemies;
     private int xCellSize;
     private int yCellSize;
 

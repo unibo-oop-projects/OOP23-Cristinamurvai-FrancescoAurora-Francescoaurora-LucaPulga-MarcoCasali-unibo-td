@@ -1,0 +1,54 @@
+classDiagram
+    class EnemyConfig{
+        +getEnemyName() String
+        +getEnemyType() String
+        +getEnemyImgPath() String
+        +getLp() int 
+        +getReward() int
+        +getQuantity() int
+    }
+    class EnemyConfigFactory{
+        +fromJSONFile(file : String) void
+        +fromJSON(jsonString String) Map~Integer, EnemyConfig~ 
+        +getEnemiesConfig() Map~Integer, EnemyConfig~ 
+    }
+    class EnemiesManager{
+      +pushEnemy(id : int) void
+      +buildEnemy(gameMap : gameMap, enemyName : String, type : String, imgPath : String, lp : int, reward : int) void
+      +togglePause() void
+      +getCurrentEnemies() Set~Enemy~
+      +getNEnemyTypes() int
+      +getNumberOfPlayerLivesLost() int
+      +getPLayerReward() int
+      +setMap(gameMap : GameMap) void
+      +noMoreRunningEnemies() boolean
+    }
+    class Enemy{
+      +move() void
+      +startMoving() void
+      +isAlive() boolean
+      +deactivate() void
+      +pause() void
+      +resume() void
+      +getState() EnemyState
+      +getCurrentLP() int
+      +getReward() int
+      +getDamage(damage : int) int
+      +getImagePath() String
+    }
+    class EnemyState{
+        READY
+        MOVING
+        PAUSED
+        DEAD
+        FINISHED
+        INACTIVE
+    }
+
+    <<Enumeration>> EnemyState
+    <<Interface>> EnemiesManager
+    <<Interface>> Enemy
+    <<Interface>> EnemyConfig
+    <<Interface>> EnemyConfigFactory
+    Enemy <-- EnemyState
+    
