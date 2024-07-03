@@ -111,7 +111,7 @@ public class RoundManagerImpl {
     private void runSequentialTask(final EnemiesManager enemiesManager) {
         double seconds = 0;
         double spawnCounter = 0; // counter for the creation of enemies
-        int numEnemiesSpawn = countNonZeroEnemies();
+        final int numEnemiesSpawn = countNonZeroEnemies();
         while (!interrupted) {
             while (isPaused) {
                 try {
@@ -176,7 +176,7 @@ public class RoundManagerImpl {
             if (countdownThread != null && countdownThread.isAlive()) {
                 return " -" + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
-                return "" + secondsToTimeFormat(currentTime);
+                return secondsToTimeFormat(currentTime);
             } else if (round.isLastRound()) {
                 return "You win!";
             } else {
@@ -192,8 +192,8 @@ public class RoundManagerImpl {
      * @return minutes and seconds
      */
     private String secondsToTimeFormat(final int totalSeconds) {
-        int minutes = totalSeconds / MINUTES_SECONDS_IN_HOURS_MINUTES;
-        int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
+        final int minutes = totalSeconds / MINUTES_SECONDS_IN_HOURS_MINUTES;
+        final int seconds = totalSeconds % MINUTES_SECONDS_IN_HOURS_MINUTES;
         return String.format("%02d:%02d", minutes, seconds);
     }
 

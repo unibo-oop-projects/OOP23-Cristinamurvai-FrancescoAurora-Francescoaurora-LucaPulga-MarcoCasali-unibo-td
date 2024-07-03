@@ -38,7 +38,7 @@ public class RoundImpl implements Round {
     @Override
     public final void increaseRoud() {
         rounds++;
-        int tmp = rounds / ROUND;
+        final int tmp = rounds / ROUND;
         //I can increase by a constant value determined by the level/something, e.g. +2 per active type
         //if the type ends then I activate a multiplier which first has a value of 1 so instead of adding 2 it adds 4 then 8 etc.
         if (rounds < numberEnemies * ROUND) {
