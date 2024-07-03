@@ -75,7 +75,7 @@ public class GameMapFactoryImpl implements GameMapFactory {
     public GameMap fromJSONFile(final String fileName) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName), "UTF-8"))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             logger.error("Error when retrieving file: {}\n", fileName, e);
