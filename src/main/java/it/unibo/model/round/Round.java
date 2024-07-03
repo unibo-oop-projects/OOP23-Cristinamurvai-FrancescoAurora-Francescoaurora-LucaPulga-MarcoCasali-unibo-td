@@ -38,5 +38,5 @@ public interface Round {
      *
      * @return answer to the question (true or false)
      */
-    boolean getLastRound();
+    boolean isLastRound();
 }

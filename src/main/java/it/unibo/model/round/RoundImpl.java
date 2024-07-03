@@ -81,7 +81,7 @@ public class RoundImpl implements Round {
     }
 
     @Override
-    public final boolean getLastRound() {
+    public final boolean isLastRound() {
         return lastRound;
     }
 }

@@ -53,7 +53,7 @@ public class RoundManagerImpl {
         round.increaseRoud();
         timeSpawn = round.getTimeSpawn();
         listEnemies = round.getEnemiesSpawn();
-        if (round.getLastRound()) {
+        if (round.isLastRound()) {
             return;
         }
         countdownThread = new Thread(() -> runCountdownTask(enemiesManager));
@@ -177,7 +177,7 @@ public class RoundManagerImpl {
                 return " -" + currentTime + " seconds";
             } else if (sequentialThread != null && sequentialThread.isAlive()) {
                 return "" + secondsToTimeFormat(currentTime);
-            } else if (round.getLastRound()) {
+            } else if (round.isLastRound()) {
                 return "You win!";
             } else {
                 return "No active timers";
@@ -247,7 +247,7 @@ public class RoundManagerImpl {
      * @return answer to the question (true or false)
      */
     public boolean getLastRound() {
-        return round.getLastRound();
+        return round.isLastRound();
     }
 
     /**

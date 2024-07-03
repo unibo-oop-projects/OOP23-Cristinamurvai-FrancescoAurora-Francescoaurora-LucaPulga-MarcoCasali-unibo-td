@@ -41,7 +41,7 @@ public class TestRound {
      */
     @Test
     public void testInitialValues() {
-        assertFalse(round.getLastRound());
+        assertFalse(round.isLastRound());
         assertEquals(TIME_SPAWN, round.getTimeSpawn());
         assertEquals(0, round.getRoud());
         round.increaseRoud();
@@ -108,7 +108,7 @@ public class TestRound {
         for (int i = 0; i < MAX_ROUND + 1; i++) { // Simulate rounds until last round
             round.increaseRoud();
         }
-        assertTrue(round.getLastRound());
+        assertTrue(round.isLastRound());
         assertEquals(MAX_ROUND, round.getRoud());
     }
 }
