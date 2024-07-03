@@ -27,8 +27,12 @@ import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.controller.GameController;
 import it.unibo.controller.GameControllerImpl;
+import it.unibo.model.core.GameEngineImpl;
 import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
@@ -45,27 +49,25 @@ import it.unibo.view.enemies.EnemiesPanel;
  */
 public class GuiGameStart extends JFrame implements GameView {
 
+    private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
+    private static final long serialVersionUID = 1L;
     private static final int ICON_DEFAULT_SIZE = 20;
     private static final int ICON_PANEL_SIZE = 50;
     private static final int ICON_BUTTON_SIZE = 80;
-    private transient Tower selectedTower = null;
+    private transient Tower selectedTower;
     private JPanel mapPanel;
-    private JPanel layeredPane;
-    private JScrollPane scrollPane;
-    private Map<JButton, String> tiles = new HashMap<>();
-    private transient GameController controller = new GameControllerImpl();
-    private IconsPanel iconLabelPanel;
-    private transient Image icon = null;
-    private boolean pause = false;
-    private JLabel pauseButton = null;
-    private transient EntityFactory entityFactory;
-    private transient TowerCardFactory towerCardFactory;
+    private final Map<JButton, String> tiles = new HashMap<>();
+    private final transient GameController controller = new GameControllerImpl();
+    private final IconsPanel iconLabelPanel;
+    private boolean pause;
+    private final JLabel pauseButton;
+    private final transient TowerCardFactory towerCardFactory;
     private static final int WIDTH_SCROLL_PANE = 300;
     private static final int HGAP_BUTTON_GUI = 5;
 
     // Add for enemies test
-    private DefensePanel defensePanel;
-    private EnemiesPanel enemiesPanel;
+    private final DefensePanel defensePanel;
+    private final EnemiesPanel enemiesPanel;
 
     /**
      * constructor method.
@@ -83,13 +85,12 @@ public class GuiGameStart extends JFrame implements GameView {
         oldGui.add(iconLabelPanel, BorderLayout.NORTH);
 
         //addming botton paused and settings
-        JPanel buttonGui = new JPanel(new GridLayout(1, 2, HGAP_BUTTON_GUI, 0));
-
+        final JPanel buttonGui = new JPanel(new GridLayout(1, 2, HGAP_BUTTON_GUI, 0));
+        Image icon = null;
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("buttons/pause.png"));
         } catch (final IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "buttons/pause.png");
+            logger.error("Error when retrieving buttons/pause.png", e);
         }
 
         pauseButton = new JLabel();
@@ -104,15 +105,13 @@ public class GuiGameStart extends JFrame implements GameView {
                     try {
                         tmp = ImageIO.read(ClassLoader.getSystemResource("buttons/pause.png"));
                     } catch (final IOException ex) {
-                        System.err.println(ex.getMessage());
-                        System.err.println("error when retrieving " + "buttons/pause.png");
+                        logger.error("Error when retrieving buttons/pause.png {}", e);
                     }
                 } else {
                     try {
                         tmp = ImageIO.read(ClassLoader.getSystemResource("buttons/playPause.png"));
                     } catch (final IOException ex) {
-                        System.err.println(ex.getMessage());
-                        System.err.println("error when retrieving " + "buttons/playPause.png");
+                        logger.error("Error when retrieving buttons/playPause.png {}", e);
                     }
                 }
                 pause = !pause;
@@ -120,12 +119,11 @@ public class GuiGameStart extends JFrame implements GameView {
             }
         });
 
-        JLabel settingsButton = new JLabel();
+        final JLabel settingsButton = new JLabel();
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource("buttons/settings.png"));
         } catch (final IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + "buttons/settings.png");
+            logger.error("Error when retrieving buttons/settings.png", e);
         }
         settingsButton.setIcon(ScaledImage.getScaledImage(icon, ICON_BUTTON_SIZE, ICON_BUTTON_SIZE));
         buttonGui.add(pauseButton);
@@ -136,35 +134,35 @@ public class GuiGameStart extends JFrame implements GameView {
         this.createMap(map);
 
         // Adding enemies layer and map layer overlapped
-        this.layeredPane = new JPanel();
-        this.layeredPane.setLayout(new OverlayLayout(this.layeredPane));
+        final JPanel layeredPane = new JPanel();
+        layeredPane.setLayout(new OverlayLayout(layeredPane));
         this.enemiesPanel = new EnemiesPanel(mapPanel.getWidth() / map.getColumns(),
                 mapPanel.getHeight() / map.getRows());
         this.enemiesPanel.setOpaque(false);
-        this.layeredPane.add(this.enemiesPanel);
+        layeredPane.add(this.enemiesPanel);
 
         this.defensePanel = new DefensePanel(new HashSet<>(), new HashSet<>(), mapPanel.getWidth() / map.getColumns(),
                 mapPanel.getHeight() / map.getRows());
         this.defensePanel.setOpaque(false);
-        this.layeredPane.add(this.defensePanel);
+        layeredPane.add(this.defensePanel);
 
-        this.layeredPane.add(mapPanel);
-        oldGui.add(this.layeredPane, BorderLayout.CENTER);
+        layeredPane.add(mapPanel);
+        oldGui.add(layeredPane, BorderLayout.CENTER);
 
-        entityFactory = new EntityFactoryImpl();
+        final EntityFactory entityFactory = new EntityFactoryImpl();
         towerCardFactory = new TowerCardFactoryImpl();
 
         try {
-            JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
+            final JPanel towerPanel = towerCardFactory.createDefensePanel(entityFactory.loadAllTowers());
             towerPanel.setLayout(new BoxLayout(towerPanel, BoxLayout.Y_AXIS));
-            scrollPane = new JScrollPane(towerPanel);
+            final JScrollPane scrollPane = new JScrollPane(towerPanel);
             scrollPane.setPreferredSize(new Dimension(WIDTH_SCROLL_PANE, 0));
             oldGui.add(scrollPane, BorderLayout.EAST);
         } catch (IOException e1) {
-            System.err.println(e1.getMessage());
+            logger.error("Error", e1);
         }
 
-        ComponentAdapter resize = new ComponentAdapter() {
+        final ComponentAdapter resize = new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 resizeImages(map);
@@ -234,7 +232,7 @@ public class GuiGameStart extends JFrame implements GameView {
                     if (selectedTower != null) {
                         selectedTower.setPosition(t.getPosition());
                         controller.buildTower(selectedTower);
-                        System.out.println("Placed " + selectedTower.getName() + " at cell " + cell.getText());
+                        logger.error("Placed " + selectedTower.getName() + " at cell " + cell.getText() + " {}", e);
                         selectedTower = null;
                     }
                 }
@@ -265,8 +263,7 @@ public class GuiGameStart extends JFrame implements GameView {
         try {
             icon = ImageIO.read(ClassLoader.getSystemResource(imgPath));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.err.println("error when retrieving " + imgPath);
+            logger.error("error when retrieving " + imgPath, e);
         }
         cell.setIcon(ScaledImage.getScaledImage(icon, finalWidth, finalHeight));
     }
@@ -279,8 +276,8 @@ public class GuiGameStart extends JFrame implements GameView {
     private static void showGameWin(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
-        JDialog winDialog = new JDialog();
-        JPanel panel = new JPanel();
+        final JDialog winDialog = new JDialog();
+        final JPanel panel = new JPanel();
 
         winDialog.setTitle("Game Won");
         winDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -308,14 +305,14 @@ public class GuiGameStart extends JFrame implements GameView {
         final int widthButton = 100;
         final int heightButton = 25;
         panel.setLayout(null);
-        String message = "<html>Congratulations! You have completed the game.<br>"
+        final String message = "<html>Congratulations! You have completed the game.<br>"
                 + "The number of rounds completed is: " + round + ".<br>"
                 + "Press \"Exit\" to leave the game.</html>";
-        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        final JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
         messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
         panel.add(messageLabel);
 
-        JButton exitButton = new JButton("Exit");
+        final JButton exitButton = new JButton("Exit");
         exitButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
         panel.add(exitButton);
 
@@ -328,8 +325,8 @@ public class GuiGameStart extends JFrame implements GameView {
     private static void showGameOver(final int round) {
         final int widthDialog = 500;
         final int heightDialog = 200;
-        JDialog gameOverDialog = new JDialog();
-        JPanel panel = new JPanel();
+        final JDialog gameOverDialog = new JDialog();
+        final JPanel panel = new JPanel();
 
         gameOverDialog.setTitle("Game Over");
         gameOverDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -357,14 +354,14 @@ public class GuiGameStart extends JFrame implements GameView {
         final int widthButton = 100;
         final int heightButton = 25;
         panel.setLayout(null);
-        String message = "<html>Game Over!<br>"
+        final String message = "<html>Game Over!<br>"
                 + "The number of rounds completed is: " + round + ".<br>"
                 + "Press \"Exit\" to leave the game.</html>";
-        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        final JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
         messageLabel.setBounds(alignmentXLabel, alignmentYLabel, widthLabel, heightLabel);
         panel.add(messageLabel);
 
-        JButton exitButton = new JButton("Exit");
+        final JButton exitButton = new JButton("Exit");
         exitButton.setBounds(alignmentXButton, alignmentYButton, widthButton, heightButton);
         panel.add(exitButton);
 
