@@ -102,7 +102,6 @@ public final class GameEngineImpl implements GameEngine, Runnable {
                 }
             } catch (final InterruptedException e) {
                 logger.error("Engine interrupted\n", e);
-                System.exit(0);
             }
         }
     }

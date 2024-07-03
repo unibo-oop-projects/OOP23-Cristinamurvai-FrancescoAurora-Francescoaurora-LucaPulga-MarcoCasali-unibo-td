@@ -31,7 +31,7 @@ public class TileFactoryImpl implements TileFactory {
     public Tile fromJSONFile(final String file) {
         String fileContent = null;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))) {
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(file), "UTF-8"))) {
             fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             logger.error("Error when retrieving file: {}\n", file, e);
