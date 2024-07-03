@@ -246,7 +246,7 @@ public class RoundManagerImpl {
      *
      * @return answer to the question (true or false)
      */
-    public boolean getLastRound() {
+    public boolean isLastRound() {
         return round.isLastRound();
     }
 

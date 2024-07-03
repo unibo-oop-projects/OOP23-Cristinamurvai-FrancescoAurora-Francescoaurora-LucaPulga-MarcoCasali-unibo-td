@@ -22,6 +22,7 @@ import it.unibo.model.round.RoundManagerImpl;
  * Implementation of {@link GameEngine}.
  */
 public final class GameEngineImpl implements GameEngine, Runnable {
+
     private final Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final long FRAME_LIMIT = 20; //minimum time between frames in ms, max 50 per second
     private GameMap map;
@@ -184,7 +185,7 @@ public final class GameEngineImpl implements GameEngine, Runnable {
 
             @Override
             public boolean isLastRound() {
-                return roudManager.getLastRound();
+                return roudManager.isLastRound();
             }
 
             @Override
