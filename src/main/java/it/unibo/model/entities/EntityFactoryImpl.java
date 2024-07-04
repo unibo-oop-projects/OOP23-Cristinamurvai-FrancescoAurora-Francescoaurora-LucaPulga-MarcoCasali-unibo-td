@@ -101,14 +101,15 @@ public class EntityFactoryImpl implements EntityFactory {
         final SimpleModule module = new SimpleModule();
         module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
         objectMapper.registerModule(module);
-    
+
         try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource(TOWERS_RESOURCES).toURI()))) {
             return paths
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(JSON_EXTENSION))
                     .map(path -> {
-                        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(path), "UTF-8"))) {
-                            String jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+                        try (BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(Files.newInputStream(path), "UTF-8"))) {
+                            final String jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
                             return objectMapper.readValue(jsonString, BasicTower.class);
                         } catch (IOException e) {
                             logger.error("Failed to read tower JSON file at " + path + ": " + e.getMessage(), e);
@@ -122,7 +123,7 @@ public class EntityFactoryImpl implements EntityFactory {
             throw new IOException("Failed to retrieve towers resources", e);
         }
     }
-    
+
     /**
      * Utility method to read from files. File's
      *
