@@ -1,6 +1,6 @@
 {
   "id": 1,
-  "name": "Tower1",
+  "name": "Archery Tower",
   "type": "Base",
   "imgPath": "towers/img/tower1.png",
   "position2d": null,
@@ -11,7 +11,7 @@
   "weapons": [
     {
       "id": 1,
-      "name": "Weapon1",
+      "name": "Bow",
       "type": "Gun",
       "imgPath": "weapons/bow.png",
       "frequency": 2
@@ -19,7 +19,7 @@
   ],
   "currentWeapon": {
     "id": 1,
-    "name": "Weapon1",
+    "name": "Bow",
     "type": "Gun",
     "imgPath": "weapons/bow.png",
     "frequency": 2

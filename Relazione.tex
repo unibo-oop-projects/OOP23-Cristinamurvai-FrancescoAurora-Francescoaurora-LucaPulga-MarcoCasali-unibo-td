@@ -99,9 +99,9 @@ Un'ulteriore soluzione poteva essere quella di utilizzare solo interfacce e come
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.6: Le difese sono generate da una factory.}
-    \label{fig:enter-label}
+    \includegraphics[width=1.2\linewidth]{defense_model.JPG}
+    \caption{Figura 2.2: Modello per la gestione delle entità.}
+    \label{fig:defense-model}
 \end{figure}
 
 \textbf{Problema}:
@@ -109,14 +109,14 @@ Disporre di un oggetto in grado di poter creare qualsiasi tipo di entità, centr
 durante il gioco.
 
 \textbf{Soluzione}:
-Viene utilizzato il \textit{Factory} \textit{Pattern} in modo da sfruttare la sua capacità di separare la costruzione degli oggetti dal loro utilizzo. Dunque questa separazione ci consente di avere una maggiore flessibilità e modularità del codice, rendendolo più facile da mantenere e aggiornare anche introducendo in futuro nuove entità o separare in sotto-entità quelle già esistenti. 
+Viene utilizzato il \textit{Factory Method Pattern} in modo da sfruttare la sua capacità di separare la costruzione degli oggetti dal loro utilizzo. Dunque questa separazione ci consente di avere una maggiore flessibilità e modularità del codice, rendendolo più facile da mantenere e aggiornare anche introducendo in futuro nuove entità o separare in sotto-entità quelle già esistenti. 
 La \textit{Factory} provvederà a leggere i file json all'interno di specifiche cartelle per caricare
 le entità, come le \textit{torri}, che saranno poi successivamente gestite dal \textit{Defense Manager}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.6: Le difese sono generate da una factory.}
-    \label{fig:entity-factory}
+    \includegraphics[width=0.8\linewidth]{entity-factory-method.jpg}
+    \caption{Figura 2.3: Factory Method Pattern per il caricamento delle entità.}
+    \label{fig:entity-factory-method}
 \end{figure}
 
 \textbf{Problema}:
@@ -126,9 +126,9 @@ La soluzione prevedere l'implementazione di un Defense Manager in grado di gesti
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.6: Le difese sono generate da una factory.}
-    \label{fig:enter-label}
+    \includegraphics[width=0.8\linewidth]{defense-manager.jpg}
+    \caption{Figura 2.4: Defense Manager per la gestione delle difese.}
+    \label{fig:defense-manager}
 \end{figure}
 
 
@@ -139,21 +139,36 @@ Implementazione Observer.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.6: Le difese sono generate da una factory.}
-    \label{fig:enter-label}
+    \includegraphics[width=0.8\linewidth]{defense-observer.jpg}
+    \caption{Figura 2.5: Defense Manager e Observer.}
+    \label{fig:defense-observer}
 \end{figure}
 
 \textbf{Problema}:
-Pattern Strategy.
+Implementazione di diverse tipologie di targettamento dei nemici da parte delle torri a seconda della loro tipologia.
 \textbf{Soluzione}:
+Si implementa il Pattern Strategy, in questo modo il contesto diventa indipendente dalle strategie concrete di targettamento dei nemici, per cui è possibile aggiungere/modificare gli algoritmi di targettamento senza modificare il codice all'interno delle varie classi che potrebbero implementare la relativa strategia di attacco.
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.6: Le difese sono generate da una factory.}
-    \label{fig:enter-label}
+    \includegraphics[width=0.8\linewidth]{defense_target.JPG}
+    \caption{Figura 2.6: Pattern Strategy per targettamento dei nemici.}
+    \label{fig:defense_target}
+\end{figure}
+
+
+
+\textbf{Problema}:
+Implementazione di diverse tipologie di attacchi verso i nemici da parte delle torri a seconda della loro tipologia.
+\textbf{Soluzione}:
+Si implementa il Pattern Strategy, in questo modo il contesto diventa indipendente dalle strategie concrete di attacco verso i nemici, per cui è possibile aggiungere/modificare gli algoritmi di attacco senza modificare il codice all'interno delle varie classi che potrebbero implementare la relativa strategia di attacco.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{defense_attack.JPG}
+    \caption{Figura 2.7: Pattern Strategy per attacco ai nemici.}
+    \label{fig:defense_attack}
 \end{figure}
 
 
@@ -165,7 +180,7 @@ I test automatizzati sono necessari per poter testare se le logiche pensate dura
 \begin{itemize}
     \item \textit{\textbf{TestBasicTower}:} Test automatizzato per garantire la correttezza dei metodi di get e set delle difese torri per poter gestire durante il gioco le sue proprietà.
     \item \textit{\textbf{TestBulletImpl}:} Test automatizzato per garantire la correttezza dei metodi di get e set della posizione e direzione del proiettile, fondamentale per la gestione grafica del gioco.
-    \item \textit{\textbf{TestDefenseFactory}:} Test automatizzato per garantire la correttezza di lettura da file json delle entità torri attraverso l'utilizzo della \ref{fig:entity-factory}EntityFactory
+    \item \textit{\textbf{TestDefenseFactory}:} Test automatizzato per garantire la correttezza di lettura da file json delle entità torri attraverso l'utilizzo della \ref{fig:entity-factory-method}EntityFactory
     \item \textit{\textbf{TestTargetStrategy}:} Test automatizzato per garantire la correttezza dei calcoli effettuati durante la fase di targettamento di nemici da parte delle torri.
 \end{itemize}
 
