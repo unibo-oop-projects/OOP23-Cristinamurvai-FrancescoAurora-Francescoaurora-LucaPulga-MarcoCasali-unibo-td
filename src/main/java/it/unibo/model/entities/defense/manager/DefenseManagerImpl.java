@@ -13,7 +13,6 @@ import it.unibo.model.core.GameState;
 import it.unibo.model.entities.EntityFactory;
 import it.unibo.model.entities.EntityFactoryImpl;
 import it.unibo.model.entities.defense.bullet.Bullet;
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.map.GameMap;
 import it.unibo.model.player.Player;
@@ -27,7 +26,7 @@ public class DefenseManagerImpl implements DefenseManager {
     private final Set<Tower> towers = new HashSet<>();
     private final EntityFactory towerFactory = new EntityFactoryImpl();
     private Optional<GameMap> map = Optional.empty();
-    private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(DefenseManagerImpl.class);
 
     /**
      * Selected @param tower to be built, chosen by the {@link Player}.
