@@ -21,22 +21,19 @@
 
 \maketitle
 
-\begin{abstract}
-Questa relazione descrive lo sviluppo del progetto "Unibo TD", un gioco di tipo tower defense, utilizzando il pattern architetturale MVC (Model-View-Controller). Lo scopo di questo documento è fornire una guida dettagliata sul processo di sviluppo, evidenziando i principali punti da trattare e come farlo in modo efficace, evitando di soffermarsi su aspetti marginali e concentrandosi su quelli di maggiore rilevanza.
-\end{abstract}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{intro.jpg}
-    \caption{Schermata di un tipico gioco Tower-Defense}
-    \label{fig:enter-label}
-\end{figure}
-
 \tableofcontents
 
 \chapter{Analisi}
 
 Questo documento fornisce una panoramica dei requisiti fondamentali per lo sviluppo del gioco Tower-Defense ispirato a Bloons TD. I requisiti tecnici dettagliati e le specifiche implementative saranno trattati in fasi successive del processo di sviluppo, mantenendo il focus sul comportamento e le funzionalità dell'applicazione.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{intro.jpg}
+    \caption{Schermata di un tipico gioco Tower-Defense}
+    \label{fig:enter-label}
+\end{figure}
+
 
 \section{Requisiti}
 
@@ -61,7 +58,6 @@ L'obiettivo del presente documento è definire i requisiti dell'applicazione per
 \begin{itemize}
 	\item Garantire fluidità del gioco su diverse piattaforme, con un'attenzione particolare alla velocità di caricamento dei livelli e all'ottimizzazione generale.
 	\item Assicurare che il gioco sia compatibile con dispositivi desktop supportando almeno le versioni recenti dei principali sistemi operativi (windows, linux, macos).
-	\item Il linguaggio di porgrammazione adottato sarà Java
 \end{itemize}
 
 \section{Analisi e modello del dominio}
@@ -82,7 +78,7 @@ L'architettura dell'applicazione sviluppata si basa sul modello architetturale M
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{todo.jpg}
-    \caption{Figura 2.1: Architettura MVC}
+    \caption{Architettura MVC}
     \label{fig:enter-label}
 \end{figure}
 \section{Design dettagliato}
@@ -100,9 +96,11 @@ Un'ulteriore soluzione poteva essere quella di utilizzare solo interfacce e come
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.2\linewidth]{defense_model.JPG}
-    \caption{Figura 2.2: Modello per la gestione delle entità.}
+    \caption{Modello per la gestione delle entità.}
     \label{fig:defense-model}
 \end{figure}
+
+\vspace{15mm}
 
 \textbf{Problema}:
 Disporre di un oggetto in grado di poter creare qualsiasi tipo di entità, centralizzando la parte di creazione degli oggetti che verranno caricati e successivamente utilizzati
@@ -115,10 +113,10 @@ le entità, come le \textit{torri}, che saranno poi successivamente gestite dal 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{entity-factory-method.jpg}
-    \caption{Figura 2.3: Factory Method Pattern per il caricamento delle entità.}
+    \caption{Factory Method Pattern per il caricamento delle entità.}
     \label{fig:entity-factory-method}
 \end{figure}
-
+\vspace{25mm}
 \textbf{Problema}:
 Gestione delle istanze delle torri senza avere un'entità centralizzata.
 \textbf{Soluzione}:
@@ -127,11 +125,11 @@ La soluzione prevedere l'implementazione di un Defense Manager in grado di gesti
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{defense-manager.jpg}
-    \caption{Figura 2.4: Defense Manager per la gestione delle difese.}
+    \caption{Defense Manager per la gestione delle difese.}
     \label{fig:defense-manager}
 \end{figure}
 
-
+\vspace{50mm}
 \textbf{Problema}:
 Implementazione Observer.
 \textbf{Soluzione}:
@@ -143,7 +141,7 @@ Implementazione Observer.
     \caption{Figura 2.5: Defense Manager e Observer.}
     \label{fig:defense-observer}
 \end{figure}
-
+\vspace{50mm}
 \textbf{Problema}:
 Implementazione di diverse tipologie di targettamento dei nemici da parte delle torri a seconda della loro tipologia.
 \textbf{Soluzione}:
@@ -153,7 +151,7 @@ Si implementa il Pattern Strategy, in questo modo il contesto diventa indipenden
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{defense_target.JPG}
-    \caption{Figura 2.6: Pattern Strategy per targettamento dei nemici.}
+    \caption{Pattern Strategy per targettamento dei nemici.}
     \label{fig:defense_target}
 \end{figure}
 
@@ -167,7 +165,7 @@ Si implementa il Pattern Strategy, in questo modo il contesto diventa indipenden
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{defense_attack.JPG}
-    \caption{Figura 2.7: Pattern Strategy per attacco ai nemici.}
+    \caption{Pattern Strategy per attacco ai nemici.}
     \label{fig:defense_attack}
 \end{figure}
 

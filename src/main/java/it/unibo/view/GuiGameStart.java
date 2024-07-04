@@ -190,7 +190,7 @@ public class GuiGameStart extends JFrame implements GameView {
                     if (selectedTower != null) {
                         selectedTower.setPosition(t.getPosition());
                         controller.buildTower(selectedTower);
-                        logger.error("Placed " + selectedTower.getName() + " at cell " + cell.getText() + " {}", e);
+                        logger.info("Placed " + selectedTower.getName() + " at cell " + cell.getText() + " {}", e);
                         selectedTower = null;
                     }
                 }

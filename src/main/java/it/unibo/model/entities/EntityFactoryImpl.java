@@ -4,24 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import it.unibo.model.entities.defense.bullet.BulletImpl;
 import it.unibo.model.entities.defense.tower.BasicTower;
 import it.unibo.model.entities.defense.tower.Tower;
 import it.unibo.model.entities.defense.tower.TowerDeserializer;
@@ -33,9 +26,7 @@ import it.unibo.model.utilities.Vector2D;
  */
 public class EntityFactoryImpl implements EntityFactory {
 
-    private static final String JSON_EXTENSION = ".json";
-    private static final String TOWERS_RESOURCES = "towers/json/";
-    private final Logger logger = LoggerFactory.getLogger(BulletImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(EntityFactoryImpl.class);
 
     /**
      * Load a generic {@link IEntity}.
@@ -101,27 +92,24 @@ public class EntityFactoryImpl implements EntityFactory {
         final SimpleModule module = new SimpleModule();
         module.addDeserializer(BasicTower.class, new TowerDeserializer<>(BasicTower.class));
         objectMapper.registerModule(module);
-
-        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource(TOWERS_RESOURCES).toURI()))) {
-            return paths
-                    .filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith(JSON_EXTENSION))
-                    .map(path -> {
-                        try (BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(Files.newInputStream(path), "UTF-8"))) {
-                            final String jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-                            return objectMapper.readValue(jsonString, BasicTower.class);
-                        } catch (IOException e) {
-                            logger.error("Failed to read tower JSON file at " + path + ": " + e.getMessage(), e);
-                            throw new UncheckedIOException("Failed to read tower JSON file at " + path, e);
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toSet());
-        } catch (URISyntaxException e) {
-            logger.error("Failed to retrieve towers resources: " + e.getMessage(), e);
-            throw new IOException("Failed to retrieve towers resources", e);
+        try {
+            final Set<Tower> towers = new HashSet<>();
+            for (final String file : getTowerFiles()) {
+                towers.add(loadTower(file));
+            }
+            return towers;
+        } catch (IOException e) {
+            logger.error("An error occured while trying loading a tower: " + e);
         }
+        return Set.of();
+    }
+
+    /**
+     * Get all the towers' json.
+     * @return A List with all towers files.
+     */
+    private List<String> getTowerFiles() {
+        return List.of("towers/json/tower1.json", "towers/json/tower2.json", "towers/json/tower3.json");
     }
 
     /**
