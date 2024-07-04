@@ -14,7 +14,7 @@ import it.unibo.model.utilities.Position2D;
 import it.unibo.model.utilities.Vector2D;
 
 /**
- * Basic Tower class extending {@link AbstractTower} implementing {@link Tower}.
+ * Basic Tower class extending {@link AbstractTower}.
  */
 public class BasicTower extends AbstractTower {
 

@@ -65,7 +65,6 @@ public abstract class AbstractTower extends AbstractMovableEntity implements Tow
      * @param targetSelectionStrategy {@link Tower}'s
      */
     @JsonCreator
-    @SuppressWarnings("SpotBugs")
     public AbstractTower(@JsonProperty("id") final int id,
             @JsonProperty("name") final String name,
             @JsonProperty("type") final String type,
