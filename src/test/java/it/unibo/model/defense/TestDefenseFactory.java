@@ -23,14 +23,14 @@ class TestDefenseFactory {
 
     private static final String TOWER_JSON_PATH = "towers/json/tower1.json";
     private static final int EXPECTED_TOWER_ID = 1;
-    private static final String EXPECTED_TOWER_NAME = "Tower1";
+    private static final String EXPECTED_TOWER_NAME = "Archery Tower";
     private static final String EXPECTED_TOWER_TYPE = "Base";
     private static final String EXPECTED_TOWER_PATH = "towers/img/tower1.png";
     private static final int EXPECTED_TOWER_COST = 50;
     private static final int EXPECTED_TOWER_LEVEL = 1;
     private static final int EXPECTED_TOWER_RANGE = 10;
     private static final int EXPECTED_WEAPON_ID = 1;
-    private static final String EXPECTED_WEAPON_NAME = "Weapon1";
+    private static final String EXPECTED_WEAPON_NAME = "Bow";
     private static final String EXPECTED_WEAPON_TYPE = "Gun";
     private static final String EXPECTED_WEAPON_PATH = "weapons/bow.png";
     private static final int EXPECTED_WEAPON_FREQUENCY = 2;

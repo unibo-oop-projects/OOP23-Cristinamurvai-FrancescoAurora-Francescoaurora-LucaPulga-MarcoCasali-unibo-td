@@ -1,6 +1,6 @@
 {
   "id": 3,
-  "name": "Tower3",
+  "name": "Inferno Tower",
   "type": "Base",
   "imgPath": "towers/img/tower3.png",
   "position2d": null,
@@ -11,7 +11,7 @@
   "weapons": [
     {
       "id": 1,
-      "name": "Weapon1",
+      "name": "Bolt",
       "type": "Gun",
       "imgPath": "bullet/img/bolt-icon.png",
       "frequency": 3
@@ -19,7 +19,7 @@
   ],
   "currentWeapon": {
     "id": 1,
-    "name": "Weapon1",
+    "name": "Bolt",
     "type": "Gun",
     "imgPath": "bullet/img/bolt-icon.png",
     "frequency": 3

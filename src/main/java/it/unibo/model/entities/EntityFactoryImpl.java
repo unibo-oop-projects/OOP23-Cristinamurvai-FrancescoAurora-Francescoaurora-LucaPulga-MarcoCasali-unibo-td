@@ -107,8 +107,9 @@ public class EntityFactoryImpl implements EntityFactory {
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(JSON_EXTENSION))
                     .map(path -> {
-                        try {
-                            final String jsonString = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+                        try (BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(Files.newInputStream(path), "UTF-8"))) {
+                            final String jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
                             return objectMapper.readValue(jsonString, BasicTower.class);
                         } catch (IOException e) {
                             logger.error("Failed to read tower JSON file at " + path + ": " + e.getMessage(), e);

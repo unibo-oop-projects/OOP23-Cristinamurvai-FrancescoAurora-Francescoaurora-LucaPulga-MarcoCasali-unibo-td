@@ -1,6 +1,6 @@
 {
   "id": 2,
-  "name": "Tower2",
+  "name": "Lightning Tower",
   "type": "Base",
   "imgPath": "towers/img/tower2.png",
   "position2d": null,
@@ -11,7 +11,7 @@
   "weapons": [
     {
       "id": 1,
-      "name": "Weapon1",
+      "name": "Bolt",
       "type": "Gun",
       "imgPath": "bullet/img/bolt-icon.png",
       "frequency": 2
@@ -19,7 +19,7 @@
   ],
   "currentWeapon": {
     "id": 1,
-    "name": "Weapon1",
+    "name": "Bolt",
     "type": "Gun",
     "imgPath": "bullet/img/bolt-icon.png",
     "frequency": 2

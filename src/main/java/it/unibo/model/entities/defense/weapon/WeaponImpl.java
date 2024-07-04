@@ -35,21 +35,6 @@ public class WeaponImpl extends AbstractEntity implements Weapon {
     }
 
     /**
-     * Existing WeaponImpl constructor (aka Clonable).
-     *
-     * @param id
-     * @param name
-     * @param type
-     * @param imgPath
-     * @param frequency
-     */
-    // public WeaponImpl(WeaponImpl other) {
-    //     super(other.getId(), other.getName(), other.getType(), other.getPath());
-    //     this.frequency = other.frequency;
-    //     this.lastShotTime = other.lastShotTime;
-    // }
-
-    /**
      * Represents the frequency with which the {@link Weapon} can fire a
      * {@link Bullet}.
      *
