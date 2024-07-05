@@ -96,6 +96,27 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 
 \subsubsection{Gestione dei nemici: spawn, movimento e distruzione}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{RelazioneTD/images/enemiesManagerUML.png}
+    \caption{UML gestione dei nemici}
+    \label{fig:enter-label}
+\end{figure}
+
+\paragraph{Problema} Per poter correttamente gestire la creazione e il movimento dei nemici è necessario avere informazioni riguardo la mappa quali posizione di partenza, percorso da seguire e fine del percorso.
+
+\paragraph{Soluzione} Dato che la scelta della mappa viene fatta in un secondo momento rispetto all'avvio del gioco, si è deciso di avviare comunque l'\textit{EnemiesManager} in modo tale da eseguire immediatamente il load delle diverse configurazioni di nemici descritto al punto precedente. Per questo motivo si è scelto di modellare \textit{GameMap} per il manager dei nemici con tipo \textit{Optional}, il cui valore viene assegnato dal \textit{GameEngine} appena l'utente effettua la selezione della mappa di gioco avviando la partita.
+
+\paragraph{Problema} Per la gestione delle interazioni difese-nemici si è reso necessario fornire al manager delle difese un modo efficace per monitorare quali nemici sono in vita e conoscere la loro posizione in tempo reale. Questo è cruciale per permettere alle torri di attaccare correttamente i nemici.
+
+\paragraph{Soluzione} Si è deciso di sfruttare il pattern Observer per risolvere questo problema, rendendo il set dei nemici osservabile. Questo set è disponibile nell'interfaccia \textit{GameState} e qualsiasi componente che necessita di monitorare i nemici, come il manager delle difese, può iscriversi come osservatore. Ogni volta che c'è un cambiamento nel set dei nemici (ad esempio, un nemico viene eliminato o cambia posizione), gli osservatori vengono notificati e possono conseguentemente aggiornare il loro stato. Ciò garantisce che tutte le parti del sistema che devono reagire ai cambiamenti dello stato dei nemici lo facciano immediatamente e in modo coerente. Inoltre, questo rende il codice scalabile, poiché è possibile aggiungere nuovi osservatori dello stato dei nemici senza modificare il codice sorgente esistente.
+
+\paragraph{Problema} Il \textit{RoundManager} si occupa della gestione dei vari round e quindi anche di stabilire il numero incrementale di nemici di diverse tipologie che popoleranno la mappa di gioco. Per questo motivo è necessario fornirgli un modo per generare i nemici in maniera efficace. Per fare ciò è necessario anche considerare che, visto che \textit{EnemiesManager} estende \textit{GameObserver}, il set dei nemici potrà essere modificato solo quando il manager avrà il controllo nel metodo \textit{update()}.
+
+\paragraph{Soluzione} Per risolvere questo problema si è deciso di fornire al \textit{RoundManager}, tramite \textit{EnemiesManager}, il metodo \textit{pushEnemy()} che, preso in ingresso l'identificativo di una tipologia di nemici, tramite \textit{buildEnemy()} si occupa di creare un nuovo nemico. L'\textit{EnemiesManager} inizializza poi la posizione del nemico, utilizzando i metodi forniti da \textit{GameMap}, e lo aggiunge ad un set temporaneo di nemici da inserire nella partita. Una volta che il manager ha il controllo sul set dei nemici, ovvero quando il \textit{GameEngine} ne chiama il metodo \textit{update()}, i nemici presenti nel set temporaneo vengono aggiunti a quello effettivo e il loro movimento sulla mappa inizia rendendoli anche colpibili dalle difese.
+
+\subsubsection{Gestione visualizzazione grafica dei nemici}
+\paragraph{TO-DO}
 
 
 \newpage
@@ -188,8 +209,10 @@ I test automatizzati sono necessari per poter testare se le logiche pensate dura
 \begin{itemize}
     \item \textit{\textbf{TestBasicTower}:} Test automatizzato per garantire la correttezza dei metodi di get e set delle difese torri per poter gestire durante il gioco le sue proprietà.
     \item \textit{\textbf{TestBulletImpl}:} Test automatizzato per garantire la correttezza dei metodi di get e set della posizione e direzione del proiettile, fondamentale per la gestione grafica del gioco.
-    \item \textit{\textbf{TestDefenseFactory}:} Test automatizzato per garantire la correttezza di lettura da file json delle entità torri attraverso l'utilizzo della \ref{fig:entity-factory-method}EntityFactory
+    \item \textit{\textbf{TestDefenseFactory}:} Test automatizzato per garantire la correttezza di lettura da file JSON delle entità torri attraverso l'utilizzo della \ref{fig:entity-factory-method}EntityFactory
     \item \textit{\textbf{TestTargetStrategy}:} Test automatizzato per garantire la correttezza dei calcoli effettuati durante la fase di targettamento di nemici da parte delle torri.
+    \item \textit{\textbf{TestEnemiesConfigFactoryImpl}:} Test automatizzato per verificare la corretta funzionalità di caricamento delle configurazioni dei nemici da file JSON.
+    \item \textit{\textbf{TestEnemyImpl}:} Test automatizzato per garantire il funzionamento di vari metodi della classe Enemy, come ad esempio verificare se lo stato iniziale, i punti vita, la ricompensa e il percorso dell'immagine sono impostati correttamente, oppure controllare se il nemico si muove lungo la direzione giusta,  aggiornando il suo stato una volta raggiunta la fine del percorso. 
 \end{itemize}
 
 \section{Note di sviluppo}
