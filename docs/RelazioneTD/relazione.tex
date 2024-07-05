@@ -74,7 +74,40 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 
 \section{Design dettagliato}
 \subsection{Francesco Aurora}
-\title{\textbf{Gestione delle azioni utente}}
+\title{\textbf{Gestione GUI e azioni utente, round, player}}
+\subsubsection{Gestione Round}
+
+\paragraph{Problema} Nel contesto di un gioco a round, è essenziale gestire in modo efficace la progressione dei round e la generazione dei nemici. Il problema principale consiste nel determinare come incrementare il numero di round, regolare il numero di nemici generati, gestire i tempi di spawn dei nemici e differenziare i round normali dai "boss round". Inoltre, la gestione del gioco deve includere la capacità di mettere in pausa, riprendere e interrompere il gioco in modo sicuro, sincronizzando correttamente l'accesso ai dati condivisi tra i thread per evitare condizioni di gara e inconsistenze.
+
+\paragraph{Soluzione} Per affrontare questi problemi, ho progettato un sistema che utilizza due classi principali: \texttt{RoundImpl} e \texttt{RoundManagerImpl}.
+
+\texttt{RoundImpl} gestisce la logica interna dei round, inizializzando il numero di nemici, il tempo di spawn e una lista di nemici. Il metodo \texttt{increaseRoud()} gestisce l'incremento dei round, aggiornando la lista dei nemici e modificando il tempo di spawn a seconda del tipo di round.
+
+\texttt{RoundManagerImpl} gestisce il flusso del gioco, inclusi il countdown e la generazione sequenziale dei nemici, utilizzando due thread distinti. Il metodo \texttt{togglePause()} gestisce la pausa e la ripresa del gioco in modo sicuro. La sincronizzazione dei dati tra i thread è garantita da blocchi di sincronizzazione.
+
+Ho valutato l'alternativa di gestire tutti i round e i nemici in una sola classe, ma ho optato per la separazione per migliorare la modularità e la chiarezza del codice. Utilizzare thread distinti per il countdown e la generazione dei nemici ha migliorato la gestione del flusso di gioco e facilitato la manutenzione ed estensione del sistema.
+
+Questo design offre un sistema robusto e flessibile, risolvendo efficacemente i problemi identificati e migliorando l'esperienza di gioco complessiva.
+
+\subsubsection{Gestione player}
+\paragraph{Problema} Nel contesto di un gioco, è essenziale gestire lo stato del giocatore, compreso il numero di vite rimanenti e il denaro disponibile. Il problema principale consiste nel mantenere aggiornati questi due attributi in base alle azioni del giocatore e agli eventi nel gioco.
+\paragraph{Soluzione} Per affrontare questo requisito, ho progettato la classe PlayerImpl. Questa classe implementa l'interfaccia Player, fornendo metodi essenziali per gestire le vite e il denaro del giocatore. Il costruttore inizializza il giocatore con un numero massimo di vite e un quantitativo iniziale di denaro. I metodi loseLives(int damage) e restoreLives(int numberLives) aggiornano le vite del giocatore in base ai danni subiti o al ripristino delle vite. Allo stesso modo, i metodi getMoney() e setMoney(int cash) gestiscono il denaro del giocatore, consentendo di recuperare la quantità di denaro attuale e aggiornarla in base alle transazioni nel gioco.
+
+Questa progettazione garantisce un controllo efficace e dinamico sulle risorse del giocatore, fondamentale per una esperienza di gioco coinvolgente e bilanciata.
+
+\subsubsection{Gestione della Schermata di Avvio e Selezione Mappa}
+\paragraph{Problema} Nell'implementazione di un'applicazione GUI per un gioco, è essenziale gestire efficacemente la schermata iniziale, includendo un pulsante di avvio ben posizionato e scalabile per adattarsi a diverse dimensioni di scherma, la selezione delle mappe ancora adattabile a diverse dimensioni dello schermo. Il problema principale consiste nel progettare un'interfaccia utente che permetta agli utenti di selezionare una mappa tra diverse opzioni, visualizzare anteprime delle mappe adattate alle dimensioni dello schermo e fornire un'esperienza utente coerente e intuitiva su diversi dispositivi.
+\paragraph{Soluzione} Le classi `GuiStart` e `SelectMapGui` sono componenti chiave nell'interfaccia utente del gioco. `GuiStart` gestisce la schermata iniziale, impostando il titolo della finestra su "Unibo TD", utilizzando `BorderLayout` per organizzare i componenti e includendo un pulsante di avvio. `SelectMapGui` gestisce la selezione della mappa, permettendo agli utenti di scorrere tra le mappe disponibili e avviare il gioco con la mappa selezionata.
+
+Entrambe le classi sono progettate per essere responsive, adattandosi automaticamente alle dimensioni dello schermo per garantire una esperienza utente ottimale.
+
+Questa soluzione offre un'interfaccia utente ben strutturata e facile da navigare, ottimizzata per migliorare l'esperienza dell'utente fin dai primi istanti di utilizzo del gioco. È progettata per consentire una transizione fluida tra diverse schermate, inclusa quella del gioco vero e proprio, all'interno della stessa finestra.
+
+Come futura implementazione, si potrebbe considerare l'integrazione degli effetti sonori e la visualizzazione di più mappe simultaneamente sullo schermo, al fine di offrire agli utenti una visione più completa e coinvolgente delle opzioni di gioco disponibili.
+
+\subsubsection{Schermata di gioco Mappa}
+\paragraph{Problema} Gestione vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
+
 \subsection{Marco Casali}
 \title{\textbf{Game loop, generazione mappa}}
 
