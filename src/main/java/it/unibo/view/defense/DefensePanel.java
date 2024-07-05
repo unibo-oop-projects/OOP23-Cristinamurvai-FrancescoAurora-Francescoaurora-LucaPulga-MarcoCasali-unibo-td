@@ -111,13 +111,23 @@ public class DefensePanel extends JPanel {
         return resizedImg;
     }
 
-    // Custom serialization methods to handle transient fields
+    /**
+     * Custom serialization methods to handle transient fields.
+     * @param oos
+     * @throws IOException
+     */
     private void writeObject(final ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
         oos.writeObject(new HashSet<>(towers));
         oos.writeObject(new HashSet<>(bullets));
     }
 
+    /**
+     * Custom serialization methods to handle transient fields.
+     * @param ois
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @SuppressWarnings("unchecked")
     private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
