@@ -3,7 +3,7 @@ package it.unibo.model.round;
 import java.util.List;
 
 /**
- * Interface for roud manager.
+ * Interface for roud.
  */
 public interface Round {
 

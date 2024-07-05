@@ -12,7 +12,7 @@ import it.unibo.model.entities.enemies.EnemiesManager;
 /**
  * Implements of interface Management of rouds.
  */
-public class RoundManagerImpl {
+public final class RoundManagerImpl implements RoundManager {
 
     private final transient Logger logger = LoggerFactory.getLogger(GameEngineImpl.class);
     private static final int ROUND_TIME = 10; //countdown time in seconds
@@ -227,37 +227,22 @@ public class RoundManagerImpl {
         }
     }
 
-    /**
-     * Method for starting the game.
-     *
-     * @param enemiesManager reference instance of enemiesManager passing
-     * threats in real time
-     */
+    @Override
     public void startGame(final EnemiesManager enemiesManager) {
         startCountdown(enemiesManager);
     }
 
-    /**
-     * Method for return round number.
-     *
-     * @return round number
-     */
+    @Override
     public int getRound() {
         return round.getRoud();
     }
 
-    /**
-     * Get if it is the last round from the instance of the round.
-     *
-     * @return answer to the question (true or false)
-     */
+    @Override
     public boolean isLastRound() {
         return round.isLastRound();
     }
 
-    /**
-     * Start and Stop Pause.
-     */
+    @Override
     public void togglePause() {
         this.isPaused = !isPaused;
     }
