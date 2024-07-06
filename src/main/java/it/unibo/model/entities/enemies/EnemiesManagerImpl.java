@@ -50,6 +50,9 @@ public class EnemiesManagerImpl implements EnemiesManager {
      */
     @Override
     public void pushEnemy(final int id) {
+        if (this.gameMap.isEmpty()) {
+            throw new IllegalStateException("No map selected");
+        }
         final String name = this.enemiesConfigFactory.getEnemiesConfig().get(id).getEnemyName();
         final String type = this.enemiesConfigFactory.getEnemiesConfig().get(id).getEnemyType();
         final String imgPath = this.enemiesConfigFactory.getEnemiesConfig().get(id).getEnemyImgPath();
@@ -89,6 +92,10 @@ public class EnemiesManagerImpl implements EnemiesManager {
      */
     @Override
     public void update(final GameState gameState) {
+        if (this.gameMap.isEmpty()) {
+            throw new IllegalStateException("No map selected");
+        }
+
         this.playerLivesLost = this.computeNumberOfPlayerLivesLost();
         this.playerReward = this.computePlayerReward();
         this.noRunningEnemies = this.checkIfNoEnemiesAlive();
