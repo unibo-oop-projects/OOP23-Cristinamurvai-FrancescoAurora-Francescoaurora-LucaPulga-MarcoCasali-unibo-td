@@ -28,8 +28,8 @@ public class DefensePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private final transient Logger logger = LoggerFactory.getLogger(DefensePanel.class);
-    private transient Set<Tower> towers; // All fields must either be serializable, but towers will not be serialized.
-    private transient Set<Bullet> bullets; // All fields must either be serializable, but bullets will not be serialized.
+    private transient Set<Tower> towers; // All fields must be serializable but towers will not be serialized.
+    private transient Set<Bullet> bullets; // All fields must be serializable but bullets will not be serialized in this case.
     private int xCellSize;
     private int yCellSize;
 
@@ -115,7 +115,10 @@ public class DefensePanel extends JPanel {
      * Custom serialization methods to handle transient fields.
      * @param oos
      * @throws IOException
+     * REFERENCE: https://howtodoinjava.com/java/serialization/custom-serialization-readobject-writeobject/
      */
+    /* L B Se: The field it.unibo.view.defense.DefensePanel.bullets is transient but isn't set by deserialization
+    L B Se: The field it.unibo.view.defense.DefensePanel.towers is transient but isn't set by deserialization*/
     private void writeObject(final ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
         oos.writeObject(new HashSet<>(towers));
@@ -127,6 +130,9 @@ public class DefensePanel extends JPanel {
      * @param ois
      * @throws IOException
      * @throws ClassNotFoundException
+     * REFERENCE: https://howtodoinjava.com/java/serialization/custom-serialization-readobject-writeobject/
+     * The warning is suppressed because the following error would be encountered:
+    "Type safety: Unchecked cast from Object to Set<Tower>" and also for "Set<Bullet>".
      */
     @SuppressWarnings("unchecked")
     private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {

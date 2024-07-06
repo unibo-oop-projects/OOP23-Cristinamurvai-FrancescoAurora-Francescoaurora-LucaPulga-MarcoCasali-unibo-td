@@ -191,7 +191,7 @@ Un'ulteriore soluzione poteva essere quella di utilizzare solo interfacce e come
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.2\linewidth]{defense_model.JPG}
+    \includegraphics[width=1.2\linewidth]{docs\RelazioneTD\images\defense_model.JPG}
     \caption{Modello per la gestione delle entità.}
     \label{fig:defense-model}
 \end{figure}
@@ -209,11 +209,11 @@ le entità, come le \textit{torri}, che saranno poi successivamente gestite dal 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{todo.jpg}
+    \includegraphics[width=1.1\linewidth]{docs\RelazioneTD\images\entity_factory.JPG}
     \caption{Factory Method Pattern per il caricamento delle entità.}
     \label{fig:entity-factory-method}
 \end{figure}
-\vspace{25mm}
+\vspace{70mm}
 
 \paragraph{Problema}
 Gestione delle istanze delle torri senza avere un'entità centralizzata.
@@ -222,7 +222,7 @@ La soluzione prevedere l'implementazione di un Defense Manager in grado di gesti
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{todo.jpg}
+    \includegraphics[width=0.8\linewidth]{docs\RelazioneTD\images\defense_manager.JPG}
     \caption{Defense Manager per la gestione delle difese.}
     \label{fig:defense-manager}
 \end{figure}
@@ -235,12 +235,12 @@ A livello di difese, si sottoscrive il Defense Manager all'Observer, il quale co
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{todo.jpg}
+    \includegraphics[width=0.8\linewidth]{docs\RelazioneTD\images\todo.jpg}
     \caption{Figura 2.5: Defense Manager e Observer.}
     \label{fig:defense-observer}
 \end{figure}
-\vspace{50mm}
 
+\vspace{50mm}
 
 \paragraph{Problema}
 Implementazione di diverse tipologie di targettamento dei nemici da parte delle torri a seconda della loro tipologia.
@@ -249,11 +249,12 @@ Si implementa lo Strategy Pattern, in questo modo il contesto diventa indipenden
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{defense_target.JPG}
+    \includegraphics[width=0.8\linewidth]{docs\RelazioneTD\images\defense_target.JPG}
     \caption{Pattern Strategy per targettamento dei nemici.}
     \label{fig:defense_target}
 \end{figure}
 
+\vspace{70mm}
 
 \paragraph{Problema}
 Implementazione di diverse tipologie di attacchi verso i nemici da parte delle torri a seconda della loro tipologia.
@@ -262,7 +263,7 @@ Si implementa lo Strategy Pattern, in questo modo il contesto diventa indipenden
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{defense_attack.JPG}
+    \includegraphics[width=0.8\linewidth]{docs\RelazioneTD\images\defense_attack.JPG}
     \caption{Pattern Strategy per attacco ai nemici.}
     \label{fig:defense_attack}
 \end{figure}
@@ -343,7 +344,5 @@ La progettazione della parte difensiva del gioco ricopre un ruolo massivo dell'a
 \subsection{marco.casali13@studio.unibo.it}
 
 \subsection{cristina.murvai@studio.unibo.it}
-
-\subsection{luca.pulga@studio.unibo.it}
 
 \end{document}
