@@ -54,7 +54,6 @@ public class EnemiesPanel extends JPanel {
         for (final Enemy enemy : this.enemies) {
             if (enemy.getState().equals(EnemyState.MOVING) || enemy.getState().equals(EnemyState.PAUSED)) {
                 try {
-                    //new File(enemy.getImagePath())
                     final BufferedImage enemyImage = ImageIO.read(ClassLoader.getSystemResource(enemy.getImagePath()));
                     g.drawImage(enemyImage, (int) (enemy.getPosition().x() * this.xCellSize),
                             (int) (enemy.getPosition().y() * this.yCellSize), this);
@@ -89,7 +88,6 @@ public class EnemiesPanel extends JPanel {
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        // No need to explicitly write 'enemies', as it is transient
     }
 
     /**
@@ -102,7 +100,6 @@ public class EnemiesPanel extends JPanel {
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        // Initialize 'enemies' transient field
         this.enemies = new HashSet<>();
     }
 

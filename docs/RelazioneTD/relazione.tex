@@ -78,12 +78,14 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 \subsection{Francesco Aurora}
 \title{\textbf{Gestione GUI e azioni utente, round, player}}
 \subsubsection{Gestione Round}
+
 \begin{figure}[H]
-	\centering{}
-	\includegraphics{docs\RelazioneTD\images\Round.png}
-	\caption{UML relazioni Round}
-	\label{img:Gui}
+    \centering
+    \includegraphics[scale=1]{RelazioneTD/images/Round.png}
+    \caption{UML relazioni Round}
+    \label{fig:enter-label}
 \end{figure}
+
 \paragraph{Problema} Nel contesto di un gioco a round, è essenziale gestire in modo efficace la progressione dei round e la generazione dei nemici. Il problema principale consiste nel determinare come incrementare il numero di round, regolare il numero di nemici generati, gestire i tempi di spawn dei nemici e differenziare i round normali dai "boss round". Inoltre, la gestione del gioco deve includere la capacità di mettere in pausa, riprendere e interrompere il gioco in modo sicuro, sincronizzando correttamente l'accesso ai dati condivisi tra i thread per evitare condizioni di gara e inconsistenze.
 
 \paragraph{Soluzione} Per affrontare questi problemi, ho progettato un sistema che utilizza due classi principali: \texttt{RoundImpl} e \texttt{RoundManagerImpl}.
@@ -97,24 +99,29 @@ Ho valutato l'alternativa di gestire tutti i round e i nemici in una sola classe
 Questo design offre un sistema robusto e flessibile, risolvendo efficacemente i problemi identificati e migliorando l'esperienza di gioco complessiva.
 
 \subsubsection{Gestione player}
+
 \begin{figure}[H]
-	\centering{}
-	\includegraphics{docs\RelazioneTD\images\Player.png}
-	\caption{UML player}
-	\label{img:Gui}
+    \centering
+    \includegraphics[scale=1.2]{RelazioneTD/images/Player.png}
+    \caption{UML Player}
+    \label{fig:enter-label}
 \end{figure}
+
+
 \paragraph{Problema} Nel contesto di un gioco, è essenziale gestire lo stato del giocatore, compreso il numero di vite rimanenti e il denaro disponibile. Il problema principale consiste nel mantenere aggiornati questi due attributi in base alle azioni del giocatore e agli eventi nel gioco.
 \paragraph{Soluzione} Per affrontare questo requisito, ho progettato la classe PlayerImpl. Questa classe implementa l'interfaccia Player, fornendo metodi essenziali per gestire le vite e il denaro del giocatore. Il costruttore inizializza il giocatore con un numero massimo di vite e un quantitativo iniziale di denaro. I metodi loseLives(int damage) e restoreLives(int numberLives) aggiornano le vite del giocatore in base ai danni subiti o al ripristino delle vite. Allo stesso modo, i metodi getMoney() e setMoney(int cash) gestiscono il denaro del giocatore, consentendo di recuperare la quantità di denaro attuale e aggiornarla in base alle transazioni nel gioco.
 
 Questa progettazione garantisce un controllo efficace e dinamico sulle risorse del giocatore, fondamentale per una esperienza di gioco coinvolgente e bilanciata.
 
 \subsubsection{Gestione della Schermata di Avvio e Selezione Mappa}
+
 \begin{figure}[H]
-	\centering{}
-	\includegraphics{docs\RelazioneTD\images\Gui.png}
-	\caption{UML relazioni GUI}
-	\label{img:Gui}
+    \centering
+    \includegraphics[scale=0.8]{RelazioneTD/images/Gui.png}
+    \caption{UML relazioni GUI}
+    \label{fig:enter-label}
 \end{figure}
+
 \paragraph{Problema} Nell'implementazione di un'applicazione GUI per un gioco, è essenziale gestire efficacemente la schermata iniziale, includendo un pulsante di avvio ben posizionato e scalabile per adattarsi a diverse dimensioni di scherma, la selezione delle mappe ancora adattabile a diverse dimensioni dello schermo. Il problema principale consiste nel progettare un'interfaccia utente che permetta agli utenti di selezionare una mappa tra diverse opzioni, visualizzare anteprime delle mappe adattate alle dimensioni dello schermo e fornire un'esperienza utente coerente e intuitiva su diversi dispositivi.
 \paragraph{Soluzione} Le classi `GuiStart` e `SelectMapGui` sono componenti chiave nell'interfaccia utente del gioco. `GuiStart` gestisce la schermata iniziale, impostando il titolo della finestra su "Unibo TD", utilizzando `BorderLayout` per organizzare i componenti e includendo un pulsante di avvio. `SelectMapGui` gestisce la selezione della mappa, permettendo agli utenti di scorrere tra le mappe disponibili e avviare il gioco con la mappa selezionata.
 
@@ -125,12 +132,14 @@ Questa soluzione offre un'interfaccia utente ben strutturata e facile da navigar
 Come futura implementazione, si potrebbe considerare l'integrazione degli effetti sonori e la visualizzazione di più mappe simultaneamente sullo schermo, al fine di offrire agli utenti una visione più completa e coinvolgente delle opzioni di gioco disponibili.
 
 \subsubsection{Schermata di gioco Mappa}
+
 \begin{figure}[H]
-	\centering{}
-	\includegraphics{docs\RelazioneTD\images\GuiGameStart.png}
-	\caption{UML GUI mappa per area di mia pertinenza}
-	\label{img:GuiGameStart-Aurora}
+    \centering
+    \includegraphics[scale=1]{RelazioneTD/images/GuiGameStart.png}
+    \caption{UML GUI mappa per area di mia pertinenza}
+    \label{fig:enter-label}
 \end{figure}
+
 \paragraph{Problema} Si vuole gestione la vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
 \paragraph{Soluzione} La mappa viene ridimensionata tramite l'evento di \texttt{resize} ogni volta che il contenitore delle immagini della mappa cambia dimensione. La gestione della vittoria e della sconfitta è implementata in modo tale che, quando il core rileva eventi di \texttt{GameOver} o \texttt{GameWin}, viene mostrato un \texttt{JDialog}. Al clic sul pulsante \texttt{exit}, viene generato l'evento di chiusura del gioco. Poiché le pagine sono state incapsulate, l'evento deve essere richiamato sulla prima GUI mostrata. Il tutto deve essere scalabile tramite l'utilizzo di metodi in cascata e non ridondante. La suddivisione dei due metodi per \texttt{gameWin} e \texttt{gameOver} permette, in futuro, di avviare comportamenti diversi e di gestire in modo appropriato eventuali store di dati.
 
@@ -187,10 +196,9 @@ si occupa di aggiornare le altre entità tramite il pattern \textit{Observer}, i
 e riceveranno periodicamente una chiamata al metodo \textit{update()}, dove gli verrà passato un oggetto immutabile di tipo
 \textit{GameState} che contiene tutte le informazioni sullo stato del gioco.
 
-
-\newpage
 \subsection{Cristina Murvai}
 \subsubsection{Gestione delle diverse configurazioni di nemici}
+
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{RelazioneTD/images/enemyConfigFactoryUML.png}
@@ -198,7 +206,7 @@ e riceveranno periodicamente una chiamata al metodo \textit{update()}, dove gli 
     \label{fig:enter-label}
 \end{figure}
 
-\paragraph{Problema} Il gioco prevede attualmente tre tipologie di nemici, ciascuno con paramentri diversi quali il nome, i punti vita, il reward assegnato con l'uccisione, ecc. che è necessario reperire ogni volta in cui un nemico di quella tipologia viene creato. 
+\paragraph{Problema} Il gioco prevede attualmente tre tipologie di nemici, ciascuno con paramentri diversi (quali il nome, i punti vita, il reward assegnato con l'uccisione, ecc.) che è necessario reperire ogni volta in cui un nemico di quella tipologia viene creato. 
 \paragraph{Soluzione} Per garantire futura estendibilità ad ulteriori tipologie di nemici e facile modifica dei parametri è stato deciso di gestire la configurazione dei nemici attraverso un file JSON. Tuttavia, una lettura di questo file in seguito alla creazione di ciascun nemico sarebbe inutilmente dispendiosa del punto di vista delle risorse del sistema. Per questo motivo, si è deciso di sfruttare il pattern factory per creare e salvare in memoria i dati relativi alle varie tipologie di nemici, garantendo un accesso più rapido in fase di generazione degli stessi tramite il metodo \textit{getEnemiesConfig()} dell'interfaccia \textit{EnemyConfigFactory}. In particolare il metodo \textit{fromJSONFile()} è sfruttato da \textit{EnemiesManager} per leggere il file di configurazione e creare attraverso la factory i diversi \textit{EnemyConfig}.
 
 \subsubsection{Gestione dei nemici: spawn, movimento e distruzione}
@@ -223,8 +231,17 @@ e riceveranno periodicamente una chiamata al metodo \textit{update()}, dove gli 
 \paragraph{Soluzione} Per risolvere questo problema si è deciso di fornire al \textit{RoundManager}, tramite \textit{EnemiesManager}, il metodo \textit{pushEnemy()} che, preso in ingresso l'identificativo di una tipologia di nemici, tramite \textit{buildEnemy()} si occupa di creare un nuovo nemico. L'\textit{EnemiesManager} inizializza poi la posizione del nemico, utilizzando i metodi forniti da \textit{GameMap}, e lo aggiunge ad un set temporaneo di nemici da inserire nella partita. Una volta che il manager ha il controllo sul set dei nemici, ovvero quando il \textit{GameEngine} ne chiama il metodo \textit{update()}, i nemici presenti nel set temporaneo vengono aggiunti a quello effettivo e il loro movimento sulla mappa inizia rendendoli anche colpibili dalle difese.
 
 \subsubsection{Gestione visualizzazione grafica dei nemici}
-\paragraph{TO-DO}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{RelazioneTD/images/enemiesViewUML.png}
+    \caption{UML gestione view dei nemici}
+    \label{fig:enter-label}
+\end{figure}
+
+\paragraph{Problema} Per la visualizzazione grafica dei nemici è stato necessario trovare un modo per far si che questa sia aggiornata in tempo reale in base allo spawn, alla morte e al movimento dei nemici sulla mappa.
+
+\paragraph{Soluzione} Si è deciso di integrare la view dei nemici all'interno dell'infrastruttura grafica implementata dai colleghi in modo tale da sfruttare il pattern observer. In particolare, il \textit{GameController} chiama il metodo \textit{update()} su \textit{GuiGameStart} che a sua volta chiama \textit{updateView()} su \textit{EnemiesPanel} che ridisegna i nemici sulla schermata di gioco basandosi sulla loro nuova posizione.
 
 \newpage
 \subsection{Luca Pulga}
@@ -350,6 +367,18 @@ Utilizzata nelle GUI per effettuare il resize della schermate.
 \url{}
 \subsection{Marco Casali}
 \subsection{Cristina Murvai}
+\subsubsection{Utilizzo di Optional}
+Un esempio: \url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/396dd9934c61e72d3e4ca269508d5e62017b6ce6/src/main/java/it/unibo/model/entities/enemies/EnemiesManagerImpl.java#L168-L171}
+\subsubsection{Utilizzo di Stream}
+Utilizzati in vari punti, ad esempio:
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/396dd9934c61e72d3e4ca269508d5e62017b6ce6/src/main/java/it/unibo/model/entities/enemies/EnemiesManagerImpl.java#L188-L196}
+
+\subsubsection{Utilizzo della libreria Json per interazione con file JSON}
+Un esempio: 
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/396dd9934c61e72d3e4ca269508d5e62017b6ce6/src/main/java/it/unibo/model/entities/enemies/EnemiesConfigFactoryImpl.java#L67-L85}
+\subsubsection{Utilizzo della libreria SLF4J}
+Un esempio:
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/396dd9934c61e72d3e4ca269508d5e62017b6ce6/src/main/java/it/unibo/view/enemies/EnemiesPanel.java#L61-L63}
 \subsection{Luca Pulga}
 \subsubsection{Utilizzo di Optional}
 Utilizzati in vari punti. Un esempio: 
@@ -377,8 +406,14 @@ Un esempio:
 \subsubsection{Francesco Aurora}
 \subsubsection{Marco Casali}
 \subsubsection{Cristina Murvai}
+Questo progetto è stata sia la mia prima esperienza di teamwork che di sviluppo di un'applicazione complessa in java, che prima di questo corso non avevo mai utilizzato. In particolare sono contenta di come sono riuscita a individuare e sfruttare alcuni dei pattern visti a lezione come Factory e Observer e di aver sfruttato in modo utile diversi elementi più avanzati del linguaggio java quali Stream e Optional.
+Non sono invece troppo soddisfatta della resa grafica in quanto avrei voluto trovare un modo per far si che i nemici seguissero più precisamente il percorso sulla mappa.
+Una della challenge principali è stata quella di confronto e coordinazione con gli altri membri del gruppo che, prima di questo progetto, non conoscevo personalmente. A mio parere avremo potuto comunicare di più per gestire alcuni aspetti comuni in maniera più efficiente.
+Complessivamente sono discretamente soddisfatta del lavoro svolto, ma sono consapevole che alcuni aspetti si sarebbero potuti gestire in maniera diversa. In futuro cercherò di migliorare le mie skill di teamworking e programmazione object oriented. 
+
+
 \subsubsection{Luca Pulga}
-\paragraph{}Prendere parte a questo progetto è stata un'attività non semplicissima ma decisamente formativa, soprattutto in ottica futura.
+Prendere parte a questo progetto è stata un'attività non semplicissima ma decisamente formativa, soprattutto in ottica futura.
 La progettazione della parte difensiva del gioco ricopre un ruolo massivo dell'applicazione e ho cercato non solo di cimentarmi nella mia parte di difese, ma anche nel cercare una generalizzazione relativamente alle varie tipologie di entità presenti nel gioco. La soluzione adottata rende estendibile il codice in caso di futuri sviluppi, attraverso l'astrazione delle entità e all'utilizzo di Design Patterns fondamentali per rendere il codice maggiormente leggibile e scalabile. Purtroppo non sono riuscito a sfruttare a pieno la programmazione funzionale e altre tecniche di programmazione illustrate durante il corso, che mi sarebbe interessato implementare e progettare, ma che porto ora con me nel mio bagaglio formativo. Non sono totalmente appagato dalla UX/UI per la parte di difese per quanto riguarda il posizionamento delle torri ma generalmente credo di essere riuscito a creare comunque applicativo giocabile. Infine direi che sono comunque soddisfatto non solo di aver acquisito nuove competenze ma anche di aver conosciuto persone nuove e di aver lavorato in un team per me nuovo.
 
 
@@ -390,7 +425,5 @@ La progettazione della parte difensiva del gioco ricopre un ruolo massivo dell'a
 \subsection{francesco.aurora@studio.unibo.it}
 
 \subsection{marco.casali13@studio.unibo.it}
-
-\subsection{cristina.murvai@studio.unibo.it}
 
 \end{document}
