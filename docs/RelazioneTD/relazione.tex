@@ -76,7 +76,12 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 \subsection{Francesco Aurora}
 \title{\textbf{Gestione GUI e azioni utente, round, player}}
 \subsubsection{Gestione Round}
-
+\begin{figure}[H]
+	\centering{}
+	\includegraphics{docs\RelazioneTD\images\Round.png}
+	\caption{UML relazioni Round}
+	\label{img:Gui}
+\end{figure}
 \paragraph{Problema} Nel contesto di un gioco a round, è essenziale gestire in modo efficace la progressione dei round e la generazione dei nemici. Il problema principale consiste nel determinare come incrementare il numero di round, regolare il numero di nemici generati, gestire i tempi di spawn dei nemici e differenziare i round normali dai "boss round". Inoltre, la gestione del gioco deve includere la capacità di mettere in pausa, riprendere e interrompere il gioco in modo sicuro, sincronizzando correttamente l'accesso ai dati condivisi tra i thread per evitare condizioni di gara e inconsistenze.
 
 \paragraph{Soluzione} Per affrontare questi problemi, ho progettato un sistema che utilizza due classi principali: \texttt{RoundImpl} e \texttt{RoundManagerImpl}.
@@ -90,12 +95,24 @@ Ho valutato l'alternativa di gestire tutti i round e i nemici in una sola classe
 Questo design offre un sistema robusto e flessibile, risolvendo efficacemente i problemi identificati e migliorando l'esperienza di gioco complessiva.
 
 \subsubsection{Gestione player}
+\begin{figure}[H]
+	\centering{}
+	\includegraphics{docs\RelazioneTD\images\Player.png}
+	\caption{UML player}
+	\label{img:Gui}
+\end{figure}
 \paragraph{Problema} Nel contesto di un gioco, è essenziale gestire lo stato del giocatore, compreso il numero di vite rimanenti e il denaro disponibile. Il problema principale consiste nel mantenere aggiornati questi due attributi in base alle azioni del giocatore e agli eventi nel gioco.
 \paragraph{Soluzione} Per affrontare questo requisito, ho progettato la classe PlayerImpl. Questa classe implementa l'interfaccia Player, fornendo metodi essenziali per gestire le vite e il denaro del giocatore. Il costruttore inizializza il giocatore con un numero massimo di vite e un quantitativo iniziale di denaro. I metodi loseLives(int damage) e restoreLives(int numberLives) aggiornano le vite del giocatore in base ai danni subiti o al ripristino delle vite. Allo stesso modo, i metodi getMoney() e setMoney(int cash) gestiscono il denaro del giocatore, consentendo di recuperare la quantità di denaro attuale e aggiornarla in base alle transazioni nel gioco.
 
 Questa progettazione garantisce un controllo efficace e dinamico sulle risorse del giocatore, fondamentale per una esperienza di gioco coinvolgente e bilanciata.
 
 \subsubsection{Gestione della Schermata di Avvio e Selezione Mappa}
+\begin{figure}[H]
+	\centering{}
+	\includegraphics{docs\RelazioneTD\images\Gui.png}
+	\caption{UML relazioni GUI}
+	\label{img:Gui}
+\end{figure}
 \paragraph{Problema} Nell'implementazione di un'applicazione GUI per un gioco, è essenziale gestire efficacemente la schermata iniziale, includendo un pulsante di avvio ben posizionato e scalabile per adattarsi a diverse dimensioni di scherma, la selezione delle mappe ancora adattabile a diverse dimensioni dello schermo. Il problema principale consiste nel progettare un'interfaccia utente che permetta agli utenti di selezionare una mappa tra diverse opzioni, visualizzare anteprime delle mappe adattate alle dimensioni dello schermo e fornire un'esperienza utente coerente e intuitiva su diversi dispositivi.
 \paragraph{Soluzione} Le classi `GuiStart` e `SelectMapGui` sono componenti chiave nell'interfaccia utente del gioco. `GuiStart` gestisce la schermata iniziale, impostando il titolo della finestra su "Unibo TD", utilizzando `BorderLayout` per organizzare i componenti e includendo un pulsante di avvio. `SelectMapGui` gestisce la selezione della mappa, permettendo agli utenti di scorrere tra le mappe disponibili e avviare il gioco con la mappa selezionata.
 
@@ -106,8 +123,17 @@ Questa soluzione offre un'interfaccia utente ben strutturata e facile da navigar
 Come futura implementazione, si potrebbe considerare l'integrazione degli effetti sonori e la visualizzazione di più mappe simultaneamente sullo schermo, al fine di offrire agli utenti una visione più completa e coinvolgente delle opzioni di gioco disponibili.
 
 \subsubsection{Schermata di gioco Mappa}
-\paragraph{Problema} Gestione vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
+\begin{figure}[H]
+	\centering{}
+	\includegraphics{docs\RelazioneTD\images\GuiGameStart.png}
+	\caption{UML GUI mappa per area di mia pertinenza}
+	\label{img:GuiGameStart-Aurora}
+\end{figure}
+\paragraph{Problema} Si vuole gestione la vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
+\paragraph{Soluzione} La mappa viene ridimensionata tramite l'evento di \texttt{resize} ogni volta che il contenitore delle immagini della mappa cambia dimensione. La gestione della vittoria e della sconfitta è implementata in modo tale che, quando il core rileva eventi di \texttt{GameOver} o \texttt{GameWin}, viene mostrato un \texttt{JDialog}. Al clic sul pulsante \texttt{exit}, viene generato l'evento di chiusura del gioco. Poiché le pagine sono state incapsulate, l'evento deve essere richiamato sulla prima GUI mostrata. Il tutto deve essere scalabile tramite l'utilizzo di metodi in cascata e non ridondante. La suddivisione dei due metodi per \texttt{gameWin} e \texttt{gameOver} permette, in futuro, di avviare comportamenti diversi e di gestire in modo appropriato eventuali store di dati.
 
+Nella schermata di gioco sono stati aggiunti i pulsanti \texttt{pausa} e \texttt{impostazioni}. Il pulsante \texttt{pausa} avvia una chiamata al core di gioco per mettere in pausa i vari componenti del gioco. Il pulsante \texttt{impostazioni} attualmente non è funzionante, poiché non sono stati ancora gestiti gli effetti sonori e la velocità di gioco. In futuro, si potrebbe implementare il pulsante \texttt{impostazioni} per mettere in pausa il gioco e permettere di configurare questi aspetti.
+\newpage
 \subsection{Marco Casali}
 \title{\textbf{Game loop, generazione mappa}}
 
