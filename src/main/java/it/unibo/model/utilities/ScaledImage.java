@@ -24,11 +24,13 @@ public final class ScaledImage {
      * @return Return ImageIcon scaled
      */
     public static ImageIcon getScaledImage(final Image srcImg, final int width, final int height) {
-        final BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        final int actWidth = width > 0 ? width : 10;
+        final int actHeight = height > 0 ? height : 10;
+        final BufferedImage resizedImg = new BufferedImage(actWidth, actHeight, BufferedImage.TYPE_INT_ARGB);
         final Graphics2D g2 = resizedImg.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.drawImage(srcImg, 0, 0, actWidth, actHeight, null);
         g2.dispose();
 
         return new ImageIcon(resizedImg);
