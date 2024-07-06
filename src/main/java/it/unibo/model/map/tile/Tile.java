@@ -35,11 +35,6 @@ public interface Tile {
     void buildTower(Tower tower);
 
     /**
-     * Destroys the built {@link Tower} if present.
-     */
-    void destroyTower();
-
-    /**
      * @return tile's position.
      */
     Position2D getPosition();

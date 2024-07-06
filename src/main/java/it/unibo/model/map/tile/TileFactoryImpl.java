@@ -92,11 +92,6 @@ public class TileFactoryImpl implements TileFactory {
             }
 
             @Override
-            public void destroyTower() {
-                this.tower = Optional.empty();
-            }
-
-            @Override
             public Position2D getPosition() {
                 return this.position2D;
             }

@@ -11,6 +11,8 @@
 
 \usepackage[italian]{cleveref}
 
+\graphicspath{ {./images/} }
+
 \title{Relazione\\''Unibo-td''}
 
 \author{Aurora Francesco \\ 
@@ -133,11 +135,57 @@ Come futura implementazione, si potrebbe considerare l'integrazione degli effett
 \paragraph{Soluzione} La mappa viene ridimensionata tramite l'evento di \texttt{resize} ogni volta che il contenitore delle immagini della mappa cambia dimensione. La gestione della vittoria e della sconfitta è implementata in modo tale che, quando il core rileva eventi di \texttt{GameOver} o \texttt{GameWin}, viene mostrato un \texttt{JDialog}. Al clic sul pulsante \texttt{exit}, viene generato l'evento di chiusura del gioco. Poiché le pagine sono state incapsulate, l'evento deve essere richiamato sulla prima GUI mostrata. Il tutto deve essere scalabile tramite l'utilizzo di metodi in cascata e non ridondante. La suddivisione dei due metodi per \texttt{gameWin} e \texttt{gameOver} permette, in futuro, di avviare comportamenti diversi e di gestire in modo appropriato eventuali store di dati.
 
 Nella schermata di gioco sono stati aggiunti i pulsanti \texttt{pausa} e \texttt{impostazioni}. Il pulsante \texttt{pausa} avvia una chiamata al core di gioco per mettere in pausa i vari componenti del gioco. Il pulsante \texttt{impostazioni} attualmente non è funzionante, poiché non sono stati ancora gestiti gli effetti sonori e la velocità di gioco. In futuro, si potrebbe implementare il pulsante \texttt{impostazioni} per mettere in pausa il gioco e permettere di configurare questi aspetti.
+
 \newpage
 \subsection{Marco Casali}
-\title{\textbf{Game loop, generazione mappa}}
 
+\subsubsection{Gestione mappa}
 
+\begin{figure}[H]
+	\centering{}
+	\includegraphics[width=\textwidth]{GameMap}
+	\caption{Schema UML della mappa di gioco}
+	\label{fig:GameMap}
+\end{figure}
+
+\paragraph{Problema} La mappa è composta da una matrice bidimensionale di celle che hanno la stessa dimensione. Ogni
+cella però ha comportamenti diversi, ad esempio ci sono celle che compongono il percorso dei nemici o celle su cui
+possono essere costruite le difese.
+\paragraph{Soluzione} Ho semplificato il comportamento delle celle in proprietà definite in \textit{TileFeature}, ogni
+cella quindi ha un insieme di \textit{TileFeature} immutabile e la mappa identifica il comportamento delle celle tramite
+questo insieme.
+
+\subsubsection{Creazione mappa e celle}
+
+\begin{figure}[H]
+	\centering{}
+	\includegraphics[width=\textwidth]{MapFactory}
+	\caption{Schema UML MapFactory e TileFactory}
+	\label{fig:MapFactory}
+\end{figure}
+
+\paragraph{Problema} La mappa è un oggetto complesso e si vuole salvarla, come tutte le altre entità, su file formato JSON.
+\paragraph{Soluzione} Ho utilizzato il pattern \textit{Factory} per la creazione di mappa e celle, ho creato due interfacce
+separate ma effettivamente i metodi sono gli stessi, tramite queste interfacce l'implementazione di mappa e celle è completamente
+incapsulata ed è possibile ottenere un'istanza solamente tramite il nome senza costruttori complessi.
+
+\subsubsection{Gestione del game loop}
+
+\begin{figure}[H]
+	\centering{}
+	\includegraphics[width=\textwidth]{GameLoop}
+	\caption{Schema UML del game loop}
+	\label{fig:GameLoop}
+\end{figure}
+
+\paragraph{Problema} In ogni momento del gioco vengono create e distrutte diverse entità tra cui nemici,difese e proiettili.
+Il movimento di queste entità deve essere fluido,uniforme e deterministico, quindi indipendente dalle capacità della macchina 
+che esegue il gioco.
+
+\paragraph{Soluzione} La gestione del game loop è affidata al \textit{GameEngine} che viene eseguito su un thread separato e 
+si occupa di aggiornare le altre entità tramite il pattern \textit{Observer}, in questo caso gli \textit{Observer} si registreranno
+e riceveranno periodicamente una chiamata al metodo \textit{update()}, dove gli verrà passato un oggetto immutabile di tipo
+\textit{GameState} che contiene tutte le informazioni sullo stato del gioco.
 
 
 \newpage
