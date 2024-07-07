@@ -87,9 +87,9 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{RelazioneTD/images/Round.png}
+    \includegraphics[scale=1]{Round}
     \caption{UML relazioni Round}
-    \label{fig:enter-label}
+    \label{fig:round}
 \end{figure}
 
 \paragraph{Problema} Nel contesto di un gioco a round, è essenziale gestire in modo efficace la progressione dei round e la generazione dei nemici. Il problema principale consiste nel determinare come incrementare il numero di round, regolare il numero di nemici generati, gestire i tempi di spawn dei nemici e differenziare i round normali dai "boss round". Inoltre, la gestione del gioco deve includere la capacità di mettere in pausa, riprendere e interrompere il gioco in modo sicuro, sincronizzando correttamente l'accesso ai dati condivisi tra i thread per evitare condizioni di gara e inconsistenze.
@@ -108,9 +108,9 @@ Questo design offre un sistema robusto e flessibile, risolvendo efficacemente i 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1.2]{RelazioneTD/images/Player.png}
+    \includegraphics[scale=1.2]{Player}
     \caption{UML Player}
-    \label{fig:enter-label}
+    \label{fig:player}
 \end{figure}
 
 
@@ -123,9 +123,9 @@ Questa progettazione garantisce un controllo efficace e dinamico sulle risorse d
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{RelazioneTD/images/Gui.png}
+    \includegraphics[scale=0.8]{Gui}
     \caption{UML relazioni GUI}
-    \label{fig:enter-label}
+    \label{fig:gui}
 \end{figure}
 
 \paragraph{Problema} Nell'implementazione di un'applicazione GUI per un gioco, è essenziale gestire efficacemente la schermata iniziale, includendo un pulsante di avvio ben posizionato e scalabile per adattarsi a diverse dimensioni di scherma, la selezione delle mappe ancora adattabile a diverse dimensioni dello schermo. Il problema principale consiste nel progettare un'interfaccia utente che permetta agli utenti di selezionare una mappa tra diverse opzioni, visualizzare anteprime delle mappe adattate alle dimensioni dello schermo e fornire un'esperienza utente coerente e intuitiva su diversi dispositivi.
@@ -141,9 +141,9 @@ Come futura implementazione, si potrebbe considerare l'integrazione degli effett
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{RelazioneTD/images/GuiGameStart.png}
+    \includegraphics[scale=1]{GuiGameStart}
     \caption{UML GUI mappa per area di mia pertinenza}
-    \label{fig:enter-label}
+    \label{fig:gameStart}
 \end{figure}
 
 \paragraph{Problema} Si vuole gestione la vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
@@ -435,5 +435,31 @@ Infine direi che sono comunque soddisfatto, non solo di aver acquisito nuove com
 
 \chapter{Esercitazioni di laboratorio}
 \subsection{marco.casali13@studio.unibo.it}
+\newpage
+\section{Appendice A - Guida Utente}
+\subsection{Launcher}
+All'avvio dell'applicazione si aprirà la schermata di anteprima del gioco. Cliccare il bottone "Start" per iniziare.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.2]{Start}
+    \caption{Schermata di gioco iniziale - Bottone Start}
+    \label{fig:start}
+\end{figure}
+\subsection{Selezione Mappa}
+Ora è possibile selezionare la mappa in cui si desidera giocare. Cliccare sulle frecce per scorrere tra le mappe disponibili. Per selezionare una mappa, cliccare sulla mappa desiderata.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.2]{map}
+    \caption{Schermata di selezione mappa}
+    \label{fig:map}
+\end{figure}
+\subsection{Posizionamento torri}
+Verrà caricata la mappa su cui sarà possibile posizionare le torri per sconfiggere le ondate di nemici. Per posizionare una torre, cliccare sulla torre desiderata e poi cliccare su un rettangolo blu nella mappa.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.2]{PosizionamentoTorri}
+    \caption{Schermata di gioco}
+    \label{fig:gamePlay}
+\end{figure}
 
 \end{document}
