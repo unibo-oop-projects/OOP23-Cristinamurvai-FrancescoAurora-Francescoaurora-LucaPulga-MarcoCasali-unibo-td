@@ -69,7 +69,9 @@ Il gioco sarà suddiviso in round di difficoltà crescente. Tra un round e l'alt
 Ogni round determinerà i tipi di nemici che possono essere generati, il tempo di apparizione e l'ordine in cui compariranno.
 
 \subsection*{Gestione della mappa}
-TODO
+Il gioco si svolge su una mappa composta da celle bidimensionali di dimensione uniforme che sono rappresentate da una immagine. All'interno della mappa è presente un percorso fisso che porta i nemici dalla cella di inizio
+alla cella di fine percorso, fuori da questo percorso su alcune celle è permesso costruire le difese. Prima di iniziare la partita l'utente ha a disposizione più mappe tra cui scegliere ma una volta iniziato il gioco
+la mappa non è più modificabile.
 
 \subsection*{Gestione delle difese}
 Il gioco sarà costituito da una mappa. All'interno della mappa saranno presenti delle celle edificabili su cui poter posizionare le proprie difese (\textit{torri}). 
@@ -383,6 +385,8 @@ I test automatizzati sono necessari per poter testare se le logiche pensate dura
 	\item \textit{\textbf{TestPlayer}:} Test automatizzati per verificare la corretta inizializzazione di soldi e vite, nonché il corretto decremento e incremento di questi valori.
 	\item \textit{\textbf{TestRound}:} Test automatici per verificare l'incremento dei round e della complessità del gioco.
 	\item \textit{\textbf{TestRoundManagerImpl}:} Test automatici per verificare l'avvio del conto alla rovescia e l'avvio, oltre alla pausa del gioco.
+	\item \textit{\textbf{TestGameMapFactory}:} Test per verificare la corretta creazione della mappa.
+	\item \textit{\textbf{TestTileFactory}:} Test per verificare la corretta creazione della cella.
 \end{itemize}
 
 \section{Note di sviluppo}
@@ -401,7 +405,20 @@ Utilizzata nelle GUI per effettuare il resize della schermate. Link alla libreri
 \url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/main/src/main/java/it/unibo/model/utilities/ScaledImage.java}
 Link di esempio utilizzo.
 \url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/f84040bdc412c3abbb06a344ec0ae82e5af06e6f/src/main/java/it/unibo/view/GuiStart.java#L130}
+
 \subsection{Marco Casali}
+\subsubsection{Utilizzo della libreria SLF4J}
+Utilizzata in vari punti. Un esempio:
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/4601e6548d51942648ab1356e79d8f62a87682a8/src/main/java/it/unibo/model/map/GameMapFactoryImpl.java#L81C13-L81C75}
+
+\subsubsection{Utilizzo di lambda expressions e Stream}
+Utilizzate in vari punti. Un esempio:
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/4601e6548d51942648ab1356e79d8f62a87682a8/src/main/java/it/unibo/model/map/GameMapFactoryImpl.java#L123-L125}
+
+\subsubsection{Utilizzo della libreria JSON}
+Un esempio: 
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/74113621fccddd231d3384e26cc412593f1f63d6/src/main/java/it/unibo/model/map/GameMapFactoryImpl.java#L52-L56}
+
 \subsection{Cristina Murvai}
 \subsubsection{Utilizzo di Optional}
 Un esempio: \url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/396dd9934c61e72d3e4ca269508d5e62017b6ce6/src/main/java/it/unibo/model/entities/enemies/EnemiesManagerImpl.java#L168-L171}
@@ -446,6 +463,10 @@ Per quanto riguarda lo sviluppo del codice, è stato interessante vedere tutti g
 
 Sono soddisfatto del lavoro che ho realizzato. In ottica futura, ci sono molti miglioramenti che si potrebbero apportare per rendere il gioco più accattivante e performante, almeno graficamente. Ad esempio, la gestione degli effetti sonori e altri dettagli. Sei mesi per lo sviluppo del progetto sono molti, ma, da quel che ho capito, non è realistico pensare di sviluppare tutto quello che è stato fatto in sole 80 ore.
 \subsubsection{Marco Casali}
+Il risultato del progetto è abbastanza soddisfacente, siamo riusciti a implementare i requisiti minimi in tempo e a parte alcune imprecisioni grafiche il gioco gira come previsto.
+Sicuramente non è stata sufficiente la parte iniziale di progettazione e questo è risultato in un'architettura poco efficace, ad esempio per la lettura dei file JSON o più in generale
+delle risorse ogni membro ha implementato per sè e questo ha portato a ripetizione di codice. Comunque è stata un'esperienza molto formativa dal punto di vista dello sviluppo in team e del
+design che mi ha portato ad affrontare nuovi progetti con idee migliori.
 \subsubsection{Cristina Murvai}
 Questo progetto è stata sia la mia prima esperienza di teamwork che di sviluppo di un'applicazione complessa in java, che prima di questo corso non avevo mai utilizzato. In particolare sono contenta di come sono riuscita a individuare e sfruttare alcuni dei pattern visti a lezione come Factory e Observer e di aver sfruttato in modo utile diversi elementi più avanzati del linguaggio java quali Stream e Optional.
 Non sono invece troppo soddisfatta della resa grafica in quanto avrei voluto trovare un modo per far si che i nemici seguissero più precisamente il percorso sulla mappa.
