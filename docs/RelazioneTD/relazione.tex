@@ -64,17 +64,45 @@ Quando si arriva a 0 vite il gioco termina.
 
 Unibo TD avrà più entità che dovranno collaborare tra loro.
 
+\subsection*{Gestione dei round}
+Il gioco sarà suddiviso in round di difficoltà crescente. Tra un round e l'altro, ci sarà una pausa per consentire al giocatore di riprogrammare la propria strategia. Il numero di round sarà limitato, permettendo così al giocatore di vincere.
+Ogni round determinerà i tipi di nemici che possono essere generati, il tempo di apparizione e l'ordine in cui compariranno.
+
+\subsection*{Gestione della mappa}
+TODO
+
 \subsection*{Gestione delle difese}
-\begin{itemize}
 Il gioco sarà costituito da una mappa. All'interno della mappa saranno presenti delle celle edificabili su cui poter posizionare le proprie difese (\textit{torri}). 
 Le difese sono le unità incaricate a proteggere il punto terminale della mappa. Queste saranno quindi in grado di infliggere danni ai nemici attraverso specifiche logiche di targettamento e di attacco. Ogni tipologia difesa possiederà certe statistiche per poter garantire maggiore eterogeneità al gioco. Per costruire una difesa sarà necessaria una certa quantità di denaro, acquisibile tramite l'eliminazione di nemici nei vari round. Ogni difesa oltre ad avere relative speficifiche e caratteristiche, fra queste figurano anche le \textit{armi} a disposizione di ogni torre, le quali gestiscono la \textit{frequenza} di sparo dei \textit{proiettili} per arrecare danno ai nemici. Ogni proiettile sparato da una determinata torre con una determinata arma, dispone di un certo danno. Ogni qualvolta una difesa sconfigge un nemico, verrà accreditato al \textbf{player} il denaro relativo al nemico sconfitto. Due feature interessanti sarebbero la rimozione e il riposizionamento delle difese sulla mappa nei punti permessi. Queste purtroppo non potranno essere effettuate all’interno del monte ore previsto e conseguentemente si rimanda tale feature in futuro.
-\end{itemize}
+
+\subsection*{Gestione dei nemici}
+Il gioco prevede tre diverse tipologie di nemici, ciascuno caratterizzato dal tipo (base, medium, advanced), dal nome, dai punti vita, dalla ricompensa, ecc.
+Tutti seguono lo stesso percorso sulla mappa alla stessa velocità. 
+Se i nemici riescono ad arrivare alla fine del percorso senza essere uccisi dalle difese viene recato un danno alle vite del giocatore, in caso contrario, se le difese riescono ad eliminare i nemici prima che raggiungano la fine, il giocatore riceve una ricompensa. 
+La generazione dei nemici è strutturata in ”ondate”, gestite dal round manager.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{model}
+    \caption{UML Modello di dominio}
+    \label{fig:model}
+\end{figure}
 
 \chapter{Design}
 
 \section{Architettura}
+UNIBO-TD adotta il pattern architetturale MVC. Il pattern separa l’applicazione in tre componenti logici (Model, View, Controller). Rispettivamente, nel dettaglio, rappresentano:
+$\\$
+$\\$
+• Controller: funge da intermediario tra Model e View, limitando l'accesso diretto al Model e fornendo solo oggetti di trasferimento dati. Ciò significa che gli altri componenti dell'applicazione, come la View, possono accedere solo a una rappresentazione immutabile dei dati nel Model, garantendo un maggiore controllo sull'integrità dei dati.
+$\\$
+$\\$
+• Model: gestisce in modo trasparente la logica del gioco, come ad esempio la generazione e aggiornamento delle entità tramite il defense manager e l'enemy manager.
+$\\$
+$\\$
+• View: si occupa di mostrare graficamente le diverse entità e le schermate di gioco.
+L'implementazione della View, così come è stata definita, è facilmente sostituibile poiché non dipende dalle classi sottostanti.
 
-UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal Controller, esternalizza e gestisce in modo trasparente la logica tramite il defense manager e l'enemy manager, i quali si occupano di aspetti diversi del gioco, come i nemici e le difese. Il Controller funge da intermediario tra Model e View, limitando l'accesso diretto al Model e fornendo solo oggetti di trasferimento dati. Ciò significa che gli altri componenti dell'applicazione, come la View, possono accedere solo a una rappresentazione immutabile dei dati nel Model, garantendo un maggiore controllo sull'integrità dei dati. Di conseguenza, l'implementazione della View, così come è stata definita, è facilmente sostituibile poiché non dipende dalle classi sottostanti.
 
 
 
@@ -87,9 +115,9 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{RelazioneTD/images/Round.png}
+    \includegraphics[scale=1]{Round}
     \caption{UML relazioni Round}
-    \label{fig:enter-label}
+    \label{fig:round}
 \end{figure}
 
 \paragraph{Problema} Nel contesto di un gioco a round, è essenziale gestire in modo efficace la progressione dei round e la generazione dei nemici. Il problema principale consiste nel determinare come incrementare il numero di round, regolare il numero di nemici generati, gestire i tempi di spawn dei nemici e differenziare i round normali dai "boss round". Inoltre, la gestione del gioco deve includere la capacità di mettere in pausa, riprendere e interrompere il gioco in modo sicuro, sincronizzando correttamente l'accesso ai dati condivisi tra i thread per evitare condizioni di gara e inconsistenze.
@@ -108,9 +136,9 @@ Questo design offre un sistema robusto e flessibile, risolvendo efficacemente i 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1.2]{RelazioneTD/images/Player.png}
+    \includegraphics[scale=1.2]{Player}
     \caption{UML Player}
-    \label{fig:enter-label}
+    \label{fig:player}
 \end{figure}
 
 
@@ -123,9 +151,9 @@ Questa progettazione garantisce un controllo efficace e dinamico sulle risorse d
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{RelazioneTD/images/Gui.png}
+    \includegraphics[scale=0.8]{Gui}
     \caption{UML relazioni GUI}
-    \label{fig:enter-label}
+    \label{fig:gui}
 \end{figure}
 
 \paragraph{Problema} Nell'implementazione di un'applicazione GUI per un gioco, è essenziale gestire efficacemente la schermata iniziale, includendo un pulsante di avvio ben posizionato e scalabile per adattarsi a diverse dimensioni di scherma, la selezione delle mappe ancora adattabile a diverse dimensioni dello schermo. Il problema principale consiste nel progettare un'interfaccia utente che permetta agli utenti di selezionare una mappa tra diverse opzioni, visualizzare anteprime delle mappe adattate alle dimensioni dello schermo e fornire un'esperienza utente coerente e intuitiva su diversi dispositivi.
@@ -141,9 +169,9 @@ Come futura implementazione, si potrebbe considerare l'integrazione degli effett
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{RelazioneTD/images/GuiGameStart.png}
+    \includegraphics[scale=1]{GuiGameStart}
     \caption{UML GUI mappa per area di mia pertinenza}
-    \label{fig:enter-label}
+    \label{fig:gameStart}
 \end{figure}
 
 \paragraph{Problema} Si vuole gestione la vittoria e sconfitta, resize della mappa all'adattamento della finestra, bottoni pausa e settings.
@@ -230,7 +258,7 @@ e riceveranno periodicamente una chiamata al metodo \textit{update()}, dove gli 
 
 \paragraph{Problema} Per la gestione delle interazioni difese-nemici si è reso necessario fornire al manager delle difese un modo efficace per monitorare quali nemici sono in vita e conoscere la loro posizione in tempo reale. Questo è cruciale per permettere alle torri di attaccare correttamente i nemici.
 
-\paragraph{Soluzione} Si è deciso di sfruttare il pattern Observer per risolvere questo problema, rendendo il set dei nemici osservabile. Questo set è disponibile nell'interfaccia \textit{GameState} e qualsiasi componente che necessita di monitorare i nemici, come il manager delle difese, può iscriversi come osservatore. Ogni volta che c'è un cambiamento nel set dei nemici (ad esempio, un nemico viene eliminato o cambia posizione), gli osservatori vengono notificati e possono conseguentemente aggiornare il loro stato. Ciò garantisce che tutte le parti del sistema che devono reagire ai cambiamenti dello stato dei nemici lo facciano immediatamente e in modo coerente. Inoltre, questo rende il codice scalabile, poiché è possibile aggiungere nuovi osservatori dello stato dei nemici senza modificare il codice sorgente esistente.
+\paragraph{Soluzione} Si è deciso di sfruttare il pattern Observer per risolvere questo problema rendendo il set dei nemici osservabile. Questo set è disponibile nell'interfaccia \textit{GameState}, in modo che qualsiasi componente, come il manager delle difese, che necessita di monitorare i nemici possa farlo. Periodicamente il \textit{GameState} viene aggiornato con la versione più recente del set dei nemici (in cui ad esempio, un nemico viene eliminato o cambia posizione). Successivamente, gli \textit{Observers} vengono notificati del cambiamento e possono conseguentemente aggiornare il loro stato. Ciò garantisce che tutte le parti del sistema che devono reagire ai cambiamenti dello stato dei nemici lo facciano immediatamente e in modo coerente. Inoltre, questo rende il codice scalabile, poiché è possibile aggiungere nuovi \textit{Observers} dello stato dei nemici senza modificare il codice sorgente esistente.
 
 \paragraph{Problema} Il \textit{RoundManager} si occupa della gestione dei vari round e quindi anche di stabilire il numero incrementale di nemici di diverse tipologie che popoleranno la mappa di gioco. Per questo motivo è necessario fornirgli un modo per generare i nemici in maniera efficace. Per fare ciò è necessario anche considerare che, visto che \textit{EnemiesManager} estende \textit{GameObserver}, il set dei nemici potrà essere modificato solo quando il manager avrà il controllo nel metodo \textit{update()}.
 
@@ -280,7 +308,7 @@ le entità, come le \textit{torri}, che saranno poi successivamente gestite dal 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.1\linewidth]{entity_factory}
+    \includegraphics[width=\textwidth]{entity_factory}
     \caption{Factory Method Pattern per il caricamento delle entità.}
     \label{fig:entity_factory}
 \end{figure}
@@ -454,5 +482,39 @@ Infine direi che sono comunque soddisfatto, non solo di aver acquisito nuove com
 
 \chapter{Esercitazioni di laboratorio}
 \subsection{marco.casali13@studio.unibo.it}
+
+
+\newpage
+\section{Appendice A - Guida Utente}
+
+\subsection{Launcher}
+All'avvio dell'applicazione si aprirà la schermata di anteprima del gioco. Cliccare il bottone "Start" per iniziare.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Start}
+    \caption{Schermata di gioco iniziale - Bottone Start}
+    \label{fig:start}
+\end{figure}
+
+\subsection{Selezione Mappa}
+Ora è possibile selezionare la mappa in cui si desidera giocare. Cliccare sulle frecce per scorrere tra le mappe disponibili. Per selezionare una mappa, cliccare sulla mappa desiderata.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{map}
+    \caption{Schermata di selezione mappa}
+    \label{fig:map}
+\end{figure}
+
+\subsection{Posizionamento torri}
+Verrà caricata la mappa su cui sarà possibile posizionare le torri per sconfiggere le ondate di nemici. Per posizionare una torre, cliccare sulla torre desiderata e poi cliccare su un rettangolo blu nella mappa.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{PosizionamentoTorri}
+    \caption{Schermata di gioco}
+    \label{fig:gamePlay}
+\end{figure}
 
 \end{document}
