@@ -70,6 +70,10 @@ Il gioco sarà costituito da una mappa. All'interno della mappa saranno presenti
 Le difese sono le unità incaricate a proteggere il punto terminale della mappa. Queste saranno quindi in grado di infliggere danni ai nemici attraverso specifiche logiche di targettamento e di attacco. Ogni tipologia difesa possiederà certe statistiche per poter garantire maggiore eterogeneità al gioco. Per costruire una difesa sarà necessaria una certa quantità di denaro, acquisibile tramite l'eliminazione di nemici nei vari round. Ogni difesa oltre ad avere relative speficifiche e caratteristiche, fra queste figurano anche le \textit{armi} a disposizione di ogni torre, le quali gestiscono la \textit{frequenza} di sparo dei \textit{proiettili} per arrecare danno ai nemici. Ogni proiettile sparato da una determinata torre con una determinata arma, dispone di un certo danno. Ogni qualvolta una difesa sconfigge un nemico, verrà accreditato al \textbf{player} il denaro relativo al nemico sconfitto. Due feature interessanti sarebbero la rimozione e il riposizionamento delle difese sulla mappa nei punti permessi. Queste purtroppo non potranno essere effettuate all’interno del monte ore previsto e conseguentemente si rimanda tale feature in futuro.
 \end{itemize}
 
+\subsection*{Gestione dei round}
+Il gioco sarà suddiviso in round di difficoltà crescente. Tra un round e l'altro, ci sarà una pausa per consentire al giocatore di riprogrammare la propria strategia. Il numero di round sarà limitato, permettendo così al giocatore di vincere.
+Ogni round determinerà i tipi di nemici che possono essere generati, il tempo di apparizione e l'ordine in cui compariranno.
+
 \chapter{Design}
 
 \section{Architettura}
