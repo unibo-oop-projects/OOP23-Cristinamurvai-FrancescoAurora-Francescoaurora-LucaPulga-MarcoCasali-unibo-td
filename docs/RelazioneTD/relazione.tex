@@ -73,7 +73,7 @@ UNIBO-TD adotta il pattern architetturale MVC. Il Model, una volta avviato dal C
 
 
 
-
+\newpage
 \section{Design dettagliato}
 \subsection{Francesco Aurora}
 \title{\textbf{Gestione GUI e azioni utente, round, player}}
@@ -356,15 +356,17 @@ I test automatizzati sono necessari per poter testare se le logiche pensate dura
 \subsection{Francesco Aurora}
 \subsubsection{Utilizzo di lambda expressions}
 Utilizzate in vari punti. Un esempio:
-\url{}
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/f84040bdc412c3abbb06a344ec0ae82e5af06e6f/src/main/java/it/unibo/model/round/RoundManagerImpl.java#L107}
 
 \subsubsection{Utilizzo della libreria SLF4J}
 Utilizzata in vari punti. Un esempio:  
-\url{}
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/f84040bdc412c3abbb06a344ec0ae82e5af06e6f/src/main/java/it/unibo/model/round/RoundManagerImpl.java#L225C17-L225C81}
 
 \subsubsection{Uso di libreria di terze parti}
-Utilizzata nelle GUI per effettuare il resize della schermate.
-\url{}
+Utilizzata nelle GUI per effettuare il resize della schermate. Link alla libreria generata come classe final.
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/main/src/main/java/it/unibo/model/utilities/ScaledImage.java}
+Link di esempio utilizzo.
+\url{https://github.com/PulgaLuca/OOP23-unibo-td/blob/f84040bdc412c3abbb06a344ec0ae82e5af06e6f/src/main/java/it/unibo/view/GuiStart.java#L130}
 \subsection{Marco Casali}
 \subsection{Cristina Murvai}
 \subsubsection{Utilizzo di Optional}
@@ -404,6 +406,11 @@ Un esempio:
 \chapter{Commenti finali}
 \section{Autovalutazione e lavori futuri}
 \subsubsection{Francesco Aurora}
+Sono soddisfatto del mio lavoro svolto all'interno del gruppo. Nonostante i miei impegni lavorativi, sono riuscito a contribuire in modo significativo e a dare una mano quando necessario. Tuttavia, ci sono stati diversi aspetti negativi dal punto di vista del coordinamento del gruppo. Pur essendo abituato a lavorare in team, questa è stata un'esperienza particolarmente difficile, probabilmente a causa delle diverse esperienze dei membri del gruppo. Nonostante ciò, sono estremamente soddisfatto, soprattutto perché non conoscevo nessuno del gruppo e siamo comunque riusciti a contribuire in modo significativo al progetto. Guardando al futuro, le competenze che ho appreso mi saranno molto utili.
+
+Per quanto riguarda lo sviluppo del codice, è stato interessante vedere tutti gli errori che sono stati commessi e che venivano generati durante il build. Questo mi ha fatto capire quanti errori possono essere generati da una programmazione non corretta, e non me lo aspettavo. È stato anche molto interessante risolvere errori di bug, soprattutto perché questi richiedevano che il codice venisse a volte completamente stravolto. Ad esempio, la creazione dei thread tramite parametro lambda per il passaggio di parametri non duplicati nella classe è stata una sfida significativa.
+
+Sono soddisfatto del lavoro che ho realizzato. In ottica futura, ci sono molti miglioramenti che si potrebbero apportare per rendere il gioco più accattivante e performante, almeno graficamente. Ad esempio, la gestione degli effetti sonori e altri dettagli. Sei mesi per lo sviluppo del progetto sono molti, ma, da quel che ho capito, non è realistico pensare di sviluppare tutto quello che è stato fatto in sole 80 ore.
 \subsubsection{Marco Casali}
 \subsubsection{Cristina Murvai}
 Questo progetto è stata sia la mia prima esperienza di teamwork che di sviluppo di un'applicazione complessa in java, che prima di questo corso non avevo mai utilizzato. In particolare sono contenta di come sono riuscita a individuare e sfruttare alcuni dei pattern visti a lezione come Factory e Observer e di aver sfruttato in modo utile diversi elementi più avanzati del linguaggio java quali Stream e Optional.
@@ -424,9 +431,6 @@ Infine direi che sono comunque soddisfatto non solo di aver acquisito nuove comp
 
 
 \chapter{Esercitazioni di laboratorio}
-
-\subsection{francesco.aurora@studio.unibo.it}
-
 \subsection{marco.casali13@studio.unibo.it}
 
 \end{document}
