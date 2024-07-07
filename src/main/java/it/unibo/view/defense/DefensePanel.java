@@ -32,6 +32,7 @@ public class DefensePanel extends JPanel {
     private transient Set<Bullet> bullets; // All fields must be serializable but bullets will not be serialized in this case.
     private int xCellSize;
     private int yCellSize;
+    private static final int Y_OFFSET = 75;
 
     /**
      * Base Constructor.
@@ -59,7 +60,7 @@ public class DefensePanel extends JPanel {
                 final BufferedImage towerImage = ImageIO.read(ClassLoader.getSystemResource(entity.getPath()));
                 g.drawImage(getScaledImage(towerImage, this.xCellSize, this.yCellSize * 2),
                         (int) (entity.getPosition().x() * this.xCellSize),
-                        (int) (entity.getPosition().y() * this.yCellSize), this);
+                        (int) (entity.getPosition().y() * this.yCellSize) - Y_OFFSET, this);
             } catch (IOException e) {
                 logger.error("An error occured while painting TOWER components: " + e);
             }
